@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/*
+  B & W — Sistema de diseño (ver docs/DESIGN.md)
+  Fundamento monocromo + un solo acento (azul eléctrico) usado en ≤10% de pantalla.
+*/
+
+@theme {
+  /* Colores de marca */
+  --color-vanilla: #faf8f3; /* Vanilla Surface — fondo (workbench) */
+  --color-panda: #0a0a0a; /* Panda Black — tinta, texto, fondos CTA */
+  --color-component: #6b6b6b; /* Component Gray — texto secundario, metadatos */
+  --color-hairline: #e5e5e5; /* Hairline Gray — bordes, filas, separadores */
+  --color-accent: #2563eb; /* Único acento — azul eléctrico (precisión) */
+  --color-accent-ink: #faf8f3; /* texto sobre el acento */
+
+  /* Tipografía */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Menlo, monospace;
+
+  /* Radios — casi nulos (técnico, no juguetón) */
+  --radius-sharp: 2px;
+}
+
+:root {
+  --background: var(--color-vanilla);
+  --foreground: var(--color-panda);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  /* Render más nítido para el contraste de pesos 800↔400 */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Respeto a prefers-reduced-motion (principio de accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Selección coherente con la marca */
+::selection {
+  background: var(--color-panda);
+  color: var(--color-vanilla);
+}
