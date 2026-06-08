@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -49,11 +47,7 @@ export default function RootLayout({
       lang="es-CO"
       className={`${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-vanilla text-panda">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-      </body>
+      <body className="min-h-full bg-vanilla text-panda">{children}</body>
     </html>
   );
 }

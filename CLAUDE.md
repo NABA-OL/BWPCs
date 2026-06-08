@@ -15,18 +15,29 @@ Web de **B & W** (ensamble de PC y venta de componentes, Colombia). Ver `docs/PL
 - Precios en `font-mono`. Panda como momento puntual, no patrón.
 
 ## Estructura
-- `src/app/` — rutas (home, servicios, cotizador, nosotros, contacto). Admin futuro en `/admin/*`.
-- `src/components/` — `site-header`, `site-footer`, `brand-logo`, `page-hero`, `secret-admin-trigger`, `ui/button`.
-- `src/lib/site-config.ts` — nav y contacto (migrará a settings en BD, Fase 2).
+- `src/app/(public)/` — sitio público (home, servicios, cotizador, nosotros, contacto) con su `layout` (header/footer). El root `layout.tsx` solo monta html/body/fuentes.
+- `src/app/admin/login/` — login (público). `src/app/admin/(panel)/` — shell autenticado (`layout` valida sesión) con `page` (resumen) y `configuracion`.
+- `src/proxy.ts` — protege `/admin/*` (Edge, verifica JWT). Convención Next 16 "proxy" (antes "middleware").
+- `src/components/` — públicos + `admin/` (`login-form`, `admin-shell`, `settings-form`).
+- `src/lib/db/` — `mongodb` (conexión cacheada), `types`, `collections` (+ `DEFAULT_SETTINGS`).
+- `src/lib/auth/` — `session` (jose JWT, cookie `bw_session`), `password` (bcrypt), `actions` (login/logout).
+- `src/lib/admin/` — `stats`, `settings`. `src/lib/env.ts`, `src/lib/format.ts`, `src/lib/admin-nav.ts`.
 - `public/brand/` — `logo.png` (con wordmark), `logo-solo.png` (solo panda).
 
-## Acceso admin oculto
-`SecretAdminTrigger` envuelve el "© año" del footer: clic largo 5s → `/admin/login` (ruta pendiente, Fase 2).
+## Auth admin
+JWT propio (no NextAuth): cookie httpOnly `bw_session` firmada con `AUTH_SECRET` (jose). Admin en colección `admins` (bcrypt). `SecretAdminTrigger` (clic largo 5s en "© año") → `/admin/login`. Seed: `npm run seed` crea admin (`admin`/`bwadmin2026`) + settings.
+
+## Entorno (.env.local)
+`MONGODB_URI` (de Atlas/Vercel), `MONGODB_DB=bwpcs`, `AUTH_SECRET`. Ver `.env.example`. En Vercel falta añadir `AUTH_SECRET`.
 
 ## Comandos
-- `npm run dev` · `npm run build` · `npx tsc --noEmit`
+- `npm run dev` · `npm run build` · `npx tsc --noEmit` · `npm run seed`
 
 ## Estado (fases en PLANEACION §10)
-- ✅ Fase 0: scaffold, tokens, layout, header/footer, home, stubs de rutas.
-- ⏳ Fase 1: contenido real de Servicios/Nosotros/Contacto.
-- Pendiente: Fase 2 (admin + Mongo), Fase 3 (cotizador), Fase 4 (PDF).
+- ✅ Fase 0: scaffold, tokens, layout, header/footer, home.
+- ✅ Fase 1: contenido real de Servicios/Nosotros/Contacto.
+- ✅ Fase 2: conexión Mongo (seed corrido: admin + settings), auth admin, shell, Resumen, Configuración. Login y guardado verificados a nivel de código (curl GET/POST con cookie → sesión OK).
+- Pendiente: Fase 2b (CRUD procesadores/gráficas/componentes/promedios/cotizaciones), Fase 3 (cotizador), Fase 4 (PDF), hero SVG line-art.
+
+## Nota de verificación (preview)
+El navegador headless del preview sirve la página *cross-site*, así que las cookies `sameSite=lax` (como `bw_session`) NO viajan en el POST de los Server Actions → login/guardado fallan SOLO en el preview. En un navegador real (localhost:3000 directo) y en producción funcionan. Para verificar mutaciones del admin, usar curl/node contra la BD, no el preview.
