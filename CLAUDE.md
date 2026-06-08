@@ -18,7 +18,7 @@ Web de **B & W** (ensamble de PC y venta de componentes, Colombia). Ver `docs/PL
 - `src/app/` — rutas (home, servicios, cotizador, nosotros, contacto). Admin futuro en `/admin/*`.
 - `src/components/` — `site-header`, `site-footer`, `brand-logo`, `page-hero`, `secret-admin-trigger`, `ui/button`.
 - `src/lib/site-config.ts` — nav y contacto (migrará a settings en BD, Fase 2).
-- `public/brand/` — `logo.jpg` (con wordmark), `logo-solo.png` (solo panda).
+- `public/brand/` — `logo.png` (con wordmark), `logo-solo.png` (solo panda).
 
 ## Acceso admin oculto
 `SecretAdminTrigger` envuelve el "© año" del footer: clic largo 5s → `/admin/login` (ruta pendiente, Fase 2).

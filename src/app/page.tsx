@@ -1,6 +1,21 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/button";
 
+const steps = [
+  {
+    title: "Cotiza en la web",
+    body: "Marca los componentes que quieres e ingresa tu presupuesto. Obtienes un estimado en segundos, sin registrarte.",
+  },
+  {
+    title: "Confirma por WhatsApp",
+    body: "Escríbenos con el resumen. Elegimos los modelos exactos y ajustamos el precio final contigo.",
+  },
+  {
+    title: "Recibe tu equipo",
+    body: "Armamos tu PC con cuidado y la entregamos lista para encender. Bogotá o envío a donde estés.",
+  },
+];
+
 export default function HomePage() {
   return (
     <>
@@ -11,13 +26,13 @@ export default function HomePage() {
             <p className="font-mono text-sm text-component">
               Ensamble &amp; componentes · Colombia
             </p>
-            <h1 className="mt-4 text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-              Tu PC a la
+            <h1 className="mt-4 text-balance text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
+              Ensamblamos
               <br />
-              medida.
+              tu PC.
             </h1>
-            <p className="mt-6 max-w-md text-lg leading-relaxed text-panda">
-              Ensamblamos tu equipo con componentes que elegimos contigo, al
+            <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-panda">
+              Armamos tu equipo con los componentes que elegimos contigo, al
               precio justo. ¿Solo necesitas una pieza? También.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -30,11 +45,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Panda — momento de carácter, no patrón repetido */}
+          {/* Panda — carácter de marca, una sola aparición */}
           <div className="relative mx-auto w-full max-w-sm">
             <div className="aspect-square border border-hairline bg-white">
               <Image
-                src="/brand/logo.jpg"
+                src="/brand/logo.png"
                 alt="Mascota de B & W: un panda gamer"
                 width={600}
                 height={600}
@@ -42,45 +57,75 @@ export default function HomePage() {
                 className="h-full w-full object-contain p-6"
               />
             </div>
-            {/* Acento geométrico del lenguaje de marca (PDF) */}
-            <div className="absolute -right-3 -top-3 h-6 w-6 bg-accent" />
+            {/* Motivo geométrico del lenguaje de marca */}
+            <div
+              aria-hidden="true"
+              className="absolute -right-3 -top-3 h-6 w-6 bg-accent"
+            />
           </div>
         </div>
       </section>
 
-      {/* Qué hacemos */}
+      {/* Lo que hacemos — split asimétrico, sin cards */}
       <section className="border-t border-hairline">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
-            Qué hacemos
+          <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
+            Lo que hacemos
           </h2>
-          <div className="mt-8 grid gap-px overflow-hidden border border-hairline bg-hairline md:grid-cols-3">
-            {[
-              {
-                n: "01",
-                t: "Ensamblaje",
-                d: "Armado, formateo y configuración completa. Nuestro servicio principal: tu equipo listo para encender.",
-              },
-              {
-                n: "02",
-                t: "Componentes",
-                d: "Gráficas, procesadores, RAM, boards, fuentes, chasis y refrigeración. Compra una pieza o todas.",
-              },
-              {
-                n: "03",
-                t: "Asesoría",
-                d: "Te ayudamos a elegir según tu uso y presupuesto. Sin venderte de más, sin tecnicismos vacíos.",
-              },
-            ].map((c) => (
-              <div key={c.n} className="bg-vanilla p-6">
-                <span className="font-mono text-sm text-accent">{c.n}</span>
-                <h3 className="mt-3 text-xl font-semibold">{c.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-panda">
-                  {c.d}
-                </p>
-              </div>
-            ))}
+          <div className="mt-10 grid md:grid-cols-[3fr_2fr]">
+            {/* Servicio principal */}
+            <div className="md:pr-12">
+              <h3 className="text-balance text-2xl font-bold">
+                Ensamblaje a la medida
+              </h3>
+              <p className="mt-4 max-w-prose text-pretty leading-relaxed text-panda">
+                Seleccionamos cada componente según tu uso y presupuesto.
+                Armamos, formateamos y configuramos tu equipo desde cero. Entrega
+                con todo funcionando.
+              </p>
+              <p className="mt-5 font-mono text-sm text-component">
+                GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración
+              </p>
+            </div>
+
+            {/* Servicio secundario */}
+            <div className="mt-10 border-t border-hairline pt-10 md:mt-0 md:border-l md:border-t-0 md:pl-12 md:pt-0">
+              <h3 className="text-balance text-xl font-semibold">
+                Componentes sueltos
+              </h3>
+              <p className="mt-4 text-pretty leading-relaxed text-panda">
+                Compramos por ti al mejor precio. Gráficas, procesadores, RAM,
+                boards, fuentes, chasis y refrigeración. Una pieza o todas.
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* Cómo funciona — secuencia ordenada, los números sí importan */}
+      <section className="border-t border-hairline">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
+            Cómo funciona
+          </h2>
+          <ol className="mt-10 grid gap-px overflow-hidden border border-hairline bg-hairline md:grid-cols-3">
+            {steps.map((step, i) => (
+              <li key={step.title} className="bg-vanilla px-6 py-8">
+                <span
+                  aria-hidden="true"
+                  className="block text-5xl font-extrabold leading-none text-hairline tabular-nums"
+                >
+                  {i + 1}
+                </span>
+                <h3 className="mt-5 text-balance text-lg font-semibold">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-pretty text-sm leading-relaxed text-panda">
+                  {step.body}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -88,10 +133,10 @@ export default function HomePage() {
       <section className="border-t border-hairline bg-panda text-vanilla">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">
+            <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">
               ¿Cuánto costaría tu PC?
             </h2>
-            <p className="mt-2 max-w-md text-vanilla/70">
+            <p className="mt-2 max-w-md text-pretty text-vanilla/70">
               Arma un estimado en segundos y escríbenos por WhatsApp para
               afinar los detalles.
             </p>

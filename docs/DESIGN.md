@@ -28,13 +28,13 @@ Rejected explicitly: the overcrowded RGB neon aesthetic of Thermaltake and iBUYP
 
 ## 2. Colors
 
-A neutral foundation that earns meaning through contrast. The accent color (hue family to be confirmed at implementation) is the only color that speaks.
+A neutral foundation that earns meaning through contrast. The crimson accent is the only color that speaks.
 
 ### Primary
 - **Panda Black** (`#0A0A0A`): The primary text color, CTA backgrounds, nav background. True near-black — not charcoal, not warm. The ink of authority.
 
 ### Secondary
-- **Single Accent** (`[to be resolved during implementation]`): Used at ≤10% of any screen surface. Reserved for: primary buttons, active states, and the single price point the customer must act on. Hue family: consider a cool electric accent that reads precision rather than warmth (deep electric blue, sharp amber, or forensic green — not red, which reads "sale/discount" in the Colombian market context).
+- **Warm Crimson** (`#c83c2a` / `oklch(0.614 0.234 28)`): The single accent. Used at ≤10% of any screen surface. Appears on: primary button hover, active nav indicator, the geometric corner motif (hero), and the bottom-section CTA button. White text on filled crimson (`#faf8f3`). Deep hover variant: `#9e2e1f`.
 
 ### Neutral
 - **Vanilla Surface** (`#FAF8F3`): Page background. A near-white with the faintest warm tint — the workbench surface. Not cream, not paper. Chroma is low; it reads almost as white in natural light, which is the intent.

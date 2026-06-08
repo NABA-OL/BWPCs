@@ -11,7 +11,8 @@
   --color-panda: #0a0a0a; /* Panda Black — tinta, texto, fondos CTA */
   --color-component: #6b6b6b; /* Component Gray — texto secundario, metadatos */
   --color-hairline: #e5e5e5; /* Hairline Gray — bordes, filas, separadores */
-  --color-accent: #2563eb; /* Único acento — azul eléctrico (precisión) */
+  --color-accent: #c83c2a; /* Único acento — carmesí cálido (oklch 0.614 0.234 28) */
+  --color-accent-deep: #9e2e1f; /* hover del acento */
   --color-accent-ink: #faf8f3; /* texto sobre el acento */
 
   /* Tipografía */

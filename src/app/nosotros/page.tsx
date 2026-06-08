@@ -1,15 +1,94 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
+import { ButtonLink } from "@/components/ui/button";
 
-export const metadata: Metadata = { title: "Nosotros" };
+export const metadata: Metadata = {
+  title: "Nosotros",
+  description:
+    "B & W: ensamble de computadores y venta de componentes en Colombia, con precios justos.",
+};
+
+const valores = [
+  {
+    t: "Precio honesto",
+    d: "Importamos gráficas y procesadores para conseguirte mejores precios que el mercado local. Te pasamos ese ahorro, no lo escondemos.",
+  },
+  {
+    t: "Sin venderte de más",
+    d: "Te recomendamos lo que tu uso necesita. Si una pieza no te aporta, te lo decimos.",
+  },
+  {
+    t: "Trabajo cuidado",
+    d: "Cable management ordenado, temperaturas en su punto y el equipo probado antes de entregar.",
+  },
+];
 
 export default function NosotrosPage() {
   return (
-    <PageHero eyebrow="Sobre B & W" title="Nosotros">
-      <p>
-        Somos un emprendimiento colombiano de ensamble de computadores. Nuestra
-        historia, pronto aquí.
-      </p>
-    </PageHero>
+    <>
+      <PageHero eyebrow="Sobre B & W" title="Armamos PCs, no plantillas.">
+        <p>
+          B &amp; W nació de la pasión por el hardware y de una idea simple:
+          que armar un buen computador en Colombia no tiene por qué ser caro ni
+          confuso.
+        </p>
+      </PageHero>
+
+      {/* Historia */}
+      <section className="border-b border-hairline">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="grid gap-10 md:grid-cols-[1fr_1.4fr]">
+            <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">
+              Cómo trabajamos
+            </h2>
+            <div className="space-y-4 text-lg leading-relaxed text-panda">
+              <p>
+                Para las piezas que más pesan en el presupuesto —gráficas y
+                procesadores— las traemos por importación. Eso nos deja
+                ofrecerte un precio más justo que comprándolas aquí, y a ti te
+                queda claro de dónde sale cada peso.
+              </p>
+              <p>
+                El resto de componentes los conseguimos al mejor valor del
+                momento y los sumamos a tu cotización. Tú decides: armamos todo
+                el equipo o te vendemos solo la pieza que necesitas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Valores */}
+      <section className="border-b border-hairline">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="grid gap-px overflow-hidden border border-hairline bg-hairline md:grid-cols-3">
+            {valores.map((v) => (
+              <div key={v.t} className="bg-vanilla p-6">
+                <h3 className="text-lg font-semibold">{v.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-panda">
+                  {v.d}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-panda text-vanilla">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
+          <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
+            ¿Hablamos de tu próximo equipo?
+          </h2>
+          <ButtonLink
+            href="/contacto"
+            size="lg"
+            className="bg-accent text-accent-ink hover:bg-vanilla hover:text-panda"
+          >
+            Contáctanos
+          </ButtonLink>
+        </div>
+      </section>
+    </>
   );
 }

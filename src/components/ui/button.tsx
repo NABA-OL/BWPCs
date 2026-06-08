@@ -8,7 +8,7 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-[2px] font-medium uppercase tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  // Primary: fondo Panda Black, texto vainilla; hover → acento (azul eléctrico)
+  // Primary: fondo Panda Black, texto vainilla; hover → carmesí
   primary: "bg-panda text-vanilla hover:bg-accent",
   // Secondary / ghost: borde negro; hover → se rellena de negro
   secondary:
