@@ -5,11 +5,17 @@ import { ButtonLink } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
 
+export interface EstimatorOption {
+  label: string;
+  precioCop: number;
+}
+
 export interface EstimatorCategory {
   key: string;
   label: string;
-  promedio: number;
-  defaultOn: boolean;
+  options: EstimatorOption[];
+  defaultOn: boolean; // checkbox marcado por defecto
+  defaultIndex: number; // gama preseleccionada (índice válido)
 }
 
 export function CotizadorEstimator({
@@ -23,14 +29,26 @@ export function CotizadorEstimator({
   tarjetaPct: number;
   psePct: number;
 }) {
-  const [selected, setSelected] = useState<Record<string, boolean>>(() =>
+  const [included, setIncluded] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(categories.map((c) => [c.key, c.defaultOn])),
+  );
+  const [choice, setChoice] = useState<Record<string, number>>(() =>
+    Object.fromEntries(
+      categories.map((c) => [c.key, Math.max(0, c.defaultIndex)]),
+    ),
   );
   const [servicio, setServicio] = useState(true);
 
   const { total, conTarjeta, conPse, chosen } = useMemo(() => {
-    const chosen = categories.filter((c) => selected[c.key]);
-    const sub = chosen.reduce((acc, c) => acc + c.promedio, 0);
+    const chosen: { label: string; opcion: string }[] = [];
+    let sub = 0;
+    for (const c of categories) {
+      const i = choice[c.key];
+      if (included[c.key] && c.options[i]) {
+        sub += c.options[i].precioCop;
+        chosen.push({ label: c.label, opcion: c.options[i].label });
+      }
+    }
     const total = sub + (servicio ? servicioBase : 0);
     return {
       chosen,
@@ -38,14 +56,10 @@ export function CotizadorEstimator({
       conTarjeta: Math.round(total * (1 + tarjetaPct)),
       conPse: Math.round(total * (1 + psePct)),
     };
-  }, [categories, selected, servicio, servicioBase, tarjetaPct, psePct]);
-
-  function toggle(key: string) {
-    setSelected((s) => ({ ...s, [key]: !s[key] }));
-  }
+  }, [categories, included, choice, servicio, servicioBase, tarjetaPct, psePct]);
 
   const waMessage = useMemo(() => {
-    const items = chosen.map((c) => `• ${c.label}`).join("\n");
+    const items = chosen.map((c) => `• ${c.label}: ${c.opcion}`).join("\n");
     return (
       `Hola B & W, quiero cotizar un PC con:\n${items}` +
       `${servicio ? "\n• Ensamblaje" : ""}\n\n` +
@@ -55,88 +69,72 @@ export function CotizadorEstimator({
   }, [chosen, servicio, total, conTarjeta]);
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
-      {/* Selección de componentes */}
+    <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+      {/* Selección por categoría */}
       <div>
-        <h2 className="text-xl font-semibold">¿Qué quieres incluir?</h2>
+        <h2 className="text-xl font-semibold">Arma tu equipo</h2>
         <p className="mt-1 text-sm text-component">
-          Marca los componentes. No necesitas elegir modelos: te damos un
-          aproximado.
+          Marca lo que quieres incluir y elige la gama de cada componente.
         </p>
 
-        <div className="mt-5 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2">
+        <div className="mt-5 divide-y divide-hairline border border-hairline">
           {categories.map((c) => {
-            const on = selected[c.key];
+            const on = included[c.key];
             return (
-              <button
+              <div
                 key={c.key}
-                type="button"
-                aria-pressed={on}
-                onClick={() => toggle(c.key)}
-                className={`flex items-center justify-between gap-3 bg-vanilla px-4 py-3.5 text-left transition-colors ${
-                  on ? "" : "opacity-55 hover:opacity-100"
-                }`}
+                className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3"
               >
-                <span className="font-medium">{c.label}</span>
-                <span
-                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-[2px] border ${
-                    on
-                      ? "border-accent bg-accent text-accent-ink"
-                      : "border-component"
-                  }`}
-                  aria-hidden
+                <label className="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={on}
+                    onChange={(e) =>
+                      setIncluded((s) => ({ ...s, [c.key]: e.target.checked }))
+                    }
+                    className="h-4 w-4 accent-accent"
+                  />
+                  <span
+                    className={`font-medium ${on ? "" : "text-component"}`}
+                  >
+                    {c.label}
+                  </span>
+                </label>
+
+                <select
+                  value={choice[c.key]}
+                  disabled={!on}
+                  onChange={(e) =>
+                    setChoice((s) => ({ ...s, [c.key]: Number(e.target.value) }))
+                  }
+                  className="min-w-[200px] border border-hairline bg-vanilla px-3 py-2 text-sm outline-none focus:border-panda disabled:opacity-40"
                 >
-                  {on && (
-                    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none">
-                      <path
-                        d="M3 8.5l3.5 3.5L13 5"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </span>
-              </button>
+                  {c.options.map((o, i) => (
+                    <option key={i} value={i}>
+                      {o.label} · {formatCOP(o.precioCop)}
+                    </option>
+                  ))}
+                </select>
+              </div>
             );
           })}
         </div>
 
         {/* Servicio de ensamble */}
-        <button
-          type="button"
-          aria-pressed={servicio}
-          onClick={() => setServicio((v) => !v)}
-          className="mt-4 flex w-full items-center justify-between gap-3 border border-hairline px-4 py-3.5 text-left"
-        >
+        <label className="mt-4 flex cursor-pointer items-center justify-between gap-3 border border-hairline px-4 py-3.5">
           <span>
             <span className="font-medium">Servicio de ensamblaje</span>
             <span className="block text-xs text-component">
               Armado, formateo y configuración completos.
             </span>
           </span>
-          <span
-            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-[2px] border ${
-              servicio
-                ? "border-accent bg-accent text-accent-ink"
-                : "border-component"
-            }`}
-            aria-hidden
-          >
-            {servicio && (
-              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none">
-                <path
-                  d="M3 8.5l3.5 3.5L13 5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-          </span>
-        </button>
+          <input
+            type="checkbox"
+            checked={servicio}
+            onChange={(e) => setServicio(e.target.checked)}
+            className="h-4 w-4 accent-accent"
+          />
+        </label>
       </div>
 
       {/* Panel de estimado */}

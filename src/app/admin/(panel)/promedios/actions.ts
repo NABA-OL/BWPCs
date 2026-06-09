@@ -4,34 +4,43 @@ import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
 import { ESTIMATOR_CATEGORIES } from "@/lib/categories";
+import type { ComponentCategory } from "@/lib/db/types";
 
-export interface AveragesState {
+export interface OptionsState {
   ok?: boolean;
   error?: string;
 }
 
-function num(v: FormDataEntryValue | null): number {
-  const raw = String(v ?? "").replace(/[^\d.-]/g, "");
-  const n = Number(raw);
-  return Number.isFinite(n) && n > 0 ? Math.round(n) : 0;
-}
-
-export async function saveAveragesAction(
-  _prev: AveragesState,
+export async function saveOptionsAction(
+  _prev: OptionsState,
   form: FormData,
-): Promise<AveragesState> {
+): Promise<OptionsState> {
   if (!(await getSession())) return { error: "Sesión expirada." };
 
+  let parsed: Record<string, { label: string; precioCop: number }[]> = {};
   try {
-    const col = await collections.categoryAverages();
+    const raw = JSON.parse(String(form.get("options") ?? "{}"));
+    if (raw && typeof raw === "object") parsed = raw;
+  } catch {
+    return { error: "Datos inválidos." };
+  }
+
+  try {
+    const col = await collections.categoryOptions();
     await Promise.all(
-      ESTIMATOR_CATEGORIES.map((cat) =>
-        col.updateOne(
+      ESTIMATOR_CATEGORIES.map((cat: ComponentCategory) => {
+        const opciones = (Array.isArray(parsed[cat]) ? parsed[cat] : [])
+          .map((o) => ({
+            label: String(o?.label ?? "").trim(),
+            precioCop: Math.max(0, Math.round(Number(o?.precioCop) || 0)),
+          }))
+          .filter((o) => o.label !== "" && o.precioCop > 0);
+        return col.updateOne(
           { categoria: cat },
-          { $set: { promedioCop: num(form.get(`avg_${cat}`)) } },
+          { $set: { opciones } },
           { upsert: true },
-        ),
-      ),
+        );
+      }),
     );
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Error al guardar." };

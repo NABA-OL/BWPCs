@@ -1,32 +1,41 @@
 import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
-import { AveragesForm } from "@/components/admin/averages-form";
+import {
+  ESTIMATOR_CATEGORIES,
+  DEFAULT_ESTIMATOR_OPTIONS,
+} from "@/lib/categories";
+import { EstimatorOptionsForm } from "@/components/admin/estimator-options-form";
 
 export const metadata: Metadata = {
-  title: "Promedios",
+  title: "Cotizador",
   robots: { index: false, follow: false },
 };
 
 export default async function PromediosPage() {
-  let initial: Record<string, number> = {};
+  let initial: Record<string, { label: string; precioCop: number }[]> = {};
   let error: string | null = null;
 
   try {
-    const col = await collections.categoryAverages();
+    const col = await collections.categoryOptions();
     const docs = await col.find({}).toArray();
-    initial = Object.fromEntries(docs.map((d) => [d.categoria, d.promedioCop]));
+    const map = new Map(docs.map((d) => [d.categoria, d.opciones]));
+    initial = Object.fromEntries(
+      ESTIMATOR_CATEGORIES.map((cat) => [
+        cat,
+        map.get(cat) ?? DEFAULT_ESTIMATOR_OPTIONS[cat] ?? [],
+      ]),
+    );
   } catch (e) {
-    error = e instanceof Error ? e.message : "Error al cargar promedios.";
+    error = e instanceof Error ? e.message : "Error al cargar las opciones.";
   }
 
   return (
     <>
       <header>
-        <h1 className="text-3xl font-extrabold tracking-tight">Promedios</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Cotizador</h1>
         <p className="mt-1 max-w-2xl text-component">
-          Precios de referencia por categoría. Alimentan el estimado aproximado
-          del cotizador público (cuando el cliente marca qué componentes quiere,
-          sin elegir modelo exacto).
+          Opciones (gamas) por categoría del cotizador público. El cliente elige
+          una por categoría; cada una tiene su precio aproximado.
         </p>
       </header>
 
@@ -35,7 +44,7 @@ export default async function PromediosPage() {
           <p className="text-sm text-panda">{error}</p>
         </div>
       ) : (
-        <AveragesForm initial={initial} />
+        <EstimatorOptionsForm initial={initial} />
       )}
     </>
   );

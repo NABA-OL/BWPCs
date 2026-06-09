@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import {
   saveSettingsAction,
   type SettingsState,
@@ -19,6 +19,7 @@ interface InitialSettings {
   psePct: number; // (3)
   whatsapp: string;
   email: string;
+  wordmarkPhrases: { left: string; right: string }[];
 }
 
 function Field({
@@ -75,9 +76,18 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
     saveSettingsAction,
     {},
   );
+  const [phrases, setPhrases] = useState(
+    initial.wordmarkPhrases.length > 0
+      ? initial.wordmarkPhrases
+      : [{ left: "Build", right: "Wire" }],
+  );
 
   const trmEfectivo =
     (initial.trmManual ?? initial.trmScrapeado) + initial.trmRecargo;
+
+  function setPhrase(i: number, key: "left" | "right", value: string) {
+    setPhrases((p) => p.map((x, j) => (j === i ? { ...x, [key]: value } : x)));
+  }
 
   return (
     <form action={formAction} className="mt-8 space-y-6">
@@ -158,6 +168,62 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           defaultValue={initial.email}
         />
       </Section>
+
+      {/* Frases del wordmark "B & W" → "Build & Wire", "Bits & Watts"… */}
+      <section className="border border-hairline p-6">
+        <h2 className="text-lg font-semibold">Animación del logo (B &amp; W)</h2>
+        <p className="mt-1 text-sm text-component">
+          Frases que el logo revela y rota. La 1.ª palabra debe empezar con{" "}
+          <strong>B</strong> y la 2.ª con <strong>W</strong> (el logo en reposo
+          siempre dice &quot;B &amp; W&quot;).
+        </p>
+
+        <div className="mt-4 space-y-3">
+          {phrases.map((p, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <input
+                value={p.left}
+                onChange={(e) => setPhrase(i, "left", e.target.value)}
+                placeholder="Build"
+                className="w-full border border-hairline bg-vanilla px-3 py-2 outline-none focus:border-panda"
+              />
+              <span className="text-component">&amp;</span>
+              <input
+                value={p.right}
+                onChange={(e) => setPhrase(i, "right", e.target.value)}
+                placeholder="Wire"
+                className="w-full border border-hairline bg-vanilla px-3 py-2 outline-none focus:border-panda"
+              />
+              <button
+                type="button"
+                aria-label="Quitar frase"
+                onClick={() =>
+                  setPhrases((prev) => prev.filter((_, j) => j !== i))
+                }
+                className="px-2 py-2 text-component hover:text-accent"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() =>
+            setPhrases((prev) => [...prev, { left: "B", right: "W" }])
+          }
+          className="mt-3 text-sm text-accent hover:underline"
+        >
+          + Agregar frase
+        </button>
+
+        <input
+          type="hidden"
+          name="wordmarkPhrases"
+          value={JSON.stringify(phrases)}
+        />
+      </section>
 
       <div className="flex items-center gap-4">
         <Button type="submit" size="lg" disabled={pending}>

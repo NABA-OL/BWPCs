@@ -24,6 +24,7 @@ export default async function ConfiguracionPage() {
       psePct: Math.round(s.mediosPago.pse * 1000) / 10,
       whatsapp: s.contacto.whatsapp,
       email: s.contacto.email,
+      wordmarkPhrases: s.wordmarkPhrases ?? [],
     };
   } catch (e) {
     error = e instanceof Error ? e.message : "Error al cargar la configuración.";

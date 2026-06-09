@@ -82,3 +82,16 @@ body {
   transform-origin: center;
   animation: bw-accent-mark 3.6s ease-in-out infinite;
 }
+
+/*
+  Wordmark "B & W" → "Build & Wire": las letras extra revelan su ancho con el
+  truco de grid (0fr → 1fr) + opacidad. Solo cambia al tener data-expanded.
+*/
+.bw-grow {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap;
+  /* Barrido simétrico de ancho (aparece/desaparece igual). */
+  transition: max-width 1s ease;
+}

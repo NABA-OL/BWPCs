@@ -9,7 +9,7 @@ export const adminNav: AdminNavItem[] = [
   { label: "Procesadores", href: "/admin/procesadores", ready: true },
   { label: "Gráficas", href: "/admin/graficas", ready: true },
   { label: "Componentes", href: "/admin/componentes", ready: true },
-  { label: "Promedios", href: "/admin/promedios", ready: true },
+  { label: "Cotizador", href: "/admin/promedios", ready: true },
   { label: "Cotizaciones", href: "/admin/cotizaciones", ready: true },
   { label: "Configuración", href: "/admin/configuracion", ready: true },
 ];

@@ -34,6 +34,22 @@ export async function saveSettingsAction(
     return { error: "WhatsApp y correo son obligatorios." };
   }
 
+  // Frases del wordmark (lista [{left, right}]); se descartan las vacías.
+  let wordmarkPhrases: { left: string; right: string }[] = [];
+  try {
+    const raw = JSON.parse(String(form.get("wordmarkPhrases") ?? "[]"));
+    if (Array.isArray(raw)) {
+      wordmarkPhrases = raw
+        .map((p) => ({
+          left: String(p?.left ?? "").trim(),
+          right: String(p?.right ?? "").trim(),
+        }))
+        .filter((p) => p.left !== "" && p.right !== "");
+    }
+  } catch {
+    // si el JSON viene mal, se deja la lista vacía
+  }
+
   try {
     const col = await collections.settings();
     await col.updateOne(
@@ -49,6 +65,7 @@ export async function saveSettingsAction(
           "mediosPago.pse": psePct / 100,
           "contacto.whatsapp": whatsapp,
           "contacto.email": email,
+          wordmarkPhrases,
           actualizado: new Date(),
         },
       },

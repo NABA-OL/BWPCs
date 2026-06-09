@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BrandWordmark } from "@/components/brand-wordmark";
 
 /**
  * Wordmark de marca: panda + "B & W".
@@ -26,11 +27,7 @@ export function BrandLogo({
         priority
         className="h-9 w-9 object-contain"
       />
-      {variant === "full" && (
-        <span className="font-sans text-xl font-extrabold tracking-tight">
-          B&nbsp;&amp;&nbsp;W
-        </span>
-      )}
+      {variant === "full" && <BrandWordmark />}
     </Link>
   );
 }

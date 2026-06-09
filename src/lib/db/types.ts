@@ -39,6 +39,8 @@ export interface Settings {
     whatsapp: string;
     email: string;
   };
+  // Frases que el wordmark "B & W" revela y rota (B…& W…). Editables en el admin.
+  wordmarkPhrases: { left: string; right: string }[];
   actualizado: Date;
 }
 
@@ -78,6 +80,18 @@ export interface CategoryAverage {
   _id?: ObjectId;
   categoria: ComponentCategory;
   promedioCop: number; // valor de referencia para el estimado público
+}
+
+/** Opción/gama de una categoría en el cotizador público (ej. "Gama media", precio). */
+export interface CategoryOption {
+  label: string;
+  precioCop: number;
+}
+
+export interface CategoryOptions {
+  _id?: ObjectId;
+  categoria: ComponentCategory;
+  opciones: CategoryOption[];
 }
 
 export interface QuoteOption {

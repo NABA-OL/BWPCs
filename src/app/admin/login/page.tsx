@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { LoginForm } from "@/components/admin/login-form";
@@ -42,6 +43,15 @@ export default async function AdminLoginPage({
 
         <div className="mt-8 border border-hairline bg-vanilla p-6">
           <LoginForm next={safeNext} />
+        </div>
+
+        <div className="mt-6 text-center">
+          <Link
+            href="/"
+            className="text-sm text-component transition-colors hover:text-panda"
+          >
+            ← Volver al inicio
+          </Link>
         </div>
       </div>
     </div>

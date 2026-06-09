@@ -2,6 +2,7 @@ import { getDb } from "@/lib/db/mongodb";
 import type {
   Admin,
   CategoryAverage,
+  CategoryOptions,
   ComponentItem,
   Graphic,
   Processor,
@@ -26,6 +27,9 @@ export const collections = {
   async categoryAverages() {
     return (await getDb()).collection<CategoryAverage>("categoryAverages");
   },
+  async categoryOptions() {
+    return (await getDb()).collection<CategoryOptions>("categoryOptions");
+  },
   async quotes() {
     return (await getDb()).collection<Quote>("quotes");
   },
@@ -48,5 +52,9 @@ export const DEFAULT_SETTINGS: Omit<Settings, "_id"> = {
     whatsapp: "+573188422533",
     email: "bandwmount@gmail.com",
   },
+  wordmarkPhrases: [
+    { left: "Build", right: "Wire" },
+    { left: "Bits", right: "Watts" },
+  ],
   actualizado: new Date(),
 };

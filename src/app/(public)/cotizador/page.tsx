@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
+import { PcBackdrop } from "@/components/assembly-hero";
 import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
-import { ESTIMATOR_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
+import {
+  ESTIMATOR_CATEGORIES,
+  CATEGORY_LABELS,
+  DEFAULT_ESTIMATOR_OPTIONS,
+} from "@/lib/categories";
 import {
   CotizadorEstimator,
   type EstimatorCategory,
 } from "@/components/cotizador-estimator";
 import { whatsappLink } from "@/lib/site-config";
-import { PcBackdrop } from "@/components/assembly-hero";
 
 export const metadata: Metadata = {
   title: "Cotizador",
@@ -17,12 +21,10 @@ export const metadata: Metadata = {
     "Arma un estimado aproximado de tu PC en segundos y escríbenos por WhatsApp.",
 };
 
-// Estático por defecto (rápido); se revalida bajo demanda desde el admin
-// (promedios/configuración) y como red de seguridad cada hora.
 export const revalidate = 3600;
 
-// Categorías marcadas por defecto (un build típico).
-const DEFAULT_ON = new Set([
+// Categorías que vienen preseleccionadas (gama media) en un build típico.
+const CORE = new Set([
   "Procesador",
   "Grafica",
   "Board",
@@ -45,18 +47,23 @@ export default async function CotizadorPage() {
     tarjetaPct = settings.mediosPago.tarjeta;
     psePct = settings.mediosPago.pse;
 
-    const col = await collections.categoryAverages();
+    const col = await collections.categoryOptions();
     const docs = await col.find({}).toArray();
-    const map = new Map(docs.map((d) => [d.categoria, d.promedioCop]));
+    const map = new Map(docs.map((d) => [d.categoria, d.opciones]));
 
-    categories = ESTIMATOR_CATEGORIES.filter(
-      (cat) => (map.get(cat) ?? 0) > 0,
-    ).map((cat) => ({
-      key: cat,
-      label: CATEGORY_LABELS[cat],
-      promedio: map.get(cat) ?? 0,
-      defaultOn: DEFAULT_ON.has(cat),
-    }));
+    categories = ESTIMATOR_CATEGORIES.map((cat) => {
+      const opciones = (
+        map.get(cat) ?? DEFAULT_ESTIMATOR_OPTIONS[cat] ?? []
+      ).filter((o) => o && o.label && o.precioCop > 0);
+      return {
+        key: cat,
+        label: CATEGORY_LABELS[cat],
+        options: opciones,
+        defaultOn: CORE.has(cat), // checkbox marcado en categorías core
+        defaultIndex: Math.max(0, Math.min(1, opciones.length - 1)), // gama media o 1.ª
+      };
+    }).filter((c) => c.options.length > 0);
+
     ready = categories.length > 0;
   } catch {
     ready = false;
@@ -67,7 +74,7 @@ export default async function CotizadorPage() {
       <PcBackdrop />
       <PageHero eyebrow="Estimado aproximado" title="Cotiza tu PC">
         <p>
-          Marca los componentes que quieres y te damos un valor aproximado al
+          Elige la gama de cada componente y te damos un valor aproximado al
           instante. Sin registrarte. Luego lo afinamos contigo por WhatsApp.
         </p>
       </PageHero>
@@ -87,8 +94,8 @@ export default async function CotizadorPage() {
                 Cotizador en preparación
               </h2>
               <p className="mx-auto mt-2 max-w-md text-component">
-                Estamos afinando los precios de referencia. Mientras tanto,
-                escríbenos directo y armamos tu cotización a la medida.
+                Estamos afinando las opciones. Mientras tanto, escríbenos directo
+                y armamos tu cotización a la medida.
               </p>
               <ButtonLink
                 href={whatsappLink("Hola B & W, quiero cotizar un PC.")}

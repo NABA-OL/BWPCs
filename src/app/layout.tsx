@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   description:
     "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC a la medida con precios justos.",
   metadataBase: new URL("https://bwpcs.vercel.app"),
+  icons: {
+    icon: "/brand/logo-solo.ico",
+    shortcut: "/brand/logo-solo.ico",
+    apple: "/brand/logo-solo.png",
+  },
   openGraph: {
     title: "B & W — Tu PC Master Race a buen precio",
     description:
