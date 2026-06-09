@@ -6,10 +6,10 @@ export interface AdminNavItem {
 
 export const adminNav: AdminNavItem[] = [
   { label: "Resumen", href: "/admin", ready: true },
-  { label: "Procesadores", href: "/admin/procesadores", ready: false },
-  { label: "Gráficas", href: "/admin/graficas", ready: false },
-  { label: "Componentes", href: "/admin/componentes", ready: false },
-  { label: "Promedios", href: "/admin/promedios", ready: false },
-  { label: "Cotizaciones", href: "/admin/cotizaciones", ready: false },
+  { label: "Procesadores", href: "/admin/procesadores", ready: true },
+  { label: "Gráficas", href: "/admin/graficas", ready: true },
+  { label: "Componentes", href: "/admin/componentes", ready: true },
+  { label: "Promedios", href: "/admin/promedios", ready: true },
+  { label: "Cotizaciones", href: "/admin/cotizaciones", ready: true },
   { label: "Configuración", href: "/admin/configuracion", ready: true },
 ];

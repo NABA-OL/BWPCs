@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ButtonLink } from "@/components/ui/button";
+import { AssemblyHero } from "@/components/assembly-hero";
 
 const steps = [
   {
@@ -19,52 +19,29 @@ const steps = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 md:pt-24">
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <div>
-            <p className="font-mono text-sm text-component">
-              Ensamble &amp; componentes · Colombia
-            </p>
-            <h1 className="mt-4 text-balance text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-              Ensamblamos
-              <br />
-              tu PC.
-            </h1>
-            <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-panda">
-              Armamos tu equipo con los componentes que elegimos contigo, al
-              precio justo. ¿Solo necesitas una pieza? También.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/cotizador" size="lg">
-                Cotiza tu PC
-              </ButtonLink>
-              <ButtonLink href="/servicios" size="lg" variant="secondary">
-                Ver servicios
-              </ButtonLink>
-            </div>
-          </div>
-
-          {/* Panda — carácter de marca, una sola aparición */}
-          <div className="relative mx-auto w-full max-w-sm">
-            <div className="aspect-square border border-hairline bg-white">
-              <Image
-                src="/brand/logo.png"
-                alt="Mascota de B & W: un panda gamer"
-                width={600}
-                height={600}
-                priority
-                className="h-full w-full object-contain p-6"
-              />
-            </div>
-            {/* Motivo geométrico del lenguaje de marca */}
-            <div
-              aria-hidden="true"
-              className="absolute -right-3 -top-3 h-6 w-6 bg-accent"
-            />
-          </div>
+      {/* Hero — PC line-art que se ensambla y queda fijo en el centro al hacer scroll */}
+      <AssemblyHero>
+        <p className="font-mono text-sm text-component">
+          Ensamble &amp; componentes · Colombia
+        </p>
+        <h1 className="mt-4 text-balance text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
+          Ensamblamos
+          <br />
+          tu PC.
+        </h1>
+        <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-panda">
+          Armamos tu equipo con los componentes que elegimos contigo, al precio
+          justo. ¿Solo necesitas una pieza? También.
+        </p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/cotizador" size="lg">
+            Cotiza tu PC
+          </ButtonLink>
+          <ButtonLink href="/servicios" size="lg" variant="secondary">
+            Ver servicios
+          </ButtonLink>
         </div>
-      </section>
+      </AssemblyHero>
 
       {/* Lo que hacemos — split asimétrico, sin cards */}
       <section className="border-t border-hairline">
@@ -130,13 +107,13 @@ export default function HomePage() {
       </section>
 
       {/* CTA cotizador */}
-      <section className="border-t border-hairline bg-panda text-vanilla">
+      <section className="border-t border-hairline bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">
               ¿Cuánto costaría tu PC?
             </h2>
-            <p className="mt-2 max-w-md text-pretty text-vanilla/70">
+            <p className="mt-2 max-w-md text-pretty text-panda/70">
               Arma un estimado en segundos y escríbenos por WhatsApp para
               afinar los detalles.
             </p>

@@ -63,10 +63,21 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-vanilla/10">
-        <div className="mx-auto max-w-6xl px-4 py-5 text-xs text-vanilla/50 sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-5 text-xs text-vanilla/50 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <SecretAdminTrigger>
-            © {year} B &amp; W. Todos los derechos reservados.
+            © {year}  B &amp; W. Todos los derechos reservados.
           </SecretAdminTrigger>
+          <span>
+            Desarrollado por{" "}
+            <a
+              href="https://github.com/NABA-OL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-vanilla/70 transition-colors hover:text-vanilla"
+            >
+              NABA-OL
+            </a>
+          </span>
         </div>
       </div>
     </footer>

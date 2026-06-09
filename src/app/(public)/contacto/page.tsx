@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { siteConfig, whatsappLink } from "@/lib/site-config";
+import { PcBackdrop } from "@/components/assembly-hero";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -14,6 +15,7 @@ const mediosPago = ["Bre-B", "Bold", "Tarjeta", "PSE", "Daviplata"];
 export default function ContactoPage() {
   return (
     <>
+      <PcBackdrop />
       <PageHero eyebrow="Hablemos" title="Contacto">
         <p>
           La forma más rápida es WhatsApp: cuéntanos qué buscas y te ayudamos a
@@ -89,13 +91,13 @@ export default function ContactoPage() {
       </section>
 
       {/* CTA cotizador */}
-      <section className="bg-panda text-vanilla">
+      <section className="bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
               ¿Aún no tienes tu cotización?
             </h2>
-            <p className="mt-2 max-w-md text-vanilla/70">
+            <p className="mt-2 max-w-md text-panda/70">
               Arma un estimado en segundos antes de escribirnos.
             </p>
           </div>

@@ -62,5 +62,6 @@ export async function saveSettingsAction(
 
   revalidatePath("/admin/configuracion");
   revalidatePath("/admin");
+  revalidatePath("/cotizador");
   return { ok: true };
 }

@@ -10,6 +10,7 @@
     "seed": "node --env-file=.env.local scripts/seed.mjs"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.5.1",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.3",
     "mongodb": "^7.2.0",

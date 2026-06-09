@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
+import { PcBackdrop } from "@/components/assembly-hero";
 
 export const metadata: Metadata = {
   title: "Nosotros",
@@ -26,6 +27,7 @@ const valores = [
 export default function NosotrosPage() {
   return (
     <>
+      <PcBackdrop />
       <PageHero eyebrow="Sobre B & W" title="Armamos PCs, no plantillas.">
         <p>
           B &amp; W nació de la pasión por el hardware y de una idea simple:
@@ -75,7 +77,7 @@ export default function NosotrosPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-panda text-vanilla">
+      <section className="bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
           <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
             ¿Hablamos de tu próximo equipo?

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
+import { PcBackdrop } from "@/components/assembly-hero";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -40,6 +41,7 @@ const pasos = [
 export default function ServiciosPage() {
   return (
     <>
+      <PcBackdrop />
       <PageHero eyebrow="Lo que ofrecemos" title="Servicios">
         <p>
           Nuestro fuerte es el ensamblaje a la medida, pero si solo necesitas
@@ -122,7 +124,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-panda text-vanilla">
+      <section className="bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
           <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
             Listo para armar tu equipo

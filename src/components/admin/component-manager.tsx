@@ -1,0 +1,305 @@
+"use client";
+
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  saveComponentAction,
+  deleteComponentAction,
+  toggleComponentAction,
+  type ComponentFormState,
+} from "@/app/admin/(panel)/componentes/actions";
+import { Button } from "@/components/ui/button";
+import { formatCOP } from "@/lib/format";
+import { CATALOG_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
+import type { ComponentCategory } from "@/lib/db/types";
+
+export interface ComponentRow {
+  id: string;
+  categoria: ComponentCategory;
+  marca: string;
+  modelo: string;
+  descripcion: string;
+  precioCop: number;
+  activo: boolean;
+}
+
+const EMPTY = {
+  id: "",
+  categoria: CATALOG_CATEGORIES[0],
+  marca: "",
+  modelo: "",
+  descripcion: "",
+  precioCop: "",
+};
+
+export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
+  const router = useRouter();
+  const [form, setForm] = useState<typeof EMPTY>(EMPTY);
+  const [filter, setFilter] = useState<ComponentCategory | "Todas">("Todas");
+  const [state, formAction, pending] = useActionState<
+    ComponentFormState,
+    FormData
+  >(saveComponentAction, {});
+
+  useEffect(() => {
+    if (state.ok) {
+      setForm(EMPTY);
+      router.refresh();
+    }
+  }, [state, router]);
+
+  function edit(r: ComponentRow) {
+    setForm({
+      id: r.id,
+      categoria: r.categoria,
+      marca: r.marca,
+      modelo: r.modelo,
+      descripcion: r.descripcion,
+      precioCop: r.precioCop.toString(),
+    });
+  }
+
+  const editing = form.id !== "";
+  const visible =
+    filter === "Todas" ? rows : rows.filter((r) => r.categoria === filter);
+
+  return (
+    <div className="mt-8 space-y-8">
+      <form
+        action={formAction}
+        className="border border-hairline p-6"
+        key={form.id || "new"}
+      >
+        <h2 className="text-lg font-semibold">
+          {editing ? "Editar componente" : "Agregar componente"}
+        </h2>
+        <input type="hidden" name="id" value={form.id} />
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm font-medium text-component">Categoría</span>
+            <select
+              name="categoria"
+              value={form.categoria}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  categoria: e.target.value as ComponentCategory,
+                })
+              }
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
+            >
+              {CATALOG_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {CATEGORY_LABELS[c]}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-component">
+              Marca <span className="text-component/60">(opcional)</span>
+            </span>
+            <input
+              name="marca"
+              value={form.marca}
+              onChange={(e) => setForm({ ...form, marca: e.target.value })}
+              placeholder="Corsair"
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-component">Modelo</span>
+            <input
+              name="modelo"
+              required
+              value={form.modelo}
+              onChange={(e) => setForm({ ...form, modelo: e.target.value })}
+              placeholder="DDR5 32GB 6000MHz"
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-component">
+              Precio (COP)
+            </span>
+            <input
+              name="precioCop"
+              inputMode="numeric"
+              value={form.precioCop}
+              onChange={(e) => setForm({ ...form, precioCop: e.target.value })}
+              placeholder="710000"
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono outline-none focus:border-panda"
+            />
+          </label>
+
+          <label className="block sm:col-span-2">
+            <span className="text-sm font-medium text-component">
+              Descripción <span className="text-component/60">(opcional)</span>
+            </span>
+            <input
+              name="descripcion"
+              value={form.descripcion}
+              onChange={(e) =>
+                setForm({ ...form, descripcion: e.target.value })
+              }
+              placeholder="DDR5 2x16GB 6000MHz CL30"
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
+            />
+          </label>
+        </div>
+
+        <div className="mt-5 flex items-center gap-3">
+          <Button type="submit" disabled={pending}>
+            {pending ? "Guardando…" : editing ? "Guardar cambios" : "Agregar"}
+          </Button>
+          {editing && (
+            <button
+              type="button"
+              onClick={() => setForm(EMPTY)}
+              className="text-sm text-component hover:text-panda"
+            >
+              Cancelar
+            </button>
+          )}
+          {state.error && (
+            <span role="alert" className="text-sm text-accent">
+              {state.error}
+            </span>
+          )}
+        </div>
+      </form>
+
+      {/* Filtro por categoría */}
+      <div className="flex flex-wrap items-center gap-2">
+        <FilterChip
+          active={filter === "Todas"}
+          onClick={() => setFilter("Todas")}
+        >
+          Todas
+        </FilterChip>
+        {CATALOG_CATEGORIES.map((c) => (
+          <FilterChip
+            key={c}
+            active={filter === c}
+            onClick={() => setFilter(c)}
+          >
+            {CATEGORY_LABELS[c]}
+          </FilterChip>
+        ))}
+      </div>
+
+      {visible.length === 0 ? (
+        <p className="text-component">No hay componentes en esta categoría.</p>
+      ) : (
+        <div className="overflow-x-auto border border-hairline">
+          <table className="w-full text-sm">
+            <thead className="border-b border-hairline bg-hairline/30 text-left">
+              <tr>
+                <th className="px-4 py-3 font-medium">Categoría</th>
+                <th className="px-4 py-3 font-medium">Modelo</th>
+                <th className="px-4 py-3 font-medium">Precio</th>
+                <th className="px-4 py-3 font-medium">Estado</th>
+                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map((r) => (
+                <tr key={r.id} className="border-b border-hairline last:border-0">
+                  <td className="px-4 py-3 text-component">
+                    {CATEGORY_LABELS[r.categoria]}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="font-medium">{r.modelo}</span>
+                    {r.marca && (
+                      <span className="text-component"> · {r.marca}</span>
+                    )}
+                    {r.descripcion && (
+                      <span className="block text-xs text-component">
+                        {r.descripcion}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 font-mono">{formatCOP(r.precioCop)}</td>
+                  <td className="px-4 py-3">
+                    <form action={toggleComponentAction}>
+                      <input type="hidden" name="id" value={r.id} />
+                      <input
+                        type="hidden"
+                        name="activo"
+                        value={String(r.activo)}
+                      />
+                      <button
+                        type="submit"
+                        className={`rounded-[2px] border px-2 py-0.5 text-xs ${
+                          r.activo
+                            ? "border-panda bg-panda text-vanilla"
+                            : "border-hairline text-component"
+                        }`}
+                      >
+                        {r.activo ? "Activo" : "Inactivo"}
+                      </button>
+                    </form>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-3">
+                      <button
+                        type="button"
+                        onClick={() => edit(r)}
+                        className="text-component hover:text-panda"
+                      >
+                        Editar
+                      </button>
+                      <form
+                        action={deleteComponentAction}
+                        onSubmit={(e) => {
+                          if (!confirm(`¿Eliminar ${r.modelo}?`))
+                            e.preventDefault();
+                        }}
+                      >
+                        <input type="hidden" name="id" value={r.id} />
+                        <button
+                          type="submit"
+                          className="text-accent hover:underline"
+                        >
+                          Eliminar
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FilterChip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-[2px] border px-3 py-1 text-sm transition-colors ${
+        active
+          ? "border-panda bg-panda text-vanilla"
+          : "border-hairline text-component hover:border-panda hover:text-panda"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
