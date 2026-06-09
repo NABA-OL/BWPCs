@@ -182,6 +182,7 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           {phrases.map((p, i) => (
             <div key={i} className="flex items-center gap-2">
               <input
+                aria-label={`Frase ${i + 1}: primera palabra (B…)`}
                 value={p.left}
                 onChange={(e) => setPhrase(i, "left", e.target.value)}
                 placeholder="Build"
@@ -189,6 +190,7 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
               />
               <span className="text-component">&amp;</span>
               <input
+                aria-label={`Frase ${i + 1}: segunda palabra (W…)`}
                 value={p.right}
                 onChange={(e) => setPhrase(i, "right", e.target.value)}
                 placeholder="Wire"
@@ -197,10 +199,11 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
               <button
                 type="button"
                 aria-label="Quitar frase"
+                disabled={phrases.length <= 1}
                 onClick={() =>
                   setPhrases((prev) => prev.filter((_, j) => j !== i))
                 }
-                className="px-2 py-2 text-component hover:text-accent"
+                className="px-2 py-2 text-component hover:text-accent disabled:pointer-events-none disabled:opacity-30"
               >
                 ✕
               </button>
@@ -230,7 +233,9 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           {pending ? "Guardando…" : "Guardar cambios"}
         </Button>
         {state.ok && (
-          <span className="text-sm text-accent">Cambios guardados ✓</span>
+          <span role="status" className="text-sm text-component">
+            Cambios guardados ✓
+          </span>
         )}
         {state.error && (
           <span role="alert" className="text-sm text-accent">

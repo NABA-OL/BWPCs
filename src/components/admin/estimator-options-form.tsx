@@ -51,12 +51,14 @@ export function EstimatorOptionsForm({ initial }: { initial: OptionsMap }) {
                   className="grid items-center gap-2 sm:grid-cols-[1fr_160px_auto]"
                 >
                   <input
+                    aria-label={`${CATEGORY_LABELS[cat]} opción ${i + 1}: etiqueta`}
                     value={o.label}
                     onChange={(e) => setOpt(cat, i, { label: e.target.value })}
                     placeholder="Gama media · Core i5 / Ryzen 5"
                     className="border border-hairline bg-vanilla px-3 py-2 text-sm outline-none focus:border-panda"
                   />
                   <input
+                    aria-label={`${CATEGORY_LABELS[cat]} opción ${i + 1}: precio COP`}
                     value={o.precioCop || ""}
                     onChange={(e) =>
                       setOpt(cat, i, {
@@ -101,7 +103,9 @@ export function EstimatorOptionsForm({ initial }: { initial: OptionsMap }) {
           {pending ? "Guardando…" : "Guardar opciones"}
         </Button>
         {state.ok && (
-          <span className="text-sm text-accent">Opciones guardadas ✓</span>
+          <span role="status" className="text-sm text-component">
+            Opciones guardadas ✓
+          </span>
         )}
         {state.error && (
           <span role="alert" className="text-sm text-accent">

@@ -4,7 +4,9 @@ import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
-import type { Graphic, PriceMode } from "@/lib/db/types";
+import type { Graphic, GpuBrand, PriceMode } from "@/lib/db/types";
+
+const GPU_BRANDS: GpuBrand[] = ["AMD", "NVIDIA", "Intel"];
 
 export interface GraphicFormState {
   ok?: boolean;
@@ -26,6 +28,11 @@ export async function saveGraphicAction(
 
   const id = String(form.get("id") ?? "").trim();
   const modelo = String(form.get("modelo") ?? "").trim();
+  const marcaRaw = String(form.get("marca") ?? "NVIDIA");
+  const marca: GpuBrand = GPU_BRANDS.includes(marcaRaw as GpuBrand)
+    ? (marcaRaw as GpuBrand)
+    : "NVIDIA";
+  const ensambladora = String(form.get("ensambladora") ?? "").trim();
   const modoPrecio = String(form.get("modoPrecio") ?? "USD") as PriceMode;
   const baseUsd = num(form.get("baseUsd"));
   const precioManualCop = num(form.get("precioManualCop"));
@@ -38,6 +45,8 @@ export async function saveGraphicAction(
 
   const data: Omit<Graphic, "_id"> = {
     modelo,
+    marca,
+    ensambladora,
     modoPrecio,
     baseUsd: modoPrecio === "USD" ? baseUsd : null,
     precioManualCop: modoPrecio === "COP" ? precioManualCop : null,

@@ -45,6 +45,7 @@ export function SiteHeader() {
           type="button"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={open}
+          aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
           className="flex h-10 w-10 items-center justify-center md:hidden"
         >
@@ -70,7 +71,7 @@ export function SiteHeader() {
 
       {/* Menú móvil */}
       {open && (
-        <nav className="bw-menu border-t border-hairline bg-vanilla px-4 pb-6 pt-2 md:hidden">
+        <nav id="mobile-nav" className="bw-menu border-t border-hairline bg-vanilla px-4 pb-6 pt-2 md:hidden">
           {links.map((link) => (
             <Link
               key={link.href}

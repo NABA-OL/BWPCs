@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAdminStats, type AdminStats } from "@/lib/admin/stats";
+import {
+  getAdminStats,
+  type AdminStats,
+  type BrandCount,
+} from "@/lib/admin/stats";
 import { formatNumber } from "@/lib/format";
+import { CATEGORY_LABELS } from "@/lib/categories";
 
 export const metadata: Metadata = {
   title: "Resumen",
@@ -14,7 +19,8 @@ export default async function AdminDashboard() {
   try {
     stats = await getAdminStats();
   } catch (e) {
-    error = e instanceof Error ? e.message : "Error al conectar con la base de datos.";
+    error =
+      e instanceof Error ? e.message : "Error al conectar con la base de datos.";
   }
 
   return (
@@ -44,8 +50,56 @@ export default async function AdminDashboard() {
               <Metric label="Cotizaciones" value={stats.quotes} href="/admin/cotizaciones" />
             </div>
 
+            {/* Por marca */}
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              <BrandPanel
+                title="Procesadores por marca"
+                href="/admin/procesadores"
+                brands={stats.processorsByBrand}
+              />
+              <BrandPanel
+                title="Gráficas por marca"
+                href="/admin/graficas"
+                brands={stats.graphicsByBrand}
+              />
+            </div>
+
+            {/* Componentes por categoría */}
+            <section className="mt-6 border border-hairline p-6">
+              <div className="flex items-center justify-between">
+                <h2 className="font-semibold">Componentes por categoría</h2>
+                <Link
+                  href="/admin/componentes"
+                  className="text-sm text-accent hover:underline"
+                >
+                  Ver todos
+                </Link>
+              </div>
+              {stats.componentsByCategory.length === 0 ? (
+                <p className="mt-3 text-sm text-component">Aún no hay componentes.</p>
+              ) : (
+                <div className="mt-4 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2">
+                  {stats.componentsByCategory.map((c) => (
+                    <div key={c.categoria} className="bg-vanilla p-4">
+                      <div className="flex items-baseline justify-between">
+                        <span className="font-medium">
+                          {CATEGORY_LABELS[c.categoria]}
+                        </span>
+                        <span className="font-mono text-lg">{c.count}</span>
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {c.marcas.map((m) => (
+                          <Chip key={m.marca} brand={m} />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
             {/* TRM */}
-            <section className="mt-8 border border-hairline p-6">
+            <section className="mt-6 border border-hairline p-6">
               <h2 className="text-sm font-medium text-component">
                 TRM efectivo (con recargo de envío)
               </h2>
@@ -88,9 +142,50 @@ function Metric({
       className="block bg-vanilla p-6 transition-colors hover:bg-hairline/40"
     >
       <p className="text-sm text-component">{label}</p>
-      <p className="mt-1 font-mono text-3xl font-medium tabular-nums">
-        {value}
-      </p>
+      <p className="mt-1 font-mono text-3xl font-medium tabular-nums">{value}</p>
     </Link>
+  );
+}
+
+function BrandPanel({
+  title,
+  href,
+  brands,
+}: {
+  title: string;
+  href: string;
+  brands: BrandCount[];
+}) {
+  return (
+    <section className="border border-hairline p-6">
+      <div className="flex items-center justify-between">
+        <h2 className="font-semibold">{title}</h2>
+        <Link href={href} className="text-sm text-accent hover:underline">
+          Gestionar
+        </Link>
+      </div>
+      {brands.length === 0 ? (
+        <p className="mt-3 text-sm text-component">Sin registros.</p>
+      ) : (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {brands.map((b) => (
+            <Chip key={b.marca} brand={b} big />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Chip({ brand, big = false }: { brand: BrandCount; big?: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 border border-hairline ${
+        big ? "px-3 py-1.5 text-sm" : "px-2 py-0.5 text-xs"
+      }`}
+    >
+      <span className="text-component">{brand.marca}</span>
+      <span className="font-mono font-medium">{brand.count}</span>
+    </span>
   );
 }

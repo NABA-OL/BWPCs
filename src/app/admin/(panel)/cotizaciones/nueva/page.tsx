@@ -25,14 +25,7 @@ export default async function NuevaCotizacionPage() {
         opciones: [
           {
             titulo: "Opción 1",
-            items: [
-              {
-                categoria: "Procesador",
-                modelo: "",
-                precioCop: 0,
-                descripcion: "",
-              },
-            ],
+            items: [], // empieza vacía; el admin agrega los ítems
             servicio: data.servicioBase,
           },
         ],

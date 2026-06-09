@@ -55,9 +55,13 @@ export interface Processor {
   actualizado: Date;
 }
 
+export type GpuBrand = "AMD" | "NVIDIA" | "Intel";
+
 export interface Graphic {
   _id?: ObjectId;
   modelo: string; // "RX 9060 XT 16gb"
+  marca: GpuBrand; // chip: NVIDIA / AMD / Intel
+  ensambladora: string; // AIB: MSI, ASUS, Gigabyte, Zotac… (opcional)
   modoPrecio: PriceMode;
   baseUsd: number | null;
   precioManualCop: number | null;

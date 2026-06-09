@@ -23,19 +23,17 @@ export function BrandWordmark({ className = "" }: { className?: string }) {
 
   // Carga la lista editable desde el admin (cae al fallback si falla).
   useEffect(() => {
-    let active = true;
-    fetch("/api/wordmark")
+    const controller = new AbortController();
+    fetch("/api/wordmark", { signal: controller.signal })
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (active && Array.isArray(d?.phrases) && d.phrases.length > 0) {
+        if (Array.isArray(d?.phrases) && d.phrases.length > 0) {
           setPhrases(d.phrases);
           setIndex(0);
         }
       })
       .catch(() => {});
-    return () => {
-      active = false;
-    };
+    return () => controller.abort();
   }, []);
 
   const list = phrases.length > 0 ? phrases : FALLBACK;

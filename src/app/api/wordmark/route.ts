@@ -19,6 +19,13 @@ export async function GET() {
 
   return Response.json(
     { phrases },
-    { headers: { "Cache-Control": "public, max-age=300, s-maxage=300" } },
+    {
+      headers: {
+        // 1-hour browser cache, 1-hour CDN cache, serve stale for up to 24h
+        // while revalidating in background. Phrases change rarely (admin-only).
+        "Cache-Control":
+          "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+      },
+    },
   );
 }

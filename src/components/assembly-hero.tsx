@@ -30,10 +30,13 @@ export function AssemblyHero({ children }: { children: React.ReactNode }) {
     const clamp = (n: number) => Math.min(1, Math.max(0, n));
     const range = PART_OPACITY_MAX - PART_OPACITY_MIN;
 
+    // Cache viewport metrics — reading innerWidth/innerHeight on every RAF frame
+    // forces layout. Only refresh on resize.
+    let explode = window.innerWidth < 640 ? 0.45 : 1;
+    let viewH = window.innerHeight;
+
     const apply = (p: number) => {
       const k = 1 - p;
-      // En móvil las piezas se separan menos (torre contenida, no cruza el texto).
-      const explode = window.innerWidth < 640 ? 0.45 : 1;
       for (const g of parts) {
         const fx = parseFloat(g.dataset.fx ?? "0") * explode;
         const fy = parseFloat(g.dataset.fy ?? "0") * explode;
@@ -52,18 +55,24 @@ export function AssemblyHero({ children }: { children: React.ReactNode }) {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         // Se arma durante el primer ~60% de un viewport y luego queda armado.
-        const p = clamp(window.scrollY / (window.innerHeight * 0.6));
+        const p = clamp(window.scrollY / (viewH * 0.6));
         apply(p);
       });
+    };
+
+    const onResize = () => {
+      explode = window.innerWidth < 640 ? 0.45 : 1;
+      viewH = window.innerHeight;
+      onScroll();
     };
 
     apply(0);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", onResize);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
     };
   }, []);

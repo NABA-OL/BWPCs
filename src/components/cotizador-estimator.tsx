@@ -39,6 +39,11 @@ export function CotizadorEstimator({
   );
   const [servicio, setServicio] = useState(true);
 
+  const hasSelection = useMemo(
+    () => servicio || categories.some((c) => included[c.key] && c.options.length > 0),
+    [categories, included, servicio],
+  );
+
   const { total, conTarjeta, conPse, chosen } = useMemo(() => {
     const chosen: { label: string; opcion: string }[] = [];
     let sub = 0;
@@ -182,14 +187,27 @@ export function CotizadorEstimator({
           </dl>
 
           <ButtonLink
-            href={whatsappLink(waMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={hasSelection ? whatsappLink(waMessage) : "#"}
+            target={hasSelection ? "_blank" : undefined}
+            rel={hasSelection ? "noopener noreferrer" : undefined}
+            aria-disabled={!hasSelection}
+            onClick={
+              !hasSelection
+                ? (e: React.MouseEvent) => e.preventDefault()
+                : undefined
+            }
             size="lg"
-            className="mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep"
+            className={`mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep ${
+              !hasSelection ? "pointer-events-none opacity-40" : ""
+            }`}
           >
             Enviar por WhatsApp
           </ButtonLink>
+          {!hasSelection && (
+            <p className="mt-2 px-1 text-center text-xs text-component">
+              Selecciona al menos un componente para cotizar.
+            </p>
+          )}
         </div>
 
         <p className="mt-3 px-1 text-xs italic text-component">

@@ -11,9 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
 
+type GpuBrand = "AMD" | "NVIDIA" | "Intel";
+
 export interface GraphicRow {
   id: string;
   modelo: string;
+  marca: GpuBrand;
+  ensambladora: string;
   modoPrecio: "USD" | "COP";
   baseUsd: number | null;
   precioManualCop: number | null;
@@ -24,10 +28,26 @@ export interface GraphicRow {
 const EMPTY = {
   id: "",
   modelo: "",
+  marca: "NVIDIA" as GpuBrand,
+  ensambladora: "",
   modoPrecio: "USD" as "USD" | "COP",
   baseUsd: "",
   precioManualCop: "",
 };
+
+const AIBS = [
+  "MSI",
+  "ASUS",
+  "Gigabyte",
+  "Zotac",
+  "PNY",
+  "Palit",
+  "Gainward",
+  "PowerColor",
+  "Sapphire",
+  "XFX",
+  "ASRock",
+];
 
 export function GraphicManager({
   rows,
@@ -54,6 +74,8 @@ export function GraphicManager({
     setForm({
       id: r.id,
       modelo: r.modelo,
+      marca: r.marca,
+      ensambladora: r.ensambladora,
       modoPrecio: r.modoPrecio,
       baseUsd: r.baseUsd?.toString() ?? "",
       precioManualCop: r.precioManualCop?.toString() ?? "",
@@ -75,7 +97,7 @@ export function GraphicManager({
         <input type="hidden" name="id" value={form.id} />
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <label className="block sm:col-span-2">
+          <label className="block">
             <span className="text-sm font-medium text-component">Modelo</span>
             <input
               name="modelo"
@@ -85,6 +107,43 @@ export function GraphicManager({
               placeholder="RX 9060 XT 16gb"
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-component">Marca</span>
+            <select
+              name="marca"
+              value={form.marca}
+              onChange={(e) =>
+                setForm({ ...form, marca: e.target.value as GpuBrand })
+              }
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
+            >
+              <option value="NVIDIA">NVIDIA</option>
+              <option value="AMD">AMD</option>
+              <option value="Intel">Intel</option>
+            </select>
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium text-component">
+              Ensambladora <span className="text-component/60">(opcional)</span>
+            </span>
+            <input
+              name="ensambladora"
+              list="bw-aibs"
+              value={form.ensambladora}
+              onChange={(e) =>
+                setForm({ ...form, ensambladora: e.target.value })
+              }
+              placeholder="MSI, ASUS, Gigabyte…"
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
+            />
+            <datalist id="bw-aibs">
+              {AIBS.map((a) => (
+                <option key={a} value={a} />
+              ))}
+            </datalist>
           </label>
 
           <label className="block">
@@ -176,6 +235,8 @@ export function GraphicManager({
             <thead className="border-b border-hairline bg-hairline/30 text-left">
               <tr>
                 <th className="px-4 py-3 font-medium">Modelo</th>
+                <th className="px-4 py-3 font-medium">Marca</th>
+                <th className="px-4 py-3 font-medium">Ensambladora</th>
                 <th className="px-4 py-3 font-medium">Base</th>
                 <th className="px-4 py-3 font-medium">Precio COP</th>
                 <th className="px-4 py-3 font-medium">Estado</th>
@@ -186,6 +247,10 @@ export function GraphicManager({
               {rows.map((r) => (
                 <tr key={r.id} className="border-b border-hairline last:border-0">
                   <td className="px-4 py-3 font-medium">{r.modelo}</td>
+                  <td className="px-4 py-3 text-component">{r.marca}</td>
+                  <td className="px-4 py-3 text-component">
+                    {r.ensambladora || "—"}
+                  </td>
                   <td className="px-4 py-3 font-mono text-component">
                     {r.modoPrecio === "USD"
                       ? `$${r.baseUsd ?? "—"} USD`

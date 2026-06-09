@@ -25,6 +25,8 @@ export default async function GraficasPage() {
     rows = docs.map((g) => ({
       id: g._id!.toString(),
       modelo: g.modelo,
+      marca: g.marca ?? "NVIDIA",
+      ensambladora: g.ensambladora ?? "",
       modoPrecio: g.modoPrecio,
       baseUsd: g.baseUsd,
       precioManualCop: g.precioManualCop,

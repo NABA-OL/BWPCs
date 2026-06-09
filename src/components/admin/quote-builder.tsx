@@ -371,6 +371,13 @@ function CatalogPicker({
   onPick: (item: QuoteItemInput) => void;
 }) {
   if (catalog.length === 0) return null;
+
+  // Agrupar por categoría (orden de COMPONENT_CATEGORIES) para usar <optgroup>.
+  const grupos = COMPONENT_CATEGORIES.map((cat) => ({
+    cat,
+    items: catalog.filter((c) => c.categoria === cat),
+  })).filter((g) => g.items.length > 0);
+
   return (
     <select
       value=""
@@ -388,10 +395,14 @@ function CatalogPicker({
       className="border border-hairline bg-vanilla px-2 py-1.5 text-sm text-component outline-none focus:border-panda"
     >
       <option value="">+ Desde catálogo…</option>
-      {catalog.map((c) => (
-        <option key={c.id} value={c.id}>
-          {c.label}
-        </option>
+      {grupos.map((g) => (
+        <optgroup key={g.cat} label={CATEGORY_LABELS[g.cat]}>
+          {g.items.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.modelo} · {formatCOP(c.precioCop)}
+            </option>
+          ))}
+        </optgroup>
       ))}
     </select>
   );
