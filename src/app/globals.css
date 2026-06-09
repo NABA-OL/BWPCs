@@ -85,13 +85,37 @@ body {
 
 /*
   Wordmark "B & W" → "Build & Wire": las letras extra revelan su ancho con el
-  truco de grid (0fr → 1fr) + opacidad. Solo cambia al tener data-expanded.
+  truco de grid (0fr → 1fr). Animar grid-template-columns no relayouta el DOM
+  padre, a diferencia de max-width.
 */
 .bw-grow {
-  display: inline-block;
+  display: inline-grid;
   overflow: hidden;
   vertical-align: bottom;
   white-space: nowrap;
-  /* Barrido simétrico de ancho (aparece/desaparece igual). */
-  transition: max-width 1s ease;
+  transition: grid-template-columns 1s ease;
+}
+
+/* El hijo directo necesita min-width:0 para poder colapsar. */
+.bw-grow > span {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Entrada del menú móvil */
+@keyframes bw-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bw-menu {
+    animation: bw-menu-in 150ms ease;
+  }
 }

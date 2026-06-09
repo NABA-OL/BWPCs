@@ -81,16 +81,16 @@ export function BrandWordmark({ className = "" }: { className?: string }) {
         B
         <span
           className="bw-grow"
-          style={{ maxWidth: expanded ? `${leftRest.length + 1}ch` : 0 }}
+          style={{ gridTemplateColumns: expanded ? "1fr" : "0fr" }}
         >
-          {leftRest}
+          <span>{leftRest}</span>
         </span>
         &nbsp;&amp;&nbsp;W
         <span
           className="bw-grow"
-          style={{ maxWidth: expanded ? `${rightRest.length + 1}ch` : 0 }}
+          style={{ gridTemplateColumns: expanded ? "1fr" : "0fr" }}
         >
-          {rightRest}
+          <span>{rightRest}</span>
         </span>
       </span>
     </span>

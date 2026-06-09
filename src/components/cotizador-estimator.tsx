@@ -101,20 +101,43 @@ export function CotizadorEstimator({
                   </span>
                 </label>
 
-                <select
-                  value={choice[c.key]}
-                  disabled={!on}
-                  onChange={(e) =>
-                    setChoice((s) => ({ ...s, [c.key]: Number(e.target.value) }))
-                  }
-                  className="min-w-[200px] border border-hairline bg-vanilla px-3 py-2 text-sm outline-none focus:border-panda disabled:opacity-40"
-                >
-                  {c.options.map((o, i) => (
-                    <option key={i} value={i}>
-                      {o.label} · {formatCOP(o.precioCop)}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative min-w-[200px]">
+                  <select
+                    value={choice[c.key]}
+                    disabled={!on}
+                    onChange={(e) =>
+                      setChoice((s) => ({
+                        ...s,
+                        [c.key]: Number(e.target.value),
+                      }))
+                    }
+                    className="w-full appearance-none border border-hairline bg-vanilla px-3 py-2 pr-8 text-sm outline-none focus:border-panda disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    {c.options.map((o, i) => (
+                      <option key={i} value={i}>
+                        {o.label} · {formatCOP(o.precioCop)}
+                      </option>
+                    ))}
+                  </select>
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5"
+                  >
+                    <svg
+                      width="10"
+                      height="6"
+                      viewBox="0 0 10 6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-component"
+                    >
+                      <path d="M1 1l4 4 4-4" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -163,7 +186,7 @@ export function CotizadorEstimator({
             target="_blank"
             rel="noopener noreferrer"
             size="lg"
-            className="mt-6 w-full bg-accent text-accent-ink hover:bg-vanilla hover:text-panda"
+            className="mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep"
           >
             Enviar por WhatsApp
           </ButtonLink>

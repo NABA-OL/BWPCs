@@ -51,7 +51,7 @@ export default function HomePage() {
 
       {/* Lo que hacemos — split asimétrico, sin cards */}
       <section className="border-t border-hairline">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Lo que hacemos
           </h2>
@@ -85,25 +85,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Cómo funciona — secuencia ordenada, los números sí importan */}
+      {/* Cómo funciona — spec-list: número | título | descripción en fila */}
       <section className="border-t border-hairline">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Cómo funciona
           </h2>
-          <ol className="mt-10 grid gap-px overflow-hidden border border-hairline bg-hairline md:grid-cols-3">
+          <ol className="mt-8 border-b border-hairline">
             {steps.map((step, i) => (
-              <li key={step.title} className="bg-vanilla px-6 py-8">
+              <li
+                key={step.title}
+                className="border-t border-hairline py-6 md:grid md:grid-cols-[2.5rem_1fr_2fr] md:items-baseline md:gap-8"
+              >
                 <span
                   aria-hidden="true"
-                  className="block text-5xl font-extrabold leading-none text-hairline tabular-nums"
+                  className="block font-mono text-xs font-medium text-component tabular-nums"
                 >
                   {i + 1}
                 </span>
-                <h3 className="mt-5 text-balance text-lg font-semibold">
+                <h3 className="mt-2 text-lg font-semibold md:mt-0">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-pretty text-sm leading-relaxed text-panda">
+                <p className="mt-2 text-pretty text-sm leading-relaxed text-panda md:mt-0">
                   {step.body}
                 </p>
               </li>
@@ -114,7 +117,7 @@ export default function HomePage() {
 
       {/* CTA cotizador */}
       <section className="border-t border-hairline bg-component/30">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">
               ¿Cuánto costaría tu PC?
@@ -127,7 +130,7 @@ export default function HomePage() {
           <ButtonLink
             href="/cotizador"
             size="lg"
-            className="bg-accent text-accent-ink hover:bg-vanilla hover:text-panda"
+            className="bg-accent text-accent-ink hover:bg-accent-deep"
           >
             Empezar a cotizar
           </ButtonLink>

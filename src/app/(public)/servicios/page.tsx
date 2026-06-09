@@ -51,7 +51,7 @@ export default function ServiciosPage() {
 
       {/* Ensamblaje — servicio principal */}
       <section className="border-b border-hairline">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <div className="grid gap-10 md:grid-cols-[1fr_1.2fr]">
             <div>
               <span className="font-mono text-sm text-accent">Principal</span>
@@ -88,22 +88,23 @@ export default function ServiciosPage() {
             ¿Solo necesitas una pieza? Compra el componente que te falta, sin
             obligación de ensamble.
           </p>
-          <div className="mt-8 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-8 divide-y divide-hairline border-y border-hairline">
             {componentes.map((c) => (
-              <div key={c.t} className="bg-vanilla p-6">
-                <h3 className="text-base font-semibold">{c.t}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-component">
-                  {c.d}
-                </p>
+              <div
+                key={c.t}
+                className="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-baseline sm:gap-10"
+              >
+                <dt className="w-48 shrink-0 font-medium">{c.t}</dt>
+                <dd className="text-sm text-component">{c.d}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
       {/* Cómo funciona */}
       <section className="border-b border-hairline">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Cómo funciona
           </h2>
@@ -125,14 +126,14 @@ export default function ServiciosPage() {
 
       {/* CTA */}
       <section className="bg-component/30">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between">
           <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
             Listo para armar tu equipo
           </h2>
           <ButtonLink
             href="/cotizador"
             size="lg"
-            className="bg-accent text-accent-ink hover:bg-vanilla hover:text-panda"
+            className="bg-accent text-accent-ink hover:bg-accent-deep"
           >
             Cotiza tu PC
           </ButtonLink>

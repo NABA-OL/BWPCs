@@ -70,7 +70,7 @@ export function SiteHeader() {
 
       {/* Menú móvil */}
       {open && (
-        <nav className="border-t border-hairline bg-vanilla px-4 pb-6 pt-2 md:hidden">
+        <nav className="bw-menu border-t border-hairline bg-vanilla px-4 pb-6 pt-2 md:hidden">
           {links.map((link) => (
             <Link
               key={link.href}

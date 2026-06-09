@@ -92,7 +92,7 @@ export default function ContactoPage() {
 
       {/* CTA cotizador */}
       <section className="bg-component/30">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
               ¿Aún no tienes tu cotización?
@@ -104,7 +104,7 @@ export default function ContactoPage() {
           <ButtonLink
             href="/cotizador"
             size="lg"
-            className="bg-accent text-accent-ink hover:bg-vanilla hover:text-panda"
+            className="bg-accent text-accent-ink hover:bg-accent-deep"
           >
             Ir al cotizador
           </ButtonLink>
