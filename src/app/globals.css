@@ -54,3 +54,31 @@ body {
   background: var(--color-panda);
   color: var(--color-vanilla);
 }
+
+/*
+  Cuadrito de acento en la esquina de la "s" del hero: pulsa (desaparece y
+  reaparece) alternando entre cuadro y rombo (rota 45°/90°). Estático en su sitio
+  (solo anima transform). El @media de arriba lo congela con reduced-motion.
+*/
+@keyframes bw-accent-mark {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  22% {
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1) rotate(45deg);
+  }
+  72% {
+    transform: scale(0) rotate(45deg);
+  }
+  100% {
+    transform: scale(1) rotate(90deg);
+  }
+}
+
+.bw-accent-mark {
+  transform-origin: center;
+  animation: bw-accent-mark 3.6s ease-in-out infinite;
+}

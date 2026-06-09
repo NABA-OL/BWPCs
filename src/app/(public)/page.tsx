@@ -25,7 +25,13 @@ export default function HomePage() {
           Ensamble &amp; componentes · Colombia
         </p>
         <h1 className="mt-4 text-balance text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-          Ensamblamos
+          <span className="relative inline-block whitespace-nowrap">
+            Ensamblamos
+            <span
+              aria-hidden="true"
+              className="bw-accent-mark absolute right-[-0.18em] top-[0.16em] h-[0.24em] w-[0.24em] bg-accent"
+            />
+          </span>
           <br />
           tu PC.
         </h1>
