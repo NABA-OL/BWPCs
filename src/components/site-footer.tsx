@@ -70,7 +70,7 @@ export function SiteFooter() {
           <span>
             Desarrollado por{" "}
             <a
-              href="https://github.com/NABA-OL"
+              href="https://nabaol.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-vanilla/70 transition-colors hover:text-vanilla"
