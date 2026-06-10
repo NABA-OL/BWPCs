@@ -74,7 +74,7 @@ export default function ContactoPage() {
                 <dt className="text-sm font-medium text-component">
                   Medios de pago
                 </dt>
-                <dd className="mt-2 flex flex-wrap gap-2">
+                <dd className="mt-2 flex flex-wrap gap-2 bg-vanilla/80">
                   {mediosPago.map((m) => (
                     <span
                       key={m}
