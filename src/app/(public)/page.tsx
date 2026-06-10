@@ -50,7 +50,7 @@ export default function HomePage() {
       </AssemblyHero>
 
       {/* Lo que hacemos — split asimétrico, sin cards */}
-      <section className="border-t border-hairline">
+      <section className="border-t border-hairline bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Lo que hacemos
@@ -86,7 +86,7 @@ export default function HomePage() {
       </section>
 
       {/* Cómo funciona — spec-list: número | título | descripción en fila */}
-      <section className="border-t border-hairline">
+      <section className="border-t border-hairline bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Cómo funciona

@@ -80,7 +80,7 @@ export default async function CotizadorPage() {
       </PageHero>
 
       <section>
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div className="bg-vanilla/40 mx-auto max-w-6xl px-4 py-12 sm:px-6">
           {ready ? (
             <CotizadorEstimator
               categories={categories}

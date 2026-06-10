@@ -61,7 +61,7 @@ export default function NosotrosPage() {
       </section>
 
       {/* Valores */}
-      <section className="border-b border-hairline">
+      <section className="border-b border-hairline bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <dl className="divide-y divide-hairline border-y border-hairline">
             {valores.map((v) => (

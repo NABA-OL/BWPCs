@@ -65,7 +65,7 @@ export function SiteFooter() {
       <div className="border-t border-vanilla/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-5 text-xs text-vanilla/50 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <SecretAdminTrigger>
-            © {year}  B &amp; W. Todos los derechos reservados.
+            © {year}&nbsp;B &amp; W. Todos los derechos reservados.
           </SecretAdminTrigger>
           <span>
             Desarrollado por{" "}
