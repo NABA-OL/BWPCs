@@ -50,7 +50,7 @@ export default function HomePage() {
       </AssemblyHero>
 
       {/* Lo que hacemos — split asimétrico, sin cards */}
-      <section className="border-t border-hairline bg-vanilla/40">
+      <section className="border-t border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Lo que hacemos
@@ -72,7 +72,7 @@ export default function HomePage() {
             </div>
 
             {/* Servicio secundario */}
-            <div className="mt-10 border-t border-hairline pt-10 md:mt-0 md:border-l md:border-t-0 md:pl-12 md:pt-0">
+            <div className="mt-10 border-t border-hairline/50 pt-10 md:mt-0 md:border-l md:border-t-0 md:pl-12 md:pt-0">
               <h3 className="text-balance text-xl font-semibold">
                 Componentes sueltos
               </h3>
@@ -86,7 +86,7 @@ export default function HomePage() {
       </section>
 
       {/* Cómo funciona — spec-list: número | título | descripción en fila */}
-      <section className="border-t border-hairline bg-vanilla/40">
+      <section className="border-t border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Cómo funciona
@@ -116,7 +116,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA cotizador */}
-      <section className="border-t border-hairline bg-component/30">
+      <section className="border-t border-hairline/50 bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">

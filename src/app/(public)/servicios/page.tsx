@@ -50,7 +50,7 @@ export default function ServiciosPage() {
       </PageHero>
 
       {/* Ensamblaje — servicio principal */}
-      <section className="border-b border-hairline bg-vanilla/40">
+      <section className="border-b border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <div className="grid gap-10 md:grid-cols-[1fr_1.2fr]">
             <div>
@@ -79,7 +79,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Componentes */}
-      <section className="border-b border-hairline bg-vanilla/40">
+      <section className="border-b border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Componentes

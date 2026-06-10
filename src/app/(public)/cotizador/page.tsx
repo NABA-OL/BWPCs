@@ -89,7 +89,7 @@ export default async function CotizadorPage() {
               psePct={psePct}
             />
           ) : (
-            <div className="border border-hairline p-8 text-center">
+            <div className="border border-hairline/50 p-8 text-center">
               <h2 className="text-xl font-semibold">
                 Cotizador en preparación
               </h2>

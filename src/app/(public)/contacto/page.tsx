@@ -23,7 +23,7 @@ export default function ContactoPage() {
         </p>
       </PageHero>
 
-      <section className="border-b border-hairline">
+      <section className="border-b border-hairline/50">
         <div className="mx-auto grid max-w-6xl gap-px overflow-hidden border-x border-hairline/10 bg-vanilla/40 px-0 md:grid-cols-2">
           {/* WhatsApp — canal principal */}
           <div className="p-8 sm:p-10">
