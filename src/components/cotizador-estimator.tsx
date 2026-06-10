@@ -172,7 +172,10 @@ export function CotizadorEstimator({
             Estimado aproximado
           </p>
           <p className="mt-1 font-mono text-4xl font-semibold tracking-tight">
-            {formatCOP(total)}
+            ≈ {formatCOP(total)}
+          </p>
+          <p className="mt-1 text-xs text-vanilla/50">
+            según la gama elegida · no es el precio final
           </p>
 
           <dl className="mt-5 space-y-2 border-t border-vanilla/15 pt-5 text-sm">
@@ -210,9 +213,14 @@ export function CotizadorEstimator({
           )}
         </div>
 
-        <p className="mt-3 px-1 text-xs italic text-component">
-          Precio aproximado, sujeto a cambios. El valor final lo confirmamos
-          contigo según los modelos exactos y la disponibilidad.
+        <p className="mt-3 px-1 text-xs leading-relaxed text-component">
+          <strong className="font-medium text-panda">
+            Este valor es solo un aproximado
+          </strong>{" "}
+          según la gama que elegiste, para que te hagas una idea. No es el
+          precio final y puede variar —muchas veces sale más económico—. El
+          valor exacto lo confirmamos contigo por WhatsApp según los modelos y
+          la disponibilidad.
         </p>
       </div>
     </div>

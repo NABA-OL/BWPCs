@@ -24,6 +24,10 @@ Web de **B & W** (ensamble de PC y venta de componentes, Colombia). Ver `docs/PL
 - `src/lib/admin/` — `stats`, `settings`. `src/lib/env.ts`, `src/lib/format.ts`, `src/lib/admin-nav.ts`.
 - `public/brand/` — `logo.png` (con wordmark), `logo-solo.png` (solo panda).
 
+## Público extras
+- **Aviso de cookies** (`components/cookie-consent.tsx`, montado en `(public)/layout`): banner Aceptar/Rechazar; recuerda la elección en `localStorage` (`bw-cookie-consent`). Solo hay cookie necesaria (`bw_session`), sin tracking.
+- **Cotizador**: el precio se muestra como `≈ ...` con aviso reforzado de que es aproximado según la gama y no es el precio final.
+
 ## Admin extras
 - **Usuarios** (`/admin/usuarios`): cambiar contraseña propia + crear admins (contraseña autogenerada que se muestra una vez) + eliminar (no a sí mismo). Acciones en `usuarios/actions.ts`.
 - **Gráficas** tienen `marca` (chip: AMD/NVIDIA/Intel) + `ensambladora` (AIB: MSI/ASUS/… texto con datalist); procesadores AMD/Intel. **Resumen** muestra desglose por marca (procesadores, gráficas) y componentes por categoría/marca (`lib/admin/stats.ts` con aggregation).
