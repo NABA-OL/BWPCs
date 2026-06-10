@@ -24,7 +24,7 @@ export default function ContactoPage() {
       </PageHero>
 
       <section className="border-b border-hairline/50">
-        <div className="mx-auto grid max-w-6xl gap-px overflow-hidden border-x border-hairline/10 bg-vanilla/40 px-0 md:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl border-x border-hairline/50 bg-vanilla/40 md:grid-cols-2">
           {/* WhatsApp — canal principal */}
           <div className="p-8 sm:p-10">
             <span className="font-mono text-sm text-accent">
@@ -50,7 +50,7 @@ export default function ContactoPage() {
           </div>
 
           {/* Correo + datos */}
-          <div className="p-8 sm:p-10">
+          <div className="border-t border-hairline/50 p-8 sm:p-10 md:border-l md:border-t-0">
             <h2 className="text-2xl font-bold">Otros medios</h2>
             <dl className="mt-4 space-y-5 text-panda">
               <div>
@@ -74,7 +74,7 @@ export default function ContactoPage() {
                 <dt className="text-sm font-medium text-component">
                   Medios de pago
                 </dt>
-                <dd className="mt-2 flex flex-wrap gap-2 bg-vanilla/80">
+                <dd className="mt-2 flex flex-wrap gap-2">
                   {mediosPago.map((m) => (
                     <span
                       key={m}

@@ -47,7 +47,7 @@ export const DEFAULT_SETTINGS: Omit<Settings, "_id"> = {
   envioCPU: 110000,
   envioGPU: 170000,
   servicioBase: 200000,
-  mediosPago: { tarjeta: 0.06, pse: 0.03 },
+  mediosPago: { tarjeta: 0.06, pse: 0.03, breB: 0 },
   contacto: {
     whatsapp: "+573188422533",
     email: "bandwmount@gmail.com",

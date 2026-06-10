@@ -39,6 +39,7 @@ export default async function CotizadorPage() {
   let servicioBase = 0;
   let tarjetaPct = 0;
   let psePct = 0;
+  let breBPct = 0;
   let ready = false;
 
   try {
@@ -46,6 +47,7 @@ export default async function CotizadorPage() {
     servicioBase = settings.servicioBase;
     tarjetaPct = settings.mediosPago.tarjeta;
     psePct = settings.mediosPago.pse;
+    breBPct = settings.mediosPago.breB ?? 0;
 
     const col = await collections.categoryOptions();
     const docs = await col.find({}).toArray();
@@ -87,6 +89,7 @@ export default async function CotizadorPage() {
               servicioBase={servicioBase}
               tarjetaPct={tarjetaPct}
               psePct={psePct}
+              breBPct={breBPct}
             />
           ) : (
             <div className="border border-hairline/50 p-8 text-center">

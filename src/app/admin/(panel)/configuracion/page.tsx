@@ -22,6 +22,7 @@ export default async function ConfiguracionPage() {
       servicioBase: s.servicioBase,
       tarjetaPct: Math.round(s.mediosPago.tarjeta * 1000) / 10,
       psePct: Math.round(s.mediosPago.pse * 1000) / 10,
+      breBPct: Math.round((s.mediosPago.breB ?? 0) * 1000) / 10,
       whatsapp: s.contacto.whatsapp,
       email: s.contacto.email,
       wordmarkPhrases: s.wordmarkPhrases ?? [],

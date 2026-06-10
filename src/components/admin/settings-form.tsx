@@ -17,6 +17,7 @@ interface InitialSettings {
   servicioBase: number;
   tarjetaPct: number; // ya en porcentaje (6)
   psePct: number; // (3)
+  breBPct: number; // (0 — Bre-B no cobra)
   whatsapp: string;
   email: string;
   wordmarkPhrases: { left: string; right: string }[];
@@ -146,10 +147,16 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           hint="Ej: 6"
         />
         <Field
-          label="Recargo PSE / Bre-B (%)"
+          label="Recargo PSE (%)"
           name="psePct"
           defaultValue={initial.psePct}
           hint="Ej: 3"
+        />
+        <Field
+          label="Recargo Bre-B (%)"
+          name="breBPct"
+          defaultValue={initial.breBPct}
+          hint="Bre-B no cobra comisión → 0 (también Daviplata)."
         />
       </Section>
 

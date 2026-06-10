@@ -33,7 +33,8 @@ export interface Settings {
   servicioBase: number; // valor base del servicio de ensamble (200000)
   mediosPago: {
     tarjeta: number; // 0.06
-    pse: number; // 0.03 (= Bre-B / Daviplata)
+    pse: number; // 0.03
+    breB: number; // 0 (Bre-B no cobra comisión); también aplica a Daviplata
   };
   contacto: {
     whatsapp: string;

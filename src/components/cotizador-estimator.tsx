@@ -23,11 +23,13 @@ export function CotizadorEstimator({
   servicioBase,
   tarjetaPct,
   psePct,
+  breBPct,
 }: {
   categories: EstimatorCategory[];
   servicioBase: number;
   tarjetaPct: number;
   psePct: number;
+  breBPct: number;
 }) {
   const [included, setIncluded] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(categories.map((c) => [c.key, c.defaultOn])),
@@ -44,7 +46,7 @@ export function CotizadorEstimator({
     [categories, included, servicio],
   );
 
-  const { total, conTarjeta, conPse, chosen } = useMemo(() => {
+  const { total, conTarjeta, conPse, conBreB, chosen } = useMemo(() => {
     const chosen: { label: string; opcion: string }[] = [];
     let sub = 0;
     for (const c of categories) {
@@ -60,8 +62,18 @@ export function CotizadorEstimator({
       total,
       conTarjeta: Math.round(total * (1 + tarjetaPct)),
       conPse: Math.round(total * (1 + psePct)),
+      conBreB: Math.round(total * (1 + breBPct)),
     };
-  }, [categories, included, choice, servicio, servicioBase, tarjetaPct, psePct]);
+  }, [
+    categories,
+    included,
+    choice,
+    servicio,
+    servicioBase,
+    tarjetaPct,
+    psePct,
+    breBPct,
+  ]);
 
   const waMessage = useMemo(() => {
     const items = chosen.map((c) => `• ${c.label}: ${c.opcion}`).join("\n");
@@ -184,8 +196,14 @@ export function CotizadorEstimator({
               <dd className="font-mono">{formatCOP(conTarjeta)}</dd>
             </div>
             <div className="flex items-center justify-between">
-              <dt className="text-vanilla/60">Con PSE / Bre-B</dt>
+              <dt className="text-vanilla/60">Con PSE</dt>
               <dd className="font-mono">{formatCOP(conPse)}</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-vanilla/60">
+                Con Bre-B{breBPct === 0 ? " (sin recargo)" : ""}
+              </dt>
+              <dd className="font-mono">{formatCOP(conBreB)}</dd>
             </div>
           </dl>
 

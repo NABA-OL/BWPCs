@@ -26,6 +26,7 @@ export async function saveSettingsAction(
 
   const tarjetaPct = num(form, "tarjetaPct");
   const psePct = num(form, "psePct");
+  const breBPct = num(form, "breBPct");
 
   const whatsapp = String(form.get("whatsapp") ?? "").trim();
   const email = String(form.get("email") ?? "").trim();
@@ -63,6 +64,7 @@ export async function saveSettingsAction(
           servicioBase: num(form, "servicioBase"),
           "mediosPago.tarjeta": tarjetaPct / 100,
           "mediosPago.pse": psePct / 100,
+          "mediosPago.breB": breBPct / 100,
           "contacto.whatsapp": whatsapp,
           "contacto.email": email,
           wordmarkPhrases,
