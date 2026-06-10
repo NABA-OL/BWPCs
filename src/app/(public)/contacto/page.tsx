@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Escríbenos por WhatsApp o correo y armamos tu PC a la medida. Bogotá y envíos a todo el país.",
 };
 
-const mediosPago = ["Bre-B", "Bold", "Tarjeta", "PSE", "Daviplata"];
+const mediosPago = ["Bre-B", "Tarjeta", "PSE", "Daviplata", "Nequi"];
 
 export default function ContactoPage() {
   return (
