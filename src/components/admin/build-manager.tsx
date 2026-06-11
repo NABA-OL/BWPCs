@@ -10,6 +10,7 @@ import {
 } from "@/app/admin/(panel)/ensambles/actions";
 import { Button } from "@/components/ui/button";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
+import { isInstagramUrl } from "@/lib/instagram";
 
 export interface BuildRow {
   id: string;
@@ -79,7 +80,8 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
   const totalPages = Math.ceil(visible.length / PAGE_SIZE);
   const paginated = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  const showPreview = form.imagenUrl.startsWith("http") && !previewError;
+  const isIgUrl = isInstagramUrl(form.imagenUrl);
+  const showPreview = form.imagenUrl.startsWith("http") && !previewError && !isIgUrl;
 
   return (
     <div className="mt-8 space-y-8">
@@ -114,6 +116,13 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
           </label>
 
           {/* Live preview */}
+          {isIgUrl && (
+            <div className="sm:col-span-2">
+              <p className="text-xs text-component">
+                URL de Instagram detectada — se mostrará como publicación embebida en la página pública.
+              </p>
+            </div>
+          )}
           {showPreview && (
             <div className="sm:col-span-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -233,12 +242,18 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
               {paginated.map((r) => (
                 <tr key={r.id} className="border-b border-hairline last:border-0">
                   <td className="px-4 py-3">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={r.imagenUrl}
-                      alt={r.titulo}
-                      className="h-12 w-12 border border-hairline object-cover"
-                    />
+                    {isInstagramUrl(r.imagenUrl) ? (
+                      <div className="flex h-12 w-12 items-center justify-center border border-hairline bg-hairline/20">
+                        <span className="font-mono text-xs text-component">IG</span>
+                      </div>
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={r.imagenUrl}
+                        alt={r.titulo}
+                        className="h-12 w-12 border border-hairline object-cover"
+                      />
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <span className="font-medium">{r.titulo}</span>

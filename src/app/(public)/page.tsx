@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { AssemblyHero } from "@/components/assembly-hero";
 import { collections } from "@/lib/db/collections";
+import { isInstagramUrl } from "@/lib/instagram";
 
 export const revalidate = 3600;
 
@@ -28,14 +29,17 @@ export default async function HomePage() {
     const docs = await col
       .find({ activo: true })
       .sort({ orden: 1, creado: -1 })
-      .limit(3)
+      .limit(9)
       .toArray();
-    recentBuilds = docs.map((d) => ({
-      id: d._id!.toString(),
-      titulo: d.titulo,
-      specs: d.specs,
-      imagenUrl: d.imagenUrl,
-    }));
+    recentBuilds = docs
+      .filter((d) => !isInstagramUrl(d.imagenUrl))
+      .slice(0, 3)
+      .map((d) => ({
+        id: d._id!.toString(),
+        titulo: d.titulo,
+        specs: d.specs,
+        imagenUrl: d.imagenUrl,
+      }));
   } catch {
     // fail silently
   }
