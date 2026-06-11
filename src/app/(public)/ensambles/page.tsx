@@ -4,8 +4,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { collections } from "@/lib/db/collections";
 import { whatsappLink } from "@/lib/site-config";
-import { isInstagramUrl } from "@/lib/instagram";
-import { InstagramEmbed } from "@/components/instagram-embed";
+import { BuildsGrid } from "@/components/builds-grid";
 
 export const metadata: Metadata = {
   title: "Ensambles",
@@ -69,42 +68,7 @@ export default async function EnsamblesPage() {
               </ButtonLink>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
-              {builds.map((b) =>
-                isInstagramUrl(b.imagenUrl) ? (
-                  <div key={b.id} className="col-span-full">
-                    <InstagramEmbed url={b.imagenUrl} />
-                    <div className="mt-3 text-center">
-                      <p className="font-semibold leading-tight">{b.titulo}</p>
-                      {b.specs && (
-                        <p className="mt-1 font-mono text-xs leading-relaxed text-component">
-                          {b.specs}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <article key={b.id} className="group">
-                    <div className="aspect-square overflow-hidden border border-hairline/50">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={b.imagenUrl}
-                        alt={b.titulo}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <p className="font-semibold leading-tight">{b.titulo}</p>
-                      {b.specs && (
-                        <p className="mt-1 font-mono text-xs leading-relaxed text-component">
-                          {b.specs}
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                )
-              )}
-            </div>
+            <BuildsGrid builds={builds} />
           )}
         </div>
       </section>
