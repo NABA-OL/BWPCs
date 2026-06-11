@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   saveComponentAction,
@@ -10,6 +10,7 @@ import {
 } from "@/app/admin/(panel)/componentes/actions";
 import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
+import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
 import { CATALOG_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
 import type { ComponentCategory } from "@/lib/db/types";
 
@@ -37,6 +38,7 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
   const [filter, setFilter] = useState<ComponentCategory | "Todas">("Todas");
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const [state, formAction, pending] = useActionState<ComponentFormState, FormData>(
     saveComponentAction,
     {},
@@ -82,6 +84,12 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
       );
     });
   }, [rows, filter, query]);
+
+  useEffect(() => { setPage(1); }, [query, filter]);
+
+  const totalPages = Math.ceil(visible.length / PAGE_SIZE);
+  const paginated = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const goPage = useCallback((p: number) => setPage(p), []);
 
   return (
     <div className="mt-8 space-y-8">
@@ -250,7 +258,7 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
               </tr>
             </thead>
             <tbody>
-              {visible.map((r) => (
+              {paginated.map((r) => (
                 <tr key={r.id} className="border-b border-hairline last:border-0">
                   <td className="px-4 py-3 text-component">
                     {CATEGORY_LABELS[r.categoria]}
@@ -309,11 +317,15 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
               ))}
             </tbody>
           </table>
-          {visible.length < rows.length && (
-            <p className="border-t border-hairline px-4 py-2 text-xs text-component">
-              Mostrando {visible.length} de {rows.length}
-            </p>
-          )}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            total={visible.length}
+            shown={paginated.length}
+            onPrev={() => setPage((p) => p - 1)}
+            onNext={() => setPage((p) => p + 1)}
+            onPage={goPage}
+          />
         </div>
       )}
     </div>

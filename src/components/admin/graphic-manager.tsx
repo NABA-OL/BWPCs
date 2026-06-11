@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   saveGraphicAction,
@@ -10,6 +10,7 @@ import {
 } from "@/app/admin/(panel)/graficas/actions";
 import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
+import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
 
 type GpuBrand = "AMD" | "NVIDIA" | "Intel";
 type BrandFilter = GpuBrand | "Todas";
@@ -58,6 +59,7 @@ export function GraphicManager({
   );
   const [query, setQuery] = useState("");
   const [brandFilter, setBrandFilter] = useState<BrandFilter>("Todas");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (state.ok) {
@@ -99,6 +101,14 @@ export function GraphicManager({
       );
     });
   }, [rows, query, brandFilter]);
+
+  // Reset to page 1 whenever filters change
+  useEffect(() => { setPage(1); }, [query, brandFilter]);
+
+  const totalPages = Math.ceil(visible.length / PAGE_SIZE);
+  const paginated = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const goPage = useCallback((p: number) => setPage(p), []);
 
   return (
     <div className="mt-8 space-y-8">
@@ -305,7 +315,7 @@ export function GraphicManager({
               </tr>
             </thead>
             <tbody>
-              {visible.map((r) => (
+              {paginated.map((r) => (
                 <tr key={r.id} className="border-b border-hairline last:border-0">
                   <td className="px-4 py-3 font-medium">{r.modelo}</td>
                   <td className="px-4 py-3 text-component">{r.marca}</td>
@@ -364,11 +374,15 @@ export function GraphicManager({
               ))}
             </tbody>
           </table>
-          {visible.length < rows.length && (
-            <p className="border-t border-hairline px-4 py-2 text-xs text-component">
-              Mostrando {visible.length} de {rows.length}
-            </p>
-          )}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            total={visible.length}
+            shown={paginated.length}
+            onPrev={() => setPage((p) => p - 1)}
+            onNext={() => setPage((p) => p + 1)}
+            onPage={goPage}
+          />
         </div>
       )}
     </div>
