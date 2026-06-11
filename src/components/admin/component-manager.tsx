@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   saveComponentAction,
@@ -36,10 +36,11 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
   const router = useRouter();
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
   const [filter, setFilter] = useState<ComponentCategory | "Todas">("Todas");
-  const [state, formAction, pending] = useActionState<
-    ComponentFormState,
-    FormData
-  >(saveComponentAction, {});
+  const [query, setQuery] = useState("");
+  const [state, formAction, pending] = useActionState<ComponentFormState, FormData>(
+    saveComponentAction,
+    {},
+  );
 
   useEffect(() => {
     if (state.ok) {
@@ -57,11 +58,30 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
       descripcion: r.descripcion,
       precioCop: r.precioCop.toString(),
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const editing = form.id !== "";
-  const visible =
-    filter === "Todas" ? rows : rows.filter((r) => r.categoria === filter);
+
+  // Unique brand names for autocomplete in the form
+  const marcaSuggestions = useMemo(
+    () =>
+      [...new Set(rows.map((r) => r.marca).filter(Boolean))].sort(),
+    [rows],
+  );
+
+  const visible = useMemo(() => {
+    const q = query.toLowerCase().trim();
+    return rows.filter((r) => {
+      if (filter !== "Todas" && r.categoria !== filter) return false;
+      if (!q) return true;
+      return (
+        r.modelo.toLowerCase().includes(q) ||
+        r.marca.toLowerCase().includes(q) ||
+        r.descripcion.toLowerCase().includes(q)
+      );
+    });
+  }, [rows, filter, query]);
 
   return (
     <div className="mt-8 space-y-8">
@@ -82,10 +102,7 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
               name="categoria"
               value={form.categoria}
               onChange={(e) =>
-                setForm({
-                  ...form,
-                  categoria: e.target.value as ComponentCategory,
-                })
+                setForm({ ...form, categoria: e.target.value as ComponentCategory })
               }
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             >
@@ -103,11 +120,17 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
             </span>
             <input
               name="marca"
+              list="bw-comp-brands"
               value={form.marca}
               onChange={(e) => setForm({ ...form, marca: e.target.value })}
               placeholder="Corsair"
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             />
+            <datalist id="bw-comp-brands">
+              {marcaSuggestions.map((m) => (
+                <option key={m} value={m} />
+              ))}
+            </datalist>
           </label>
 
           <label className="block">
@@ -143,9 +166,7 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
             <input
               name="descripcion"
               value={form.descripcion}
-              onChange={(e) =>
-                setForm({ ...form, descripcion: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
               placeholder="DDR5 2x16GB 6000MHz CL30"
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             />
@@ -173,12 +194,28 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
         </div>
       </form>
 
+      {/* Búsqueda */}
+      <div className="relative max-w-sm">
+        <svg
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"
+          width="14" height="14" viewBox="0 0 16 16" fill="none"
+          stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+        >
+          <circle cx="6.5" cy="6.5" r="5" />
+          <path d="M10.5 10.5l3.5 3.5" />
+        </svg>
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Buscar por modelo, marca…"
+          className="w-full border border-hairline bg-vanilla py-2 pl-8 pr-3 text-sm outline-none focus:border-panda"
+        />
+      </div>
+
       {/* Filtro por categoría */}
       <div className="flex flex-wrap items-center gap-2">
-        <FilterChip
-          active={filter === "Todas"}
-          onClick={() => setFilter("Todas")}
-        >
+        <FilterChip active={filter === "Todas"} onClick={() => setFilter("Todas")}>
           Todas
         </FilterChip>
         {CATALOG_CATEGORIES.map((c) => (
@@ -192,8 +229,14 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
         ))}
       </div>
 
-      {visible.length === 0 ? (
-        <p className="text-component">No hay componentes en esta categoría.</p>
+      {rows.length === 0 ? (
+        <p className="text-component">No hay componentes. Agrega el primero arriba.</p>
+      ) : visible.length === 0 ? (
+        <p className="text-component">
+          Sin resultados
+          {query ? ` para "${query}"` : ""}
+          {filter !== "Todas" ? ` en ${CATEGORY_LABELS[filter]}` : ""}.
+        </p>
       ) : (
         <div className="overflow-x-auto border border-hairline">
           <table className="w-full text-sm">
@@ -227,11 +270,7 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
                   <td className="px-4 py-3">
                     <form action={toggleComponentAction}>
                       <input type="hidden" name="id" value={r.id} />
-                      <input
-                        type="hidden"
-                        name="activo"
-                        value={String(r.activo)}
-                      />
+                      <input type="hidden" name="activo" value={String(r.activo)} />
                       <button
                         type="submit"
                         className={`rounded-[2px] border px-2 py-0.5 text-xs ${
@@ -256,15 +295,11 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
                       <form
                         action={deleteComponentAction}
                         onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar ${r.modelo}?`))
-                            e.preventDefault();
+                          if (!confirm(`¿Eliminar ${r.modelo}?`)) e.preventDefault();
                         }}
                       >
                         <input type="hidden" name="id" value={r.id} />
-                        <button
-                          type="submit"
-                          className="text-accent hover:underline"
-                        >
+                        <button type="submit" className="text-accent hover:underline">
                           Eliminar
                         </button>
                       </form>
@@ -274,6 +309,11 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
               ))}
             </tbody>
           </table>
+          {visible.length < rows.length && (
+            <p className="border-t border-hairline px-4 py-2 text-xs text-component">
+              Mostrando {visible.length} de {rows.length}
+            </p>
+          )}
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   saveGraphicAction,
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
 
 type GpuBrand = "AMD" | "NVIDIA" | "Intel";
+type BrandFilter = GpuBrand | "Todas";
 
 export interface GraphicRow {
   id: string;
@@ -36,18 +37,11 @@ const EMPTY = {
 };
 
 const AIBS = [
-  "MSI",
-  "ASUS",
-  "Gigabyte",
-  "Zotac",
-  "PNY",
-  "Palit",
-  "Gainward",
-  "PowerColor",
-  "Sapphire",
-  "XFX",
-  "ASRock",
+  "MSI", "ASUS", "Gigabyte", "Zotac", "PNY", "Palit",
+  "Gainward", "PowerColor", "Sapphire", "XFX", "ASRock",
 ];
+
+const BRANDS: BrandFilter[] = ["Todas", "NVIDIA", "AMD", "Intel"];
 
 export function GraphicManager({
   rows,
@@ -58,10 +52,12 @@ export function GraphicManager({
 }) {
   const router = useRouter();
   const [form, setForm] = useState(EMPTY);
-  const [state, formAction, pending] = useActionState<
-    GraphicFormState,
-    FormData
-  >(saveGraphicAction, {});
+  const [state, formAction, pending] = useActionState<GraphicFormState, FormData>(
+    saveGraphicAction,
+    {},
+  );
+  const [query, setQuery] = useState("");
+  const [brandFilter, setBrandFilter] = useState<BrandFilter>("Todas");
 
   useEffect(() => {
     if (state.ok) {
@@ -80,9 +76,29 @@ export function GraphicManager({
       baseUsd: r.baseUsd?.toString() ?? "",
       precioManualCop: r.precioManualCop?.toString() ?? "",
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const editing = form.id !== "";
+
+  // Unique model names for autocomplete in the form
+  const modelSuggestions = useMemo(
+    () => [...new Set(rows.map((r) => r.modelo))].sort(),
+    [rows],
+  );
+
+  const visible = useMemo(() => {
+    const q = query.toLowerCase().trim();
+    return rows.filter((r) => {
+      if (brandFilter !== "Todas" && r.marca !== brandFilter) return false;
+      if (!q) return true;
+      return (
+        r.modelo.toLowerCase().includes(q) ||
+        r.ensambladora.toLowerCase().includes(q) ||
+        r.marca.toLowerCase().includes(q)
+      );
+    });
+  }, [rows, query, brandFilter]);
 
   return (
     <div className="mt-8 space-y-8">
@@ -102,11 +118,17 @@ export function GraphicManager({
             <input
               name="modelo"
               required
+              list="bw-gpu-models"
               value={form.modelo}
               onChange={(e) => setForm({ ...form, modelo: e.target.value })}
               placeholder="RX 9060 XT 16gb"
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             />
+            <datalist id="bw-gpu-models">
+              {modelSuggestions.map((m) => (
+                <option key={m} value={m} />
+              ))}
+            </datalist>
           </label>
 
           <label className="block">
@@ -154,10 +176,7 @@ export function GraphicManager({
               name="modoPrecio"
               value={form.modoPrecio}
               onChange={(e) =>
-                setForm({
-                  ...form,
-                  modoPrecio: e.target.value as "USD" | "COP",
-                })
+                setForm({ ...form, modoPrecio: e.target.value as "USD" | "COP" })
               }
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             >
@@ -201,8 +220,8 @@ export function GraphicManager({
 
         {form.modoPrecio === "USD" && !trmReady && (
           <p className="mt-3 text-sm text-accent">
-            No hay TRM configurado: el precio en pesos no se podrá calcular hasta
-            definirlo en Configuración.
+            No hay TRM configurado: el precio en pesos no se podrá calcular
+            hasta definirlo en Configuración.
           </p>
         )}
 
@@ -227,8 +246,50 @@ export function GraphicManager({
         </div>
       </form>
 
+      {/* Búsqueda y filtros */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative max-w-xs flex-1">
+          <svg
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"
+            width="14" height="14" viewBox="0 0 16 16" fill="none"
+            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+          >
+            <circle cx="6.5" cy="6.5" r="5" />
+            <path d="M10.5 10.5l3.5 3.5" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar por modelo, ensambladora…"
+            className="w-full border border-hairline bg-vanilla py-2 pl-8 pr-3 text-sm outline-none focus:border-panda"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {BRANDS.map((b) => (
+            <button
+              key={b}
+              type="button"
+              onClick={() => setBrandFilter(b)}
+              className={`rounded-[2px] border px-3 py-1 text-sm transition-colors ${
+                brandFilter === b
+                  ? "border-panda bg-panda text-vanilla"
+                  : "border-hairline text-component hover:border-panda hover:text-panda"
+              }`}
+            >
+              {b}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {rows.length === 0 ? (
         <p className="text-component">Aún no hay gráficas. Agrega la primera arriba.</p>
+      ) : visible.length === 0 ? (
+        <p className="text-component">
+          Sin resultados para &ldquo;{query}&rdquo;
+          {brandFilter !== "Todas" ? ` en ${brandFilter}` : ""}.
+        </p>
       ) : (
         <div className="overflow-x-auto border border-hairline">
           <table className="w-full text-sm">
@@ -244,7 +305,7 @@ export function GraphicManager({
               </tr>
             </thead>
             <tbody>
-              {rows.map((r) => (
+              {visible.map((r) => (
                 <tr key={r.id} className="border-b border-hairline last:border-0">
                   <td className="px-4 py-3 font-medium">{r.modelo}</td>
                   <td className="px-4 py-3 text-component">{r.marca}</td>
@@ -264,11 +325,7 @@ export function GraphicManager({
                   <td className="px-4 py-3">
                     <form action={toggleGraphicAction}>
                       <input type="hidden" name="id" value={r.id} />
-                      <input
-                        type="hidden"
-                        name="activo"
-                        value={String(r.activo)}
-                      />
+                      <input type="hidden" name="activo" value={String(r.activo)} />
                       <button
                         type="submit"
                         className={`rounded-[2px] border px-2 py-0.5 text-xs ${
@@ -293,15 +350,11 @@ export function GraphicManager({
                       <form
                         action={deleteGraphicAction}
                         onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar ${r.modelo}?`))
-                            e.preventDefault();
+                          if (!confirm(`¿Eliminar ${r.modelo}?`)) e.preventDefault();
                         }}
                       >
                         <input type="hidden" name="id" value={r.id} />
-                        <button
-                          type="submit"
-                          className="text-accent hover:underline"
-                        >
+                        <button type="submit" className="text-accent hover:underline">
                           Eliminar
                         </button>
                       </form>
@@ -311,6 +364,11 @@ export function GraphicManager({
               ))}
             </tbody>
           </table>
+          {visible.length < rows.length && (
+            <p className="border-t border-hairline px-4 py-2 text-xs text-component">
+              Mostrando {visible.length} de {rows.length}
+            </p>
+          )}
         </div>
       )}
     </div>
