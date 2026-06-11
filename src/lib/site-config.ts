@@ -16,6 +16,7 @@ export const siteConfig = {
   nav: [
     { label: "Inicio", href: "/" },
     { label: "Servicios", href: "/servicios" },
+    { label: "Ensambles", href: "/ensambles" },
     { label: "Cotizador", href: "/cotizador" },
     { label: "Nosotros", href: "/nosotros" },
     { label: "Contacto", href: "/contacto" },

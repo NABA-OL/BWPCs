@@ -1,5 +1,9 @@
+import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { AssemblyHero } from "@/components/assembly-hero";
+import { collections } from "@/lib/db/collections";
+
+export const revalidate = 3600;
 
 const steps = [
   {
@@ -16,7 +20,26 @@ const steps = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Últimos 3 ensambles activos para la sección de muestra.
+  let recentBuilds: { id: string; titulo: string; specs: string; imagenUrl: string }[] = [];
+  try {
+    const col = await collections.builds();
+    const docs = await col
+      .find({ activo: true })
+      .sort({ orden: 1, creado: -1 })
+      .limit(3)
+      .toArray();
+    recentBuilds = docs.map((d) => ({
+      id: d._id!.toString(),
+      titulo: d.titulo,
+      specs: d.specs,
+      imagenUrl: d.imagenUrl,
+    }));
+  } catch {
+    // fail silently
+  }
+
   return (
     <>
       {/* Hero — PC line-art que se ensambla y queda fijo en el centro al hacer scroll */}
@@ -49,14 +72,13 @@ export default function HomePage() {
         </div>
       </AssemblyHero>
 
-      {/* Lo que hacemos — split asimétrico, sin cards */}
+      {/* Lo que hacemos */}
       <section className="border-t border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Lo que hacemos
           </h2>
           <div className="mt-10 grid md:grid-cols-[3fr_2fr]">
-            {/* Servicio principal */}
             <div className="md:pr-12">
               <h3 className="text-balance text-2xl font-bold">
                 Ensamblaje a la medida
@@ -70,8 +92,6 @@ export default function HomePage() {
                 GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración
               </p>
             </div>
-
-            {/* Servicio secundario */}
             <div className="mt-10 border-t border-hairline/50 pt-10 md:mt-0 md:border-l md:border-t-0 md:pl-12 md:pt-0">
               <h3 className="text-balance text-xl font-semibold">
                 Componentes sueltos
@@ -85,7 +105,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Cómo funciona — spec-list: número | título | descripción en fila */}
+      {/* Ensambles recientes — solo aparece si hay builds cargados */}
+      {recentBuilds.length > 0 && (
+        <section className="border-t border-hairline/50 bg-vanilla/40">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+            <div className="flex items-end justify-between gap-4">
+              <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
+                Ensambles recientes
+              </h2>
+              <Link
+                href="/ensambles"
+                className="shrink-0 text-sm text-component hover:text-panda hover:underline"
+              >
+                Ver todos →
+              </Link>
+            </div>
+
+            <div className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
+              {recentBuilds.map((b) => (
+                <Link key={b.id} href="/ensambles" className="group">
+                  <div className="aspect-square overflow-hidden border border-hairline/50">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={b.imagenUrl}
+                      alt={b.titulo}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <p className="font-semibold leading-tight">{b.titulo}</p>
+                    {b.specs && (
+                      <p className="mt-1 font-mono text-xs text-component">
+                        {b.specs}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Cómo funciona */}
       <section className="border-t border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">

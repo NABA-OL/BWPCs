@@ -11,6 +11,7 @@ export const adminNav: AdminNavItem[] = [
   { label: "Componentes", href: "/admin/componentes", ready: true },
   { label: "Cotizador", href: "/admin/promedios", ready: true },
   { label: "Cotizaciones", href: "/admin/cotizaciones", ready: true },
+  { label: "Ensambles", href: "/admin/ensambles", ready: true },
   { label: "Configuración", href: "/admin/configuracion", ready: true },
   { label: "Usuarios", href: "/admin/usuarios", ready: true },
 ];

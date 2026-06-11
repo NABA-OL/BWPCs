@@ -126,3 +126,14 @@ export interface Admin {
   passwordHash: string;
   creado: Date;
 }
+
+/** Un ensamble/build realizado que se muestra en la galería pública. */
+export interface Build {
+  _id?: ObjectId;
+  titulo: string;       // "Gaming Mid · Bogotá"
+  specs: string;        // "Ryzen 5 7600 · RTX 4060 · 32GB DDR5"
+  imagenUrl: string;    // URL externa de la imagen
+  orden: number;        // posición en la galería (menor = primero)
+  activo: boolean;
+  creado: Date;
+}

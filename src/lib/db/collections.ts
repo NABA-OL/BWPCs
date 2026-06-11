@@ -1,6 +1,7 @@
 import { getDb } from "@/lib/db/mongodb";
 import type {
   Admin,
+  Build,
   CategoryAverage,
   CategoryOptions,
   ComponentItem,
@@ -35,6 +36,9 @@ export const collections = {
   },
   async admins() {
     return (await getDb()).collection<Admin>("admins");
+  },
+  async builds() {
+    return (await getDb()).collection<Build>("builds");
   },
 };
 
