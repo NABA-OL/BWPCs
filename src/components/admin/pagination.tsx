@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 30;
+export const PAGE_SIZE = 20;
 
 export function Pagination({
   page,
