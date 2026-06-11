@@ -6,7 +6,21 @@ import { PcBackdrop } from "@/components/assembly-hero";
 export const metadata: Metadata = {
   title: "Servicios",
   description:
-    "Ensamblaje de computadores, venta de componentes y asesoría en Colombia.",
+    "Ensamblaje de PCs a la medida, venta de componentes y asesoría técnica en Colombia. GPU, CPU, RAM, boards, fuentes, chasis y refrigeración.",
+  keywords: [
+    "ensamblaje de PC Colombia",
+    "venta de componentes PC",
+    "asesoría de PC Bogotá",
+    "tarjetas gráficas Colombia",
+    "procesadores AMD Intel Colombia",
+    "memorias RAM DDR5 Colombia",
+  ],
+  openGraph: {
+    title: "Servicios · B & W",
+    description:
+      "Ensamblaje de PCs a la medida, venta de componentes y asesoría técnica en Colombia.",
+    url: "https://bwpcs.vercel.app/servicios",
+  },
 };
 
 const componentes = [

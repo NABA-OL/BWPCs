@@ -7,7 +7,19 @@ import { PcBackdrop } from "@/components/assembly-hero";
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "Escríbenos por WhatsApp o correo y armamos tu PC a la medida. Bogotá y envíos a todo el país.",
+    "Escríbenos por WhatsApp o correo para cotizar tu PC. Ensamblamos a la medida y hacemos envíos a todo Colombia desde Bogotá.",
+  keywords: [
+    "contacto B&W Colombia",
+    "WhatsApp ensamble PC Colombia",
+    "cotizar PC WhatsApp Bogotá",
+    "comprar componentes PC Colombia",
+  ],
+  openGraph: {
+    title: "Contacto · B & W",
+    description:
+      "Escríbenos por WhatsApp o correo. Envíos a todo Colombia desde Bogotá.",
+    url: "https://bwpcs.vercel.app/contacto",
+  },
 };
 
 const mediosPago = ["Bre-B", "Tarjeta", "PSE", "Daviplata", "Nequi"];

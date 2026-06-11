@@ -9,7 +9,20 @@ import { BuildsGrid } from "@/components/builds-grid";
 export const metadata: Metadata = {
   title: "Ensambles",
   description:
-    "Galería de PCs armados por B & W. Ensambles gaming, workstation y más a medida en Colombia.",
+    "Galería de PCs armados por B & W. Builds gaming, workstation y escritorio a la medida para clientes en Colombia. Cada equipo, hecho con cuidado.",
+  keywords: [
+    "builds de PC Colombia",
+    "galería ensambles PC Bogotá",
+    "PC gaming armado Colombia",
+    "workstation ensamblado Colombia",
+    "resultados B&W PCs",
+  ],
+  openGraph: {
+    title: "Ensambles · B & W",
+    description:
+      "Galería de PCs armados a la medida. Builds gaming, workstation y más en Colombia.",
+    url: "https://bwpcs.vercel.app/ensambles",
+  },
 };
 
 export const revalidate = 3600;

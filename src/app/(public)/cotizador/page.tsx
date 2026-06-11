@@ -16,9 +16,23 @@ import {
 import { whatsappLink } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Cotizador",
+  title: "Cotizador de PC",
   description:
-    "Arma un estimado aproximado de tu PC en segundos y escríbenos por WhatsApp.",
+    "Cotiza tu PC a la medida en segundos. Elige las gamas de cada componente y obtén un estimado de precio en Colombia. Sin registro, gratis.",
+  keywords: [
+    "cotizar PC Colombia",
+    "precio de PC gaming Colombia",
+    "cotizador de PC Bogotá",
+    "cuánto cuesta armar un PC Colombia",
+    "presupuesto PC gaming",
+    "precio componentes PC Colombia",
+  ],
+  openGraph: {
+    title: "Cotizador de PC · B & W",
+    description:
+      "Cotiza tu PC a la medida en segundos. Sin registro, gratis. Bogotá, Colombia.",
+    url: "https://bwpcs.vercel.app/cotizador",
+  },
 };
 
 export const revalidate = 3600;

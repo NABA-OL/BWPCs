@@ -20,8 +20,20 @@ export const metadata: Metadata = {
     template: "%s · B & W",
   },
   description:
-    "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC a la medida con precios justos.",
+    "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC gaming o workstation a la medida con precios justos. Bogotá y envíos nacionales.",
   metadataBase: new URL("https://bwpcs.vercel.app"),
+  keywords: [
+    "ensamble de PC Colombia",
+    "computadores a la medida Bogotá",
+    "componentes de PC Colombia",
+    "cotizar PC Colombia",
+    "gaming PC Colombia",
+    "armar PC Bogotá",
+    "tarjetas gráficas Colombia",
+    "procesadores Colombia",
+    "B&W PCs",
+    "bwpcs",
+  ],
   icons: {
     icon: "/brand/logo-solo.ico",
     shortcut: "/brand/logo-solo.ico",
@@ -30,9 +42,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: "B & W — Tu PC Master Race a buen precio",
     description:
-      "Ensamble de computadores y venta de componentes en Colombia.",
+      "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC a la medida.",
     locale: "es_CO",
     type: "website",
+    url: "https://bwpcs.vercel.app",
+    siteName: "B & W",
+    images: [{ url: "/brand/logo.png", alt: "B & W — Ensamble de PC Colombia" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "B & W — Tu PC Master Race a buen precio",
+    description:
+      "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC a la medida.",
+    images: ["/brand/logo.png"],
   },
 };
 

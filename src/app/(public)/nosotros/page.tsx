@@ -6,7 +6,19 @@ import { PcBackdrop } from "@/components/assembly-hero";
 export const metadata: Metadata = {
   title: "Nosotros",
   description:
-    "B & W: ensamble de computadores y venta de componentes en Colombia, con precios justos.",
+    "Conoce a B & W, el equipo detrás del ensamble de computadores y venta de componentes en Colombia. Atención personalizada y precios justos desde Bogotá.",
+  keywords: [
+    "B&W PCs Colombia",
+    "ensamble de PC Bogotá",
+    "tienda de componentes Colombia",
+    "quiénes somos B&W",
+  ],
+  openGraph: {
+    title: "Nosotros · B & W",
+    description:
+      "Conoce a B & W: ensamble de PCs y venta de componentes en Colombia con atención personalizada.",
+    url: "https://bwpcs.vercel.app/nosotros",
+  },
 };
 
 const valores = [
