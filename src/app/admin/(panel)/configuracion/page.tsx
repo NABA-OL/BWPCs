@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getSettings } from "@/lib/admin/settings";
 import { SettingsForm } from "@/components/admin/settings-form";
+import { TrmRefreshButton } from "@/components/admin/trm-refresh-button";
 
 export const metadata: Metadata = {
   title: "Configuración",
@@ -10,9 +11,11 @@ export const metadata: Metadata = {
 export default async function ConfiguracionPage() {
   let error: string | null = null;
   let initial = null;
+  let trmActualizado: Date | null = null;
 
   try {
     const s = await getSettings();
+    trmActualizado = s.trmActualizado;
     initial = {
       trmScrapeado: s.trmScrapeado,
       trmManual: s.trmManual,
@@ -45,7 +48,22 @@ export default async function ConfiguracionPage() {
           <p className="text-sm text-panda">{error}</p>
         </div>
       ) : (
-        initial && <SettingsForm initial={initial} />
+        initial && (
+          <>
+            <section className="mt-8 border border-hairline p-6">
+              <h2 className="text-lg font-semibold">TRM automática</h2>
+              <p className="mt-1 text-sm text-component">
+                Valor oficial de la Superintendencia Financiera de Colombia. Se
+                actualiza solo cada día (cron) y puedes refrescarlo a demanda.
+                El TRM manual de abajo, si lo defines, tiene prioridad.
+              </p>
+              <div className="mt-4">
+                <TrmRefreshButton actualizado={trmActualizado} />
+              </div>
+            </section>
+            <SettingsForm initial={initial} />
+          </>
+        )
       )}
     </>
   );

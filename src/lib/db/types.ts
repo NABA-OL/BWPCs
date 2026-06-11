@@ -24,10 +24,10 @@ export type PriceMode = "USD" | "COP";
 
 export interface Settings {
   _id?: ObjectId;
-  trmScrapeado: number; // último TRM leído de dolar-colombia.com
-  trmRecargo: number; // se suma al scrapeado (148)
-  trmManual: number | null; // override manual opcional
-  trmActualizado: Date | null;
+  trmScrapeado: number; // último TRM oficial (Superfinanciera, vía cron)
+  trmRecargo: number; // se suma al automático (148)
+  trmManual: number | null; // override manual opcional (tiene prioridad)
+  trmActualizado: Date | null; // cuándo se trajo el TRM automático
   envioCPU: number; // envío casillero procesadores (110000)
   envioGPU: number; // envío casillero gráficas (170000)
   servicioBase: number; // valor base del servicio de ensamble (200000)

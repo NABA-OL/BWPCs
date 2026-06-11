@@ -3,10 +3,51 @@
 import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
+import { fetchTrmOficial } from "@/lib/trm";
 
 export interface SettingsState {
   ok?: boolean;
   error?: string;
+}
+
+export interface TrmState {
+  ok?: boolean;
+  error?: string;
+  trm?: number;
+}
+
+/**
+ * Trae la TRM oficial de la Superfinanciera y la guarda en `trmScrapeado`.
+ * Útil para refrescar a demanda sin esperar al cron diario.
+ */
+export async function refreshTrmAction(): Promise<TrmState> {
+  if (!(await getSession())) return { error: "Sesión expirada." };
+
+  try {
+    const trm = await fetchTrmOficial();
+    const col = await collections.settings();
+    await col.updateOne(
+      {},
+      {
+        $set: {
+          trmScrapeado: trm.value,
+          trmActualizado: new Date(),
+          actualizado: new Date(),
+        },
+      },
+      { upsert: true },
+    );
+
+    revalidatePath("/admin/configuracion");
+    revalidatePath("/admin");
+    revalidatePath("/cotizador");
+    return { ok: true, trm: trm.value };
+  } catch (e) {
+    return {
+      error:
+        e instanceof Error ? e.message : "No se pudo consultar la TRM oficial.",
+    };
+  }
 }
 
 function num(form: FormData, key: string): number {

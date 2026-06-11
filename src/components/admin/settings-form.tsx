@@ -98,7 +98,7 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           name="trmManual"
           defaultValue={initial.trmManual ?? ""}
           placeholder="vacío = usar automático"
-          hint="Déjalo vacío para usar el TRM automático (cron)."
+          hint="Vacío = usar el TRM oficial (Superfinanciera, automático)."
         />
         <Field
           label="Recargo TRM"
