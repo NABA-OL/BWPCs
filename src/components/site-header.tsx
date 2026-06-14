@@ -9,10 +9,33 @@ import { siteConfig } from "@/lib/site-config";
 
 export function SiteHeader() {
   const pathname = usePathname();
+  // `open` controla el estado visual (entra/sale); `mounted` controla la
+  // presencia en el DOM. Al cerrar, se anima la salida y luego se desmonta.
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // El cotizador es el CTA; no se repite como link de texto en la barra.
   const links = siteConfig.nav.filter((l) => l.href !== "/cotizador");
+
+  const prefersReducedMotion = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function openMenu() {
+    setMounted(true);
+    setOpen(true);
+  }
+
+  function closeMenu() {
+    setOpen(false);
+    // Sin animación (reduced-motion) no hay `animationend`: desmontamos ya.
+    if (prefersReducedMotion()) setMounted(false);
+  }
+
+  function toggleMenu() {
+    if (open) closeMenu();
+    else openMenu();
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-hairline bg-vanilla/90 backdrop-blur supports-[backdrop-filter]:bg-vanilla/80">
@@ -46,7 +69,7 @@ export function SiteHeader() {
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={open}
           aria-controls="mobile-nav"
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggleMenu}
           className="flex h-10 w-10 items-center justify-center md:hidden"
         >
           <div className="flex flex-col gap-1.5">
@@ -70,14 +93,31 @@ export function SiteHeader() {
       </div>
 
       {/* Menú móvil */}
-      {open && (
-        <nav id="mobile-nav" className="bw-menu border-t border-hairline bg-vanilla px-4 pb-6 pt-2 md:hidden">
-          {links.map((link) => (
+      {mounted && (
+        <nav
+          id="mobile-nav"
+          onAnimationEnd={(e) => {
+            // Solo al terminar la animación de salida del propio panel
+            // (no las de los ítems, que burbujean) desmontamos.
+            if (
+              !open &&
+              e.target === e.currentTarget &&
+              e.animationName === "bw-menu-out"
+            ) {
+              setMounted(false);
+            }
+          }}
+          className={`bw-menu ${
+            open ? "" : "bw-menu-leaving"
+          } border-t border-hairline bg-vanilla px-4 pb-6 pt-2 md:hidden`}
+        >
+          {links.map((link, i) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => setOpen(false)}
-              className="block border-b border-hairline py-3 text-base font-medium text-panda last:border-0"
+              onClick={closeMenu}
+              style={{ "--bw-i": i } as React.CSSProperties}
+              className="bw-menu-item block border-b border-hairline py-3 text-base font-medium text-panda last:border-0"
             >
               {link.label}
             </Link>
@@ -85,8 +125,9 @@ export function SiteHeader() {
           <ButtonLink
             href="/cotizador"
             size="lg"
-            className="mt-4 w-full"
-            onClick={() => setOpen(false)}
+            className="bw-menu-item mt-4 w-full"
+            style={{ "--bw-i": links.length } as React.CSSProperties}
+            onClick={closeMenu}
           >
             Cotiza tu PC
           </ButtonLink>

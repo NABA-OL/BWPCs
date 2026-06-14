@@ -106,7 +106,7 @@ body {
 @keyframes bw-menu-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-12px);
   }
   to {
     opacity: 1;
@@ -114,8 +114,45 @@ body {
   }
 }
 
+/* Entrada en cascada de cada enlace del menú */
+@keyframes bw-menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Salida del menú móvil (sube y se desvanece) */
+@keyframes bw-menu-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .bw-menu {
-    animation: bw-menu-in 150ms ease;
+    transform-origin: top;
+    animation: bw-menu-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Definida después de .bw-menu para que su `animation` tenga prioridad. */
+  .bw-menu-leaving {
+    animation: bw-menu-out 200ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  .bw-menu-item {
+    opacity: 0;
+    animation: bw-menu-item-in 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    /* Escalonado: cada ítem entra 50ms después del anterior. */
+    animation-delay: calc(var(--bw-i, 0) * 50ms + 80ms);
   }
 }
