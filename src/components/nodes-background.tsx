@@ -16,7 +16,26 @@ import { useEffect, useRef } from "react";
 // Paleta de marca en componentes RGB (para componer rgba con alpha variable).
 const NODE_RGB = "10,10,10"; // panda black
 const LINE_RGB = "107,107,107"; // component gray
-const ACCENT_RGB = "37,99,235"; // azul eléctrico (#2563EB)
+// El acento se lee del token CSS --color-accent en runtime (carmesí #c83c2a).
+const ACCENT_FALLBACK = "200,60,42";
+
+/** Convierte un hex (#rgb o #rrggbb) a "r,g,b"; null si no es válido. */
+function hexToRgb(hex: string): string | null {
+  const h = hex.trim().replace("#", "");
+  if (h.length === 3) {
+    const r = parseInt(h[0] + h[0], 16);
+    const g = parseInt(h[1] + h[1], 16);
+    const b = parseInt(h[2] + h[2], 16);
+    return [r, g, b].some(Number.isNaN) ? null : `${r},${g},${b}`;
+  }
+  if (h.length === 6) {
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    return [r, g, b].some(Number.isNaN) ? null : `${r},${g},${b}`;
+  }
+  return null;
+}
 
 const LINK_DIST = 130; // distancia máx. para unir dos nodos (px)
 const POINTER_DIST = 170; // radio de conexión/atracción al cursor (px)
@@ -40,6 +59,14 @@ export function NodesBackground() {
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Acento real de la marca, leído del token CSS (carmesí #c83c2a).
+    const accentRgb =
+      hexToRgb(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--color-accent",
+        ),
+      ) ?? ACCENT_FALLBACK;
+
     let width = 0;
     let height = 0;
     let nodes: Node[] = [];
@@ -62,22 +89,14 @@ export function NodesBackground() {
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      // getBoundingClientRect es lo más fiable para un canvas full-bleed
-      // (CSS `inset-0` lo estira al viewport). Los fallbacks cubren entornos
-      // que reportan 0 de ancho.
-      const rect = canvas!.getBoundingClientRect();
-      width =
-        Math.round(rect.width) ||
-        window.innerWidth ||
-        document.documentElement.clientWidth ||
-        document.documentElement.scrollWidth;
-      height =
-        Math.round(rect.height) ||
-        window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.documentElement.scrollHeight;
+      // El <canvas> es un elemento reemplazado: NO se estira con inset-0, así
+      // que medimos el viewport y fijamos su tamaño CSS explícitamente.
+      width = window.innerWidth || document.documentElement.clientWidth;
+      height = window.innerHeight || document.documentElement.clientHeight;
       canvas!.width = Math.floor(width * dpr);
       canvas!.height = Math.floor(height * dpr);
+      canvas!.style.width = `${width}px`;
+      canvas!.style.height = `${height}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
       buildNodes();
     }
@@ -153,7 +172,7 @@ export function NodesBackground() {
           const d2 = dx * dx + dy * dy;
           if (d2 < POINTER_DIST * POINTER_DIST) {
             const alpha = (1 - Math.sqrt(d2) / POINTER_DIST) * 0.5;
-            ctx!.strokeStyle = `rgba(${ACCENT_RGB},${alpha})`;
+            ctx!.strokeStyle = `rgba(${accentRgb},${alpha})`;
             ctx!.lineWidth = 1;
             ctx!.beginPath();
             ctx!.moveTo(pointer.x, pointer.y);
@@ -169,7 +188,7 @@ export function NodesBackground() {
           pointer.active &&
           Math.hypot(pointer.x - n.x, pointer.y - n.y) < POINTER_DIST;
         ctx!.fillStyle = near
-          ? `rgba(${ACCENT_RGB},0.85)`
+          ? `rgba(${accentRgb},0.85)`
           : `rgba(${NODE_RGB},0.45)`;
         const s = 2.4;
         ctx!.fillRect(n.x - s / 2, n.y - s / 2, s, s);
