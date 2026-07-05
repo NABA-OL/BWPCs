@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { Metadata, Viewport } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";

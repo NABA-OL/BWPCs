@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import { getDb } from "@/lib/db/mongodb";
 import type {
   Admin,

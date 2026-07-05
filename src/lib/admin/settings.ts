@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import "server-only";
 import { collections, DEFAULT_SETTINGS } from "@/lib/db/collections";
 import type { Settings } from "@/lib/db/types";

@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import Image from "next/image";
 import Link from "next/link";
 import { siteConfig, whatsappLink } from "@/lib/site-config";

@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ObjectId } from "mongodb";

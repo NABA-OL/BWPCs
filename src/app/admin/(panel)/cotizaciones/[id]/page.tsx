@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ObjectId } from "mongodb";

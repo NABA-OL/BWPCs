@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { MetadataRoute } from "next";
 
 const BASE = "https://bwpcs.vercel.app";

@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import { MongoClient, type Db } from "mongodb";
 import { env } from "@/lib/env";
 

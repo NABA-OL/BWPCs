@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { ComponentCategory } from "@/lib/db/types";
 
 /** Etiquetas legibles por categoría. */

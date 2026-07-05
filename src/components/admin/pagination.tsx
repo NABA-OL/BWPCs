@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 export const PAGE_SIZE = 20;
 
 export function Pagination({

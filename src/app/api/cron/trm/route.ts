@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import { NextResponse } from "next/server";
 import { fetchTrmOficial } from "@/lib/trm";
 import { collections } from "@/lib/db/collections";

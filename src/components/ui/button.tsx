@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import Link from "next/link";
 import type { ComponentProps } from "react";
 

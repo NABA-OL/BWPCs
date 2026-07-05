@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { Graphic, Processor, Settings } from "@/lib/db/types";
 
 /**

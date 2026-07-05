@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 /**
  * Configuración estática del sitio.
  * NOTA: el contacto (WhatsApp/email) será editable desde el panel admin (settings en BD)

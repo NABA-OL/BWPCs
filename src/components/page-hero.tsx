@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 export function PageHero({
   eyebrow,
   title,

@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { NodesBackground } from "@/components/nodes-background";

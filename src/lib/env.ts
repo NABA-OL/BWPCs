@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 /**
  * Acceso centralizado a variables de entorno del servidor.
  * Lanza temprano si falta algo crítico (mejor fallar en build que en runtime).

@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 

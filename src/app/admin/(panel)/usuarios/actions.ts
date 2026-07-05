@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 "use server";
 
 import { randomBytes } from "node:crypto";
@@ -87,6 +88,40 @@ export async function createAdminAction(
 
   revalidatePath("/admin/usuarios");
   return { createdUser: usuario, generatedPassword: password };
+}
+
+export interface ResetPasswordState {
+  error?: string;
+  resetUser?: string;
+  generatedPassword?: string;
+}
+
+/** Resetea la contraseña de cualquier admin y devuelve la nueva (mostrar una vez). */
+export async function resetAdminPasswordAction(
+  _prev: ResetPasswordState,
+  form: FormData,
+): Promise<ResetPasswordState> {
+  if (!(await getSession())) return { error: "Sesión expirada." };
+
+  const id = String(form.get("id") ?? "").trim();
+  if (!id) return { error: "ID inválido." };
+
+  const admins = await collections.admins();
+  const target = await admins.findOne({ _id: new ObjectId(id) });
+  if (!target) return { error: "Usuario no encontrado." };
+
+  const password = generatePassword();
+  try {
+    await admins.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { passwordHash: await hashPassword(password) } },
+    );
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Error al resetear contraseña." };
+  }
+
+  revalidatePath("/admin/usuarios");
+  return { resetUser: target.usuario, generatedPassword: password };
 }
 
 /** Elimina un admin (no permite borrarse a sí mismo ni al admin "admin" por defecto). */

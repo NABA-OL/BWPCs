@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 "use client";
 
 import { useActionState, useEffect } from "react";
@@ -6,8 +7,10 @@ import {
   changePasswordAction,
   createAdminAction,
   deleteAdminAction,
+  resetAdminPasswordAction,
   type PasswordState,
   type CreateUserState,
+  type ResetPasswordState,
 } from "@/app/admin/(panel)/usuarios/actions";
 import { Button } from "@/components/ui/button";
 
@@ -36,6 +39,11 @@ export function UsersManager({
     CreateUserState,
     FormData
   >(createAdminAction, {});
+
+  const [resetState, resetAction, resetPending] = useActionState<
+    ResetPasswordState,
+    FormData
+  >(resetAdminPasswordAction, {});
 
   useEffect(() => {
     if (newState.createdUser) router.refresh();
@@ -142,6 +150,24 @@ export function UsersManager({
         <h2 className="border-b border-hairline px-6 py-4 text-lg font-semibold">
           Administradores
         </h2>
+
+        {resetState.resetUser && resetState.generatedPassword && (
+          <div className="border-b border-accent/30 bg-accent/5 px-6 py-4 text-sm">
+            <p>
+              Contraseña de <strong>{resetState.resetUser}</strong> reseteada.
+              Nueva contraseña (cópiala; no se vuelve a mostrar):
+            </p>
+            <p className="mt-2 select-all font-mono text-base font-semibold">
+              {resetState.generatedPassword}
+            </p>
+          </div>
+        )}
+        {resetState.error && (
+          <p role="alert" className="border-b border-hairline px-6 py-3 text-sm text-accent">
+            {resetState.error}
+          </p>
+        )}
+
         <table className="w-full text-sm">
           <thead className="border-b border-hairline bg-hairline/30 text-left">
             <tr>
@@ -161,27 +187,52 @@ export function UsersManager({
                 </td>
                 <td className="px-6 py-3 text-component">{a.creado}</td>
                 <td className="px-6 py-3 text-right">
-                  {a.usuario === "admin" ? (
-                    <span className="text-xs text-component">Protegido</span>
-                  ) : a.id === currentUserId ? (
-                    <span className="text-xs text-component">—</span>
-                  ) : (
+                  <div className="flex items-center justify-end gap-4">
+                    {/* Resetear contraseña — disponible para todos */}
                     <form
-                      action={deleteAdminAction}
+                      action={resetAction}
                       onSubmit={(e) => {
-                        if (!confirm(`¿Eliminar al usuario ${a.usuario}?`))
+                        if (
+                          !confirm(
+                            `¿Resetear la contraseña de ${a.usuario}? Se generará una nueva contraseña temporal.`,
+                          )
+                        )
                           e.preventDefault();
                       }}
                     >
                       <input type="hidden" name="id" value={a.id} />
                       <button
                         type="submit"
-                        className="text-accent hover:underline"
+                        disabled={resetPending}
+                        className="text-component hover:text-panda hover:underline"
                       >
-                        Eliminar
+                        Resetear
                       </button>
                     </form>
-                  )}
+
+                    {/* Eliminar — no para admin inicial ni para sí mismo */}
+                    {a.usuario !== "admin" && a.id !== currentUserId ? (
+                      <form
+                        action={deleteAdminAction}
+                        onSubmit={(e) => {
+                          if (!confirm(`¿Eliminar al usuario ${a.usuario}?`))
+                            e.preventDefault();
+                        }}
+                      >
+                        <input type="hidden" name="id" value={a.id} />
+                        <button
+                          type="submit"
+                          className="text-accent hover:underline"
+                        >
+                          Eliminar
+                        </button>
+                      </form>
+                    ) : (
+                      <span className="text-xs text-component">
+                        {a.usuario === "admin" ? "Protegido" : "—"}
+                      </span>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

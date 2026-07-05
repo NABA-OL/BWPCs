@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { ObjectId } from "mongodb";
 
 /** Categorías de componente que maneja el catálogo y el cotizador. */

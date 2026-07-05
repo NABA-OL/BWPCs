@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";

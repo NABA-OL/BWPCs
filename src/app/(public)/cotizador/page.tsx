@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";

@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 import type { ComponentCategory, Settings } from "@/lib/db/types";
 import { paymentTotals } from "@/lib/pricing";
 

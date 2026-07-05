@@ -1,3 +1,4 @@
+// Desarrollado por NABA-OL
 export interface AdminNavItem {
   label: string;
   href: string;
