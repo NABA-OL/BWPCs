@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 

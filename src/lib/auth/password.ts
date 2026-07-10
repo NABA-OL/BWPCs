@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import bcrypt from "bcryptjs";
 
 /** Hashea una contraseña en texto plano (solo en runtime Node). */

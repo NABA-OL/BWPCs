@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import { NextResponse } from "next/server";
 import { fetchTrmOficial } from "@/lib/trm";
 import { collections } from "@/lib/db/collections";

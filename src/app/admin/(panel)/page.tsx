@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { Metadata } from "next";
 import Link from "next/link";
 import {

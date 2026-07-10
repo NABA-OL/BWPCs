@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 /**
  * Configuración estática del sitio.
  * NOTA: el contacto (WhatsApp/email) será editable desde el panel admin (settings en BD)

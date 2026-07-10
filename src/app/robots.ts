@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {

@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { Graphic, Processor, Settings } from "@/lib/db/types";
 
 /**

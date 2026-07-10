@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { ComponentCategory } from "@/lib/db/types";
 
 /** Etiquetas legibles por categoría. */

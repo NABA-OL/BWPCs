@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import { getDb } from "@/lib/db/mongodb";
 import type {
   Admin,

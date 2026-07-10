@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { AssemblyHero } from "@/components/assembly-hero";

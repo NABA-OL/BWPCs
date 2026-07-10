@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import { MongoClient, type Db } from "mongodb";
 import { env } from "@/lib/env";
 

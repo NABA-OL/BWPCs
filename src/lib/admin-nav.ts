@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 export interface AdminNavItem {
   label: string;
   href: string;

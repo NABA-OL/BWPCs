@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import Image from "next/image";
 import Link from "next/link";
 import { BrandWordmark } from "@/components/brand-wordmark";

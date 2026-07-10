@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import { collections } from "@/lib/db/collections";
 
 export const runtime = "nodejs";

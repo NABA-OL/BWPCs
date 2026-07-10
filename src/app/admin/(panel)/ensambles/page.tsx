@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
 import { BuildManager, type BuildRow } from "@/components/admin/build-manager";

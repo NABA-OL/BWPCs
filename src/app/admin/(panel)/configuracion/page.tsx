@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { Metadata } from "next";
 import { getSettings } from "@/lib/admin/settings";
 import { SettingsForm } from "@/components/admin/settings-form";

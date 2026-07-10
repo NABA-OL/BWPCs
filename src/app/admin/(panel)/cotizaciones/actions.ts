@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 "use server";
 
 import { ObjectId } from "mongodb";

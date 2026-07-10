@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import Link from "next/link";
 import type { ComponentProps } from "react";
 

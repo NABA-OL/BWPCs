@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 export const PAGE_SIZE = 20;
 
 export function Pagination({

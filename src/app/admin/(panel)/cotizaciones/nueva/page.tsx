@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import type { Metadata } from "next";
 import { getQuoteBuilderData } from "@/lib/admin/quote-data";
 import { QuoteBuilder } from "@/components/admin/quote-builder";

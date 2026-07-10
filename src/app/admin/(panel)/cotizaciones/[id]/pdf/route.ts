@@ -1,4 +1,4 @@
-// Desarrollado por NABA-OL
+// Desarrollado por BlacKraken Solutions
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ObjectId } from "mongodb";
