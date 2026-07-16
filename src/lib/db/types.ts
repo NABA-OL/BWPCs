@@ -125,6 +125,72 @@ export interface Admin {
   _id?: ObjectId;
   usuario: string;
   passwordHash: string;
+  cedula: string;
+  firmaBase64: string | null; // solo el base64 puro, sin "data:image/png;base64,"
+  creado: Date;
+}
+
+/** Cliente guardado para reutilizar en cuentas de cobro. */
+export interface Client {
+  _id?: ObjectId;
+  nombre: string;
+  identificacion: string; // cédula o NIT
+  direccion: string;
+  telefono: string;
+  email: string;
+  creado: Date;
+}
+
+/** Cuenta bancaria guardada para reutilizar en cuentas de cobro. Cuenta normal
+ * (tipoCuenta/numero) y llave Bre-B (transferencia inmediata interbancaria,
+ * Colombia) no son excluyentes: puede tener una, otra, o ambas. */
+export interface BankAccount {
+  _id?: ObjectId;
+  banco: string;
+  tipoCuenta: "Ahorros" | "Corriente" | null; // presente si tiene cuenta normal
+  numero: string | null; // presente si tiene cuenta normal
+  llave: string | null; // presente si tiene llave Bre-B
+  titular: string;
+  creado: Date;
+}
+
+export interface CuentaCobroItem {
+  descripcion: string;
+  cantidad: number;
+  valorUnitario: number;
+}
+
+/** Cuenta de cobro. Cliente/cuenta/firmante quedan como snapshot: si el
+ * cliente o la cuenta bancaria guardados cambian después, el documento ya
+ * generado no se ve afectado. */
+export interface CuentaCobro {
+  _id?: ObjectId;
+  numero: string; // "2026-01"
+  fecha: Date;
+  cliente: {
+    nombre: string;
+    identificacion: string;
+    direccion: string;
+    telefono: string;
+    email: string;
+  };
+  cuentaBanco: {
+    banco: string;
+    tipoCuenta: "Ahorros" | "Corriente" | null;
+    numero: string | null;
+    llave: string | null;
+    titular: string;
+  };
+  firmante: {
+    nombre: string;
+    cedula: string;
+    firmaBase64: string | null;
+  };
+  items: CuentaCobroItem[];
+  descuentoPct: number;
+  subtotal: number;
+  descuentoValor: number;
+  total: number;
   creado: Date;
 }
 

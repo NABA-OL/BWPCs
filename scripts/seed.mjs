@@ -62,6 +62,8 @@ try {
     await db.collection("admins").insertOne({
       usuario: adminUser,
       passwordHash,
+      cedula: "",
+      firmaBase64: null,
       creado: new Date(),
     });
     console.log(`✓ Admin creado:  usuario="${adminUser}"  contraseña="${adminPassword}"`);

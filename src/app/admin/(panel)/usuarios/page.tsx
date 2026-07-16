@@ -14,6 +14,8 @@ const fmtDate = new Intl.DateTimeFormat("es-CO", { dateStyle: "medium" });
 export default async function UsuariosPage() {
   const session = await getSession();
   let rows: AdminRow[] = [];
+  let currentCedula = "";
+  let currentFirmaBase64: string | null = null;
   let error: string | null = null;
 
   try {
@@ -24,6 +26,9 @@ export default async function UsuariosPage() {
       usuario: a.usuario,
       creado: a.creado ? fmtDate.format(new Date(a.creado)) : "—",
     }));
+    const current = docs.find((a) => a._id!.toString() === session?.sub);
+    currentCedula = current?.cedula ?? "";
+    currentFirmaBase64 = current?.firmaBase64 ?? null;
   } catch (e) {
     error = e instanceof Error ? e.message : "Error al cargar los usuarios.";
   }
@@ -46,6 +51,8 @@ export default async function UsuariosPage() {
           admins={rows}
           currentUserId={session?.sub ?? ""}
           currentUser={session?.usuario ?? ""}
+          currentCedula={currentCedula}
+          currentFirmaBase64={currentFirmaBase64}
         />
       )}
     </>

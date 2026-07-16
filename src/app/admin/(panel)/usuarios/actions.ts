@@ -80,6 +80,8 @@ export async function createAdminAction(
     await admins.insertOne({
       usuario,
       passwordHash: await hashPassword(password),
+      cedula: "",
+      firmaBase64: null,
       creado: new Date(),
     });
   } catch (e) {
@@ -88,6 +90,43 @@ export async function createAdminAction(
 
   revalidatePath("/admin/usuarios");
   return { createdUser: usuario, generatedPassword: password };
+}
+
+export interface ProfileState {
+  ok?: boolean;
+  error?: string;
+}
+
+/** Strips an accidental "data:image/...;base64," prefix if pasted by mistake. */
+function stripDataUriPrefix(raw: string): string {
+  const idx = raw.indexOf("base64,");
+  return idx >= 0 ? raw.slice(idx + "base64,".length) : raw;
+}
+
+/** Actualiza cédula y firma (base64) del admin de la sesión actual. */
+export async function updateProfileAction(
+  _prev: ProfileState,
+  form: FormData,
+): Promise<ProfileState> {
+  const session = await getSession();
+  if (!session) return { error: "Sesión expirada." };
+
+  const cedula = String(form.get("cedula") ?? "").trim();
+  const firmaRaw = String(form.get("firmaBase64") ?? "").trim();
+  const firmaBase64 = firmaRaw ? stripDataUriPrefix(firmaRaw) : null;
+
+  try {
+    const admins = await collections.admins();
+    await admins.updateOne(
+      { _id: new ObjectId(session.sub) },
+      { $set: { cedula, firmaBase64 } },
+    );
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Error al guardar el perfil." };
+  }
+
+  revalidatePath("/admin/usuarios");
+  return { ok: true };
 }
 
 export interface ResetPasswordState {

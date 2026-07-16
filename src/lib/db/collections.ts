@@ -2,10 +2,13 @@
 import { getDb } from "@/lib/db/mongodb";
 import type {
   Admin,
+  BankAccount,
   Build,
   CategoryAverage,
   CategoryOptions,
+  Client,
   ComponentItem,
+  CuentaCobro,
   Graphic,
   Processor,
   Quote,
@@ -40,6 +43,15 @@ export const collections = {
   },
   async builds() {
     return (await getDb()).collection<Build>("builds");
+  },
+  async clients() {
+    return (await getDb()).collection<Client>("clients");
+  },
+  async bankAccounts() {
+    return (await getDb()).collection<BankAccount>("bankAccounts");
+  },
+  async cuentasCobro() {
+    return (await getDb()).collection<CuentaCobro>("cuentasCobro");
   },
 };
 

@@ -12,15 +12,9 @@ import { formatCOP } from "@/lib/format";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { COMPONENT_CATEGORIES, type ComponentCategory } from "@/lib/db/types";
 import type { QuoteInput, QuoteItemInput } from "@/lib/quote";
+import type { CatalogOption } from "@/lib/admin/catalog-data";
 
-export interface CatalogOption {
-  id: string;
-  label: string;
-  categoria: ComponentCategory;
-  modelo: string;
-  precioCop: number;
-  descripcion: string;
-}
+export type { CatalogOption };
 
 const emptyItem = (categoria: ComponentCategory = "Procesador"): QuoteItemInput => ({
   categoria,

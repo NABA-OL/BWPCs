@@ -3,14 +3,17 @@
 
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   changePasswordAction,
   createAdminAction,
   deleteAdminAction,
   resetAdminPasswordAction,
+  updateProfileAction,
   type PasswordState,
   type CreateUserState,
   type ResetPasswordState,
+  type ProfileState,
 } from "@/app/admin/(panel)/usuarios/actions";
 import { Button } from "@/components/ui/button";
 
@@ -24,12 +27,17 @@ export function UsersManager({
   admins,
   currentUserId,
   currentUser,
+  currentCedula,
+  currentFirmaBase64,
 }: {
   admins: AdminRow[];
   currentUserId: string;
   currentUser: string;
+  currentCedula: string;
+  currentFirmaBase64: string | null;
 }) {
   const router = useRouter();
+  const [firmaPreview, setFirmaPreview] = useState(currentFirmaBase64 ?? "");
 
   const [pwState, pwAction, pwPending] = useActionState<PasswordState, FormData>(
     changePasswordAction,
@@ -44,6 +52,11 @@ export function UsersManager({
     ResetPasswordState,
     FormData
   >(resetAdminPasswordAction, {});
+
+  const [profileState, profileAction, profilePending] = useActionState<
+    ProfileState,
+    FormData
+  >(updateProfileAction, {});
 
   useEffect(() => {
     if (newState.createdUser) router.refresh();
@@ -99,6 +112,64 @@ export function UsersManager({
             {pwState.error && (
               <span role="alert" className="text-sm text-accent">
                 {pwState.error}
+              </span>
+            )}
+          </div>
+        </form>
+      </section>
+
+      {/* Cédula y firma (para cuentas de cobro) */}
+      <section className="border border-hairline p-6">
+        <h2 className="text-lg font-semibold">Mi perfil</h2>
+        <p className="mt-1 text-sm text-component">
+          Cédula y firma que se usan al firmar cuentas de cobro.
+        </p>
+        <form action={profileAction} className="mt-4 grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm font-medium text-component">Cédula</span>
+            <input
+              name="cedula"
+              defaultValue={currentCedula}
+              placeholder="1234567890"
+              className={`${inputCls} font-mono`}
+            />
+          </label>
+          <label className="block">
+            <span className="text-sm font-medium text-component">
+              Firma (base64 de la imagen, sin el prefijo{" "}
+              <code className="text-xs">data:image/...</code>)
+            </span>
+            <textarea
+              name="firmaBase64"
+              defaultValue={currentFirmaBase64 ?? ""}
+              onChange={(e) => setFirmaPreview(e.target.value.trim())}
+              rows={3}
+              placeholder="iVBORw0KGgoAAAANSUhEUgA..."
+              className={`${inputCls} font-mono text-xs`}
+            />
+          </label>
+          {firmaPreview && (
+            <div className="sm:col-span-2">
+              <span className="text-sm font-medium text-component">
+                Vista previa
+              </span>
+              <img
+                src={`data:image/png;base64,${firmaPreview}`}
+                alt="Vista previa de la firma"
+                className="mt-1.5 h-16 border border-hairline bg-vanilla object-contain p-1"
+              />
+            </div>
+          )}
+          <div className="sm:col-span-2 flex items-center gap-3">
+            <Button type="submit" disabled={profilePending}>
+              {profilePending ? "Guardando…" : "Guardar perfil"}
+            </Button>
+            {profileState.ok && (
+              <span className="text-sm text-component">Perfil actualizado ✓</span>
+            )}
+            {profileState.error && (
+              <span role="alert" className="text-sm text-accent">
+                {profileState.error}
               </span>
             )}
           </div>

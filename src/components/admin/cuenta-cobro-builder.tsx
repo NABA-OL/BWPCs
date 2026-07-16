@@ -1,0 +1,508 @@
+// Desarrollado por BlacKraken Solutions
+"use client";
+
+import { useActionState, useMemo, useState } from "react";
+import Link from "next/link";
+import {
+  saveCuentaCobroAction,
+  type CuentaCobroFormState,
+} from "@/app/admin/(panel)/cuentas-cobro/actions";
+import { Button } from "@/components/ui/button";
+import { formatCOP } from "@/lib/format";
+import { CATEGORY_LABELS } from "@/lib/categories";
+import {
+  computeCuentaCobro,
+  type CuentaCobroInput,
+  type CuentaCobroItemInput,
+} from "@/lib/cuenta-cobro";
+import { COMPONENT_CATEGORIES } from "@/lib/db/types";
+import type { BankAccount } from "@/lib/db/types";
+import type { CatalogOption } from "@/lib/admin/catalog-data";
+
+export interface ClientOption {
+  id: string;
+  nombre: string;
+  identificacion: string;
+  direccion: string;
+  telefono: string;
+  email: string;
+}
+
+export interface BankAccountOption {
+  id: string;
+  banco: string;
+  tipoCuenta: BankAccount["tipoCuenta"];
+  numero: string | null;
+  llave: string | null;
+  titular: string;
+}
+
+export interface SignerOption {
+  id: string;
+  nombre: string;
+  cedula: string;
+  firmaBase64: string | null;
+}
+
+const emptyItem = () => ({ descripcion: "", cantidad: 1, valorUnitario: 0 });
+
+export function CuentaCobroBuilder({
+  id,
+  initial,
+  clients,
+  bankAccounts,
+  signers,
+  catalog,
+  pdfHref,
+}: {
+  id: string;
+  initial: CuentaCobroInput;
+  clients: ClientOption[];
+  bankAccounts: BankAccountOption[];
+  signers: SignerOption[];
+  catalog: CatalogOption[];
+  pdfHref?: string;
+}) {
+  const [data, setData] = useState<CuentaCobroInput>(initial);
+  const [clientChoice, setClientChoice] = useState("otro");
+  const [bankChoice, setBankChoice] = useState("otro");
+  const [signerChoice, setSignerChoice] = useState("");
+  const [state, formAction, pending] = useActionState<
+    CuentaCobroFormState,
+    FormData
+  >(saveCuentaCobroAction, {});
+
+  const totals = useMemo(
+    () => computeCuentaCobro(data.items, data.descuentoPct),
+    [data.items, data.descuentoPct],
+  );
+
+  function setItem(ii: number, patch: Partial<CuentaCobroInput["items"][number]>) {
+    setData((d) => ({
+      ...d,
+      items: d.items.map((it, i) => (i === ii ? { ...it, ...patch } : it)),
+    }));
+  }
+  function addItem(item: CuentaCobroItemInput = emptyItem()) {
+    setData((d) => ({ ...d, items: [...d.items, item] }));
+  }
+  function removeItem(ii: number) {
+    setData((d) => ({ ...d, items: d.items.filter((_, i) => i !== ii) }));
+  }
+
+  function pickClient(clientId: string) {
+    setClientChoice(clientId);
+    if (clientId === "otro") return;
+    const c = clients.find((x) => x.id === clientId);
+    if (c) setData((d) => ({ ...d, cliente: { ...c } }));
+  }
+  function pickBank(bankId: string) {
+    setBankChoice(bankId);
+    if (bankId === "otro") return;
+    const b = bankAccounts.find((x) => x.id === bankId);
+    if (b) setData((d) => ({ ...d, cuentaBanco: { ...b } }));
+  }
+  function pickSigner(signerId: string) {
+    setSignerChoice(signerId);
+    const s = signers.find((x) => x.id === signerId);
+    if (s)
+      setData((d) => ({
+        ...d,
+        firmante: { nombre: s.nombre, cedula: s.cedula, firmaBase64: s.firmaBase64 },
+      }));
+  }
+
+  const inputCls =
+    "mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda";
+
+  return (
+    <form action={formAction} className="mt-8 space-y-8">
+      <input type="hidden" name="id" value={id} />
+      <input type="hidden" name="payload" value={JSON.stringify(data)} />
+
+      {/* Encabezado */}
+      <section className="grid gap-4 border border-hairline p-6 sm:grid-cols-2">
+        <label className="block">
+          <span className="text-sm font-medium text-component">Número</span>
+          <input
+            value={data.numero}
+            onChange={(e) => setData({ ...data, numero: e.target.value })}
+            className={`${inputCls} font-mono`}
+          />
+        </label>
+        <label className="block">
+          <span className="text-sm font-medium text-component">Fecha</span>
+          <input
+            type="date"
+            value={data.fecha}
+            onChange={(e) => setData({ ...data, fecha: e.target.value })}
+            className={`${inputCls} font-mono`}
+          />
+        </label>
+      </section>
+
+      {/* Cliente */}
+      <section className="border border-hairline p-6">
+        <h2 className="text-lg font-semibold">Cliente</h2>
+        <select
+          value={clientChoice}
+          onChange={(e) => pickClient(e.target.value)}
+          className={`${inputCls} max-w-sm`}
+        >
+          <option value="otro">Otro (llenar a mano)</option>
+          {clients.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.nombre} · {c.identificacion}
+            </option>
+          ))}
+        </select>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <Field
+            label="Nombre"
+            value={data.cliente.nombre}
+            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, nombre: v } })}
+          />
+          <Field
+            label="Identificación"
+            value={data.cliente.identificacion}
+            onChange={(v) =>
+              setData({ ...data, cliente: { ...data.cliente, identificacion: v } })
+            }
+            mono
+          />
+          <Field
+            label="Dirección"
+            value={data.cliente.direccion}
+            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, direccion: v } })}
+          />
+          <Field
+            label="Teléfono"
+            value={data.cliente.telefono}
+            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, telefono: v } })}
+            mono
+          />
+          <Field
+            label="Email"
+            value={data.cliente.email}
+            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, email: v } })}
+          />
+        </div>
+      </section>
+
+      {/* Cuenta bancaria */}
+      <section className="border border-hairline p-6">
+        <h2 className="text-lg font-semibold">Cuenta bancaria</h2>
+        <p className="mt-1 text-sm text-component">
+          Llena cuenta normal, llave Bre-B, o ambas — lo que dejes en blanco no
+          aparece en el PDF.
+        </p>
+        <select
+          value={bankChoice}
+          onChange={(e) => pickBank(e.target.value)}
+          className={`${inputCls} max-w-sm`}
+        >
+          <option value="otro">Otra (llenar a mano)</option>
+          {bankAccounts.map((b) => (
+            <option key={b.id} value={b.id}>
+              {b.banco}
+              {b.numero ? ` · ${b.tipoCuenta} ${b.numero}` : ""}
+              {b.llave ? ` · Bre-B ${b.llave}` : ""}
+            </option>
+          ))}
+        </select>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <Field
+            label="Banco"
+            value={data.cuentaBanco.banco}
+            onChange={(v) =>
+              setData({ ...data, cuentaBanco: { ...data.cuentaBanco, banco: v } })
+            }
+          />
+          <Field
+            label="Titular"
+            value={data.cuentaBanco.titular}
+            onChange={(v) =>
+              setData({ ...data, cuentaBanco: { ...data.cuentaBanco, titular: v } })
+            }
+          />
+        </div>
+
+        <div className="mt-5 grid gap-4 border-t border-hairline pt-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm font-medium text-component">
+              Tipo de cuenta{" "}
+              <span className="text-component/60">(opcional)</span>
+            </span>
+            <select
+              value={data.cuentaBanco.tipoCuenta ?? ""}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  cuentaBanco: {
+                    ...data.cuentaBanco,
+                    tipoCuenta:
+                      (e.target.value as BankAccount["tipoCuenta"]) || null,
+                  },
+                })
+              }
+              className={inputCls}
+            >
+              <option value="">— No aplica —</option>
+              <option value="Ahorros">Ahorros</option>
+              <option value="Corriente">Corriente</option>
+            </select>
+          </label>
+          <Field
+            label="Número de cuenta (opcional)"
+            value={data.cuentaBanco.numero ?? ""}
+            onChange={(v) =>
+              setData({
+                ...data,
+                cuentaBanco: { ...data.cuentaBanco, numero: v },
+              })
+            }
+            mono
+          />
+          <Field
+            label="Llave Bre-B (opcional)"
+            value={data.cuentaBanco.llave ?? ""}
+            onChange={(v) =>
+              setData({ ...data, cuentaBanco: { ...data.cuentaBanco, llave: v } })
+            }
+            mono
+          />
+        </div>
+      </section>
+
+      {/* Firmante */}
+      <section className="border border-hairline p-6">
+        <h2 className="text-lg font-semibold">Firmante</h2>
+        <select
+          value={signerChoice}
+          onChange={(e) => pickSigner(e.target.value)}
+          className={`${inputCls} max-w-sm`}
+        >
+          <option value="">Selecciona un administrador…</option>
+          {signers.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.nombre}
+              {!s.firmaBase64 ? " (sin firma cargada)" : ""}
+            </option>
+          ))}
+        </select>
+        {data.firmante.nombre && (
+          <p className="mt-3 text-sm text-component">
+            Firma: <span className="font-mono">{data.firmante.nombre}</span> · C.C.{" "}
+            <span className="font-mono">{data.firmante.cedula || "—"}</span>
+            {!data.firmante.firmaBase64 && (
+              <span className="ml-2 text-accent">
+                Este admin no tiene firma cargada (Usuarios → Mi perfil).
+              </span>
+            )}
+          </p>
+        )}
+      </section>
+
+      {/* Ítems */}
+      <section className="border border-hairline p-6">
+        <h2 className="text-lg font-semibold">Ítems</h2>
+        <div className="mt-4 space-y-3">
+          {data.items.map((item, ii) => (
+            <div
+              key={ii}
+              className="grid items-start gap-2 sm:grid-cols-[1fr_100px_160px_auto]"
+            >
+              <input
+                value={item.descripcion}
+                onChange={(e) => setItem(ii, { descripcion: e.target.value })}
+                placeholder="Descripción del servicio"
+                className="border border-hairline bg-vanilla px-2 py-2 text-sm outline-none focus:border-panda"
+              />
+              <input
+                value={item.cantidad || ""}
+                onChange={(e) =>
+                  setItem(ii, {
+                    cantidad: Math.max(0, Math.round(Number(e.target.value) || 0)),
+                  })
+                }
+                inputMode="numeric"
+                placeholder="Cant."
+                className="border border-hairline bg-vanilla px-2 py-2 font-mono text-sm outline-none focus:border-panda"
+              />
+              <input
+                value={item.valorUnitario || ""}
+                onChange={(e) =>
+                  setItem(ii, {
+                    valorUnitario: Math.max(
+                      0,
+                      Math.round(Number(e.target.value.replace(/\D/g, "")) || 0),
+                    ),
+                  })
+                }
+                inputMode="numeric"
+                placeholder="Valor unitario"
+                className="border border-hairline bg-vanilla px-2 py-2 font-mono text-sm outline-none focus:border-panda"
+              />
+              <button
+                type="button"
+                onClick={() => removeItem(ii)}
+                disabled={data.items.length <= 1}
+                aria-label="Quitar ítem"
+                className="px-2 py-2 text-component hover:text-accent disabled:opacity-30"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() => addItem()}
+            className="text-sm text-component hover:text-panda"
+          >
+            + Línea manual
+          </button>
+          <CatalogPicker catalog={catalog} onPick={addItem} />
+        </div>
+
+        {/* Descuento + totales */}
+        <div className="mt-5 grid gap-4 border-t border-hairline pt-5 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm font-medium text-component">
+              Descuento (%)
+            </span>
+            <input
+              value={data.descuentoPct || ""}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  descuentoPct: Math.min(
+                    100,
+                    Math.max(0, Number(e.target.value.replace(/\D/g, "")) || 0),
+                  ),
+                })
+              }
+              inputMode="numeric"
+              placeholder="0"
+              className={`${inputCls} font-mono`}
+            />
+          </label>
+          <dl className="space-y-1 text-sm sm:text-right">
+            <div className="flex justify-between sm:justify-end sm:gap-6">
+              <dt className="text-component">Subtotal</dt>
+              <dd className="font-mono">{formatCOP(totals.subtotal)}</dd>
+            </div>
+            <div className="flex justify-between sm:justify-end sm:gap-6">
+              <dt className="text-component">Descuento</dt>
+              <dd className="font-mono">-{formatCOP(totals.descuentoValor)}</dd>
+            </div>
+            <div className="flex justify-between font-semibold sm:justify-end sm:gap-6">
+              <dt>Total</dt>
+              <dd className="font-mono">{formatCOP(totals.total)}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      {/* Acciones */}
+      <div className="flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
+        <Button type="submit" size="lg" disabled={pending}>
+          {pending ? "Guardando…" : id ? "Guardar cambios" : "Crear cuenta de cobro"}
+        </Button>
+        {pdfHref && (
+          <a
+            href={pdfHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border border-panda px-6 py-3 text-sm font-medium uppercase tracking-wide transition-colors hover:bg-panda hover:text-vanilla"
+          >
+            Descargar PDF
+          </a>
+        )}
+        <Link
+          href="/admin/cuentas-cobro"
+          className="text-sm text-component hover:text-panda"
+        >
+          Volver a la lista
+        </Link>
+        {state.ok && <span className="text-sm text-accent">Guardado ✓</span>}
+        {state.error && (
+          <span role="alert" className="text-sm text-accent">
+            {state.error}
+          </span>
+        )}
+      </div>
+    </form>
+  );
+}
+
+function CatalogPicker({
+  catalog,
+  onPick,
+}: {
+  catalog: CatalogOption[];
+  onPick: (item: CuentaCobroItemInput) => void;
+}) {
+  if (catalog.length === 0) return null;
+
+  // Agrupar por categoría (orden de COMPONENT_CATEGORIES) para usar <optgroup>.
+  const grupos = COMPONENT_CATEGORIES.map((cat) => ({
+    cat,
+    items: catalog.filter((c) => c.categoria === cat),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <select
+      value=""
+      onChange={(e) => {
+        const c = catalog.find((x) => x.id === e.target.value);
+        if (c)
+          onPick({
+            descripcion: c.descripcion ? `${c.modelo} — ${c.descripcion}` : c.modelo,
+            cantidad: 1,
+            valorUnitario: c.precioCop,
+          });
+        e.target.value = "";
+      }}
+      className="border border-hairline bg-vanilla px-2 py-1.5 text-sm text-component outline-none focus:border-panda"
+    >
+      <option value="">+ Desde catálogo…</option>
+      {grupos.map((g) => (
+        <optgroup key={g.cat} label={CATEGORY_LABELS[g.cat]}>
+          {g.items.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.modelo} · {formatCOP(c.precioCop)}
+            </option>
+          ))}
+        </optgroup>
+      ))}
+    </select>
+  );
+}
+
+function Field({
+  label,
+  value,
+  onChange,
+  mono = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  mono?: boolean;
+}) {
+  return (
+    <label className="block">
+      <span className="text-sm font-medium text-component">{label}</span>
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda ${
+          mono ? "font-mono" : ""
+        }`}
+      />
+    </label>
+  );
+}
