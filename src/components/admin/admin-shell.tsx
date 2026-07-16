@@ -1,12 +1,52 @@
 // Desarrollado por BlacKraken Solutions
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { adminNav } from "@/lib/admin-nav";
+import { adminNav, isAdminNavGroup, type AdminNavItem } from "@/lib/admin-nav";
 import { logoutAction } from "@/lib/auth/actions";
+
+function isItemActive(item: AdminNavItem, pathname: string): boolean {
+  return item.href === "/admin"
+    ? pathname === "/admin"
+    : pathname.startsWith(item.href);
+}
+
+function NavLink({
+  item,
+  active,
+  onClick,
+}: {
+  item: AdminNavItem;
+  active: boolean;
+  onClick: () => void;
+}) {
+  const base =
+    "flex items-center justify-between px-3 py-2 text-sm transition-colors";
+  if (!item.ready) {
+    return (
+      <span className={`${base} cursor-default text-vanilla/30`}>
+        {item.label}
+        <span className="font-mono text-[10px] text-vanilla/30">pronto</span>
+      </span>
+    );
+  }
+  return (
+    <Link
+      href={item.href}
+      onClick={onClick}
+      className={`${base} ${
+        active
+          ? "bg-vanilla text-panda"
+          : "text-vanilla/70 hover:bg-vanilla/10 hover:text-vanilla"
+      }`}
+    >
+      {item.label}
+    </Link>
+  );
+}
 
 export function AdminShell({
   usuario,
@@ -17,42 +57,87 @@ export function AdminShell({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
+    const initial = new Set<string>();
+    for (const entry of adminNav) {
+      if (isAdminNavGroup(entry) && entry.items.some((i) => isItemActive(i, pathname))) {
+        initial.add(entry.label);
+      }
+    }
+    return initial;
+  });
+
+  // Si navegas a un ítem de un grupo cerrado, ábrelo (sin cerrar los que ya abriste).
+  useEffect(() => {
+    setOpenGroups((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      for (const entry of adminNav) {
+        if (
+          isAdminNavGroup(entry) &&
+          !next.has(entry.label) &&
+          entry.items.some((i) => isItemActive(i, pathname))
+        ) {
+          next.add(entry.label);
+          changed = true;
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, [pathname]);
+
+  function toggleGroup(label: string) {
+    setOpenGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  }
 
   const nav = (
     <nav className="flex flex-col gap-0.5">
-      {adminNav.map((item) => {
-        const active =
-          item.href === "/admin"
-            ? pathname === "/admin"
-            : pathname.startsWith(item.href);
-        const base =
-          "flex items-center justify-between px-3 py-2 text-sm transition-colors";
-        if (!item.ready) {
+      {adminNav.map((entry) => {
+        if (!isAdminNavGroup(entry)) {
           return (
-            <span
-              key={item.href}
-              className={`${base} cursor-default text-vanilla/30`}
-            >
-              {item.label}
-              <span className="font-mono text-[10px] text-vanilla/30">
-                pronto
-              </span>
-            </span>
+            <NavLink
+              key={entry.href}
+              item={entry}
+              active={isItemActive(entry, pathname)}
+              onClick={() => setOpen(false)}
+            />
           );
         }
+
+        const expanded = openGroups.has(entry.label);
         return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={() => setOpen(false)}
-            className={`${base} ${
-              active
-                ? "bg-vanilla text-panda"
-                : "text-vanilla/70 hover:bg-vanilla/10 hover:text-vanilla"
-            }`}
-          >
-            {item.label}
-          </Link>
+          <div key={entry.label}>
+            <button
+              type="button"
+              onClick={() => toggleGroup(entry.label)}
+              aria-expanded={expanded}
+              className="flex w-full items-center justify-between px-3 py-2 text-sm text-vanilla/70 transition-colors hover:bg-vanilla/10 hover:text-vanilla"
+            >
+              {entry.label}
+              <span
+                className={`transition-transform ${expanded ? "rotate-90" : ""}`}
+              >
+                ›
+              </span>
+            </button>
+            {expanded && (
+              <div className="ml-3 flex flex-col gap-0.5 border-l border-vanilla/10 pl-2">
+                {entry.items.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    item={item}
+                    active={isItemActive(item, pathname)}
+                    onClick={() => setOpen(false)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         );
       })}
     </nav>
