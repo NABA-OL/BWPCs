@@ -80,6 +80,7 @@ export async function createAdminAction(
     await admins.insertOne({
       usuario,
       passwordHash: await hashPassword(password),
+      nombreCompleto: "",
       cedula: "",
       firmaBase64: null,
       creado: new Date(),
@@ -103,7 +104,7 @@ function stripDataUriPrefix(raw: string): string {
   return idx >= 0 ? raw.slice(idx + "base64,".length) : raw;
 }
 
-/** Actualiza cédula y firma (base64) del admin de la sesión actual. */
+/** Actualiza nombre completo, cédula y firma (base64) del admin de la sesión actual. */
 export async function updateProfileAction(
   _prev: ProfileState,
   form: FormData,
@@ -111,6 +112,7 @@ export async function updateProfileAction(
   const session = await getSession();
   if (!session) return { error: "Sesión expirada." };
 
+  const nombreCompleto = String(form.get("nombreCompleto") ?? "").trim();
   const cedula = String(form.get("cedula") ?? "").trim();
   const firmaRaw = String(form.get("firmaBase64") ?? "").trim();
   const firmaBase64 = firmaRaw ? stripDataUriPrefix(firmaRaw) : null;
@@ -119,7 +121,7 @@ export async function updateProfileAction(
     const admins = await collections.admins();
     await admins.updateOne(
       { _id: new ObjectId(session.sub) },
-      { $set: { cedula, firmaBase64 } },
+      { $set: { nombreCompleto, cedula, firmaBase64 } },
     );
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Error al guardar el perfil." };

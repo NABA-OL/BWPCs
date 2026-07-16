@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 export interface AdminRow {
   id: string;
   usuario: string;
+  nombreCompleto: string;
   creado: string;
 }
 
@@ -27,12 +28,14 @@ export function UsersManager({
   admins,
   currentUserId,
   currentUser,
+  currentNombreCompleto,
   currentCedula,
   currentFirmaBase64,
 }: {
   admins: AdminRow[];
   currentUserId: string;
   currentUser: string;
+  currentNombreCompleto: string;
   currentCedula: string;
   currentFirmaBase64: string | null;
 }) {
@@ -118,13 +121,24 @@ export function UsersManager({
         </form>
       </section>
 
-      {/* Cédula y firma (para cuentas de cobro) */}
+      {/* Nombre, cédula y firma (para cuentas de cobro) */}
       <section className="border border-hairline p-6">
         <h2 className="text-lg font-semibold">Mi perfil</h2>
         <p className="mt-1 text-sm text-component">
-          Cédula y firma que se usan al firmar cuentas de cobro.
+          Nombre, cédula y firma que se usan al firmar cuentas de cobro.
         </p>
         <form action={profileAction} className="mt-4 grid gap-4 sm:grid-cols-2">
+          <label className="block sm:col-span-2">
+            <span className="text-sm font-medium text-component">
+              Nombre completo
+            </span>
+            <input
+              name="nombreCompleto"
+              defaultValue={currentNombreCompleto}
+              placeholder="Nombre y apellidos"
+              className={inputCls}
+            />
+          </label>
           <label className="block">
             <span className="text-sm font-medium text-component">Cédula</span>
             <input
@@ -243,6 +257,7 @@ export function UsersManager({
           <thead className="border-b border-hairline bg-hairline/30 text-left">
             <tr>
               <th className="px-6 py-3 font-medium">Usuario</th>
+              <th className="px-6 py-3 font-medium">Nombre completo</th>
               <th className="px-6 py-3 font-medium">Creado</th>
               <th className="px-6 py-3 text-right font-medium">Acciones</th>
             </tr>
@@ -255,6 +270,9 @@ export function UsersManager({
                   {a.id === currentUserId && (
                     <span className="ml-2 text-xs text-component">(tú)</span>
                   )}
+                </td>
+                <td className="px-6 py-3 text-component">
+                  {a.nombreCompleto || "—"}
                 </td>
                 <td className="px-6 py-3 text-component">{a.creado}</td>
                 <td className="px-6 py-3 text-right">

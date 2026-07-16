@@ -53,7 +53,8 @@ export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderDat
     })),
     signers: adminDocs.map((a) => ({
       id: a._id!.toString(),
-      nombre: a.usuario,
+      usuario: a.usuario,
+      nombre: a.nombreCompleto?.trim() || a.usuario,
       cedula: a.cedula ?? "",
       firmaBase64: a.firmaBase64 ?? null,
     })),

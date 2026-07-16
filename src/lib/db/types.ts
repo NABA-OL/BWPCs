@@ -125,6 +125,7 @@ export interface Admin {
   _id?: ObjectId;
   usuario: string;
   passwordHash: string;
+  nombreCompleto: string; // nombre real, para firmar cuentas de cobro (usuario es solo el login)
   cedula: string;
   firmaBase64: string | null; // solo el base64 puro, sin "data:image/png;base64,"
   creado: Date;

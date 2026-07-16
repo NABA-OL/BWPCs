@@ -62,6 +62,7 @@ try {
     await db.collection("admins").insertOne({
       usuario: adminUser,
       passwordHash,
+      nombreCompleto: "",
       cedula: "",
       firmaBase64: null,
       creado: new Date(),

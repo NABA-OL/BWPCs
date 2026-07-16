@@ -39,6 +39,7 @@ export interface BankAccountOption {
 
 export interface SignerOption {
   id: string;
+  usuario: string;
   nombre: string;
   cedula: string;
   firmaBase64: string | null;
@@ -302,6 +303,14 @@ export function CuentaCobroBuilder({
             )}
           </p>
         )}
+        {signerChoice &&
+          signers.find((s) => s.id === signerChoice)?.nombre ===
+            signers.find((s) => s.id === signerChoice)?.usuario && (
+            <p className="mt-1 text-sm text-accent">
+              Este admin no tiene nombre completo cargado — está saliendo el
+              usuario de acceso (Usuarios → Mi perfil).
+            </p>
+          )}
       </section>
 
       {/* Ítems */}

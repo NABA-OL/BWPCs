@@ -14,6 +14,7 @@ const fmtDate = new Intl.DateTimeFormat("es-CO", { dateStyle: "medium" });
 export default async function UsuariosPage() {
   const session = await getSession();
   let rows: AdminRow[] = [];
+  let currentNombreCompleto = "";
   let currentCedula = "";
   let currentFirmaBase64: string | null = null;
   let error: string | null = null;
@@ -24,9 +25,11 @@ export default async function UsuariosPage() {
     rows = docs.map((a) => ({
       id: a._id!.toString(),
       usuario: a.usuario,
+      nombreCompleto: a.nombreCompleto ?? "",
       creado: a.creado ? fmtDate.format(new Date(a.creado)) : "—",
     }));
     const current = docs.find((a) => a._id!.toString() === session?.sub);
+    currentNombreCompleto = current?.nombreCompleto ?? "";
     currentCedula = current?.cedula ?? "";
     currentFirmaBase64 = current?.firmaBase64 ?? null;
   } catch (e) {
@@ -51,6 +54,7 @@ export default async function UsuariosPage() {
           admins={rows}
           currentUserId={session?.sub ?? ""}
           currentUser={session?.usuario ?? ""}
+          currentNombreCompleto={currentNombreCompleto}
           currentCedula={currentCedula}
           currentFirmaBase64={currentFirmaBase64}
         />
