@@ -90,6 +90,15 @@ export function CuentaCobroBuilder({
   function removeItem(ii: number) {
     setData((d) => ({ ...d, items: d.items.filter((_, i) => i !== ii) }));
   }
+  function moveItem(ii: number, dir: -1 | 1) {
+    setData((d) => {
+      const jj = ii + dir;
+      if (jj < 0 || jj >= d.items.length) return d;
+      const items = [...d.items];
+      [items[ii], items[jj]] = [items[jj], items[ii]];
+      return { ...d, items };
+    });
+  }
 
   function pickClient(clientId: string) {
     setClientChoice(clientId);
@@ -320,8 +329,28 @@ export function CuentaCobroBuilder({
           {data.items.map((item, ii) => (
             <div
               key={ii}
-              className="grid items-start gap-2 sm:grid-cols-[1fr_100px_160px_auto]"
+              className="grid items-start gap-2 sm:grid-cols-[auto_1fr_100px_160px_auto]"
             >
+              <div className="flex gap-0.5 sm:flex-col">
+                <button
+                  type="button"
+                  onClick={() => moveItem(ii, -1)}
+                  disabled={ii === 0}
+                  aria-label="Subir ítem"
+                  className="px-1.5 py-1 text-component hover:text-panda disabled:opacity-20"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveItem(ii, 1)}
+                  disabled={ii === data.items.length - 1}
+                  aria-label="Bajar ítem"
+                  className="px-1.5 py-1 text-component hover:text-panda disabled:opacity-20"
+                >
+                  ↓
+                </button>
+              </div>
               <input
                 value={item.descripcion}
                 onChange={(e) => setItem(ii, { descripcion: e.target.value })}
