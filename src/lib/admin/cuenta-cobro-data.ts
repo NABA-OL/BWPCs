@@ -13,6 +13,7 @@ export interface CuentaCobroBuilderData {
   bankAccounts: BankAccountOption[];
   signers: SignerOption[];
   catalog: CatalogOption[];
+  servicioBase: number;
   nextNumero: string;
 }
 
@@ -59,6 +60,7 @@ export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderDat
       firmaBase64: a.firmaBase64 ?? null,
     })),
     catalog,
+    servicioBase: settings.servicioBase,
     nextNumero: suggestCode(new Date().getFullYear(), cuentaCount + 1),
   };
 }

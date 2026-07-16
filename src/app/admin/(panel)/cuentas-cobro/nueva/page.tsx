@@ -31,7 +31,13 @@ export default async function NuevaCuentaCobroPage() {
           titular: "",
         },
         firmante: { nombre: "", cedula: "", firmaBase64: null },
-        items: [{ descripcion: "", cantidad: 1, valorUnitario: 0 }],
+        items: [
+          {
+            descripcion: "Servicio de ensamblaje",
+            cantidad: 1,
+            valorUnitario: data.servicioBase,
+          },
+        ],
         descuentoPct: 0,
       }
     : null;
