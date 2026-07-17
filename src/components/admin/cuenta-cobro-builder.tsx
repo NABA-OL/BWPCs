@@ -68,6 +68,7 @@ export function CuentaCobroBuilder({
   const [clientChoice, setClientChoice] = useState("otro");
   const [bankChoice, setBankChoice] = useState("otro");
   const [signerChoice, setSignerChoice] = useState("");
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [state, formAction, pending] = useActionState<
     CuentaCobroFormState,
     FormData
@@ -90,12 +91,12 @@ export function CuentaCobroBuilder({
   function removeItem(ii: number) {
     setData((d) => ({ ...d, items: d.items.filter((_, i) => i !== ii) }));
   }
-  function moveItem(ii: number, dir: -1 | 1) {
+  function moveItemTo(from: number, to: number) {
     setData((d) => {
-      const jj = ii + dir;
-      if (jj < 0 || jj >= d.items.length) return d;
+      if (to < 0 || to >= d.items.length || from === to) return d;
       const items = [...d.items];
-      [items[ii], items[jj]] = [items[jj], items[ii]];
+      const [moved] = items.splice(from, 1);
+      items.splice(to, 0, moved);
       return { ...d, items };
     });
   }
@@ -329,28 +330,38 @@ export function CuentaCobroBuilder({
           {data.items.map((item, ii) => (
             <div
               key={ii}
-              className="grid items-start gap-2 sm:grid-cols-[auto_1fr_100px_160px_auto]"
+              onDragOver={(e) => {
+                if (dragIndex !== null) e.preventDefault();
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (dragIndex !== null) moveItemTo(dragIndex, ii);
+                setDragIndex(null);
+              }}
+              className={`grid items-start gap-2 sm:grid-cols-[auto_1fr_100px_160px_auto] ${
+                dragIndex === ii ? "opacity-40" : ""
+              }`}
             >
-              <div className="flex gap-0.5 sm:flex-col">
-                <button
-                  type="button"
-                  onClick={() => moveItem(ii, -1)}
-                  disabled={ii === 0}
-                  aria-label="Subir ítem"
-                  className="px-1.5 py-1 text-component hover:text-panda disabled:opacity-20"
+              <button
+                type="button"
+                draggable
+                onDragStart={(e) => {
+                  setDragIndex(ii);
+                  e.dataTransfer.effectAllowed = "move";
+                }}
+                onDragEnd={() => setDragIndex(null)}
+                aria-label="Arrastrar para reordenar"
+                className="cursor-grab touch-none self-stretch px-1.5 py-2 text-component hover:text-panda active:cursor-grabbing"
+              >
+                <svg
+                  width="14" height="14" viewBox="0 0 14 14" fill="none"
+                  stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"
                 >
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  onClick={() => moveItem(ii, 1)}
-                  disabled={ii === data.items.length - 1}
-                  aria-label="Bajar ítem"
-                  className="px-1.5 py-1 text-component hover:text-panda disabled:opacity-20"
-                >
-                  ↓
-                </button>
-              </div>
+                  <line x1="1" y1="3" x2="13" y2="3" />
+                  <line x1="1" y1="7" x2="13" y2="7" />
+                  <line x1="1" y1="11" x2="13" y2="11" />
+                </svg>
+              </button>
               <input
                 value={item.descripcion}
                 onChange={(e) => setItem(ii, { descripcion: e.target.value })}
