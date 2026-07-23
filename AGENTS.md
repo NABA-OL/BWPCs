@@ -2,7 +2,7 @@
 AGENTS.md = reglas de comportamiento del agente.
 Se aplica a TODAS las sesiones en este proyecto.
 -->
-
+ 
 ## Tone
 - Técnico, directo, sin rodeos
 - Responder en español o inglés según el usuario
