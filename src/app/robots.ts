@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/admin/",
     },
-    sitemap: "https://bwpcs.vercel.app/sitemap.xml",
+    sitemap: "https://bw-pcs.vercel.app/sitemap.xml",
   };
 }

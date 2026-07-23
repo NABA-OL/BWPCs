@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "Nosotros · B & W",
     description:
       "Conoce a B & W: ensamble de PCs y venta de componentes en Colombia con atención personalizada.",
-    url: "https://bwpcs.vercel.app/nosotros",
+    url: "https://bw-pcs.vercel.app/nosotros",
   },
 };
 

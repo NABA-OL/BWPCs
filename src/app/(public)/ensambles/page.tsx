@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "Ensambles · B & W",
     description:
       "Galería de PCs armados a la medida. Builds gaming, workstation y más en Colombia.",
-    url: "https://bwpcs.vercel.app/ensambles",
+    url: "https://bw-pcs.vercel.app/ensambles",
   },
 };
 

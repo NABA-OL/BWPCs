@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "Cotizador de PC · B & W",
     description:
       "Cotiza tu PC a la medida en segundos. Sin registro, gratis. Bogotá, Colombia.",
-    url: "https://bwpcs.vercel.app/cotizador",
+    url: "https://bw-pcs.vercel.app/cotizador",
   },
 };
 

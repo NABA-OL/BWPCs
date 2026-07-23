@@ -1,7 +1,7 @@
 // Desarrollado por BlacKraken Solutions
 import type { MetadataRoute } from "next";
 
-const BASE = "https://bwpcs.vercel.app";
+const BASE = "https://bw-pcs.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

@@ -51,7 +51,7 @@ export default async function HomePage() {
     name: "B & W",
     description:
       "Ensamble de computadores y venta de componentes en Colombia. Builds gaming, workstation y escritorio a la medida.",
-    url: "https://bwpcs.vercel.app",
+    url: "https://bw-pcs.vercel.app",
     telephone: "+573188422533",
     email: "bandwmount@gmail.com",
     address: {

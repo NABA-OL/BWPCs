@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "Servicios · B & W",
     description:
       "Ensamblaje de PCs a la medida, venta de componentes y asesoría técnica en Colombia.",
-    url: "https://bwpcs.vercel.app/servicios",
+    url: "https://bw-pcs.vercel.app/servicios",
   },
 };
 

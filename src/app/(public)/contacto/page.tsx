@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Contacto · B & W",
     description:
       "Escríbenos por WhatsApp o correo. Envíos a todo Colombia desde Bogotá.",
-    url: "https://bwpcs.vercel.app/contacto",
+    url: "https://bw-pcs.vercel.app/contacto",
   },
 };
 
