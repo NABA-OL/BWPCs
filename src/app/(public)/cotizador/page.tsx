@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     "presupuesto PC gaming",
     "precio componentes PC Colombia",
   ],
+  alternates: { canonical: "/cotizador" },
   openGraph: {
     title: "Cotizador de PC · B & W",
     description:

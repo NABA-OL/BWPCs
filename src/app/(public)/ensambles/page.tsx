@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     "workstation ensamblado Colombia",
     "resultados B&W PCs",
   ],
+  alternates: { canonical: "/ensambles" },
   openGraph: {
     title: "Ensambles · B & W",
     description:

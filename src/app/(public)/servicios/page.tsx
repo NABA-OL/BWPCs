@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     "procesadores AMD Intel Colombia",
     "memorias RAM DDR5 Colombia",
   ],
+  alternates: { canonical: "/servicios" },
   openGraph: {
     title: "Servicios · B & W",
     description:

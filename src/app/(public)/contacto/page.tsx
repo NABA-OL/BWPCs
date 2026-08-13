@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     "cotizar PC WhatsApp Bogotá",
     "comprar componentes PC Colombia",
   ],
+  alternates: { canonical: "/contacto" },
   openGraph: {
     title: "Contacto · B & W",
     description:

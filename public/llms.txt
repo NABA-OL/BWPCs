@@ -1,0 +1,19 @@
+# B & W
+
+> Ensamble de computadores y venta de componentes en Colombia. Cotizador de PC a la medida, catálogo de componentes y galería de builds reales, con atención por WhatsApp desde Bogotá.
+
+B & W arma PCs a la medida (gaming, workstation, escritorio) y vende componentes sueltos. El cotizador público estima precio en pesos colombianos según la gama elegida por categoría (procesador, gráfica, RAM, board, fuente, chasis, refrigeración), con recargo según medio de pago (Bre-B, tarjeta, PSE, Daviplata, Nequi).
+
+## Páginas
+
+- [Inicio](https://bw-pcs.vercel.app/): presentación de la marca y cómo funciona el servicio.
+- [Cotizador](https://bw-pcs.vercel.app/cotizador): estimador de precio de PC a la medida, sin registro.
+- [Servicios](https://bw-pcs.vercel.app/servicios): ensamblaje, venta de componentes y asesoría técnica.
+- [Ensambles](https://bw-pcs.vercel.app/ensambles): galería de PCs armados para clientes reales.
+- [Nosotros](https://bw-pcs.vercel.app/nosotros): quién está detrás de B & W.
+- [Contacto](https://bw-pcs.vercel.app/contacto): WhatsApp, correo y cobertura de envíos.
+
+## Notas
+
+- Los precios del cotizador son un estimado aproximado, sujeto a cambios; el precio final se confirma por WhatsApp.
+- Cobertura: Bogotá y envíos a todo Colombia.

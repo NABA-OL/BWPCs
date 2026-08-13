@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   description:
     "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC gaming o workstation a la medida con precios justos. Bogotá y envíos nacionales.",
   metadataBase: new URL("https://bw-pcs.vercel.app"),
+  alternates: { canonical: "/" },
   keywords: [
     "ensamble de PC Colombia",
     "computadores a la medida Bogotá",

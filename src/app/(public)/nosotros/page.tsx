@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     "tienda de componentes Colombia",
     "quiénes somos B&W",
   ],
+  alternates: { canonical: "/nosotros" },
   openGraph: {
     title: "Nosotros · B & W",
     description:
