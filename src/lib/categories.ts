@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { ComponentCategory } from "@/lib/db/types";
 
 /** Etiquetas legibles por categoría. */

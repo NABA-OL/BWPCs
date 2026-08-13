@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useMemo, useState } from "react";
 import { ButtonLink } from "@/components/ui/button";
@@ -43,7 +49,9 @@ export function CotizadorEstimator({
   const [servicio, setServicio] = useState(true);
 
   const hasSelection = useMemo(
-    () => servicio || categories.some((c) => included[c.key] && c.options.length > 0),
+    () =>
+      servicio ||
+      categories.some((c) => included[c.key] && c.options.length > 0),
     [categories, included, servicio],
   );
 
@@ -112,9 +120,7 @@ export function CotizadorEstimator({
                     }
                     className="h-4 w-4 accent-accent"
                   />
-                  <span
-                    className={`font-medium ${on ? "" : "text-component"}`}
-                  >
+                  <span className={`font-medium ${on ? "" : "text-component"}`}>
                     {c.label}
                   </span>
                 </label>

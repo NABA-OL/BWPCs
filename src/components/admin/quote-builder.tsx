@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useMemo, useState } from "react";
 import Link from "next/link";
@@ -16,7 +22,9 @@ import type { CatalogOption } from "@/lib/admin/catalog-data";
 
 export type { CatalogOption };
 
-const emptyItem = (categoria: ComponentCategory = "Procesador"): QuoteItemInput => ({
+const emptyItem = (
+  categoria: ComponentCategory = "Procesador",
+): QuoteItemInput => ({
   categoria,
   modelo: "",
   precioCop: 0,
@@ -44,7 +52,10 @@ export function QuoteBuilder({
     {},
   );
 
-  function setOption(oi: number, patch: Partial<QuoteInput["opciones"][number]>) {
+  function setOption(
+    oi: number,
+    patch: Partial<QuoteInput["opciones"][number]>,
+  ) {
     setData((d) => {
       const opciones = d.opciones.map((o, i) =>
         i === oi ? { ...o, ...patch } : o,
@@ -178,9 +189,7 @@ export function QuoteBuilder({
         >
           Volver a la lista
         </Link>
-        {state.ok && (
-          <span className="text-sm text-accent">Guardado ✓</span>
-        )}
+        {state.ok && <span className="text-sm text-accent">Guardado ✓</span>}
         {state.error && (
           <span role="alert" className="text-sm text-accent">
             {state.error}

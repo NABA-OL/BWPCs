@@ -1,7 +1,19 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
-import { useActionState, useEffect, useMemo, useState, useCallback } from "react";
+import {
+  useActionState,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   saveGraphicAction,
@@ -39,8 +51,17 @@ const EMPTY = {
 };
 
 const AIBS = [
-  "MSI", "ASUS", "Gigabyte", "Zotac", "PNY", "Palit",
-  "Gainward", "PowerColor", "Sapphire", "XFX", "ASRock",
+  "MSI",
+  "ASUS",
+  "Gigabyte",
+  "Zotac",
+  "PNY",
+  "Palit",
+  "Gainward",
+  "PowerColor",
+  "Sapphire",
+  "XFX",
+  "ASRock",
 ];
 
 const BRANDS: BrandFilter[] = ["Todas", "NVIDIA", "AMD", "Intel"];
@@ -54,10 +75,10 @@ export function GraphicManager({
 }) {
   const router = useRouter();
   const [form, setForm] = useState(EMPTY);
-  const [state, formAction, pending] = useActionState<GraphicFormState, FormData>(
-    saveGraphicAction,
-    {},
-  );
+  const [state, formAction, pending] = useActionState<
+    GraphicFormState,
+    FormData
+  >(saveGraphicAction, {});
   const [query, setQuery] = useState("");
   const [brandFilter, setBrandFilter] = useState<BrandFilter>("Todas");
   const [page, setPage] = useState(1);
@@ -104,7 +125,9 @@ export function GraphicManager({
   }, [rows, query, brandFilter]);
 
   // Reset to page 1 whenever filters change
-  useEffect(() => { setPage(1); }, [query, brandFilter]);
+  useEffect(() => {
+    setPage(1);
+  }, [query, brandFilter]);
 
   const totalPages = Math.ceil(visible.length / PAGE_SIZE);
   const paginated = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -187,7 +210,10 @@ export function GraphicManager({
               name="modoPrecio"
               value={form.modoPrecio}
               onChange={(e) =>
-                setForm({ ...form, modoPrecio: e.target.value as "USD" | "COP" })
+                setForm({
+                  ...form,
+                  modoPrecio: e.target.value as "USD" | "COP",
+                })
               }
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             >
@@ -262,8 +288,13 @@ export function GraphicManager({
         <div className="relative max-w-xs flex-1">
           <svg
             className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"
-            width="14" height="14" viewBox="0 0 16 16" fill="none"
-            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+            width="14"
+            height="14"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
           >
             <circle cx="6.5" cy="6.5" r="5" />
             <path d="M10.5 10.5l3.5 3.5" />
@@ -295,7 +326,9 @@ export function GraphicManager({
       </div>
 
       {rows.length === 0 ? (
-        <p className="text-component">Aún no hay gráficas. Agrega la primera arriba.</p>
+        <p className="text-component">
+          Aún no hay gráficas. Agrega la primera arriba.
+        </p>
       ) : visible.length === 0 ? (
         <p className="text-component">
           Sin resultados para &ldquo;{query}&rdquo;
@@ -317,7 +350,10 @@ export function GraphicManager({
             </thead>
             <tbody>
               {paginated.map((r) => (
-                <tr key={r.id} className="border-b border-hairline last:border-0">
+                <tr
+                  key={r.id}
+                  className="border-b border-hairline last:border-0"
+                >
                   <td className="px-4 py-3 font-medium">{r.modelo}</td>
                   <td className="px-4 py-3 text-component">{r.marca}</td>
                   <td className="px-4 py-3 text-component">
@@ -336,7 +372,11 @@ export function GraphicManager({
                   <td className="px-4 py-3">
                     <form action={toggleGraphicAction}>
                       <input type="hidden" name="id" value={r.id} />
-                      <input type="hidden" name="activo" value={String(r.activo)} />
+                      <input
+                        type="hidden"
+                        name="activo"
+                        value={String(r.activo)}
+                      />
                       <button
                         type="submit"
                         className={`rounded-[2px] border px-2 py-0.5 text-xs ${
@@ -361,11 +401,15 @@ export function GraphicManager({
                       <form
                         action={deleteGraphicAction}
                         onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar ${r.modelo}?`)) e.preventDefault();
+                          if (!confirm(`¿Eliminar ${r.modelo}?`))
+                            e.preventDefault();
                         }}
                       >
                         <input type="hidden" name="id" value={r.id} />
-                        <button type="submit" className="text-accent hover:underline">
+                        <button
+                          type="submit"
+                          className="text-accent hover:underline"
+                        >
                           Eliminar
                         </button>
                       </form>

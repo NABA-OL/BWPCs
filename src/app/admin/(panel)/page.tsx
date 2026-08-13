@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -21,7 +27,9 @@ export default async function AdminDashboard() {
     stats = await getAdminStats();
   } catch (e) {
     error =
-      e instanceof Error ? e.message : "Error al conectar con la base de datos.";
+      e instanceof Error
+        ? e.message
+        : "Error al conectar con la base de datos.";
   }
 
   return (
@@ -45,10 +53,26 @@ export default async function AdminDashboard() {
           <>
             {/* Métricas del catálogo */}
             <div className="mt-8 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
-              <Metric label="Procesadores" value={stats.processors} href="/admin/procesadores" />
-              <Metric label="Gráficas" value={stats.graphics} href="/admin/graficas" />
-              <Metric label="Componentes" value={stats.components} href="/admin/componentes" />
-              <Metric label="Cotizaciones" value={stats.quotes} href="/admin/cotizaciones" />
+              <Metric
+                label="Procesadores"
+                value={stats.processors}
+                href="/admin/procesadores"
+              />
+              <Metric
+                label="Gráficas"
+                value={stats.graphics}
+                href="/admin/graficas"
+              />
+              <Metric
+                label="Componentes"
+                value={stats.components}
+                href="/admin/componentes"
+              />
+              <Metric
+                label="Cotizaciones"
+                value={stats.quotes}
+                href="/admin/cotizaciones"
+              />
             </div>
 
             {/* Por marca */}
@@ -77,7 +101,9 @@ export default async function AdminDashboard() {
                 </Link>
               </div>
               {stats.componentsByCategory.length === 0 ? (
-                <p className="mt-3 text-sm text-component">Aún no hay componentes.</p>
+                <p className="mt-3 text-sm text-component">
+                  Aún no hay componentes.
+                </p>
               ) : (
                 <div className="mt-4 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2">
                   {stats.componentsByCategory.map((c) => (
@@ -143,7 +169,9 @@ function Metric({
       className="block bg-vanilla p-6 transition-colors hover:bg-hairline/40"
     >
       <p className="text-sm text-component">{label}</p>
-      <p className="mt-1 font-mono text-3xl font-medium tabular-nums">{value}</p>
+      <p className="mt-1 font-mono text-3xl font-medium tabular-nums">
+        {value}
+      </p>
     </Link>
   );
 }

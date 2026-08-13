@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
@@ -12,8 +18,7 @@ const variants: Record<Variant, string> = {
   // Primary: fondo Panda Black, texto vainilla; hover → carmesí
   primary: "bg-panda text-vanilla hover:bg-accent",
   // Secondary / ghost: borde negro; hover → se rellena de negro
-  secondary:
-    "border border-panda text-panda hover:bg-panda hover:text-vanilla",
+  secondary: "border border-panda text-panda hover:bg-panda hover:text-vanilla",
 };
 
 const sizes: Record<Size, string> = {
@@ -31,9 +36,7 @@ export function Button({
   className,
   ...props
 }: ComponentProps<"button"> & { variant?: Variant; size?: Size }) {
-  return (
-    <button className={classes(variant, size, className)} {...props} />
-  );
+  return <button className={classes(variant, size, className)} {...props} />;
 }
 
 export function ButtonLink({

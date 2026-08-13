@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { AssemblyHero } from "@/components/assembly-hero";
@@ -24,7 +30,12 @@ const steps = [
 
 export default async function HomePage() {
   // Últimos 3 ensambles activos para la sección de muestra.
-  let recentBuilds: { id: string; titulo: string; specs: string; imagenUrl: string }[] = [];
+  let recentBuilds: {
+    id: string;
+    titulo: string;
+    specs: string;
+    imagenUrl: string;
+  }[] = [];
   try {
     const col = await collections.builds();
     const docs = await col
@@ -123,8 +134,8 @@ export default async function HomePage() {
               </h3>
               <p className="mt-4 max-w-prose text-pretty leading-relaxed text-panda">
                 Seleccionamos cada componente según tu uso y presupuesto.
-                Armamos, formateamos y configuramos tu equipo desde cero. Entrega
-                con todo funcionando.
+                Armamos, formateamos y configuramos tu equipo desde cero.
+                Entrega con todo funcionando.
               </p>
               <p className="mt-5 font-mono text-sm text-component">
                 GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración
@@ -223,8 +234,8 @@ export default async function HomePage() {
               ¿Cuánto costaría tu PC?
             </h2>
             <p className="mt-2 max-w-md text-pretty text-panda/70">
-              Arma un estimado en segundos y escríbenos por WhatsApp para
-              afinar los detalles.
+              Arma un estimado en segundos y escríbenos por WhatsApp para afinar
+              los detalles.
             </p>
           </div>
           <ButtonLink

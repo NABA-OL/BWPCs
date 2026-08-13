@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,7 +18,11 @@ const HOLD_MS = 5000;
  * Diseñado para no estorbar: no hay pista visual, solo una barra de progreso
  * sutil que aparece tras ~1s de presión sostenida.
  */
-export function SecretAdminTrigger({ children }: { children: React.ReactNode }) {
+export function SecretAdminTrigger({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [holding, setHolding] = useState(false);

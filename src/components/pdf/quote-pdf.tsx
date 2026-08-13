@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import {
   Document,
   Page,
@@ -92,7 +98,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: COLORS.hairline,
   },
-  totalRow: { flexDirection: "row", borderTopWidth: 1, borderColor: COLORS.hairline },
+  totalRow: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderColor: COLORS.hairline,
+  },
   totalLabel: {
     width: "34%",
     paddingVertical: 5,
@@ -111,7 +121,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: COLORS.hairline,
   },
-  totalSpacer: { width: "44%", borderLeftWidth: 1, borderColor: COLORS.hairline },
+  totalSpacer: {
+    width: "44%",
+    borderLeftWidth: 1,
+    borderColor: COLORS.hairline,
+  },
   grandTotal: { backgroundColor: "#F2EFE9" },
   note: { marginTop: 18, fontSize: 8, fontFamily: "Helvetica-Bold" },
   footer: {
@@ -130,11 +144,7 @@ const styles = StyleSheet.create({
   footerPay: { fontSize: 7, color: COLORS.panda, fontFamily: "Helvetica-Bold" },
 });
 
-function OptionTable({
-  option,
-}: {
-  option: Quote["opciones"][number];
-}) {
+function OptionTable({ option }: { option: Quote["opciones"][number] }) {
   return (
     <View style={styles.table}>
       <View style={styles.thead}>
@@ -231,7 +241,9 @@ export function QuotePDF({
             <Text style={styles.wordmark}>B &amp; W</Text>
             <Text style={styles.tagline}>TU PC MASTER RACE A BUEN PRECIO</Text>
             <View style={styles.circles}>
-              <View style={[styles.circle, { backgroundColor: COLORS.panda }]} />
+              <View
+                style={[styles.circle, { backgroundColor: COLORS.panda }]}
+              />
               <View style={[styles.circle, { backgroundColor: COLORS.gray }]} />
               <View
                 style={[styles.circle, { backgroundColor: COLORS.hairline }]}
@@ -262,7 +274,7 @@ export function QuotePDF({
             <Text style={styles.footerPay}>Bre-B · Bold · Tarjeta · PSE</Text>
           </View>
           <Text style={styles.footerText}>
-            {contactWhatsapp}  ·  {contactEmail.toUpperCase()}
+            {contactWhatsapp} · {contactEmail.toUpperCase()}
           </Text>
         </View>
       </Page>

@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -50,7 +56,9 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
   }, [state, router]);
 
   // Reset preview error when URL changes
-  useEffect(() => { setPreviewError(false); }, [form.imagenUrl]);
+  useEffect(() => {
+    setPreviewError(false);
+  }, [form.imagenUrl]);
 
   function edit(r: BuildRow) {
     setForm({
@@ -71,18 +79,20 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
     if (!q) return rows;
     return rows.filter(
       (r) =>
-        r.titulo.toLowerCase().includes(q) ||
-        r.specs.toLowerCase().includes(q),
+        r.titulo.toLowerCase().includes(q) || r.specs.toLowerCase().includes(q),
     );
   }, [rows, query]);
 
-  useEffect(() => { setPage(1); }, [query]);
+  useEffect(() => {
+    setPage(1);
+  }, [query]);
 
   const totalPages = Math.ceil(visible.length / PAGE_SIZE);
   const paginated = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const isIgUrl = isInstagramUrl(form.imagenUrl);
-  const showPreview = form.imagenUrl.startsWith("http") && !previewError && !isIgUrl;
+  const showPreview =
+    form.imagenUrl.startsWith("http") && !previewError && !isIgUrl;
 
   return (
     <div className="mt-8 space-y-8">
@@ -112,7 +122,8 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             />
             <span className="mt-1 block text-xs text-component">
-              Sube la foto a Imgur, Google Fotos, o donde prefieras y pega el link directo.
+              Sube la foto a Imgur, Google Fotos, o donde prefieras y pega el
+              link directo.
             </span>
           </label>
 
@@ -120,7 +131,8 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
           {isIgUrl && (
             <div className="sm:col-span-2">
               <p className="text-xs text-component">
-                URL de Instagram detectada — se mostrará como publicación embebida en la página pública.
+                URL de Instagram detectada — se mostrará como publicación
+                embebida en la página pública.
               </p>
             </div>
           )}
@@ -186,7 +198,10 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
           {editing && (
             <button
               type="button"
-              onClick={() => { setForm(EMPTY); setPreviewError(false); }}
+              onClick={() => {
+                setForm(EMPTY);
+                setPreviewError(false);
+              }}
               className="text-sm text-component hover:text-panda"
             >
               Cancelar
@@ -204,8 +219,13 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
       <div className="relative max-w-xs">
         <svg
           className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"
-          width="14" height="14" viewBox="0 0 16 16" fill="none"
-          stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+          width="14"
+          height="14"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
         >
           <circle cx="6.5" cy="6.5" r="5" />
           <path d="M10.5 10.5l3.5 3.5" />
@@ -241,11 +261,16 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
             </thead>
             <tbody>
               {paginated.map((r) => (
-                <tr key={r.id} className="border-b border-hairline last:border-0">
+                <tr
+                  key={r.id}
+                  className="border-b border-hairline last:border-0"
+                >
                   <td className="px-4 py-3">
                     {isInstagramUrl(r.imagenUrl) ? (
                       <div className="flex h-12 w-12 items-center justify-center border border-hairline bg-hairline/20">
-                        <span className="font-mono text-xs text-component">IG</span>
+                        <span className="font-mono text-xs text-component">
+                          IG
+                        </span>
                       </div>
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -270,7 +295,11 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
                   <td className="px-4 py-3">
                     <form action={toggleBuildAction}>
                       <input type="hidden" name="id" value={r.id} />
-                      <input type="hidden" name="activo" value={String(r.activo)} />
+                      <input
+                        type="hidden"
+                        name="activo"
+                        value={String(r.activo)}
+                      />
                       <button
                         type="submit"
                         className={`rounded-[2px] border px-2 py-0.5 text-xs ${

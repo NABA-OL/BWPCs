@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { collections } from "@/lib/db/collections";
@@ -33,7 +39,8 @@ export default async function CuentasCobroPage() {
       total: c.total,
     }));
   } catch (e) {
-    error = e instanceof Error ? e.message : "Error al cargar cuentas de cobro.";
+    error =
+      e instanceof Error ? e.message : "Error al cargar cuentas de cobro.";
   }
 
   return (

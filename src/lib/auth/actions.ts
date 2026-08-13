@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use server";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { redirect } from "next/navigation";
 import { collections } from "@/lib/db/collections";

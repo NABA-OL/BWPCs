@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
@@ -131,9 +137,7 @@ export default function ServiciosPage() {
                   {p.n}
                 </span>
                 <h3 className="mt-2 text-xl font-semibold">{p.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-panda">
-                  {p.d}
-                </p>
+                <p className="mt-2 text-sm leading-relaxed text-panda">{p.d}</p>
               </div>
             ))}
           </div>

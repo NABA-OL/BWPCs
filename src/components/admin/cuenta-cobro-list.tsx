@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
@@ -43,8 +49,13 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
       <div className="relative max-w-xs">
         <svg
           className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"
-          width="14" height="14" viewBox="0 0 16 16" fill="none"
-          stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+          width="14"
+          height="14"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
         >
           <circle cx="6.5" cy="6.5" r="5" />
           <path d="M10.5 10.5l3.5 3.5" />
@@ -76,8 +87,13 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
             </thead>
             <tbody>
               {paginated.map((r) => (
-                <tr key={r.id} className="border-b border-hairline last:border-0">
-                  <td className="px-4 py-3 font-mono font-medium">{r.numero}</td>
+                <tr
+                  key={r.id}
+                  className="border-b border-hairline last:border-0"
+                >
+                  <td className="px-4 py-3 font-mono font-medium">
+                    {r.numero}
+                  </td>
                   <td className="px-4 py-3 text-component">
                     {r.clienteNombre || "—"}
                   </td>
@@ -102,7 +118,11 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                       <form
                         action={deleteCuentaCobroAction}
                         onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar la cuenta de cobro ${r.numero}?`))
+                          if (
+                            !confirm(
+                              `¿Eliminar la cuenta de cobro ${r.numero}?`,
+                            )
+                          )
                             e.preventDefault();
                         }}
                       >

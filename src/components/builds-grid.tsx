@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useState, useEffect } from "react";
 import { InstagramEmbed } from "@/components/instagram-embed";
@@ -95,7 +101,10 @@ export function BuildsGrid({ builds }: { builds: Build[] }) {
         {paginated.map((b, i) => (
           // Todos los items permanecen en el DOM para que los embeds de Instagram
           // carguen en segundo plano; solo cambia la clase de visibilidad.
-          <div key={b.id} className={i === carouselIndex ? undefined : "hidden"}>
+          <div
+            key={b.id}
+            className={i === carouselIndex ? undefined : "hidden"}
+          >
             <BuildCard b={b} />
           </div>
         ))}

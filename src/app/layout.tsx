@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata, Viewport } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -49,7 +55,9 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://bw-pcs.vercel.app",
     siteName: "B & W",
-    images: [{ url: "/brand/logo.png", alt: "B & W — Ensamble de PC Colombia" }],
+    images: [
+      { url: "/brand/logo.png", alt: "B & W — Ensamble de PC Colombia" },
+    ],
   },
   twitter: {
     card: "summary",

@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -42,10 +48,10 @@ export function UsersManager({
   const router = useRouter();
   const [firmaPreview, setFirmaPreview] = useState(currentFirmaBase64 ?? "");
 
-  const [pwState, pwAction, pwPending] = useActionState<PasswordState, FormData>(
-    changePasswordAction,
-    {},
-  );
+  const [pwState, pwAction, pwPending] = useActionState<
+    PasswordState,
+    FormData
+  >(changePasswordAction, {});
   const [newState, newAction, newPending] = useActionState<
     CreateUserState,
     FormData
@@ -110,7 +116,9 @@ export function UsersManager({
               {pwPending ? "Guardando…" : "Cambiar contraseña"}
             </Button>
             {pwState.ok && (
-              <span className="text-sm text-component">Contraseña actualizada ✓</span>
+              <span className="text-sm text-component">
+                Contraseña actualizada ✓
+              </span>
             )}
             {pwState.error && (
               <span role="alert" className="text-sm text-accent">
@@ -179,7 +187,9 @@ export function UsersManager({
               {profilePending ? "Guardando…" : "Guardar perfil"}
             </Button>
             {profileState.ok && (
-              <span className="text-sm text-component">Perfil actualizado ✓</span>
+              <span className="text-sm text-component">
+                Perfil actualizado ✓
+              </span>
             )}
             {profileState.error && (
               <span role="alert" className="text-sm text-accent">
@@ -197,7 +207,10 @@ export function UsersManager({
           Se genera una contraseña automática para compartirla. La persona puede
           cambiarla luego desde aquí.
         </p>
-        <form action={newAction} className="mt-4 flex flex-wrap items-end gap-3">
+        <form
+          action={newAction}
+          className="mt-4 flex flex-wrap items-end gap-3"
+        >
           <label className="block grow">
             <span className="text-sm font-medium text-component">Usuario</span>
             <input
@@ -248,7 +261,10 @@ export function UsersManager({
           </div>
         )}
         {resetState.error && (
-          <p role="alert" className="border-b border-hairline px-6 py-3 text-sm text-accent">
+          <p
+            role="alert"
+            className="border-b border-hairline px-6 py-3 text-sm text-accent"
+          >
             {resetState.error}
           </p>
         )}

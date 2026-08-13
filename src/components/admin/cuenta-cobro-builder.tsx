@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useMemo, useState } from "react";
 import Link from "next/link";
@@ -79,7 +85,10 @@ export function CuentaCobroBuilder({
     [data.items, data.descuentoPct],
   );
 
-  function setItem(ii: number, patch: Partial<CuentaCobroInput["items"][number]>) {
+  function setItem(
+    ii: number,
+    patch: Partial<CuentaCobroInput["items"][number]>,
+  ) {
     setData((d) => ({
       ...d,
       items: d.items.map((it, i) => (i === ii ? { ...it, ...patch } : it)),
@@ -119,7 +128,11 @@ export function CuentaCobroBuilder({
     if (s)
       setData((d) => ({
         ...d,
-        firmante: { nombre: s.nombre, cedula: s.cedula, firmaBase64: s.firmaBase64 },
+        firmante: {
+          nombre: s.nombre,
+          cedula: s.cedula,
+          firmaBase64: s.firmaBase64,
+        },
       }));
   }
 
@@ -171,31 +184,42 @@ export function CuentaCobroBuilder({
           <Field
             label="Nombre"
             value={data.cliente.nombre}
-            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, nombre: v } })}
+            onChange={(v) =>
+              setData({ ...data, cliente: { ...data.cliente, nombre: v } })
+            }
           />
           <Field
             label="Identificación"
             value={data.cliente.identificacion}
             onChange={(v) =>
-              setData({ ...data, cliente: { ...data.cliente, identificacion: v } })
+              setData({
+                ...data,
+                cliente: { ...data.cliente, identificacion: v },
+              })
             }
             mono
           />
           <Field
             label="Dirección"
             value={data.cliente.direccion}
-            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, direccion: v } })}
+            onChange={(v) =>
+              setData({ ...data, cliente: { ...data.cliente, direccion: v } })
+            }
           />
           <Field
             label="Teléfono"
             value={data.cliente.telefono}
-            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, telefono: v } })}
+            onChange={(v) =>
+              setData({ ...data, cliente: { ...data.cliente, telefono: v } })
+            }
             mono
           />
           <Field
             label="Email"
             value={data.cliente.email}
-            onChange={(v) => setData({ ...data, cliente: { ...data.cliente, email: v } })}
+            onChange={(v) =>
+              setData({ ...data, cliente: { ...data.cliente, email: v } })
+            }
           />
         </div>
       </section>
@@ -227,14 +251,20 @@ export function CuentaCobroBuilder({
             label="Banco"
             value={data.cuentaBanco.banco}
             onChange={(v) =>
-              setData({ ...data, cuentaBanco: { ...data.cuentaBanco, banco: v } })
+              setData({
+                ...data,
+                cuentaBanco: { ...data.cuentaBanco, banco: v },
+              })
             }
           />
           <Field
             label="Titular"
             value={data.cuentaBanco.titular}
             onChange={(v) =>
-              setData({ ...data, cuentaBanco: { ...data.cuentaBanco, titular: v } })
+              setData({
+                ...data,
+                cuentaBanco: { ...data.cuentaBanco, titular: v },
+              })
             }
           />
         </div>
@@ -279,7 +309,10 @@ export function CuentaCobroBuilder({
             label="Llave Bre-B (opcional)"
             value={data.cuentaBanco.llave ?? ""}
             onChange={(v) =>
-              setData({ ...data, cuentaBanco: { ...data.cuentaBanco, llave: v } })
+              setData({
+                ...data,
+                cuentaBanco: { ...data.cuentaBanco, llave: v },
+              })
             }
             mono
           />
@@ -304,7 +337,8 @@ export function CuentaCobroBuilder({
         </select>
         {data.firmante.nombre && (
           <p className="mt-3 text-sm text-component">
-            Firma: <span className="font-mono">{data.firmante.nombre}</span> · C.C.{" "}
+            Firma: <span className="font-mono">{data.firmante.nombre}</span> ·
+            C.C.{" "}
             <span className="font-mono">{data.firmante.cedula || "—"}</span>
             {!data.firmante.firmaBase64 && (
               <span className="ml-2 text-accent">
@@ -354,8 +388,13 @@ export function CuentaCobroBuilder({
                 className="cursor-grab touch-none self-stretch px-1.5 py-2 text-component hover:text-panda active:cursor-grabbing"
               >
                 <svg
-                  width="14" height="14" viewBox="0 0 14 14" fill="none"
-                  stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
                 >
                   <line x1="1" y1="3" x2="13" y2="3" />
                   <line x1="1" y1="7" x2="13" y2="7" />
@@ -372,7 +411,10 @@ export function CuentaCobroBuilder({
                 value={item.cantidad || ""}
                 onChange={(e) =>
                   setItem(ii, {
-                    cantidad: Math.max(0, Math.round(Number(e.target.value) || 0)),
+                    cantidad: Math.max(
+                      0,
+                      Math.round(Number(e.target.value) || 0),
+                    ),
                   })
                 }
                 inputMode="numeric"
@@ -385,7 +427,9 @@ export function CuentaCobroBuilder({
                   setItem(ii, {
                     valorUnitario: Math.max(
                       0,
-                      Math.round(Number(e.target.value.replace(/\D/g, "")) || 0),
+                      Math.round(
+                        Number(e.target.value.replace(/\D/g, "")) || 0,
+                      ),
                     ),
                   })
                 }
@@ -458,7 +502,11 @@ export function CuentaCobroBuilder({
       {/* Acciones */}
       <div className="flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
         <Button type="submit" size="lg" disabled={pending}>
-          {pending ? "Guardando…" : id ? "Guardar cambios" : "Crear cuenta de cobro"}
+          {pending
+            ? "Guardando…"
+            : id
+              ? "Guardar cambios"
+              : "Crear cuenta de cobro"}
         </Button>
         {pdfHref && (
           <a
@@ -509,7 +557,9 @@ function CatalogPicker({
         const c = catalog.find((x) => x.id === e.target.value);
         if (c)
           onPick({
-            descripcion: c.descripcion ? `${c.modelo} — ${c.descripcion}` : c.modelo,
+            descripcion: c.descripcion
+              ? `${c.modelo} — ${c.descripcion}`
+              : c.modelo,
             cantidad: 1,
             valorUnitario: c.precioCop,
           });

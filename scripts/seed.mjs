@@ -1,3 +1,11 @@
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
+
 /**
  * Seed inicial de la base de datos.
  * Uso: node --env-file=.env.local scripts/seed.mjs

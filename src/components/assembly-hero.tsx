@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useEffect, useRef } from "react";
 
@@ -153,7 +159,15 @@ function PcLineArt({
         d="M40 26 H320 a8 8 0 0 1 8 8 V386 a8 8 0 0 1 -8 8 H40 a8 8 0 0 1 -8 -8 V34 a8 8 0 0 1 8 -8 Z"
         opacity={0.16}
       />
-      <line x1="120" y1="34" x2="120" y2="386" stroke="currentColor" strokeWidth={1.2} opacity={0.05} />
+      <line
+        x1="120"
+        y1="34"
+        x2="120"
+        y2="386"
+        stroke="currentColor"
+        strokeWidth={1.2}
+        opacity={0.05}
+      />
 
       {/* Ventiladores frontales */}
       <g data-fx="-150" data-fy="0" {...partProps}>
@@ -194,9 +208,33 @@ function PcLineArt({
       <g data-fx="0" data-fy="170" {...partProps}>
         <rect x="46" y="344" width="268" height="48" rx="3" />
         <Fan cx={84} cy={368} r={18} />
-        <line x1="150" y1="356" x2="300" y2="356" stroke="currentColor" strokeWidth={1.2} opacity={0.5} />
-        <line x1="150" y1="368" x2="300" y2="368" stroke="currentColor" strokeWidth={1.2} opacity={0.5} />
-        <line x1="150" y1="380" x2="300" y2="380" stroke="currentColor" strokeWidth={1.2} opacity={0.5} />
+        <line
+          x1="150"
+          y1="356"
+          x2="300"
+          y2="356"
+          stroke="currentColor"
+          strokeWidth={1.2}
+          opacity={0.5}
+        />
+        <line
+          x1="150"
+          y1="368"
+          x2="300"
+          y2="368"
+          stroke="currentColor"
+          strokeWidth={1.2}
+          opacity={0.5}
+        />
+        <line
+          x1="150"
+          y1="380"
+          x2="300"
+          y2="380"
+          stroke="currentColor"
+          strokeWidth={1.2}
+          opacity={0.5}
+        />
       </g>
 
       {/* Botón de encendido */}

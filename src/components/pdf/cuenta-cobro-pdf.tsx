@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import {
   Document,
   Page,
@@ -68,7 +74,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     textAlign: "center",
   },
-  row: { flexDirection: "row", borderTopWidth: 1, borderColor: COLORS.hairline },
+  row: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderColor: COLORS.hairline,
+  },
   cell: { paddingVertical: 5, paddingHorizontal: 8, fontSize: 8.5 },
   cDesc: { width: "46%" },
   cQty: {
@@ -92,7 +102,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: COLORS.hairline,
   },
-  totalRow: { flexDirection: "row", borderTopWidth: 1, borderColor: COLORS.hairline },
+  totalRow: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderColor: COLORS.hairline,
+  },
   totalLabel: {
     width: "58%",
     paddingVertical: 5,
@@ -111,7 +125,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: COLORS.hairline,
   },
-  totalSpacer: { width: "21%", borderLeftWidth: 1, borderColor: COLORS.hairline },
+  totalSpacer: {
+    width: "21%",
+    borderLeftWidth: 1,
+    borderColor: COLORS.hairline,
+  },
   grandTotal: { backgroundColor: "#F2EFE9" },
   bankBlock: {
     marginTop: 20,
@@ -177,9 +195,13 @@ export function CuentaCobroPDF({
             <Text style={styles.wordmark}>B &amp; W</Text>
             <Text style={styles.tagline}>TU PC MASTER RACE A BUEN PRECIO</Text>
             <View style={styles.circles}>
-              <View style={[styles.circle, { backgroundColor: COLORS.panda }]} />
+              <View
+                style={[styles.circle, { backgroundColor: COLORS.panda }]}
+              />
               <View style={[styles.circle, { backgroundColor: COLORS.gray }]} />
-              <View style={[styles.circle, { backgroundColor: COLORS.hairline }]} />
+              <View
+                style={[styles.circle, { backgroundColor: COLORS.hairline }]}
+              />
             </View>
           </View>
         </View>
@@ -283,7 +305,9 @@ export function CuentaCobroPDF({
           <View style={styles.signLine}>
             <Text style={styles.blockText}>{cuenta.firmante.nombre}</Text>
             {cuenta.firmante.cedula && (
-              <Text style={styles.blockText}>C.C. {cuenta.firmante.cedula}</Text>
+              <Text style={styles.blockText}>
+                C.C. {cuenta.firmante.cedula}
+              </Text>
             )}
           </View>
         </View>
@@ -291,7 +315,9 @@ export function CuentaCobroPDF({
         {/* Footer */}
         <View style={styles.footer} fixed>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            {logo ? <Image src={logo} style={{ width: 22, height: 22 }} /> : null}
+            {logo ? (
+              <Image src={logo} style={{ width: 22, height: 22 }} />
+            ) : null}
           </View>
           <Text
             style={styles.footerText}

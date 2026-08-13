@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useState } from "react";
 import {
@@ -15,9 +21,7 @@ type OptionsMap = Record<string, Option[]>;
 
 export function EstimatorOptionsForm({ initial }: { initial: OptionsMap }) {
   const [data, setData] = useState<OptionsMap>(() =>
-    Object.fromEntries(
-      ESTIMATOR_CATEGORIES.map((c) => [c, initial[c] ?? []]),
-    ),
+    Object.fromEntries(ESTIMATOR_CATEGORIES.map((c) => [c, initial[c] ?? []])),
   );
   const [state, formAction, pending] = useActionState<OptionsState, FormData>(
     saveOptionsAction,

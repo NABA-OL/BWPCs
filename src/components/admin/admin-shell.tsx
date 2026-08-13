@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -60,7 +66,10 @@ export function AdminShell({
   const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     for (const entry of adminNav) {
-      if (isAdminNavGroup(entry) && entry.items.some((i) => isItemActive(i, pathname))) {
+      if (
+        isAdminNavGroup(entry) &&
+        entry.items.some((i) => isItemActive(i, pathname))
+      ) {
         initial.add(entry.label);
       }
     }
@@ -183,7 +192,9 @@ export function AdminShell({
               height={32}
               className="h-8 w-8 object-contain invert"
             />
-            <span className="font-extrabold tracking-tight">Panel B &amp; W</span>
+            <span className="font-extrabold tracking-tight">
+              Panel B &amp; W
+            </span>
           </div>
 
           {nav}

@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
@@ -44,8 +50,8 @@ export default function NosotrosPage() {
       <PcBackdrop />
       <PageHero eyebrow="Sobre B & W" title="Armamos PCs, no plantillas.">
         <p>
-          B &amp; W nació de la pasión por el hardware y de una idea simple:
-          que armar un buen computador en Colombia no tiene por qué ser caro ni
+          B &amp; W nació de la pasión por el hardware y de una idea simple: que
+          armar un buen computador en Colombia no tiene por qué ser caro ni
           confuso.
         </p>
       </PageHero>

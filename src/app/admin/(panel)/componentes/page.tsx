@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
 import {
@@ -17,10 +23,7 @@ export default async function ComponentesPage() {
 
   try {
     const col = await collections.components();
-    const docs = await col
-      .find({})
-      .sort({ categoria: 1, modelo: 1 })
-      .toArray();
+    const docs = await col.find({}).sort({ categoria: 1, modelo: 1 }).toArray();
     rows = docs.map((c) => ({
       id: c._id!.toString(),
       categoria: c.categoria,

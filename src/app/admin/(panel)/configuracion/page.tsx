@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import { getSettings } from "@/lib/admin/settings";
 import { SettingsForm } from "@/components/admin/settings-form";
@@ -32,13 +38,16 @@ export default async function ConfiguracionPage() {
       wordmarkPhrases: s.wordmarkPhrases ?? [],
     };
   } catch (e) {
-    error = e instanceof Error ? e.message : "Error al cargar la configuración.";
+    error =
+      e instanceof Error ? e.message : "Error al cargar la configuración.";
   }
 
   return (
     <>
       <header>
-        <h1 className="text-3xl font-extrabold tracking-tight">Configuración</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          Configuración
+        </h1>
         <p className="mt-1 text-component">
           TRM, envíos, servicio, recargos de pago y datos de contacto.
         </p>

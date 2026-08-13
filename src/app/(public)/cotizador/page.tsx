@@ -1,4 +1,10 @@
-// Desarrollado por BlacKraken Solutions
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
@@ -71,7 +77,9 @@ export default async function CotizadorPage() {
 
     categories = ESTIMATOR_CATEGORIES.map((cat) => {
       const opciones = (
-        map.get(cat) ?? DEFAULT_ESTIMATOR_OPTIONS[cat] ?? []
+        map.get(cat) ??
+        DEFAULT_ESTIMATOR_OPTIONS[cat] ??
+        []
       ).filter((o) => o && o.label && o.precioCop > 0);
       return {
         key: cat,
@@ -113,8 +121,8 @@ export default async function CotizadorPage() {
                 Cotizador en preparación
               </h2>
               <p className="mx-auto mt-2 max-w-md text-component">
-                Estamos afinando las opciones. Mientras tanto, escríbenos directo
-                y armamos tu cotización a la medida.
+                Estamos afinando las opciones. Mientras tanto, escríbenos
+                directo y armamos tu cotización a la medida.
               </p>
               <ButtonLink
                 href={whatsappLink("Hola B & W, quiero cotizar un PC.")}

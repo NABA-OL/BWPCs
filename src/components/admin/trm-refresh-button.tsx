@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState } from "react";
 import {
@@ -12,7 +18,11 @@ import { formatNumber } from "@/lib/format";
  * Botón "Actualizar TRM ahora": consulta el servicio oficial de la
  * Superfinanciera a demanda. El cron diario hace lo mismo automáticamente.
  */
-export function TrmRefreshButton({ actualizado }: { actualizado: Date | null }) {
+export function TrmRefreshButton({
+  actualizado,
+}: {
+  actualizado: Date | null;
+}) {
   const [state, action, pending] = useActionState<TrmState, FormData>(
     async () => refreshTrmAction(),
     {},
@@ -36,7 +46,8 @@ export function TrmRefreshButton({ actualizado }: { actualizado: Date | null }) 
       </button>
       {state.ok && state.trm != null && (
         <span role="status" className="text-sm text-component">
-          TRM oficial: <span className="font-mono text-panda">
+          TRM oficial:{" "}
+          <span className="font-mono text-panda">
             {formatNumber(state.trm)}
           </span>{" "}
           ✓

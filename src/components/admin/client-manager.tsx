@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -31,10 +37,10 @@ const EMPTY = {
 export function ClientManager({ rows }: { rows: ClientRow[] }) {
   const router = useRouter();
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
-  const [state, formAction, pending] = useActionState<ClientFormState, FormData>(
-    saveClientAction,
-    {},
-  );
+  const [state, formAction, pending] = useActionState<
+    ClientFormState,
+    FormData
+  >(saveClientAction, {});
 
   useEffect(() => {
     if (state.ok) {
@@ -144,7 +150,9 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
       </form>
 
       {rows.length === 0 ? (
-        <p className="text-component">No hay clientes. Agrega el primero arriba.</p>
+        <p className="text-component">
+          No hay clientes. Agrega el primero arriba.
+        </p>
       ) : (
         <div className="overflow-x-auto border border-hairline">
           <table className="w-full text-sm">
@@ -158,7 +166,10 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-hairline last:border-0">
+                <tr
+                  key={r.id}
+                  className="border-b border-hairline last:border-0"
+                >
                   <td className="px-4 py-3 font-medium">{r.nombre}</td>
                   <td className="px-4 py-3 font-mono text-component">
                     {r.identificacion}
@@ -186,7 +197,10 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
                         }}
                       >
                         <input type="hidden" name="id" value={r.id} />
-                        <button type="submit" className="text-accent hover:underline">
+                        <button
+                          type="submit"
+                          className="text-accent hover:underline"
+                        >
                           Eliminar
                         </button>
                       </form>

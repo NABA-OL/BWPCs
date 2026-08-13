@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useEffect } from "react";
 
@@ -29,7 +35,12 @@ export function InstagramEmbed({ url }: Props) {
         className="instagram-media"
         data-instgrm-permalink={url}
         data-instgrm-version="14"
-        style={{ maxWidth: 540, width: "calc(100% - 2px)", minWidth: 0, margin: "0 auto" }}
+        style={{
+          maxWidth: 540,
+          width: "calc(100% - 2px)",
+          minWidth: 0,
+          margin: "0 auto",
+        }}
       />
     </div>
   );

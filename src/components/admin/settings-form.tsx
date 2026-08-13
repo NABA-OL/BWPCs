@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useState } from "react";
 import {
@@ -53,7 +59,9 @@ function Field({
           mono ? "font-mono" : ""
         }`}
       />
-      {hint && <span className="mt-1 block text-xs text-component">{hint}</span>}
+      {hint && (
+        <span className="mt-1 block text-xs text-component">{hint}</span>
+      )}
     </label>
   );
 }
@@ -179,7 +187,9 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
 
       {/* Frases del wordmark "B & W" → "Build & Wire", "Bits & Watts"… */}
       <section className="border border-hairline p-6">
-        <h2 className="text-lg font-semibold">Animación del logo (B &amp; W)</h2>
+        <h2 className="text-lg font-semibold">
+          Animación del logo (B &amp; W)
+        </h2>
         <p className="mt-1 text-sm text-component">
           Frases que el logo revela y rota. La 1.ª palabra debe empezar con{" "}
           <strong>B</strong> y la 2.ª con <strong>W</strong> (el logo en reposo

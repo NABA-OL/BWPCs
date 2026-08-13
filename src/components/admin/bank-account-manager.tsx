@@ -1,5 +1,11 @@
-// Desarrollado por BlacKraken Solutions
 "use client";
+/*
+ * Propiedad de BlacKraken Solutions
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-08-13
+ *  * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
 
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -61,7 +67,11 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
           {editing ? "Editar cuenta bancaria" : "Agregar cuenta bancaria"}
         </h2>
         <input type="hidden" name="id" value={form.id} />
-        <input type="hidden" name="tieneCuenta" value={String(form.tieneCuenta)} />
+        <input
+          type="hidden"
+          name="tieneCuenta"
+          value={String(form.tieneCuenta)}
+        />
         <input type="hidden" name="tieneBreB" value={String(form.tieneBreB)} />
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -94,7 +104,9 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
             <input
               type="checkbox"
               checked={form.tieneCuenta}
-              onChange={(e) => setForm({ ...form, tieneCuenta: e.target.checked })}
+              onChange={(e) =>
+                setForm({ ...form, tieneCuenta: e.target.checked })
+              }
             />
             Tiene cuenta bancaria (transferencia normal)
           </label>
@@ -142,7 +154,9 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
             <input
               type="checkbox"
               checked={form.tieneBreB}
-              onChange={(e) => setForm({ ...form, tieneBreB: e.target.checked })}
+              onChange={(e) =>
+                setForm({ ...form, tieneBreB: e.target.checked })
+              }
             />
             Tiene llave Bre-B (transferencia inmediata interbancaria)
           </label>
@@ -203,7 +217,10 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-hairline last:border-0">
+                <tr
+                  key={r.id}
+                  className="border-b border-hairline last:border-0"
+                >
                   <td className="px-4 py-3 font-medium">{r.banco}</td>
                   <td className="px-4 py-3 font-mono text-component">
                     {r.numero ? `${r.tipoCuenta} · ${r.numero}` : "—"}
@@ -241,7 +258,10 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
                         }}
                       >
                         <input type="hidden" name="id" value={r.id} />
-                        <button type="submit" className="text-accent hover:underline">
+                        <button
+                          type="submit"
+                          className="text-accent hover:underline"
+                        >
                           Eliminar
                         </button>
                       </form>
