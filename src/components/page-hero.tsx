@@ -2,16 +2,26 @@
  * Propiedad de BlacKraken Solutions
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-08-13
- *  * Correo: nabaol.dev@gmail.com
- * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
+import { ButtonLink } from "@/components/ui/button";
+import { ShareButton } from "@/components/share-button";
+
 export function PageHero({
   eyebrow,
   title,
+  summary,
+  ctaLabel,
+  ctaHref,
+  ctaExternal,
   children,
 }: {
   eyebrow?: string;
   title: string;
+  /** Puntos clave, mostrados justo después del párrafo de apertura. */
+  summary?: string[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  ctaExternal?: boolean;
   children?: React.ReactNode;
 }) {
   return (
@@ -28,6 +38,36 @@ export function PageHero({
             {children}
           </div>
         )}
+
+        {summary && summary.length > 0 && (
+          <ul className="mt-5 max-w-2xl space-y-1.5">
+            {summary.map((point) => (
+              <li
+                key={point}
+                className="flex items-start gap-2 text-sm leading-relaxed text-panda"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-2 h-1 w-1 shrink-0 bg-accent"
+                />
+                {point}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-7 flex flex-wrap items-center gap-5">
+          {ctaLabel && ctaHref && (
+            <ButtonLink
+              href={ctaHref}
+              target={ctaExternal ? "_blank" : undefined}
+              rel={ctaExternal ? "noopener noreferrer" : undefined}
+            >
+              {ctaLabel}
+            </ButtonLink>
+          )}
+          <ShareButton title={title} />
+        </div>
       </div>
     </section>
   );

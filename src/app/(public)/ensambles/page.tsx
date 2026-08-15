@@ -62,7 +62,12 @@ export default async function EnsamblesPage() {
   return (
     <>
       <PcBackdrop />
-      <PageHero eyebrow="Trabajo real" title="Ensambles">
+      <PageHero
+        eyebrow="Trabajo real"
+        title="Ensambles"
+        ctaLabel="Cotiza tu PC"
+        ctaHref="/cotizador"
+      >
         <p>
           Cada equipo que sale de nuestras manos está aquí. Builds gaming,
           workstation, escritorio y más — armados a la medida de cada cliente.

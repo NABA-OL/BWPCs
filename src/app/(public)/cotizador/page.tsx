@@ -98,7 +98,16 @@ export default async function CotizadorPage() {
   return (
     <>
       <PcBackdrop />
-      <PageHero eyebrow="Estimado aproximado" title="Cotiza tu PC">
+      <PageHero
+        eyebrow="Estimado aproximado"
+        title="Cotiza tu PC"
+        summary={[
+          "Elige la gama de cada componente: procesador, gráfica, RAM y más.",
+          "Ve el total aproximado en pesos colombianos al instante.",
+          "Compara el precio con tarjeta, PSE o Bre-B.",
+          "Sin registro. Confirmas y afinas detalles por WhatsApp.",
+        ]}
+      >
         <p>
           Elige la gama de cada componente y te damos un valor aproximado al
           instante. Sin registrarte. Luego lo afinamos contigo por WhatsApp.

@@ -36,7 +36,13 @@ export default function ContactoPage() {
   return (
     <>
       <PcBackdrop />
-      <PageHero eyebrow="Hablemos" title="Contacto">
+      <PageHero
+        eyebrow="Hablemos"
+        title="Contacto"
+        ctaLabel="Escribir por WhatsApp"
+        ctaHref={whatsappLink("Hola B & W, quiero cotizar un PC.")}
+        ctaExternal
+      >
         <p>
           La forma más rápida es WhatsApp: cuéntanos qué buscas y te ayudamos a
           armar el equipo ideal para tu presupuesto.

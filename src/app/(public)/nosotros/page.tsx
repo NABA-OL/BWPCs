@@ -6,6 +6,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
@@ -48,7 +49,12 @@ export default function NosotrosPage() {
   return (
     <>
       <PcBackdrop />
-      <PageHero eyebrow="Sobre B & W" title="Armamos PCs, no plantillas.">
+      <PageHero
+        eyebrow="Sobre B & W"
+        title="Armamos PCs, no plantillas."
+        ctaLabel="Habla con nosotros"
+        ctaHref="/contacto"
+      >
         <p>
           B &amp; W nació de la pasión por el hardware y de una idea simple: que
           armar un buen computador en Colombia no tiene por qué ser caro ni
@@ -74,6 +80,11 @@ export default function NosotrosPage() {
                 El resto de componentes los conseguimos al mejor valor del
                 momento y los sumamos a tu cotización. Tú decides: armamos todo
                 el equipo o te vendemos solo la pieza que necesitas.
+              </p>
+              <p>
+                <Link href="/ensambles" className="text-accent hover:underline">
+                  Ve los equipos que hemos entregado →
+                </Link>
               </p>
             </div>
           </div>

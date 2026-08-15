@@ -6,9 +6,11 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
+import { FaqSection } from "@/components/faq-section";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -42,6 +44,29 @@ const componentes = [
   { t: "Almacenamiento", d: "SSD NVMe veloces para arrancar al instante." },
 ];
 
+const faqs = [
+  {
+    q: "¿Cuánto se demora el ensamblaje?",
+    a: "Entre 2 y 5 días hábiles desde que confirmamos los componentes por WhatsApp, según disponibilidad de piezas.",
+  },
+  {
+    q: "¿Hacen envíos fuera de Bogotá?",
+    a: "Sí, enviamos a todo Colombia. En Bogotá coordinamos entrega directa; al resto del país por transportadora.",
+  },
+  {
+    q: "¿El equipo tiene garantía?",
+    a: "Sí. Cada componente lleva la garantía de su fabricante, y el ensamblaje en sí queda cubierto por nosotros.",
+  },
+  {
+    q: "¿Qué medios de pago aceptan?",
+    a: "Bre-B, tarjeta, PSE, Daviplata y Nequi. Puedes ver el total con cada recargo desde el cotizador.",
+  },
+  {
+    q: "¿Puedo comprar solo una pieza sin ensamble?",
+    a: "Sí. Vendemos componentes sueltos — gráficas, procesadores, RAM y más — sin obligación de armar el equipo completo.",
+  },
+];
+
 const pasos = [
   {
     n: "01",
@@ -64,7 +89,18 @@ export default function ServiciosPage() {
   return (
     <>
       <PcBackdrop />
-      <PageHero eyebrow="Lo que ofrecemos" title="Servicios">
+      <PageHero
+        eyebrow="Lo que ofrecemos"
+        title="Servicios"
+        summary={[
+          "Ensamblaje a la medida: armado, formateo y configuración incluidos.",
+          "Componentes sueltos, sin obligación de ensamble completo.",
+          "Envíos a todo Colombia desde Bogotá.",
+          "Precio afinado contigo por WhatsApp antes de confirmar.",
+        ]}
+        ctaLabel="Cotiza tu PC"
+        ctaHref="/cotizador"
+      >
         <p>
           Nuestro fuerte es el ensamblaje a la medida, pero si solo necesitas
           una pieza, también te la conseguimos. Sin venderte de más.
@@ -94,6 +130,14 @@ export default function ServiciosPage() {
                 </strong>
                 . Recibes el equipo encendido y listo para usar, con el cable
                 management ordenado y las temperaturas en su punto.
+              </p>
+              <p>
+                <Link
+                  href="/ensambles"
+                  className="text-accent hover:underline"
+                >
+                  Mira ejemplos reales de equipos que hemos armado →
+                </Link>
               </p>
             </div>
           </div>
@@ -143,6 +187,8 @@ export default function ServiciosPage() {
           </div>
         </div>
       </section>
+
+      <FaqSection items={faqs} />
 
       {/* CTA */}
       <section className="bg-component/30">

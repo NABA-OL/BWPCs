@@ -8,6 +8,7 @@
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { AssemblyHero } from "@/components/assembly-hero";
+import { ShareButton } from "@/components/share-button";
 import { collections } from "@/lib/db/collections";
 import { isInstagramUrl } from "@/lib/instagram";
 
@@ -111,13 +112,16 @@ export default async function HomePage() {
           Armamos tu equipo con los componentes que elegimos contigo, al precio
           justo. ¿Solo necesitas una pieza? También.
         </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/cotizador" size="lg">
-            Cotiza tu PC
-          </ButtonLink>
-          <ButtonLink href="/servicios" size="lg" variant="secondary">
-            Ver servicios
-          </ButtonLink>
+        <div className="mt-8 flex flex-wrap items-center gap-5">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="/cotizador" size="lg">
+              Cotiza tu PC
+            </ButtonLink>
+            <ButtonLink href="/servicios" size="lg" variant="secondary">
+              Ver servicios
+            </ButtonLink>
+          </div>
+          <ShareButton title="B & W — Tu PC Master Race a buen precio" />
         </div>
       </AssemblyHero>
 
