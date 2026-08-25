@@ -34,13 +34,13 @@ Web de **B & W** (ensamble de PC y venta de componentes, Colombia). Ver `docs/PL
 - **Cotizaciones**: el dropdown "Desde catálogo" agrupa por categoría (`<optgroup>`); las cotizaciones nuevas empiezan vacías (sin ítem por defecto).
 
 ## Auth admin
-JWT propio (no NextAuth): cookie httpOnly `bw_session` firmada con `AUTH_SECRET` (jose). Admin en colección `admins` (bcrypt). `SecretAdminTrigger` (clic largo 5s en "© año") → `/admin/login`. Seed: `npm run seed` crea admin (`admin`/`bwadmin2026`) + settings.
+JWT propio (no NextAuth): cookie httpOnly `bw_session` firmada con `AUTH_SECRET` (jose). Admin en colección `admins` (bcrypt). `SecretAdminTrigger` (clic largo 5s en "© año") → `/admin/login`. Seed: `pnpm seed` crea admin (`admin`/`bwadmin2026`) + settings.
 
 ## Entorno (.env.local)
 `MONGODB_URI` (de Atlas/Vercel), `MONGODB_DB=bwpcs`, `AUTH_SECRET`. Ver `.env.example`. En Vercel falta añadir `AUTH_SECRET`.
 
 ## Comandos
-- `npm run dev` · `npm run build` · `npx tsc --noEmit` · `npm run seed`
+- `pnpm dev` · `pnpm build` · `pnpm tsc --noEmit` · `pnpm seed`
 
 ## Estado (fases en PLANEACION §10)
 - ✅ Fase 0: scaffold, tokens, layout, header/footer, home.
