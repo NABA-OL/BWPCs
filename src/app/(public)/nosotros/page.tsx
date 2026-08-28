@@ -10,6 +10,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
   title: "Nosotros",
@@ -48,6 +49,12 @@ const valores = [
 export default function NosotrosPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
+          { name: "Nosotros", url: "https://bw-pcs.vercel.app/nosotros" },
+        ]}
+      />
       <PcBackdrop />
       <PageHero
         eyebrow="Sobre B & W"

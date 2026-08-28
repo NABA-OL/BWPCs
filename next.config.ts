@@ -30,7 +30,24 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    const markdownNegotiablePaths = [
+      "/",
+      "/servicios",
+      "/ensambles",
+      "/nosotros",
+      "/contacto",
+      "/cotizador",
+      "/privacidad",
+    ];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Estas rutas responden distinto según Accept (HTML vs. text/markdown) —
+      // ver proxy.ts. Vary evita que un CDN sirva la variante equivocada cacheada.
+      ...markdownNegotiablePaths.map((source) => ({
+        source,
+        headers: [{ key: "Vary", value: "Accept, Accept-Encoding" }],
+      })),
+    ];
   },
 };
 

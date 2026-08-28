@@ -7,13 +7,32 @@
  */
 import type { MetadataRoute } from "next";
 
+// Agentes de IA conocidos, permitidos explícitamente (no solo por el "*" genérico) —
+// algunos auditores de "agent readiness" solo reconocen reglas nombradas por user-agent.
+const AI_AGENTS = [
+  "GPTBot",
+  "ChatGPT-User",
+  "OAI-SearchBot",
+  "ClaudeBot",
+  "Claude-User",
+  "Claude-SearchBot",
+  "anthropic-ai",
+  "PerplexityBot",
+  "Perplexity-User",
+  "Google-Extended",
+  "CCBot",
+];
+
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: "/admin/",
-    },
+    rules: [
+      { userAgent: "*", allow: "/", disallow: "/admin/" },
+      ...AI_AGENTS.map((userAgent) => ({
+        userAgent,
+        allow: "/",
+        disallow: "/admin/",
+      })),
+    ],
     sitemap: "https://bw-pcs.vercel.app/sitemap.xml",
   };
 }

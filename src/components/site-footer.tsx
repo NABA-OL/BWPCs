@@ -74,14 +74,19 @@ export function SiteFooter() {
           <SecretAdminTrigger>
             © {year}&nbsp;B &amp; W · All rights reserved.
           </SecretAdminTrigger>
-          <a
-            href="https://blackraken.vercel.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-vanilla"
-          >
-            Developed by BlacKraken Solutions.
-          </a>
+          <div className="flex items-center gap-4">
+            <Link href="/privacidad" className="hover:text-vanilla">
+              Privacidad
+            </Link>
+            <a
+              href="https://blackraken.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-vanilla"
+            >
+              Developed by BlacKraken Solutions.
+            </a>
+          </div>
         </div>
       </div>
     </footer>

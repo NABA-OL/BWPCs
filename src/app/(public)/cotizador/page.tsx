@@ -9,13 +9,8 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
-import { collections } from "@/lib/db/collections";
-import { getSettings } from "@/lib/admin/settings";
-import {
-  ESTIMATOR_CATEGORIES,
-  CATEGORY_LABELS,
-  DEFAULT_ESTIMATOR_OPTIONS,
-} from "@/lib/categories";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
+import { getEstimatorContext } from "@/lib/quote-estimator";
 import {
   CotizadorEstimator,
   type EstimatorCategory,
@@ -65,30 +60,19 @@ export default async function CotizadorPage() {
   let ready = false;
 
   try {
-    const settings = await getSettings();
-    servicioBase = settings.servicioBase;
-    tarjetaPct = settings.mediosPago.tarjeta;
-    psePct = settings.mediosPago.pse;
-    breBPct = settings.mediosPago.breB ?? 0;
+    const ctx = await getEstimatorContext();
+    servicioBase = ctx.servicioBase;
+    tarjetaPct = ctx.tarjetaPct;
+    psePct = ctx.psePct;
+    breBPct = ctx.breBPct;
 
-    const col = await collections.categoryOptions();
-    const docs = await col.find({}).toArray();
-    const map = new Map(docs.map((d) => [d.categoria, d.opciones]));
-
-    categories = ESTIMATOR_CATEGORIES.map((cat) => {
-      const opciones = (
-        map.get(cat) ??
-        DEFAULT_ESTIMATOR_OPTIONS[cat] ??
-        []
-      ).filter((o) => o && o.label && o.precioCop > 0);
-      return {
-        key: cat,
-        label: CATEGORY_LABELS[cat],
-        options: opciones,
-        defaultOn: CORE.has(cat), // checkbox marcado en categorías core
-        defaultIndex: Math.max(0, Math.min(1, opciones.length - 1)), // gama media o 1.ª
-      };
-    }).filter((c) => c.options.length > 0);
+    categories = ctx.categories.map((cat) => ({
+      key: cat.key,
+      label: cat.label,
+      options: cat.options,
+      defaultOn: CORE.has(cat.key), // checkbox marcado en categorías core
+      defaultIndex: Math.max(0, Math.min(1, cat.options.length - 1)), // gama media o 1.ª
+    }));
 
     ready = categories.length > 0;
   } catch {
@@ -97,6 +81,12 @@ export default async function CotizadorPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
+          { name: "Cotizador", url: "https://bw-pcs.vercel.app/cotizador" },
+        ]}
+      />
       <PcBackdrop />
       <PageHero
         eyebrow="Estimado aproximado"

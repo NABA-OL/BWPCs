@@ -11,6 +11,7 @@ import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { FaqSection } from "@/components/faq-section";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -88,6 +89,12 @@ const pasos = [
 export default function ServiciosPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
+          { name: "Servicios", url: "https://bw-pcs.vercel.app/servicios" },
+        ]}
+      />
       <PcBackdrop />
       <PageHero
         eyebrow="Lo que ofrecemos"

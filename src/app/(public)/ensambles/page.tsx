@@ -12,6 +12,7 @@ import { PcBackdrop } from "@/components/assembly-hero";
 import { collections } from "@/lib/db/collections";
 import { whatsappLink } from "@/lib/site-config";
 import { BuildsGrid } from "@/components/builds-grid";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
   title: "Ensambles",
@@ -61,6 +62,12 @@ export default async function EnsamblesPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
+          { name: "Ensambles", url: "https://bw-pcs.vercel.app/ensambles" },
+        ]}
+      />
       <PcBackdrop />
       <PageHero
         eyebrow="Trabajo real"

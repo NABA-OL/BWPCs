@@ -66,6 +66,14 @@ export default async function HomePage() {
     url: "https://bw-pcs.vercel.app",
     telephone: "+573188422533",
     email: "bandwmount@gmail.com",
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+573188422533",
+      email: "bandwmount@gmail.com",
+      contactType: "customer service",
+      areaServed: "CO",
+      availableLanguage: "es",
+    },
     address: {
       "@type": "PostalAddress",
       addressLocality: "Bogotá",

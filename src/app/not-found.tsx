@@ -7,7 +7,9 @@
  */
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Página no encontrada",
@@ -37,6 +39,24 @@ export default function NotFound() {
           Cotiza tu PC
         </ButtonLink>
       </div>
+
+      {/* Rutas de recuperación para agentes/crawlers que aterrizan en un 404. */}
+      <nav
+        aria-label="Enlaces del sitio"
+        className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-xs text-component"
+      >
+        {siteConfig.nav.map((l) => (
+          <Link key={l.href} href={l.href} className="hover:text-panda">
+            {l.label}
+          </Link>
+        ))}
+        <a href="/sitemap.xml" className="hover:text-panda">
+          sitemap.xml
+        </a>
+        <a href="/llms.txt" className="hover:text-panda">
+          llms.txt
+        </a>
+      </nav>
     </main>
   );
 }

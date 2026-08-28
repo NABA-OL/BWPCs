@@ -10,6 +10,7 @@ import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { siteConfig, whatsappLink } from "@/lib/site-config";
 import { PcBackdrop } from "@/components/assembly-hero";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -35,6 +36,12 @@ const mediosPago = ["Bre-B", "Tarjeta", "PSE", "Daviplata", "Nequi"];
 export default function ContactoPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
+          { name: "Contacto", url: "https://bw-pcs.vercel.app/contacto" },
+        ]}
+      />
       <PcBackdrop />
       <PageHero
         eyebrow="Hablemos"
