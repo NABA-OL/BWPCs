@@ -71,20 +71,78 @@ const faqs = [
 const pasos = [
   {
     n: "01",
-    t: "Cotiza",
-    d: "Arma un estimado en el cotizador o cuéntanos qué buscas.",
+    t: "Cuéntanos qué necesitas",
+    d: "Nos dices para qué vas a usar el equipo — juegos, trabajo, edición — y tu presupuesto.",
+    icon: "chat",
   },
   {
     n: "02",
-    t: "Afinamos",
-    d: "Por WhatsApp ajustamos componentes y precio a tu presupuesto real.",
+    t: "Evaluamos tu caso",
+    d: "Si ya tienes PC, vemos qué conservar y qué cambiar. Si es desde cero, definimos armado completo o piezas sueltas.",
+    icon: "search",
   },
   {
     n: "03",
-    t: "Ensamblamos",
-    d: "Armamos, instalamos, formateamos y configuramos. Listo para encender.",
+    t: "Cotización",
+    d: "Armamos la propuesta con precio aproximado y la afinamos contigo por WhatsApp.",
+    icon: "doc",
   },
-];
+  {
+    n: "04",
+    t: "Compra de componentes",
+    d: "Conseguimos cada pieza al mejor precio, incluidas gráficas y procesadores importados.",
+    icon: "cart",
+  },
+  {
+    n: "05",
+    t: "Ensamblaje y pruebas",
+    d: "Armamos, ordenamos el cable management y probamos temperaturas y estabilidad.",
+    icon: "build",
+  },
+  {
+    n: "06",
+    t: "Entrega y soporte",
+    d: "Recibes el equipo listo para encender, en Bogotá o envío nacional, con soporte post-venta.",
+    icon: "rocket",
+  },
+] as const;
+
+const stepIcons: Record<(typeof pasos)[number]["icon"], React.ReactNode> = {
+  chat: (
+    <path d="M4 5.5h16v10H9l-4 3.5v-3.5H4v-10Z" />
+  ),
+  search: (
+    <>
+      <circle cx="10.5" cy="10.5" r="6" />
+      <line x1="15" y1="15" x2="20" y2="20" />
+    </>
+  ),
+  doc: (
+    <>
+      <path d="M6 3.5h9l4 4v13H6v-17Z" />
+      <line x1="9" y1="10.5" x2="16" y2="10.5" />
+      <line x1="9" y1="14" x2="16" y2="14" />
+      <line x1="9" y1="17.5" x2="13" y2="17.5" />
+    </>
+  ),
+  cart: (
+    <>
+      <circle cx="9.5" cy="20" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="17.5" cy="20" r="1.4" fill="currentColor" stroke="none" />
+      <path d="M3.5 4.5h2.5l2.4 11.2h9.9l2.2-8.2H7" />
+    </>
+  ),
+  build: (
+    <path d="M15.5 4.5 19 8l-3 3-2-.6-4 4 2.5 2.5-2 2-6-6 2-2 2.5 2.5 4-4-.6-2Z" />
+  ),
+  rocket: (
+    <>
+      <path d="M12 3c3 1.5 4.5 4.7 4.5 8.5 0 2-1 3.8-2 5l-2.5 3-2.5-3c-1-1.2-2-3-2-5C7.5 7.7 9 4.5 12 3Z" />
+      <circle cx="12" cy="10.5" r="1.6" />
+      <path d="M8 16.5 5.5 19M16 16.5 18.5 19" />
+    </>
+  ),
+};
 
 export default function ServiciosPage() {
   return (
@@ -175,22 +233,46 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      {/* Cómo funciona */}
+      {/* Cómo trabajamos */}
       <section className="border-b border-hairline bg-vanilla/40">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-          <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
-            Cómo funciona
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+          <span className="font-mono text-sm text-accent">Proceso</span>
+          <h2 className="mt-3 text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
+            Cómo trabajamos
           </h2>
-          <div className="mt-8 grid gap-8 md:grid-cols-3">
+          <p className="mt-3 max-w-xl text-lg text-panda">
+            Seis pasos desde que nos cuentas qué necesitas hasta que enciendes
+            tu equipo.
+          </p>
+          <div className="mt-10 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
             {pasos.map((p) => (
-              <div key={p.n}>
-                <span className="font-mono text-2xl font-medium text-accent">
+              <div key={p.n} className="bg-vanilla p-6 sm:p-7">
+                <span className="font-mono text-xs text-component">
                   {p.n}
                 </span>
-                <h3 className="mt-2 text-xl font-semibold">{p.t}</h3>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mt-3 text-accent"
+                  aria-hidden="true"
+                >
+                  {stepIcons[p.icon]}
+                </svg>
+                <h3 className="mt-3 text-lg font-semibold">{p.t}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-panda">{p.d}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-8">
+            <ButtonLink href="/cotizador" variant="secondary">
+              Cotiza tu PC
+            </ButtonLink>
           </div>
         </div>
       </section>
