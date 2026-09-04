@@ -1,6 +1,6 @@
 "use client";
 /*
- * Propiedad de BlacKraken Solutions
+ * Propiedad de BlacKraken Solutions <blackraken.com>
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-08-13
  */
@@ -33,8 +33,14 @@ export function ShareButton({ title }: { title: string }) {
       className="inline-flex items-center gap-1.5 text-sm text-component transition-colors hover:text-panda"
     >
       <svg
-        width="15" height="15" viewBox="0 0 16 16" fill="none"
-        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+        width="15"
+        height="15"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <circle cx="12.5" cy="3.5" r="2" />
         <circle cx="3.5" cy="8" r="2" />

@@ -1,5 +1,5 @@
 /*
- * Propiedad de BlacKraken Solutions
+ * Propiedad de BlacKraken Solutions <blackraken.com>
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-08-13
  *  * Correo: nabaol.dev@gmail.com
@@ -92,7 +92,7 @@ export function SiteFooter() {
               Privacidad
             </Link>
             <a
-              href="https://blackraken.vercel.app"
+              href="https://blackraken.com"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-vanilla"

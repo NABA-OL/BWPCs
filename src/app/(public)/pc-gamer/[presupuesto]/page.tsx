@@ -1,5 +1,5 @@
 /*
- * Propiedad de BlacKraken Solutions
+ * Propiedad de BlacKraken Solutions <blackraken.com>
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-09-04
  */
@@ -292,9 +292,7 @@ export default async function PcGamerPresupuestoPage({
                 href={`/pc-gamer/${o.slug}`}
                 className="group bg-vanilla p-6 transition-colors hover:bg-component/20"
               >
-                <p className="font-mono text-xs text-component">
-                  {o.etiqueta}
-                </p>
+                <p className="font-mono text-xs text-component">{o.etiqueta}</p>
                 <h3 className="mt-2 text-lg font-semibold group-hover:text-accent">
                   PC gamer por {o.etiqueta} →
                 </h3>

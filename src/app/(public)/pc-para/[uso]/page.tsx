@@ -1,5 +1,5 @@
 /*
- * Propiedad de BlacKraken Solutions
+ * Propiedad de BlacKraken Solutions <blackraken.com>
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-09-04
  */
@@ -215,7 +215,9 @@ export default async function PcParaUsoPage({
       <PageHero
         eyebrow="Por caso de uso"
         title={caso.h1}
-        summary={caso.prioridades.map((p) => `${p.pieza}: ${p.porque.split(".")[0]}.`)}
+        summary={caso.prioridades.map(
+          (p) => `${p.pieza}: ${p.porque.split(".")[0]}.`,
+        )}
         ctaLabel="Cotiza tu equipo"
         ctaHref="/cotizador"
       >
