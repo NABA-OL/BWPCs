@@ -229,7 +229,7 @@ export function CotizadorEstimator({
               !hasSelection ? "pointer-events-none opacity-40" : ""
             }`}
           >
-            Enviar por WhatsApp
+            Contactanos por WhatsApp
           </ButtonLink>
           {!hasSelection && (
             <p className="mt-2 px-1 text-center text-xs text-component">

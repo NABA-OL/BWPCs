@@ -13,7 +13,7 @@ import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
-  title: "Contacto",
+  title: "Contacto: cotiza tu PC por WhatsApp en Bogotá",
   description:
     "Escríbenos por WhatsApp o correo para cotizar tu PC. Ensamblamos a la medida y hacemos envíos a todo Colombia desde Bogotá.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Contacto · B & W",
     description:
       "Escríbenos por WhatsApp o correo. Envíos a todo Colombia desde Bogotá.",
-    url: "https://bw-pcs.vercel.app/contacto",
+    url: "https://bw-pcs.com/contacto",
   },
 };
 
@@ -38,14 +38,14 @@ export default function ContactoPage() {
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
-          { name: "Contacto", url: "https://bw-pcs.vercel.app/contacto" },
+          { name: "Inicio", url: "https://bw-pcs.com/" },
+          { name: "Contacto", url: "https://bw-pcs.com/contacto" },
         ]}
       />
       <PcBackdrop />
       <PageHero
         eyebrow="Hablemos"
-        title="Contacto"
+        title="Cotiza tu PC por WhatsApp"
         ctaLabel="Escribir por WhatsApp"
         ctaHref={whatsappLink("Hola B & W, quiero cotizar un PC.")}
         ctaExternal

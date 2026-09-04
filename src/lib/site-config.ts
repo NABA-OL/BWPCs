@@ -23,10 +23,21 @@ export const siteConfig = {
   nav: [
     { label: "Inicio", href: "/" },
     { label: "Servicios", href: "/servicios" },
+    { label: "Componentes", href: "/componentes" },
     { label: "Ensambles", href: "/ensambles" },
     { label: "Cotizador", href: "/cotizador" },
+    { label: "Guías", href: "/guias" },
     { label: "Nosotros", href: "/nosotros" },
     { label: "Contacto", href: "/contacto" },
+  ],
+  /** Enlaces secundarios: solo en el footer, para enlazado interno. */
+  footerLinks: [
+    { label: "PC gamer por 3 millones", href: "/pc-gamer/3-millones" },
+    { label: "PC gamer por 5 millones", href: "/pc-gamer/5-millones" },
+    { label: "PC gamer por 8 millones", href: "/pc-gamer/8-millones" },
+    { label: "PC para edición de video", href: "/pc-para/edicion-de-video" },
+    { label: "PC para arquitectura", href: "/pc-para/arquitectura-y-render" },
+    { label: "PC para streaming", href: "/pc-para/streaming" },
   ],
 } as const;
 

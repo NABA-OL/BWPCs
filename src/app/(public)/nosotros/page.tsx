@@ -13,7 +13,7 @@ import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
-  title: "Nosotros",
+  title: "Quiénes somos: ensamble de PC en Bogotá",
   description:
     "Conoce a B & W, el equipo detrás del ensamble de computadores y venta de componentes en Colombia. Atención personalizada y precios justos desde Bogotá.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Nosotros · B & W",
     description:
       "Conoce a B & W: ensamble de PCs y venta de componentes en Colombia con atención personalizada.",
-    url: "https://bw-pcs.vercel.app/nosotros",
+    url: "https://bw-pcs.com/nosotros",
   },
 };
 
@@ -51,8 +51,8 @@ export default function NosotrosPage() {
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
-          { name: "Nosotros", url: "https://bw-pcs.vercel.app/nosotros" },
+          { name: "Inicio", url: "https://bw-pcs.com/" },
+          { name: "Nosotros", url: "https://bw-pcs.com/nosotros" },
         ]}
       />
       <PcBackdrop />

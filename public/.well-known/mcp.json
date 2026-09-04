@@ -1,8 +1,8 @@
 {
   "name": "B & W",
   "description": "MCP server de B & W — ensamble de computadores y venta de componentes en Colombia. Expone herramientas para cotizar un PC a la medida.",
-  "url": "https://bw-pcs.vercel.app",
+  "url": "https://bw-pcs.com",
   "transport": "streamable-http",
-  "endpoint": "https://bw-pcs.vercel.app/api/mcp",
+  "endpoint": "https://bw-pcs.com/api/mcp",
   "tools": ["listar_categorias_cotizador", "cotizar_pc"]
 }

@@ -26,13 +26,13 @@ const AI_AGENTS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: "/admin/" },
+      { userAgent: "*", allow: "/", disallow: ["/admin/", "/style-guide"] },
       ...AI_AGENTS.map((userAgent) => ({
         userAgent,
         allow: "/",
-        disallow: "/admin/",
+        disallow: ["/admin/", "/style-guide"],
       })),
     ],
-    sitemap: "https://bw-pcs.vercel.app/sitemap.xml",
+    sitemap: "https://bw-pcs.com/sitemap.xml",
   };
 }

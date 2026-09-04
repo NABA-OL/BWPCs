@@ -6,11 +6,15 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
+import { FaqSection } from "@/components/faq-section";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { getEstimatorContext } from "@/lib/quote-estimator";
+import { JsonLd } from "@/components/json-ld";
+import { estimatorOfferSchema } from "@/lib/schema";
 import {
   CotizadorEstimator,
   type EstimatorCategory,
@@ -18,7 +22,7 @@ import {
 import { whatsappLink } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Cotizador de PC",
+  title: "Cotizador de PC gamer: precio en Colombia",
   description:
     "Cotiza tu PC a la medida en segundos. Elige las gamas de cada componente y obtén un estimado de precio en Colombia. Sin registro, gratis.",
   keywords: [
@@ -34,11 +38,34 @@ export const metadata: Metadata = {
     title: "Cotizador de PC · B & W",
     description:
       "Cotiza tu PC a la medida en segundos. Sin registro, gratis. Bogotá, Colombia.",
-    url: "https://bw-pcs.vercel.app/cotizador",
+    url: "https://bw-pcs.com/cotizador",
   },
 };
 
 export const revalidate = 3600;
+
+const faqs = [
+  {
+    q: "¿El precio del cotizador es el precio final?",
+    a: "No. Es un estimado aproximado según la gama que elijas. El precio final se confirma por WhatsApp según los modelos exactos disponibles y el dólar del día.",
+  },
+  {
+    q: "¿Necesito registrarme para cotizar?",
+    a: "No. El cotizador es público y gratuito, no pide correo ni datos personales. Solo nos escribes si quieres avanzar.",
+  },
+  {
+    q: "¿Qué incluye el valor del ensamblaje?",
+    a: "Armado del equipo, instalación del sistema operativo, formateo, configuración, cable management y pruebas de temperatura y estabilidad antes de entregar.",
+  },
+  {
+    q: "¿Por qué el total cambia según el medio de pago?",
+    a: "Tarjeta y PSE cobran una comisión que se refleja en el total. Con Bre-B no hay recargo. El cotizador te muestra los tres valores para que compares.",
+  },
+  {
+    q: "¿Puedo cotizar solo algunos componentes?",
+    a: "Sí. Desmarca las categorías que no necesitas y el total se ajusta. Si solo quieres una pieza suelta, mira el catálogo de componentes.",
+  },
+];
 
 // Categorías que vienen preseleccionadas (gama media) en un build típico.
 const CORE = new Set([
@@ -58,6 +85,9 @@ export default async function CotizadorPage() {
   let psePct = 0;
   let breBPct = 0;
   let ready = false;
+  // Rango real de precio de un equipo core, para el schema Product/AggregateOffer.
+  let minCop = 0;
+  let maxCop = 0;
 
   try {
     const ctx = await getEstimatorContext();
@@ -74,6 +104,13 @@ export default async function CotizadorPage() {
       defaultIndex: Math.max(0, Math.min(1, cat.options.length - 1)), // gama media o 1.ª
     }));
 
+    const core = ctx.categories.filter((c) => CORE.has(c.key));
+    const prices = core.map((c) => c.options.map((o) => o.precioCop));
+    minCop =
+      prices.reduce((sum, p) => sum + Math.min(...p), 0) + ctx.servicioBase;
+    maxCop =
+      prices.reduce((sum, p) => sum + Math.max(...p), 0) + ctx.servicioBase;
+
     ready = categories.length > 0;
   } catch {
     ready = false;
@@ -81,16 +118,19 @@ export default async function CotizadorPage() {
 
   return (
     <>
+      {ready && minCop > 0 && (
+        <JsonLd data={estimatorOfferSchema(minCop, maxCop)} />
+      )}
       <BreadcrumbJsonLd
         items={[
-          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
-          { name: "Cotizador", url: "https://bw-pcs.vercel.app/cotizador" },
+          { name: "Inicio", url: "https://bw-pcs.com/" },
+          { name: "Cotizador", url: "https://bw-pcs.com/cotizador" },
         ]}
       />
       <PcBackdrop />
       <PageHero
         eyebrow="Estimado aproximado"
-        title="Cotiza tu PC"
+        title="Cotiza tu PC a la medida"
         summary={[
           "Elige la gama de cada componente: procesador, gráfica, RAM y más.",
           "Ve el total aproximado en pesos colombianos al instante.",
@@ -136,6 +176,39 @@ export default async function CotizadorPage() {
           )}
         </div>
       </section>
+
+      {/* Configuraciones por presupuesto — enlazado interno + intención comercial */}
+      <section className="border-y border-hairline/50 bg-vanilla/40">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+          <h2 className="text-balance text-[clamp(1.5rem,3.5vw,2.25rem)] font-bold tracking-[-0.02em]">
+            ¿Prefieres partir de un presupuesto?
+          </h2>
+          <p className="mt-3 max-w-2xl text-lg text-panda">
+            Ya armamos la mejor configuración posible para los presupuestos más
+            comunes, con estos mismos precios.
+          </p>
+          <div className="mt-8 grid gap-px border border-hairline bg-hairline sm:grid-cols-3">
+            {[
+              { slug: "3-millones", etiqueta: "3 millones" },
+              { slug: "5-millones", etiqueta: "5 millones" },
+              { slug: "8-millones", etiqueta: "8 millones" },
+            ].map((b) => (
+              <Link
+                key={b.slug}
+                href={`/pc-gamer/${b.slug}`}
+                className="group bg-vanilla p-6 transition-colors hover:bg-component/20"
+              >
+                <p className="font-mono text-xs text-component">{b.etiqueta}</p>
+                <h3 className="mt-2 font-semibold group-hover:text-accent">
+                  PC gamer por {b.etiqueta} →
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <FaqSection items={faqs} />
     </>
   );
 }

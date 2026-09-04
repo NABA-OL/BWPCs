@@ -15,7 +15,7 @@ import { BuildsGrid } from "@/components/builds-grid";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
-  title: "Ensambles",
+  title: "Galería de PCs gamer armados en Colombia",
   description:
     "Galería de PCs armados por B & W. Builds gaming, workstation y escritorio a la medida para clientes en Colombia. Cada equipo, hecho con cuidado.",
   keywords: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: "Ensambles · B & W",
     description:
       "Galería de PCs armados a la medida. Builds gaming, workstation y más en Colombia.",
-    url: "https://bw-pcs.vercel.app/ensambles",
+    url: "https://bw-pcs.com/ensambles",
   },
 };
 
@@ -64,14 +64,14 @@ export default async function EnsamblesPage() {
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
-          { name: "Ensambles", url: "https://bw-pcs.vercel.app/ensambles" },
+          { name: "Inicio", url: "https://bw-pcs.com/" },
+          { name: "Ensambles", url: "https://bw-pcs.com/ensambles" },
         ]}
       />
       <PcBackdrop />
       <PageHero
         eyebrow="Trabajo real"
-        title="Ensambles"
+        title="PCs gamer que hemos armado"
         ctaLabel="Cotiza tu PC"
         ctaHref="/cotizador"
       >

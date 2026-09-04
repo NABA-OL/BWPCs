@@ -12,9 +12,11 @@ import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
+import { JsonLd } from "@/components/json-ld";
+import { assemblyServiceSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Servicios",
+  title: "Ensamblaje de PC a la medida y componentes",
   description:
     "Ensamblaje de PCs a la medida, venta de componentes y asesoría técnica en Colombia. GPU, CPU, RAM, boards, fuentes, chasis y refrigeración.",
   keywords: [
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
     title: "Servicios · B & W",
     description:
       "Ensamblaje de PCs a la medida, venta de componentes y asesoría técnica en Colombia.",
-    url: "https://bw-pcs.vercel.app/servicios",
+    url: "https://bw-pcs.com/servicios",
   },
 };
 
@@ -64,7 +66,31 @@ const faqs = [
   },
   {
     q: "¿Puedo comprar solo una pieza sin ensamble?",
-    a: "Sí. Vendemos componentes sueltos — gráficas, procesadores, RAM y más — sin obligación de armar el equipo completo.",
+    a: "Sí. Vendemos componentes sueltos — gráficas, procesadores, RAM y más — sin obligación de armar el equipo completo. Puedes ver precios en el catálogo de componentes.",
+  },
+  {
+    q: "¿Cuánto cuesta armar un PC con ustedes?",
+    a: "Depende de la gama de cada componente. En el cotizador eliges gama por categoría y ves el total aproximado al instante, con el ensamblaje ya incluido. También tenemos configuraciones armadas por presupuesto: 3, 5 y 8 millones.",
+  },
+  {
+    q: "¿Puedo aprovechar componentes que ya tengo?",
+    a: "Sí. Si ya tienes chasis, fuente, almacenamiento o cualquier otra pieza en buen estado, la revisamos y te cotizamos solo lo que falta.",
+  },
+  {
+    q: "¿El precio incluye sistema operativo y configuración?",
+    a: "El servicio incluye armado, instalación del sistema, formateo y configuración. Recibes el equipo encendido y listo para usar, con el cable management ordenado y las temperaturas verificadas.",
+  },
+  {
+    q: "¿Por qué cambian los precios de las gráficas y procesadores?",
+    a: "Son componentes importados: su precio en pesos depende del dólar del día más los costos de importación. Por eso una cotización de hace un mes puede no coincidir con la de hoy.",
+  },
+  {
+    q: "¿Arman equipos para trabajo, no solo para juegos?",
+    a: "Sí. Armamos equipos para edición de video, arquitectura y renderizado, streaming y estaciones de trabajo. Las prioridades de componentes cambian según el uso, y eso lo definimos contigo antes de cotizar.",
+  },
+  {
+    q: "¿Qué pasa si un componente sale defectuoso?",
+    a: "Cada componente tiene la garantía de su fabricante y nosotros gestionamos el proceso. El ensamblaje en sí queda cubierto por nosotros.",
   },
 ];
 
@@ -108,9 +134,7 @@ const pasos = [
 ] as const;
 
 const stepIcons: Record<(typeof pasos)[number]["icon"], React.ReactNode> = {
-  chat: (
-    <path d="M4 5.5h16v10H9l-4 3.5v-3.5H4v-10Z" />
-  ),
+  chat: <path d="M4 5.5h16v10H9l-4 3.5v-3.5H4v-10Z" />,
   search: (
     <>
       <circle cx="10.5" cy="10.5" r="6" />
@@ -149,14 +173,15 @@ export default function ServiciosPage() {
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
-          { name: "Servicios", url: "https://bw-pcs.vercel.app/servicios" },
+          { name: "Inicio", url: "https://bw-pcs.com/" },
+          { name: "Servicios", url: "https://bw-pcs.com/servicios" },
         ]}
       />
+      <JsonLd data={assemblyServiceSchema()} />
       <PcBackdrop />
       <PageHero
         eyebrow="Lo que ofrecemos"
-        title="Servicios"
+        title="Ensamblaje de PC y venta de componentes"
         summary={[
           "Ensamblaje a la medida: armado, formateo y configuración incluidos.",
           "Componentes sueltos, sin obligación de ensamble completo.",
@@ -197,10 +222,7 @@ export default function ServiciosPage() {
                 management ordenado y las temperaturas en su punto.
               </p>
               <p>
-                <Link
-                  href="/ensambles"
-                  className="text-accent hover:underline"
-                >
+                <Link href="/ensambles" className="text-accent hover:underline">
                   Mira ejemplos reales de equipos que hemos armado →
                 </Link>
               </p>
@@ -247,9 +269,7 @@ export default function ServiciosPage() {
           <div className="mt-10 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
             {pasos.map((p) => (
               <div key={p.n} className="bg-vanilla p-6 sm:p-7">
-                <span className="font-mono text-xs text-component">
-                  {p.n}
-                </span>
+                <span className="font-mono text-xs text-component">{p.n}</span>
                 <svg
                   width="24"
                   height="24"

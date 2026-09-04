@@ -15,7 +15,7 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-hairline bg-panda text-vanilla">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-4">
         {/* Marca */}
         <div>
           <div className="flex items-center gap-2.5">
@@ -39,6 +39,19 @@ export function SiteFooter() {
         {/* Navegación */}
         <nav className="flex flex-col gap-2 text-sm">
           {siteConfig.nav.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="w-fit text-vanilla/70 transition-colors hover:text-vanilla"
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Equipos por presupuesto y uso */}
+        <nav aria-label="Equipos" className="flex flex-col gap-2 text-sm">
+          {siteConfig.footerLinks.map((l) => (
             <Link
               key={l.href}
               href={l.href}
