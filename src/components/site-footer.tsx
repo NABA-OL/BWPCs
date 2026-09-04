@@ -92,7 +92,7 @@ export function SiteFooter() {
               Privacidad
             </Link>
             <a
-              href="https://blackraken.vercel.app"
+              href="https://blackraken.com"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-vanilla"
