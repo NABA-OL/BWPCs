@@ -19,6 +19,7 @@ import type {
   Processor,
   Quote,
   Settings,
+  WebLead,
 } from "@/lib/db/types";
 
 /** Acceso tipado a las colecciones. */
@@ -58,6 +59,9 @@ export const collections = {
   },
   async cuentasCobro() {
     return (await getDb()).collection<CuentaCobro>("cuentasCobro");
+  },
+  async leads() {
+    return (await getDb()).collection<WebLead>("leads");
   },
 };
 

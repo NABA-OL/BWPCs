@@ -7,10 +7,11 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
-import { useMemo, useState } from "react";
-import { ButtonLink } from "@/components/ui/button";
+import { useMemo, useState, useTransition } from "react";
+import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
+import { submitLead } from "@/lib/leads/actions";
 
 export interface EstimatorOption {
   label: string;
@@ -84,15 +85,48 @@ export function CotizadorEstimator({
     breBPct,
   ]);
 
-  const waMessage = useMemo(() => {
+  const resumen = useMemo(() => {
     const items = chosen.map((c) => `• ${c.label}: ${c.opcion}`).join("\n");
     return (
-      `Hola B & W, quiero cotizar un PC con:\n${items}` +
-      `${servicio ? "\n• Ensamblaje" : ""}\n\n` +
-      `Estimado aproximado: ${formatCOP(total)} ` +
-      `(con tarjeta ${formatCOP(conTarjeta)}). ¿Me ayudan a afinarlo?`
+      `${items}${servicio ? "\n• Ensamblaje" : ""}\n\n` +
+      `Estimado aproximado: ${formatCOP(total)} (con tarjeta ${formatCOP(conTarjeta)}).`
     );
   }, [chosen, servicio, total, conTarjeta]);
+
+  function buildWaMessage(nombre: string) {
+    return `Hola B & W, mi nombre es ${nombre}. Estoy interesado en cotizar un PC con:\n${resumen}\n\n¿Me ayudan a afinarlo?`;
+  }
+
+  // Datos de contacto — se piden antes de abrir WhatsApp para poder darle
+  // seguimiento a la solicitud (se guarda internamente, no es para nadie más).
+  const [contactOpen, setContactOpen] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [formError, setFormError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  function handleContinue() {
+    setFormError(null);
+    if (!nombre.trim() || !telefono.trim() || !correo.trim()) {
+      setFormError("Completa los tres campos para continuar.");
+      return;
+    }
+    startTransition(async () => {
+      const result = await submitLead({
+        nombre: nombre.trim(),
+        telefono: telefono.trim(),
+        correo: correo.trim(),
+        resumen,
+        pagina: "cotizador",
+      });
+      if (!result.ok) {
+        setFormError(result.error ?? "Algo salió mal. Intenta de nuevo.");
+        return;
+      }
+      window.open(whatsappLink(buildWaMessage(nombre.trim())), "_blank");
+    });
+  }
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
@@ -214,23 +248,59 @@ export function CotizadorEstimator({
             </div>
           </dl>
 
-          <ButtonLink
-            href={hasSelection ? whatsappLink(waMessage) : "#"}
-            target={hasSelection ? "_blank" : undefined}
-            rel={hasSelection ? "noopener noreferrer" : undefined}
-            aria-disabled={!hasSelection}
-            onClick={
-              !hasSelection
-                ? (e: React.MouseEvent) => e.preventDefault()
-                : undefined
-            }
-            size="lg"
-            className={`mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep ${
-              !hasSelection ? "pointer-events-none opacity-40" : ""
-            }`}
-          >
-            Contactanos por WhatsApp
-          </ButtonLink>
+          {!contactOpen ? (
+            <Button
+              type="button"
+              disabled={!hasSelection}
+              onClick={() => setContactOpen(true)}
+              size="lg"
+              className="mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep"
+            >
+              Contactanos por WhatsApp
+            </Button>
+          ) : (
+            <div className="mt-6 space-y-3 border-t border-vanilla/15 pt-5">
+              <p className="text-sm text-vanilla/70">
+                Para darte seguimiento, cuéntanos quién eres:
+              </p>
+              <input
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Nombre completo"
+                className="w-full border border-vanilla/20 bg-transparent px-3 py-2.5 text-sm text-vanilla placeholder:text-vanilla/40 outline-none focus:border-vanilla/50"
+              />
+              <input
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                placeholder="Teléfono"
+                type="tel"
+                className="w-full border border-vanilla/20 bg-transparent px-3 py-2.5 text-sm text-vanilla placeholder:text-vanilla/40 outline-none focus:border-vanilla/50"
+              />
+              <input
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                placeholder="Correo"
+                type="email"
+                className="w-full border border-vanilla/20 bg-transparent px-3 py-2.5 text-sm text-vanilla placeholder:text-vanilla/40 outline-none focus:border-vanilla/50"
+              />
+              {formError && (
+                <p className="text-xs text-accent">{formError}</p>
+              )}
+              <Button
+                type="button"
+                disabled={pending}
+                onClick={handleContinue}
+                size="lg"
+                className="w-full bg-accent text-accent-ink hover:bg-accent-deep"
+              >
+                {pending ? "Enviando…" : "Continuar a WhatsApp"}
+              </Button>
+              <p className="text-center text-[11px] leading-relaxed text-vanilla/40">
+                Guardamos estos datos solo para darte seguimiento a esta
+                cotización.
+              </p>
+            </div>
+          )}
           {!hasSelection && (
             <p className="mt-2 px-1 text-center text-xs text-component">
               Selecciona al menos un componente para cotizar.

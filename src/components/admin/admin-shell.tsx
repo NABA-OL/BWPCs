@@ -56,9 +56,11 @@ function NavLink({
 
 export function AdminShell({
   usuario,
+  solicitudesPendientes = 0,
   children,
 }: {
   usuario: string;
+  solicitudesPendientes?: number;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -217,6 +219,18 @@ export function AdminShell({
 
       {/* Contenido */}
       <div className="min-w-0">
+        {solicitudesPendientes > 0 && (
+          <Link
+            href="/admin/solicitudes"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            Tienes {solicitudesPendientes}{" "}
+            {solicitudesPendientes === 1
+              ? "solicitud nueva"
+              : "solicitudes nuevas"}{" "}
+            →
+          </Link>
+        )}
         <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">{children}</div>
       </div>
     </div>

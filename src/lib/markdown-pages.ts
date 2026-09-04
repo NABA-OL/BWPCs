@@ -79,10 +79,10 @@ Para consumo programático, ver el servidor MCP en \`/api/mcp\` (herramientas \`
 
   privacidad: `# Privacidad
 
-B & W recopila solo los datos necesarios para operar: la cotización que arma el cliente (no requiere cuenta ni datos personales) y, si escribe por WhatsApp o correo, los datos de contacto que el propio cliente comparte para coordinar la compra.
+B & W recopila solo los datos necesarios para operar: el cotizador no requiere cuenta, y solo pedimos nombre, teléfono y correo si decides continuar la cotización por WhatsApp — para darle seguimiento a esa solicitud.
 
 - **Cookies**: solo la cookie necesaria de sesión de administración (\`bw_session\`). Sin cookies de rastreo ni analítica de terceros.
-- **Datos de cotizaciones**: guardados para dar seguimiento a pedidos, no se comparten con terceros ni se usan para publicidad.
+- **Datos de cotizaciones**: nombre, teléfono y correo, guardados para dar seguimiento a la solicitud; no se comparten con terceros ni se usan para publicidad.
 - **Contacto**: WhatsApp y correo son gestionados directamente por B & W.
 
 Ver [contacto](/contacto) para solicitar acceso, corrección o eliminación de tus datos.

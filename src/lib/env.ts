@@ -30,4 +30,14 @@ export const env = {
   get authSecret() {
     return required("AUTH_SECRET");
   },
+  // Notificación de solicitudes por Telegram — opcional, no bloquea nada si falta.
+  get telegramBotToken() {
+    return process.env.TELEGRAM_BOT_TOKEN ?? null;
+  },
+  get telegramChatId() {
+    return process.env.TELEGRAM_CHAT_ID ?? null;
+  },
+  get telegramThreadId() {
+    return process.env.TELEGRAM_THREAD_ID ?? null;
+  },
 };

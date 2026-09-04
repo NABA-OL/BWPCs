@@ -8,6 +8,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { collections } from "@/lib/db/collections";
 
 export default async function PanelLayout({
   children,
@@ -17,5 +18,20 @@ export default async function PanelLayout({
   const session = await getSession();
   if (!session) redirect("/admin/login");
 
-  return <AdminShell usuario={session.usuario}>{children}</AdminShell>;
+  let solicitudesPendientes = 0;
+  try {
+    const col = await collections.leads();
+    solicitudesPendientes = await col.countDocuments({ revisado: false });
+  } catch {
+    // si falla el conteo, simplemente no se muestra el banner
+  }
+
+  return (
+    <AdminShell
+      usuario={session.usuario}
+      solicitudesPendientes={solicitudesPendientes}
+    >
+      {children}
+    </AdminShell>
+  );
 }
