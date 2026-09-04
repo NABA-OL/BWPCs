@@ -33,6 +33,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/style-guide"],
       })),
     ],
-    sitemap: "https://bw-pcs.vercel.app/sitemap.xml",
+    sitemap: "https://bw-pcs.com/sitemap.xml",
   };
 }

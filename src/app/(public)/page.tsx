@@ -11,6 +11,8 @@ import { AssemblyHero } from "@/components/assembly-hero";
 import { ShareButton } from "@/components/share-button";
 import { collections } from "@/lib/db/collections";
 import { isInstagramUrl } from "@/lib/instagram";
+import { JsonLd } from "@/components/json-ld";
+import { localBusinessSchema, websiteSchema } from "@/lib/schema";
 
 export const revalidate = 3600;
 
@@ -57,49 +59,10 @@ export default async function HomePage() {
     // fail silently
   }
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "B & W",
-    description:
-      "Ensamble de computadores y venta de componentes en Colombia. Builds gaming, workstation y escritorio a la medida.",
-    url: "https://bw-pcs.vercel.app",
-    telephone: "+573188422533",
-    email: "bandwmount@gmail.com",
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: "+573188422533",
-      email: "bandwmount@gmail.com",
-      contactType: "customer service",
-      areaServed: "CO",
-      availableLanguage: "es",
-    },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Bogotá",
-      addressRegion: "Cundinamarca",
-      addressCountry: "CO",
-    },
-    areaServed: "Colombia",
-    priceRange: "$$",
-    knowsAbout: [
-      "Ensamble de computadores",
-      "Componentes de PC",
-      "Gaming PCs",
-      "Workstation",
-      "Tarjetas gráficas",
-      "Procesadores",
-      "Memorias RAM",
-    ],
-    sameAs: ["https://www.instagram.com/bw_mountpc/"],
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={localBusinessSchema()} />
+      <JsonLd data={websiteSchema()} />
       {/* Hero — PC line-art que se ensambla y queda fijo en el centro al hacer scroll */}
       <AssemblyHero>
         <p className="font-mono text-sm text-component">
@@ -114,7 +77,7 @@ export default async function HomePage() {
             />
           </span>
           <br />
-          tu PC.
+          tu PC a la medida.
         </h1>
         <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-panda">
           Armamos tu equipo con los componentes que elegimos contigo, al precio

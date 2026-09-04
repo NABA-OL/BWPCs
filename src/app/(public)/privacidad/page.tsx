@@ -22,16 +22,16 @@ export default function PrivacidadPage() {
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Inicio", url: "https://bw-pcs.vercel.app/" },
-          { name: "Privacidad", url: "https://bw-pcs.vercel.app/privacidad" },
+          { name: "Inicio", url: "https://bw-pcs.com/" },
+          { name: "Privacidad", url: "https://bw-pcs.com/privacidad" },
         ]}
       />
       <PcBackdrop />
       <PageHero eyebrow="Legal" title="Privacidad">
         <p>
-          B &amp; W recopila solo lo necesario para operar: no pedimos cuenta
-          ni datos personales para usar el cotizador, y solo guardamos lo que
-          tú mismo compartes al escribirnos.
+          B &amp; W recopila solo lo necesario para operar: no pedimos cuenta ni
+          datos personales para usar el cotizador, y solo guardamos lo que tú
+          mismo compartes al escribirnos.
         </p>
       </PageHero>
 
@@ -44,18 +44,17 @@ export default function PrivacidadPage() {
                 El cotizador de <code>/cotizador</code> no requiere registro ni
                 pide datos personales. Los cálculos se hacen en el momento a
                 partir de las opciones que eliges; no queda un historial
-                asociado a ti a menos que nos escribas por WhatsApp o correo
-                con el resumen.
+                asociado a ti a menos que nos escribas por WhatsApp o correo con
+                el resumen.
               </p>
             </div>
 
             <div>
               <h2 className="text-xl font-bold">Cookies</h2>
               <p className="mt-2 leading-relaxed">
-                Usamos una sola cookie, <code>bw_session</code>, necesaria
-                para mantener la sesión de administración del panel interno.
-                No usamos cookies de rastreo, publicidad ni analítica de
-                terceros.
+                Usamos una sola cookie, <code>bw_session</code>, necesaria para
+                mantener la sesión de administración del panel interno. No
+                usamos cookies de rastreo, publicidad ni analítica de terceros.
               </p>
             </div>
 
@@ -72,9 +71,9 @@ export default function PrivacidadPage() {
             <div>
               <h2 className="text-xl font-bold">Contacto</h2>
               <p className="mt-2 leading-relaxed">
-                Los mensajes por WhatsApp ({siteConfig.contact.whatsappDisplay}
-                ) o correo ({siteConfig.contact.email}) los gestiona
-                directamente el equipo de B &amp; W, no un tercero.
+                Los mensajes por WhatsApp ({siteConfig.contact.whatsappDisplay})
+                o correo ({siteConfig.contact.email}) los gestiona directamente
+                el equipo de B &amp; W, no un tercero.
               </p>
             </div>
 

@@ -23,12 +23,12 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "B & W — Tu PC Master Race a buen precio",
+    default: "Ensamble de PC gamer a la medida en Colombia · B & W",
     template: "%s · B & W",
   },
   description:
     "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC gaming o workstation a la medida con precios justos. Bogotá y envíos nacionales.",
-  metadataBase: new URL("https://bw-pcs.vercel.app"),
+  metadataBase: new URL("https://bw-pcs.com"),
   alternates: { canonical: "/" },
   keywords: [
     "ensamble de PC Colombia",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
       "Ensamble de computadores y venta de componentes en Colombia. Cotiza tu PC a la medida.",
     locale: "es_CO",
     type: "website",
-    url: "https://bw-pcs.vercel.app",
+    url: "https://bw-pcs.com",
     siteName: "B & W",
     images: [
       { url: "/brand/logo.png", alt: "B & W — Ensamble de PC Colombia" },
