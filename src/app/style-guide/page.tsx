@@ -1,5 +1,5 @@
 /*
- * Propiedad de BlacKraken Solutions
+ * Propiedad de BlacKraken Solutions <blackraken.com>
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-08-27
  */
@@ -62,9 +62,7 @@ function SectionTitle({
       <h2 className="text-[clamp(1.4rem,3vw,1.9rem)] font-bold tracking-[-0.02em]">
         {title}
       </h2>
-      {desc && (
-        <p className="mt-1.5 max-w-2xl text-component">{desc}</p>
-      )}
+      {desc && <p className="mt-1.5 max-w-2xl text-component">{desc}</p>}
     </>
   );
 }
@@ -136,9 +134,7 @@ export default function StyleGuidePage() {
               <span className="w-40 shrink-0 font-mono text-xs text-component">
                 H3 · 600 · sans
               </span>
-              <h3 className="text-xl font-semibold">
-                Ensamblaje a la medida
-              </h3>
+              <h3 className="text-xl font-semibold">Ensamblaje a la medida</h3>
             </div>
             <div className="flex flex-col gap-2 py-5 sm:flex-row sm:items-baseline sm:gap-8">
               <span className="w-40 shrink-0 font-mono text-xs text-component">
@@ -235,7 +231,7 @@ export default function StyleGuidePage() {
         <section className="border-b border-hairline py-12">
           <SectionTitle
             title="Cards & grids"
-            desc='Grid con hairline compartida entre celdas (gap-px sobre fondo gris) en vez de sombra o radio.'
+            desc="Grid con hairline compartida entre celdas (gap-px sobre fondo gris) en vez de sombra o radio."
           />
           <div className="mt-6 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-3">
             {[
@@ -256,9 +252,7 @@ export default function StyleGuidePage() {
               },
             ].map((s) => (
               <div key={s.n} className="bg-vanilla p-6">
-                <span className="font-mono text-xs text-component">
-                  {s.n}
-                </span>
+                <span className="font-mono text-xs text-component">{s.n}</span>
                 <h4 className="mt-3 font-semibold">{s.t}</h4>
                 <p className="mt-1.5 text-sm leading-relaxed text-panda">
                   {s.d}
@@ -278,10 +272,7 @@ export default function StyleGuidePage() {
             {[
               ["Procesadores", "AMD e Intel, según tu uso y presupuesto."],
               ["Tarjetas gráficas", "Desde gama media hasta entusiasta."],
-              [
-                "Memorias RAM",
-                "DDR4 y DDR5, en las frecuencias que rinden.",
-              ],
+              ["Memorias RAM", "DDR4 y DDR5, en las frecuencias que rinden."],
             ].map(([t, d]) => (
               <div
                 key={t}
@@ -376,8 +367,7 @@ export default function StyleGuidePage() {
             <div className="w-full max-w-sm border border-panda bg-vanilla p-7">
               <h4 className="text-lg font-bold">Eliminar componente</h4>
               <p className="mt-2 text-sm text-component">
-                Esta acción no se puede deshacer. ¿Seguro que quieres
-                continuar?
+                Esta acción no se puede deshacer. ¿Seguro que quieres continuar?
               </p>
               <div className="mt-5 flex justify-end gap-3">
                 <Button size="md" variant="secondary">
@@ -430,8 +420,8 @@ export default function StyleGuidePage() {
 
         <footer className="pb-16 text-xs text-component">
           Generado a partir de <code>globals.css</code>,{" "}
-          <code>components/ui/button.tsx</code> y patrones vivos del sitio.
-          Ver <code>docs/DESIGN.md</code>. Ruta no listada en navegación ni en
+          <code>components/ui/button.tsx</code> y patrones vivos del sitio. Ver{" "}
+          <code>docs/DESIGN.md</code>. Ruta no listada en navegación ni en
           sitemap — solo referencia interna.
         </footer>
       </div>
