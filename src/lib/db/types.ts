@@ -52,6 +52,18 @@ export interface Settings {
   actualizado: Date;
 }
 
+/** Solicitud de cotización capturada antes de abrir WhatsApp (cotizador público). */
+export interface WebLead {
+  _id?: ObjectId;
+  nombre: string;
+  telefono: string;
+  correo: string;
+  resumen: string; // detalle de la cotización (componentes + total) al momento del envío
+  pagina: string; // de qué página vino, ej. "cotizador"
+  revisado: boolean;
+  creado: Date;
+}
+
 export interface Processor {
   _id?: ObjectId;
   modelo: string; // "Ryzen 7600x"

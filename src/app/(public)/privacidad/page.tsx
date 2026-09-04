@@ -29,9 +29,9 @@ export default function PrivacidadPage() {
       <PcBackdrop />
       <PageHero eyebrow="Legal" title="Privacidad">
         <p>
-          B &amp; W recopila solo lo necesario para operar: no pedimos cuenta ni
-          datos personales para usar el cotizador, y solo guardamos lo que tú
-          mismo compartes al escribirnos.
+          B &amp; W recopila solo lo necesario para operar: no pedimos cuenta
+          para usar el cotizador, y solo guardamos los datos de contacto que tú
+          mismo escribes al enviar una cotización o al escribirnos.
         </p>
       </PageHero>
 
@@ -41,11 +41,13 @@ export default function PrivacidadPage() {
             <div>
               <h2 className="text-xl font-bold">Cotizador público</h2>
               <p className="mt-2 leading-relaxed">
-                El cotizador de <code>/cotizador</code> no requiere registro ni
-                pide datos personales. Los cálculos se hacen en el momento a
-                partir de las opciones que eliges; no queda un historial
-                asociado a ti a menos que nos escribas por WhatsApp o correo con
-                el resumen.
+                El cotizador de <code>/cotizador</code> no requiere registro.
+                Los cálculos se hacen en el momento a partir de las opciones
+                que eliges y no quedan guardados. Solo si decides continuar por
+                WhatsApp te pedimos nombre, teléfono y correo — los guardamos
+                para poder darle seguimiento a esa solicitud (verla en nuestro
+                panel interno y notificarnos internamente por Telegram). No se
+                usan para publicidad ni se comparten con terceros.
               </p>
             </div>
 

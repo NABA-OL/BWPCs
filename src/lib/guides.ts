@@ -272,6 +272,79 @@ export const GUIDES: Guide[] = [
       },
     ],
   },
+  {
+    slug: "80-plus-vs-cybenetics",
+    titulo: "80 Plus vs. Cybenetics: qué certificación mirar en tu fuente",
+    h1: "80 Plus vs. Cybenetics",
+    descripcion:
+      "80 Plus perdió peso como garantía de calidad en fuentes de poder. Qué mide Cybenetics de más, y cómo leer las dos certificaciones antes de comprar.",
+    keywords: [
+      "cybenetics vs 80 plus",
+      "certificación cybenetics fuente de poder",
+      "80 plus ya no sirve",
+      "eta lambda fuente de poder",
+      "mejor certificación fuente de poder 2026",
+    ],
+    publicado: "2026-09-04",
+    actualizado: "2026-09-04",
+    resumen: [
+      "80 Plus solo mide eficiencia, y hoy es fácil de conseguir hasta en fuentes flojas.",
+      "Cybenetics añade ruido (LAMBDA) y una eficiencia más exigente (ETA) probada por un laboratorio independiente.",
+      "No se reemplazan: una fuente puede tener ambas certificaciones a la vez.",
+      "Si el fabricante no publica el informe completo de Cybenetics, sospecha.",
+    ],
+    intro: [
+      "Durante años, ver \"80 Plus Gold\" en la caja era suficiente para saber que una fuente era decente. Ese sello ya no dice tanto: el programa certifica solo eficiencia energética, el trámite es relativamente accesible, y varios fabricantes lo han usado en líneas de fuentes que después resultan mediocres en todo lo demás — regulación de voltaje, ruido, componentes internos.",
+      "Cybenetics nació para llenar ese hueco: un laboratorio independiente que prueba las fuentes con más rigor y publica el informe completo, no solo una insignia.",
+    ],
+    secciones: [
+      {
+        h2: "Qué prueba cada uno",
+        parrafos: [
+          "80 Plus mide un solo número: qué porcentaje de la energía que entra de la pared sale como energía útil, en unos pocos puntos de carga (20%, 50%, 100%). Nada de ruido, nada de estabilidad de voltaje, nada de calidad de componentes. Cumples el número, te llevas el sello.",
+          "Cybenetics separa la evaluación en dos certificaciones independientes: ETA, que mide eficiencia de forma más exhaustiva (más puntos de carga, incluyendo cargas bajas que 80 Plus casi no evalúa), y LAMBDA, que mide específicamente el ruido del ventilador bajo distintas cargas — algo que 80 Plus nunca ha medido. Una fuente puede ser eficiente y ruidosa a la vez; con Cybenetics eso se ve, con 80 Plus no.",
+        ],
+        lista: [
+          "80 Plus: un solo eje (eficiencia), pocos puntos de carga.",
+          "Cybenetics ETA: eficiencia con metodología más estricta.",
+          "Cybenetics LAMBDA: ruido del ventilador, evaluado aparte.",
+          "Cybenetics publica el informe de pruebas completo; 80 Plus no.",
+        ],
+      },
+      {
+        h2: "Por qué 80 Plus perdió peso",
+        parrafos: [
+          "El problema no es que 80 Plus mienta — es que mide poco y se volvió fácil de alcanzar. Hoy casi cualquier fuente de gama media consigue Bronze o Gold sin mayor esfuerzo, incluidas algunas con componentes internos mediocres que fallan antes de lo esperado. El sello dejó de separar lo bueno de lo apenas aceptable.",
+          "Cybenetics, al ser un laboratorio independiente que publica el detalle completo de cada prueba, es más difícil de \"pasar sin esfuerzo\": el resultado queda documentado, no es solo una insignia en la caja.",
+        ],
+      },
+      {
+        h2: "Cómo comprar con esto en mente",
+        parrafos: [
+          "No se trata de ignorar 80 Plus — casi todas las fuentes decentes lo tienen y sigue siendo una referencia mínima razonable (Bronze para abajo, evitar). La diferencia la marca buscar también el sello Cybenetics cuando esté disponible, y revisar el informe si el fabricante lo publica.",
+          "Si una fuente solo trae 80 Plus y ningún otro respaldo (reseñas técnicas serias, historial de la marca), trátala como una incógnita, no como garantía. Las marcas que le apuestan a la calidad real suelen buscar ambas certificaciones porque les conviene mostrarlas.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Una fuente puede tener 80 Plus y Cybenetics al mismo tiempo?",
+        a: "Sí, son independientes. Muchas fuentes buenas de gama alta tienen ambas — no se compite entre certificaciones, se complementan.",
+      },
+      {
+        q: "¿Cybenetics reemplaza a 80 Plus?",
+        a: "No oficialmente, pero para quien quiere evaluar una fuente en serio, el informe de Cybenetics da mucha más información que el sello de 80 Plus por sí solo.",
+      },
+      {
+        q: "¿Dónde veo el informe de Cybenetics de una fuente?",
+        a: "El fabricante suele enlazarlo en la ficha del producto, o se encuentra buscando el modelo exacto junto con \"Cybenetics report\".",
+      },
+      {
+        q: "¿Qué pasa si una fuente no tiene ninguna de las dos certificaciones?",
+        a: "Evítala para un equipo que te importe. Sin ningún respaldo independiente, no hay forma de saber si protege bien al resto de componentes.",
+      },
+    ],
+  },
 ];
 
 export function findGuide(slug: string) {

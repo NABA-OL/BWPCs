@@ -38,6 +38,7 @@ JWT propio (no NextAuth): cookie httpOnly `bw_session` firmada con `AUTH_SECRET`
 
 ## Entorno (.env.local)
 `MONGODB_URI` (de Atlas/Vercel), `MONGODB_DB=bwpcs`, `AUTH_SECRET`. Ver `.env.example`. En Vercel falta añadir `AUTH_SECRET`.
+`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` / `TELEGRAM_THREAD_ID` (opcionales): notifican por Telegram cada solicitud del cotizador (ver `src/lib/telegram.ts`). Deliberadamente **solo env vars, nunca en BD** — es una credencial que puede publicar en el grupo, no un dato de negocio como la TRM.
 
 ## Comandos
 - `pnpm dev` · `pnpm build` · `pnpm tsc --noEmit` · `pnpm seed`

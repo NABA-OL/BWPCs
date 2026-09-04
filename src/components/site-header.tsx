@@ -7,12 +7,92 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/brand-logo";
 import { ButtonLink } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site-config";
+
+/**
+ * Menú de escritorio que se abre en línea, hacia la izquierda de la
+ * flechita — mismo truco de grid 0fr→1fr que el wordmark (ver .bw-grow en
+ * globals.css): no relayouta el header al animar.
+ */
+function ExpandableNav({
+  links,
+  activeHref,
+}: {
+  links: { label: string; href: string }[];
+  activeHref: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function show() {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpen(true);
+  }
+
+  function hide() {
+    closeTimer.current = setTimeout(() => setOpen(false), 150);
+  }
+
+  return (
+    <div
+      className="flex items-center"
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") setOpen(false);
+      }}
+    >
+      <div
+        className="grid overflow-hidden transition-[grid-template-columns] duration-300 ease-out"
+        style={{ gridTemplateColumns: open ? "1fr" : "0fr" }}
+      >
+        <nav className="flex min-w-0 items-center gap-6 whitespace-nowrap pr-6">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+              className={`text-sm font-medium transition-colors hover:text-accent ${
+                activeHref === link.href ? "text-accent" : "text-panda"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      <button
+        type="button"
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-label="Más páginas"
+        onClick={() => setOpen((v) => !v)}
+        className="flex h-9 w-9 items-center justify-center text-panda transition-colors hover:text-accent"
+      >
+        <svg
+          width="8"
+          height="14"
+          viewBox="0 0 8 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        >
+          <path d="M1 1l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -50,25 +130,10 @@ export function SiteHeader() {
         <BrandLogo />
 
         {/* Nav desktop */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {links.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative py-1 text-sm font-medium text-panda transition-colors hover:text-accent ${
-                  active
-                    ? "after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-accent"
-                    : ""
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        <div className="hidden items-center gap-4 md:flex">
+          <ExpandableNav links={links} activeHref={pathname} />
           <ButtonLink href="/cotizador">Cotiza tu PC</ButtonLink>
-        </nav>
+        </div>
 
         {/* Toggle móvil */}
         <button
