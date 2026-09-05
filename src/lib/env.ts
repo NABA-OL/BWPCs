@@ -40,4 +40,14 @@ export const env = {
   get telegramThreadId() {
     return process.env.TELEGRAM_THREAD_ID ?? null;
   },
+  // Tema/canal aparte para avisos de contenido (borradores de blog/noticias) —
+  // deliberadamente distinto del de solicitudes, para no mezclar los dos flujos.
+  get telegramContentThreadId() {
+    return process.env.TELEGRAM_CONTENT_THREAD_ID ?? null;
+  },
+  // Anti-spam del formulario de cotización — opcional, se omite la
+  // verificación si no está configurado (no bloquea el flujo).
+  get recaptchaSecretKey() {
+    return process.env.RECAPTCHA_SECRET_KEY ?? null;
+  },
 };

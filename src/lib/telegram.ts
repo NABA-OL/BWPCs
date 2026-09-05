@@ -6,19 +6,28 @@
 import "server-only";
 import { env } from "@/lib/env";
 
+export type TelegramThread = "solicitudes" | "contenido";
+
 /**
  * Notifica al bot de Telegram configurado por variables de entorno
- * (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_THREAD_ID). Nunca lanza —
- * si falla o no está configurado, solo lo registra. No debe bloquear al
- * flujo que la llama.
+ * (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID). El tema del grupo depende de
+ * `thread`: "solicitudes" usa TELEGRAM_THREAD_ID, "contenido" usa
+ * TELEGRAM_CONTENT_THREAD_ID — dos temas separados a propósito, para no
+ * mezclar avisos de cotizaciones con avisos de borradores de blog/noticias.
+ * Nunca lanza — si falla o no está configurado, solo lo registra.
  */
 export async function sendTelegramMessage(
   text: string,
+  thread: TelegramThread = "solicitudes",
 ): Promise<{ ok: boolean; error?: string }> {
-  const { telegramBotToken, telegramChatId, telegramThreadId } = env;
+  const { telegramBotToken, telegramChatId, telegramThreadId, telegramContentThreadId } =
+    env;
   if (!telegramBotToken || !telegramChatId) {
     return { ok: false, error: "Telegram no está configurado." };
   }
+
+  const threadId =
+    thread === "contenido" ? telegramContentThreadId : telegramThreadId;
 
   try {
     const res = await fetch(
@@ -28,9 +37,7 @@ export async function sendTelegramMessage(
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: telegramChatId,
-          ...(telegramThreadId
-            ? { message_thread_id: Number(telegramThreadId) }
-            : {}),
+          ...(threadId ? { message_thread_id: Number(threadId) } : {}),
           text,
           parse_mode: "HTML",
         }),

@@ -45,6 +45,10 @@ export const adminNav: AdminNavEntry[] = [
     ],
   },
   {
+    label: "Contenido",
+    items: [{ label: "Noticias", href: "/admin/noticias", ready: true }],
+  },
+  {
     label: "Administración",
     items: [
       { label: "Usuarios", href: "/admin/usuarios", ready: true },

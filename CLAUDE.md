@@ -39,6 +39,8 @@ JWT propio (no NextAuth): cookie httpOnly `bw_session` firmada con `AUTH_SECRET`
 ## Entorno (.env.local)
 `MONGODB_URI` (de Atlas/Vercel), `MONGODB_DB=bwpcs`, `AUTH_SECRET`. Ver `.env.example`. En Vercel falta añadir `AUTH_SECRET`.
 `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` / `TELEGRAM_THREAD_ID` (opcionales): notifican por Telegram cada solicitud del cotizador (ver `src/lib/telegram.ts`). Deliberadamente **solo env vars, nunca en BD** — es una credencial que puede publicar en el grupo, no un dato de negocio como la TRM.
+`NEXT_PUBLIC_RECAPTCHA_SITE_KEY` / `RECAPTCHA_SECRET_KEY` (opcionales): anti-spam del formulario de cotización (reCAPTCHA v3, ver `src/lib/recaptcha.ts` y `cotizador-estimator.tsx`). Badge oculto vía CSS + aviso de privacidad/términos visible bajo el botón, según lo exigen los términos de Google. Sin estas vars el formulario funciona igual, sin verificación.
+`TELEGRAM_CONTENT_THREAD_ID` (opcional): tema aparte del grupo de Telegram para avisos de **Noticias** (`/admin/noticias`), separado del de solicitudes.
 
 ## Comandos
 - `pnpm dev` · `pnpm build` · `pnpm tsc --noEmit` · `pnpm seed`

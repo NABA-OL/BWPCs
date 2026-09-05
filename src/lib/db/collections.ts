@@ -16,6 +16,7 @@ import type {
   ComponentItem,
   CuentaCobro,
   Graphic,
+  NewsPost,
   Processor,
   Quote,
   Settings,
@@ -50,6 +51,9 @@ export const collections = {
   },
   async builds() {
     return (await getDb()).collection<Build>("builds");
+  },
+  async newsPosts() {
+    return (await getDb()).collection<NewsPost>("newsPosts");
   },
   async clients() {
     return (await getDb()).collection<Client>("clients");

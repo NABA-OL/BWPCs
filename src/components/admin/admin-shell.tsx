@@ -57,10 +57,12 @@ function NavLink({
 export function AdminShell({
   usuario,
   solicitudesPendientes = 0,
+  borradoresPendientes = 0,
   children,
 }: {
   usuario: string;
   solicitudesPendientes?: number;
+  borradoresPendientes?: number;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -228,6 +230,18 @@ export function AdminShell({
             {solicitudesPendientes === 1
               ? "solicitud nueva"
               : "solicitudes nuevas"}{" "}
+            →
+          </Link>
+        )}
+        {borradoresPendientes > 0 && (
+          <Link
+            href="/admin/noticias"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            Tienes {borradoresPendientes}{" "}
+            {borradoresPendientes === 1
+              ? "borrador de noticia sin revisar"
+              : "borradores de noticias sin revisar"}{" "}
             →
           </Link>
         )}
