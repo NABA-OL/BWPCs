@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/componentes`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/ensambles`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/guias`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/noticias`, changeFrequency: "daily", priority: 0.6 },
     ...GUIDES.map((g) => ({
       url: `${BASE}/guias/${g.slug}`,
       lastModified: new Date(g.actualizado),

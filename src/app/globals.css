@@ -56,6 +56,15 @@ body {
 }
 
 /*
+ * Oculta el badge flotante de reCAPTCHA v3 (esquina inferior derecha).
+ * Permitido por los términos de Google siempre que se muestre el aviso de
+ * privacidad/términos donde corre — ver <RecaptchaNotice>.
+ */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+/*
   Cuadrito de acento en la esquina de la "s" del hero: pulsa (desaparece y
   reaparece) alternando entre cuadro y rombo (rota 45°/90°). Estático en su sitio
   (solo anima transform). El @media de arriba lo congela con reduced-motion.

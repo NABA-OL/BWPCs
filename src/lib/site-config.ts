@@ -27,6 +27,7 @@ export const siteConfig = {
     { label: "Ensambles", href: "/ensambles" },
     { label: "Cotizador", href: "/cotizador" },
     { label: "Guías", href: "/guias" },
+    { label: "Noticias", href: "/noticias" },
     { label: "Nosotros", href: "/nosotros" },
     { label: "Contacto", href: "/contacto" },
   ],

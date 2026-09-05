@@ -8,10 +8,30 @@
  */
 
 import { useMemo, useState, useTransition } from "react";
+import Script from "next/script";
 import { Button } from "@/components/ui/button";
+import { RecaptchaNotice } from "@/components/recaptcha-notice";
 import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
 import { submitLead } from "@/lib/leads/actions";
+import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
+/** Ejecuta reCAPTCHA v3 y devuelve el token, o undefined si no está configurado. */
+function getRecaptchaToken(): Promise<string | undefined> {
+  if (!RECAPTCHA_SITE_KEY || !window.grecaptcha) {
+    return Promise.resolve(undefined);
+  }
+  return new Promise((resolve) => {
+    window.grecaptcha!.ready(() => {
+      window
+        .grecaptcha!.execute(RECAPTCHA_SITE_KEY, { action: RECAPTCHA_ACTION })
+        .then(resolve)
+        .catch(() => resolve(undefined));
+    });
+  });
+}
 
 export interface EstimatorOption {
   label: string;
@@ -113,12 +133,14 @@ export function CotizadorEstimator({
       return;
     }
     startTransition(async () => {
+      const recaptchaToken = await getRecaptchaToken();
       const result = await submitLead({
         nombre: nombre.trim(),
         telefono: telefono.trim(),
         correo: correo.trim(),
         resumen,
         pagina: "cotizador",
+        recaptchaToken,
       });
       if (!result.ok) {
         setFormError(result.error ?? "Algo salió mal. Intenta de nuevo.");
@@ -130,6 +152,13 @@ export function CotizadorEstimator({
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+      {RECAPTCHA_SITE_KEY && (
+        <Script
+          src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
+          strategy="afterInteractive"
+        />
+      )}
+
       {/* Selección por categoría */}
       <div>
         <h2 className="text-xl font-semibold">Arma tu equipo</h2>
@@ -299,6 +328,9 @@ export function CotizadorEstimator({
                 Guardamos estos datos solo para darte seguimiento a esta
                 cotización.
               </p>
+              {RECAPTCHA_SITE_KEY && (
+                <RecaptchaNotice className="text-center text-[11px] leading-relaxed text-vanilla/40" />
+              )}
             </div>
           )}
           {!hasSelection && (

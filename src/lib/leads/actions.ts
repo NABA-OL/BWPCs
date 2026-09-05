@@ -9,6 +9,8 @@ import { after } from "next/server";
 import { z } from "zod";
 import { collections } from "@/lib/db/collections";
 import { sendTelegramMessage } from "@/lib/telegram";
+import { verifyRecaptcha } from "@/lib/recaptcha";
+import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
 
 const LeadInput = z.object({
   nombre: z.string().trim().min(2, "Escribe tu nombre completo."),
@@ -16,6 +18,7 @@ const LeadInput = z.object({
   correo: z.string().trim().email("Escribe un correo válido."),
   resumen: z.string().trim().min(1),
   pagina: z.string().trim().min(1),
+  recaptchaToken: z.string().optional(),
 });
 
 export interface SubmitLeadResult {
@@ -35,7 +38,13 @@ export async function submitLead(
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Datos inválidos." };
   }
-  const { nombre, telefono, correo, resumen, pagina } = parsed.data;
+  const { nombre, telefono, correo, resumen, pagina, recaptchaToken } =
+    parsed.data;
+
+  const captcha = await verifyRecaptcha(recaptchaToken, RECAPTCHA_ACTION);
+  if (!captcha.ok) {
+    return { ok: false, error: captcha.error };
+  }
 
   try {
     const col = await collections.leads();

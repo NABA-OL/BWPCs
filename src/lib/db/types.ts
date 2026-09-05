@@ -223,3 +223,27 @@ export interface Build {
   activo: boolean;
   creado: Date;
 }
+
+export type NewsPostTipo = "articulo" | "video";
+export type NewsPostEstado = "borrador" | "publicado";
+
+/**
+ * Borrador/publicación de blog o noticias. SIEMPRE nace en "borrador" —
+ * lo crea el escaneo automático (RSS / YouTube), nunca se auto-publica.
+ * Un admin humano revisa, edita si quiere, y publica desde el panel.
+ */
+export interface NewsPost {
+  _id?: ObjectId;
+  tipo: NewsPostTipo;
+  titulo: string;
+  slug: string;
+  resumen: string;       // dek corto para la lista y el <meta description>
+  cuerpo: string;        // texto de contexto/intro que escribimos nosotros
+  fuenteUrl: string;     // link original (artículo o video) — atribución
+  fuenteNombre: string;  // "Xataka", "Rincón de Varo", etc.
+  youtubeId: string | null; // solo si tipo === "video"
+  estado: NewsPostEstado;
+  creado: Date;
+  publicado: Date | null;
+  actualizado: Date;
+}

@@ -51,7 +51,11 @@ function ExpandableNav({
         className="grid overflow-hidden transition-[grid-template-columns] duration-300 ease-out"
         style={{ gridTemplateColumns: open ? "1fr" : "0fr" }}
       >
-        <nav className="flex min-w-0 items-center gap-6 whitespace-nowrap pr-6">
+        <nav
+          className={`flex min-w-0 items-center gap-6 whitespace-nowrap pr-6 transition-opacity ${
+            open ? "opacity-100 duration-200 delay-150" : "opacity-0 duration-100"
+          }`}
+        >
           {links.map((link) => (
             <Link
               key={link.href}
