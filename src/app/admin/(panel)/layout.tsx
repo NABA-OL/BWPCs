@@ -34,11 +34,20 @@ export default async function PanelLayout({
     // si falla el conteo, simplemente no se muestra el banner
   }
 
+  let blogBorradoresPendientes = 0;
+  try {
+    const col = await collections.guides();
+    blogBorradoresPendientes = await col.countDocuments({ estado: "borrador" });
+  } catch {
+    // si falla el conteo, simplemente no se muestra el banner
+  }
+
   return (
     <AdminShell
       usuario={session.usuario}
       solicitudesPendientes={solicitudesPendientes}
       borradoresPendientes={borradoresPendientes}
+      blogBorradoresPendientes={blogBorradoresPendientes}
     >
       {children}
     </AdminShell>

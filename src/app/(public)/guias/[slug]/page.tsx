@@ -12,7 +12,7 @@ import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { FaqSection } from "@/components/faq-section";
 import { JsonLd } from "@/components/json-ld";
-import { GUIDES, findGuide } from "@/lib/guides";
+import { findGuide, getPublishedGuides, type Guide } from "@/lib/guides";
 import { SITE_URL } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 import { getEstimatorContext } from "@/lib/quote-estimator";
@@ -28,8 +28,13 @@ const BUDGETS = [
   { slug: "8-millones", etiqueta: "8 millones", montoCop: 8_000_000 },
 ];
 
-export function generateStaticParams() {
-  return GUIDES.map((g) => ({ slug: g.slug }));
+export async function generateStaticParams() {
+  try {
+    const guides = await getPublishedGuides();
+    return guides.map((g) => ({ slug: g.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -38,7 +43,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const guide = findGuide(slug);
+  const guide = await findGuide(slug);
   if (!guide) return {};
 
   return {
@@ -55,7 +60,7 @@ export async function generateMetadata({
   };
 }
 
-function articleSchema(guide: (typeof GUIDES)[number]) {
+function articleSchema(guide: Guide) {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -87,7 +92,7 @@ export default async function GuiaPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const guide = findGuide(slug);
+  const guide = await findGuide(slug);
   if (!guide) notFound();
 
   // Solo la guía pilar carga precios en vivo del catálogo.
@@ -108,7 +113,12 @@ export default async function GuiaPage({
     }
   }
 
-  const otras = GUIDES.filter((g) => g.slug !== guide.slug);
+  let otras: Guide[] = [];
+  try {
+    otras = (await getPublishedGuides()).filter((g) => g.slug !== guide.slug);
+  } catch {
+    otras = [];
+  }
 
   return (
     <>

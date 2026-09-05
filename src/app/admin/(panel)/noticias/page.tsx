@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 function fmtFecha(d: Date): string {
   return new Date(d).toLocaleString("es-CO", {
+    timeZone: "America/Bogota",
     day: "2-digit",
     month: "short",
     hour: "2-digit",

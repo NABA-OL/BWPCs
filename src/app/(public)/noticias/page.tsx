@@ -30,6 +30,7 @@ const PAGE_SIZE = 15;
 
 function fmtFecha(d: Date): string {
   return new Date(d).toLocaleDateString("es-CO", {
+    timeZone: "America/Bogota",
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -49,6 +50,7 @@ export default async function NoticiasPage({
     tipo: "articulo" | "video";
     titulo: string;
     resumen: string;
+    cuerpo: string;
     fuenteUrl: string;
     fuenteNombre: string;
     youtubeId: string | null;
@@ -71,6 +73,7 @@ export default async function NoticiasPage({
       tipo: p.tipo,
       titulo: p.titulo,
       resumen: p.resumen,
+      cuerpo: p.cuerpo,
       fuenteUrl: p.fuenteUrl,
       fuenteNombre: p.fuenteNombre,
       youtubeId: p.youtubeId,
@@ -128,21 +131,46 @@ export default async function NoticiasPage({
                   </h2>
 
                   {p.tipo === "video" && p.youtubeId ? (
-                    <div className="mt-4 aspect-video max-w-2xl overflow-hidden border border-hairline">
-                      <iframe
-                        src={`https://www.youtube.com/embed/${p.youtubeId}`}
-                        title={p.titulo}
-                        className="h-full w-full"
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                      />
-                    </div>
+                    <>
+                      <div className="mt-4 aspect-video max-w-2xl overflow-hidden border border-hairline">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${p.youtubeId}`}
+                          title={p.titulo}
+                          className="h-full w-full"
+                          loading="lazy"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      </div>
+                      {p.resumen && (
+                        <p className="mt-3 max-w-2xl text-pretty leading-relaxed text-panda">
+                          {p.resumen}
+                        </p>
+                      )}
+                      <a
+                        href={`https://www.youtube.com/watch?v=${p.youtubeId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-block text-sm text-accent hover:underline"
+                      >
+                        Ver en YouTube →
+                      </a>
+                    </>
                   ) : (
                     <>
                       <p className="mt-2 max-w-2xl text-pretty leading-relaxed text-panda">
                         {p.resumen}
                       </p>
+                      {p.cuerpo && p.cuerpo.trim() !== p.resumen.trim() && (
+                        <details className="mt-3 max-w-2xl">
+                          <summary className="cursor-pointer text-sm font-medium text-panda hover:text-accent">
+                            Leer más
+                          </summary>
+                          <p className="mt-2 text-pretty leading-relaxed text-panda">
+                            {p.cuerpo}
+                          </p>
+                        </details>
+                      )}
                       <a
                         href={p.fuenteUrl}
                         target="_blank"

@@ -9,8 +9,10 @@ import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
-import { GUIDES } from "@/lib/guides";
+import { getPublishedGuides } from "@/lib/guides";
 import { SITE_URL } from "@/lib/schema";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Guías para armar tu PC en Colombia",
@@ -31,7 +33,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GuiasPage() {
+export default async function GuiasPage() {
+  let guides: Awaited<ReturnType<typeof getPublishedGuides>> = [];
+  try {
+    guides = await getPublishedGuides();
+  } catch {
+    guides = [];
+  }
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -61,7 +70,7 @@ export default function GuiasPage() {
       <section className="border-b border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="grid gap-px border border-hairline bg-hairline md:grid-cols-2">
-            {GUIDES.map((g) => (
+            {guides.map((g) => (
               <Link
                 key={g.slug}
                 href={`/guias/${g.slug}`}

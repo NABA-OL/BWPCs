@@ -6,6 +6,7 @@
 import "server-only";
 import { collections } from "@/lib/db/collections";
 import { sendTelegramMessage } from "@/lib/telegram";
+import { slugify } from "@/lib/slug";
 
 /**
  * Escaneo de fuentes de noticias/hardware. SIEMPRE crea borradores, nunca
@@ -34,6 +35,10 @@ const RSS_SOURCES: RssSource[] = [
 ];
 
 const MAX_ITEMS_PER_SOURCE = 5;
+
+// Borradores sin revisar más viejos que esto se descartan en cada escaneo —
+// ya no son noticia. Lo publicado NUNCA se toca acá.
+const MAX_DRAFT_AGE_DAYS = 7;
 
 // Algunos medios (ej. Xataka) bloquean requests sin User-Agent con una
 // respuesta vacía en vez de un error — sin esto, el escaneo "funciona" pero
@@ -69,16 +74,6 @@ function extractTag(block: string, tag: string): string | null {
 function extractLinkHref(block: string): string | null {
   const m = block.match(/<link[^>]*\bhref="([^"]+)"/i);
   return m ? m[1] : null;
-}
-
-export function slugify(text: string): string {
-  return text
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // quita tildes tras NFD
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 80);
 }
 
 interface RssItem {
@@ -131,6 +126,7 @@ function parseYoutubeEntries(xml: string): YoutubeEntry[] {
 
 export interface ScanResult {
   creados: number;
+  borrados: number;
   detalles: string[];
   errores: string[];
 }
@@ -220,6 +216,10 @@ export async function runNewsScan(): Promise<ScanResult> {
     }
   }
 
+  // --- Limpieza: borradores viejos sin revisar ya no son noticia ---
+  const limite = new Date(Date.now() - MAX_DRAFT_AGE_DAYS * 24 * 60 * 60 * 1000);
+  const { deletedCount } = await col.deleteMany({ estado: "borrador", creado: { $lt: limite } });
+
   if (detalles.length > 0) {
     const lista = detalles.map((d) => `• ${d}`).join("\n");
     await sendTelegramMessage(
@@ -230,5 +230,5 @@ export async function runNewsScan(): Promise<ScanResult> {
     );
   }
 
-  return { creados: detalles.length, detalles, errores };
+  return { creados: detalles.length, borrados: deletedCount, detalles, errores };
 }
