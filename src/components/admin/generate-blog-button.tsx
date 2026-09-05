@@ -8,7 +8,7 @@
 import { useState, useTransition } from "react";
 import { generateDraftAction } from "@/app/admin/(panel)/blog/actions";
 
-/** Dispara la redacción de un borrador de blog con IA. Provisional: hasta activar el cron. */
+/** Dispara la redacción de un borrador de blog con IA (además del cron semanal). */
 export function GenerateBlogButton() {
   const [pending, startTransition] = useTransition();
   const [resultado, setResultado] = useState<string | null>(null);

@@ -7,10 +7,48 @@
 
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
 import { generateBlogDraft, type GenerateBlogDraftResult } from "@/lib/blog/generate";
 import { GuideSeccionesSchema, GuideFaqsSchema } from "@/lib/blog/schema";
+import { slugify } from "@/lib/slug";
+
+export interface CreateGuideResult {
+  ok: boolean;
+  error?: string;
+}
+
+/** Crea un borrador vacío para redactar a mano. El slug se fija acá y nunca se recalcula. */
+export async function createGuideAction(
+  _prev: CreateGuideResult,
+  form: FormData,
+): Promise<CreateGuideResult> {
+  if (!(await getSession())) return { ok: false, error: "Sesión inválida." };
+  const titulo = String(form.get("titulo") ?? "").trim();
+  if (!titulo) return { ok: false, error: "Falta el título." };
+
+  const hoy = new Date().toISOString().slice(0, 10);
+  const col = await collections.guides();
+  const { insertedId } = await col.insertOne({
+    slug: slugify(titulo),
+    titulo,
+    h1: titulo,
+    descripcion: "",
+    keywords: [],
+    publicado: null,
+    actualizado: hoy,
+    resumen: [],
+    intro: [],
+    secciones: [],
+    faqs: [],
+    estado: "borrador",
+    creado: new Date(),
+  });
+
+  revalidatePath("/admin/blog");
+  redirect(`/admin/blog/${insertedId.toString()}`);
+}
 
 export async function generateDraftAction(): Promise<GenerateBlogDraftResult> {
   if (!(await getSession())) return { ok: false, error: "Sesión inválida." };

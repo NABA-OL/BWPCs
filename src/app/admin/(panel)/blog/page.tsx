@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { collections } from "@/lib/db/collections";
 import { GenerateBlogButton } from "@/components/admin/generate-blog-button";
+import { CreateGuideButton } from "@/components/admin/create-guide-button";
 import { publishGuideAction, unpublishGuideAction, deleteGuideAction } from "./actions";
 
 export const metadata: Metadata = {
@@ -56,14 +57,15 @@ export default async function BlogAdminPage() {
       <header>
         <h1 className="text-3xl font-extrabold tracking-tight">Blog</h1>
         <p className="mt-1 text-component">
-          Guías redactadas por IA a partir de lo que ya existe en el sitio.
-          Nunca se publican solas — revisa, edita si quieres y publica desde
-          acá.
+          Guías redactadas por IA a partir de lo que ya existe en el sitio, o
+          escritas a mano. Nunca se publican solas — revisa, edita si quieres
+          y publica desde acá.
         </p>
       </header>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-wrap items-start gap-6">
         <GenerateBlogButton />
+        <CreateGuideButton />
       </div>
 
       {error ? (
