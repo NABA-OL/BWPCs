@@ -7,6 +7,7 @@
  */
 import type { Metadata, Viewport } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geist = Geist({
@@ -84,7 +85,10 @@ export default function RootLayout({
       lang="es-CO"
       className={`${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-vanilla text-panda">{children}</body>
+      <body className="min-h-full bg-vanilla text-panda">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

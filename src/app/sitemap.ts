@@ -6,14 +6,21 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import type { MetadataRoute } from "next";
-import { GUIDES } from "@/lib/guides";
+import { getPublishedGuides } from "@/lib/guides";
 
 const BASE = "https://bw-pcs.com";
 
 const BUDGETS = ["3-millones", "5-millones", "8-millones"];
 const USE_CASES = ["edicion-de-video", "arquitectura-y-render", "streaming"];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let guides: Awaited<ReturnType<typeof getPublishedGuides>> = [];
+  try {
+    guides = await getPublishedGuides();
+  } catch {
+    guides = [];
+  }
+
   return [
     { url: BASE, changeFrequency: "weekly", priority: 1.0 },
     { url: `${BASE}/cotizador`, changeFrequency: "monthly", priority: 0.9 },
@@ -22,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/ensambles`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/guias`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/noticias`, changeFrequency: "daily", priority: 0.6 },
-    ...GUIDES.map((g) => ({
+    ...guides.map((g) => ({
       url: `${BASE}/guias/${g.slug}`,
       lastModified: new Date(g.actualizado),
       changeFrequency: "monthly" as const,

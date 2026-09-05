@@ -26,6 +26,9 @@ export function NewsScanButton() {
           ? `${r.creados} borrador${r.creados === 1 ? "" : "es"} nuevo${r.creados === 1 ? "" : "s"}.`
           : "Nada nuevo por ahora.",
       ];
+      if (r.borrados > 0) {
+        partes.push(`${r.borrados} borrador${r.borrados === 1 ? "" : "es"} viejo${r.borrados === 1 ? "" : "s"} descartado${r.borrados === 1 ? "" : "s"}.`);
+      }
       if (r.errores.length > 0) {
         partes.push(`Fallaron: ${r.errores.join(", ")}.`);
       }

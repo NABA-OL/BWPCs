@@ -224,6 +224,43 @@ export interface Build {
   creado: Date;
 }
 
+export type GuideEstado = "borrador" | "publicado";
+
+export interface GuideSection {
+  h2: string;
+  parrafos: string[];
+  lista?: string[];
+}
+
+export interface GuideFaq {
+  q: string;
+  a: string;
+}
+
+/**
+ * Guía del blog (/guias). Nace "borrador" cuando la redacta la IA (tarea
+ * programada semanal, separada del escaneo de noticias); un admin humano
+ * revisa, edita si quiere, y publica desde el panel.
+ */
+export interface Guide {
+  _id?: ObjectId;
+  slug: string;
+  titulo: string;
+  h1: string;
+  descripcion: string;
+  keywords: string[];
+  publicado: string | null; // ISO yyyy-mm-dd, se fija al publicar
+  actualizado: string; // ISO yyyy-mm-dd
+  resumen: string[];
+  intro: string[];
+  secciones: GuideSection[];
+  faqs: GuideFaq[];
+  /** Marca la guía pilar: incluye la tabla de presupuestos en vivo. Solo la original. */
+  incluyeTablaPresupuestos?: boolean;
+  estado: GuideEstado;
+  creado: Date;
+}
+
 export type NewsPostTipo = "articulo" | "video";
 export type NewsPostEstado = "borrador" | "publicado";
 

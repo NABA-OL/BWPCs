@@ -9,21 +9,23 @@ import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
-import { runNewsScan, slugify } from "@/lib/news/scan";
+import { runNewsScan } from "@/lib/news/scan";
+import { slugify } from "@/lib/slug";
 
 export interface ScanActionResult {
   ok: boolean;
   creados: number;
+  borrados: number;
   errores: string[];
 }
 
 /** Dispara el escaneo manual (botón en el panel) — crea borradores, nunca publica. */
 export async function runScanAction(): Promise<ScanActionResult> {
-  if (!(await getSession())) return { ok: false, creados: 0, errores: [] };
+  if (!(await getSession())) return { ok: false, creados: 0, borrados: 0, errores: [] };
   const result = await runNewsScan();
   revalidatePath("/admin/noticias");
   revalidatePath("/admin");
-  return { ok: true, creados: result.creados, errores: result.errores };
+  return { ok: true, creados: result.creados, borrados: result.borrados, errores: result.errores };
 }
 
 export async function publishPostAction(form: FormData): Promise<void> {

@@ -58,11 +58,13 @@ export function AdminShell({
   usuario,
   solicitudesPendientes = 0,
   borradoresPendientes = 0,
+  blogBorradoresPendientes = 0,
   children,
 }: {
   usuario: string;
   solicitudesPendientes?: number;
   borradoresPendientes?: number;
+  blogBorradoresPendientes?: number;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -242,6 +244,18 @@ export function AdminShell({
             {borradoresPendientes === 1
               ? "borrador de noticia sin revisar"
               : "borradores de noticias sin revisar"}{" "}
+            →
+          </Link>
+        )}
+        {blogBorradoresPendientes > 0 && (
+          <Link
+            href="/admin/blog"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            Tienes {blogBorradoresPendientes}{" "}
+            {blogBorradoresPendientes === 1
+              ? "borrador de blog sin revisar"
+              : "borradores de blog sin revisar"}{" "}
             →
           </Link>
         )}

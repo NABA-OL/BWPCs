@@ -16,6 +16,7 @@ import type {
   ComponentItem,
   CuentaCobro,
   Graphic,
+  Guide,
   NewsPost,
   Processor,
   Quote,
@@ -54,6 +55,9 @@ export const collections = {
   },
   async newsPosts() {
     return (await getDb()).collection<NewsPost>("newsPosts");
+  },
+  async guides() {
+    return (await getDb()).collection<Guide>("guides");
   },
   async clients() {
     return (await getDb()).collection<Client>("clients");
