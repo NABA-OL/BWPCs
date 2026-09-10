@@ -22,11 +22,14 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   Teclado: "Teclado",
   Monitor: "Monitor",
   Audifonos: "Audífonos",
+  Combo: "Combo",
 };
 
 /**
  * Categorías que se gestionan en la sección "Componentes" (catálogo en COP).
  * Procesador y Gráfica tienen sus propias secciones (precio en USD con TRM).
+ * "Combo" es varias piezas vendidas como un solo ítem con un solo precio
+ * (ej. board+ram+fuente) — no entra al cotizador público por categoría.
  */
 export const CATALOG_CATEGORIES: ComponentCategory[] = [
   "Board",
@@ -40,6 +43,7 @@ export const CATALOG_CATEGORIES: ComponentCategory[] = [
   "Teclado",
   "Monitor",
   "Audifonos",
+  "Combo",
 ];
 
 /**

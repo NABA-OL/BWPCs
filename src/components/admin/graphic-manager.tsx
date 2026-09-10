@@ -183,16 +183,17 @@ export function GraphicManager({
 
           <label className="block">
             <span className="text-sm font-medium text-component">
-              Ensambladora <span className="text-component/60">(opcional)</span>
+              Descripción
             </span>
             <input
               name="ensambladora"
               list="bw-aibs"
+              required
               value={form.ensambladora}
               onChange={(e) =>
                 setForm({ ...form, ensambladora: e.target.value })
               }
-              placeholder="MSI, ASUS, Gigabyte…"
+              placeholder="Gigabyte Gaming OC, ASUS Dual…"
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
             />
             <datalist id="bw-aibs">
@@ -341,7 +342,7 @@ export function GraphicManager({
               <tr>
                 <th className="px-4 py-3 font-medium">Modelo</th>
                 <th className="px-4 py-3 font-medium">Marca</th>
-                <th className="px-4 py-3 font-medium">Ensambladora</th>
+                <th className="px-4 py-3 font-medium">Descripción</th>
                 <th className="px-4 py-3 font-medium">Base</th>
                 <th className="px-4 py-3 font-medium">Precio COP</th>
                 <th className="px-4 py-3 font-medium">Estado</th>

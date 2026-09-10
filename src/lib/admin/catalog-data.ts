@@ -56,7 +56,7 @@ export async function getCatalogOptions(settings: Settings): Promise<CatalogOpti
       categoria: "Grafica",
       modelo: g.modelo,
       precioCop: precio,
-      descripcion: "",
+      descripcion: g.ensambladora,
       label: `Gráfica · ${g.modelo} · ${precio ? formatCOP(precio) : "s/ precio"}`,
     });
   }

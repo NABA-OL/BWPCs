@@ -19,6 +19,7 @@ import { CATEGORY_LABELS } from "@/lib/categories";
 import { COMPONENT_CATEGORIES, type ComponentCategory } from "@/lib/db/types";
 import type { QuoteInput, QuoteItemInput } from "@/lib/quote";
 import type { CatalogOption } from "@/lib/admin/catalog-data";
+import { Combobox } from "@/components/admin/combobox";
 
 export type { CatalogOption };
 
@@ -91,6 +92,18 @@ export function QuoteBuilder({
       return { ...d, opciones };
     });
   }
+  function moveItem(oi: number, from: number, to: number) {
+    setData((d) => {
+      const opciones = d.opciones.map((o, i) => {
+        if (i !== oi) return o;
+        const items = [...o.items];
+        const [moved] = items.splice(from, 1);
+        items.splice(to, 0, moved);
+        return { ...o, items };
+      });
+      return { ...d, opciones };
+    });
+  }
   function addOption() {
     setData((d) => ({
       ...d,
@@ -156,6 +169,7 @@ export function QuoteBuilder({
           onItem={(ii, patch) => setItem(oi, ii, patch)}
           onAddItem={(item) => addItem(oi, item)}
           onRemoveItem={(ii) => removeItem(oi, ii)}
+          onMoveItem={(from, to) => moveItem(oi, from, to)}
           onRemoveOption={() => removeOption(oi)}
         />
       ))}
@@ -211,6 +225,7 @@ function OptionEditor({
   onItem,
   onAddItem,
   onRemoveItem,
+  onMoveItem,
   onRemoveOption,
 }: {
   option: QuoteInput["opciones"][number];
@@ -223,8 +238,10 @@ function OptionEditor({
   onItem: (ii: number, patch: Partial<QuoteItemInput>) => void;
   onAddItem: (item: QuoteItemInput) => void;
   onRemoveItem: (ii: number) => void;
+  onMoveItem: (from: number, to: number) => void;
   onRemoveOption: () => void;
 }) {
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
   const totals = useMemo(() => {
     const sub =
       option.items.reduce((a, i) => a + (i.precioCop || 0), 0) +
@@ -260,8 +277,33 @@ function OptionEditor({
         {option.items.map((item, ii) => (
           <div
             key={ii}
-            className="grid items-start gap-2 sm:grid-cols-[140px_1fr_120px_1fr_auto]"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (dragIdx !== null && dragIdx !== ii) onMoveItem(dragIdx, ii);
+              setDragIdx(null);
+            }}
+            className={`grid items-start gap-2 sm:grid-cols-[20px_140px_1fr_120px_1fr_auto] ${
+              dragIdx === ii ? "opacity-40" : ""
+            }`}
           >
+            <span
+              draggable
+              onDragStart={() => setDragIdx(ii)}
+              onDragEnd={() => setDragIdx(null)}
+              aria-label="Reordenar ítem"
+              title="Arrastra para reordenar"
+              className="mt-2 hidden cursor-grab select-none self-center text-component hover:text-panda active:cursor-grabbing sm:block"
+            >
+              <svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor" aria-hidden="true">
+                <circle cx="2" cy="2" r="1.5" />
+                <circle cx="8" cy="2" r="1.5" />
+                <circle cx="2" cy="8" r="1.5" />
+                <circle cx="8" cy="8" r="1.5" />
+                <circle cx="2" cy="14" r="1.5" />
+                <circle cx="8" cy="14" r="1.5" />
+              </svg>
+            </span>
             <select
               value={item.categoria}
               onChange={(e) =>
@@ -376,39 +418,34 @@ function CatalogPicker({
 }) {
   if (catalog.length === 0) return null;
 
-  // Agrupar por categoría (orden de COMPONENT_CATEGORIES) para usar <optgroup>.
+  // Agrupar por categoría (orden de COMPONENT_CATEGORIES).
   const grupos = COMPONENT_CATEGORIES.map((cat) => ({
-    cat,
+    label: CATEGORY_LABELS[cat],
     items: catalog.filter((c) => c.categoria === cat),
   })).filter((g) => g.items.length > 0);
 
   return (
-    <select
-      value=""
-      onChange={(e) => {
-        const c = catalog.find((x) => x.id === e.target.value);
-        if (c)
-          onPick({
-            categoria: c.categoria,
-            modelo: c.modelo,
-            precioCop: c.precioCop,
-            descripcion: c.descripcion,
-          });
-        e.target.value = "";
-      }}
-      className="border border-hairline bg-vanilla px-2 py-1.5 text-sm text-component outline-none focus:border-panda"
-    >
-      <option value="">+ Desde catálogo…</option>
-      {grupos.map((g) => (
-        <optgroup key={g.cat} label={CATEGORY_LABELS[g.cat]}>
-          {g.items.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.modelo} · {formatCOP(c.precioCop)}
-            </option>
-          ))}
-        </optgroup>
-      ))}
-    </select>
+    <Combobox
+      groups={grupos}
+      getId={(c) => c.id}
+      searchText={(c) => `${c.modelo} ${c.descripcion}`}
+      placeholder="+ Desde catálogo…"
+      onPick={(c) =>
+        onPick({
+          categoria: c.categoria,
+          modelo: c.modelo,
+          precioCop: c.precioCop,
+          descripcion: c.descripcion,
+        })
+      }
+      renderItem={(c) => (
+        <>
+          {c.modelo}
+          {c.descripcion ? ` (${c.descripcion})` : ""} ·{" "}
+          {formatCOP(c.precioCop)}
+        </>
+      )}
+    />
   );
 }
 
