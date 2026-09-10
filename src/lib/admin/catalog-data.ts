@@ -7,7 +7,7 @@
  */
 import "server-only";
 import { collections } from "@/lib/db/collections";
-import { processorPrice, graphicPrice } from "@/lib/pricing";
+import { processorPrice, graphicPrice, componentPrice } from "@/lib/pricing";
 import { formatCOP } from "@/lib/format";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import type { ComponentCategory, Settings } from "@/lib/db/types";
@@ -61,13 +61,14 @@ export async function getCatalogOptions(settings: Settings): Promise<CatalogOpti
     });
   }
   for (const c of comps) {
+    const precio = componentPrice(c, settings) ?? 0;
     catalog.push({
       id: `c_${c._id!.toString()}`,
       categoria: c.categoria,
       modelo: c.modelo,
-      precioCop: c.precioCop,
+      precioCop: precio,
       descripcion: c.descripcion,
-      label: `${CATEGORY_LABELS[c.categoria]} · ${c.modelo} · ${formatCOP(c.precioCop)}`,
+      label: `${CATEGORY_LABELS[c.categoria]} · ${c.modelo} · ${precio ? formatCOP(precio) : "s/ precio"}`,
     });
   }
 

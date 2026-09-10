@@ -5,7 +5,7 @@
  *  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-import type { Graphic, Processor, Settings } from "@/lib/db/types";
+import type { ComponentItem, Graphic, Processor, Settings } from "@/lib/db/types";
 
 /**
  * Lógica de precios — única fuente de verdad (ver docs/PLANEACION.md §5 y §13).
@@ -43,6 +43,17 @@ export function graphicPrice(
   const trm = effectiveTrm(settings);
   if (trm == null || g.baseUsd == null) return null;
   return Math.round(g.baseUsd * trm + settings.envioGPU);
+}
+
+/** Precio en COP de un componente del catálogo general, o null si falta info. */
+export function componentPrice(
+  c: Pick<ComponentItem, "modoPrecio" | "baseUsd" | "precioManualCop">,
+  settings: Settings,
+): number | null {
+  if (c.modoPrecio === "COP") return c.precioManualCop ?? null;
+  const trm = effectiveTrm(settings);
+  if (trm == null || c.baseUsd == null) return null;
+  return Math.round(c.baseUsd * trm);
 }
 
 /** Totales con recargos de pago a partir de un subtotal en COP. */

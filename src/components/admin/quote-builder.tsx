@@ -48,6 +48,13 @@ export function QuoteBuilder({
   pdfHref?: string;
 }) {
   const [data, setData] = useState<QuoteInput>(initial);
+  // Claves estables por opción (no el índice): así el colapsado y el drag
+  // siguen a la opción correcta aunque se reordenen.
+  const [optionKeys, setOptionKeys] = useState<string[]>(() =>
+    initial.opciones.map(() => crypto.randomUUID()),
+  );
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+  const [dragOptIdx, setDragOptIdx] = useState<number | null>(null);
   const [state, formAction, pending] = useActionState<QuoteFormState, FormData>(
     saveQuoteAction,
     {},
@@ -116,12 +123,36 @@ export function QuoteBuilder({
         },
       ],
     }));
+    setOptionKeys((k) => [...k, crypto.randomUUID()]);
   }
   function removeOption(oi: number) {
     setData((d) => ({
       ...d,
       opciones: d.opciones.filter((_, i) => i !== oi),
     }));
+    setOptionKeys((k) => k.filter((_, i) => i !== oi));
+  }
+  function moveOption(from: number, to: number) {
+    setData((d) => {
+      const opciones = [...d.opciones];
+      const [moved] = opciones.splice(from, 1);
+      opciones.splice(to, 0, moved);
+      return { ...d, opciones };
+    });
+    setOptionKeys((k) => {
+      const next = [...k];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+  }
+  function toggleCollapsed(key: string) {
+    setCollapsed((s) => {
+      const next = new Set(s);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
   }
 
   return (
@@ -157,21 +188,36 @@ export function QuoteBuilder({
 
       {/* Opciones */}
       {data.opciones.map((opt, oi) => (
-        <OptionEditor
-          key={oi}
-          option={opt}
-          catalog={catalog}
-          tarjetaPct={tarjetaPct}
-          psePct={psePct}
-          canRemove={data.opciones.length > 1}
-          onTitulo={(v) => setOption(oi, { titulo: v })}
-          onServicio={(v) => setOption(oi, { servicio: v })}
-          onItem={(ii, patch) => setItem(oi, ii, patch)}
-          onAddItem={(item) => addItem(oi, item)}
-          onRemoveItem={(ii) => removeItem(oi, ii)}
-          onMoveItem={(from, to) => moveItem(oi, from, to)}
-          onRemoveOption={() => removeOption(oi)}
-        />
+        <div
+          key={optionKeys[oi]}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            if (dragOptIdx !== null && dragOptIdx !== oi)
+              moveOption(dragOptIdx, oi);
+            setDragOptIdx(null);
+          }}
+          className={dragOptIdx === oi ? "opacity-40" : ""}
+        >
+          <OptionEditor
+            option={opt}
+            catalog={catalog}
+            tarjetaPct={tarjetaPct}
+            psePct={psePct}
+            canRemove={data.opciones.length > 1}
+            isOpen={!collapsed.has(optionKeys[oi])}
+            onToggleOpen={() => toggleCollapsed(optionKeys[oi])}
+            onDragHandleStart={() => setDragOptIdx(oi)}
+            onDragHandleEnd={() => setDragOptIdx(null)}
+            onTitulo={(v) => setOption(oi, { titulo: v })}
+            onServicio={(v) => setOption(oi, { servicio: v })}
+            onItem={(ii, patch) => setItem(oi, ii, patch)}
+            onAddItem={(item) => addItem(oi, item)}
+            onRemoveItem={(ii) => removeItem(oi, ii)}
+            onMoveItem={(from, to) => moveItem(oi, from, to)}
+            onRemoveOption={() => removeOption(oi)}
+          />
+        </div>
       ))}
 
       <button
@@ -220,6 +266,10 @@ function OptionEditor({
   tarjetaPct,
   psePct,
   canRemove,
+  isOpen,
+  onToggleOpen,
+  onDragHandleStart,
+  onDragHandleEnd,
   onTitulo,
   onServicio,
   onItem,
@@ -233,6 +283,10 @@ function OptionEditor({
   tarjetaPct: number;
   psePct: number;
   canRemove: boolean;
+  isOpen: boolean;
+  onToggleOpen: () => void;
+  onDragHandleStart: () => void;
+  onDragHandleEnd: () => void;
   onTitulo: (v: string) => void;
   onServicio: (v: number) => void;
   onItem: (ii: number, patch: Partial<QuoteItemInput>) => void;
@@ -256,22 +310,62 @@ function OptionEditor({
   return (
     <section className="border border-hairline">
       <header className="flex items-center justify-between gap-3 border-b border-hairline bg-hairline/30 px-4 py-3">
-        <input
-          value={option.titulo}
-          onChange={(e) => onTitulo(e.target.value)}
-          className="bg-transparent font-semibold outline-none"
-        />
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <span
+            draggable
+            onDragStart={onDragHandleStart}
+            onDragEnd={onDragHandleEnd}
+            aria-label="Reordenar opción"
+            title="Arrastra para reordenar"
+            className="hidden shrink-0 cursor-grab select-none text-component hover:text-panda active:cursor-grabbing sm:block"
+          >
+            <svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor" aria-hidden="true">
+              <circle cx="2" cy="2" r="1.5" />
+              <circle cx="8" cy="2" r="1.5" />
+              <circle cx="2" cy="8" r="1.5" />
+              <circle cx="8" cy="8" r="1.5" />
+              <circle cx="2" cy="14" r="1.5" />
+              <circle cx="8" cy="14" r="1.5" />
+            </svg>
+          </span>
+          <button
+            type="button"
+            onClick={onToggleOpen}
+            aria-label={isOpen ? "Colapsar opción" : "Expandir opción"}
+            className="shrink-0 text-component hover:text-panda"
+          >
+            <svg
+              width="12"
+              height="8"
+              viewBox="0 0 12 8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`transition-transform ${isOpen ? "" : "-rotate-90"}`}
+            >
+              <path d="M1 1.5l5 5 5-5" />
+            </svg>
+          </button>
+          <input
+            value={option.titulo}
+            onChange={(e) => onTitulo(e.target.value)}
+            className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+          />
+        </div>
         {canRemove && (
           <button
             type="button"
             onClick={onRemoveOption}
-            className="text-sm text-accent hover:underline"
+            className="shrink-0 text-sm text-accent hover:underline"
           >
             Quitar opción
           </button>
         )}
       </header>
 
+      {isOpen && (
       <div className="space-y-3 p-4">
         {/* Ítems */}
         {option.items.map((item, ii) => (
@@ -405,6 +499,7 @@ function OptionEditor({
           </dl>
         </div>
       </div>
+      )}
     </section>
   );
 }

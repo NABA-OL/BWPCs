@@ -96,7 +96,11 @@ export interface ComponentItem {
   marca: string;
   modelo: string;
   descripcion: string;
-  precioCop: number; // precio directo (Amazon Colombia)
+  /** Por defecto COP fijo (precio directo, ej. Amazon Colombia); "Combo" nace
+   * en USD ya que suele cotizarse en dólares — ver componentPrice() en pricing.ts. */
+  modoPrecio: PriceMode;
+  baseUsd: number | null;
+  precioManualCop: number | null;
   activo: boolean;
   actualizado: Date;
 }

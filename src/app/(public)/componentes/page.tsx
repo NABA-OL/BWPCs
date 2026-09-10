@@ -11,7 +11,7 @@ import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
-import { processorPrice, graphicPrice } from "@/lib/pricing";
+import { processorPrice, graphicPrice, componentPrice } from "@/lib/pricing";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
@@ -101,13 +101,14 @@ async function loadCatalog(): Promise<CatalogGroup[]> {
   // El resto de categorías, agrupadas por categoría.
   const porCategoria = new Map<string, CatalogRow[]>();
   for (const c of comps) {
-    if (c.precioCop <= 0) continue;
+    const precio = componentPrice(c, settings) ?? 0;
+    if (precio <= 0) continue;
     const label = CATEGORY_LABELS[c.categoria] ?? c.categoria;
     const rows = porCategoria.get(label) ?? [];
     rows.push({
       modelo: `${c.marca} ${c.modelo}`.trim(),
       detalle: c.descripcion,
-      precioCop: c.precioCop,
+      precioCop: precio,
     });
     porCategoria.set(label, rows);
   }

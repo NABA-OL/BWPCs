@@ -25,7 +25,8 @@ import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
 import { CATALOG_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
-import type { ComponentCategory } from "@/lib/db/types";
+import { Select } from "@/components/admin/select";
+import type { ComponentCategory, PriceMode } from "@/lib/db/types";
 
 export interface ComponentRow {
   id: string;
@@ -33,8 +34,11 @@ export interface ComponentRow {
   marca: string;
   modelo: string;
   descripcion: string;
-  precioCop: number;
+  modoPrecio: PriceMode;
+  baseUsd: number | null;
+  precioManualCop: number | null;
   activo: boolean;
+  precioCalculado: number | null;
 }
 
 const EMPTY = {
@@ -43,10 +47,18 @@ const EMPTY = {
   marca: "",
   modelo: "",
   descripcion: "",
-  precioCop: "",
+  modoPrecio: "COP" as PriceMode,
+  baseUsd: "",
+  precioManualCop: "",
 };
 
-export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
+export function ComponentManager({
+  rows,
+  trmReady,
+}: {
+  rows: ComponentRow[];
+  trmReady: boolean;
+}) {
   const router = useRouter();
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
   const [filter, setFilter] = useState<ComponentCategory | "Todas">("Todas");
@@ -71,9 +83,21 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
       marca: r.marca,
       modelo: r.modelo,
       descripcion: r.descripcion,
-      precioCop: r.precioCop.toString(),
+      modoPrecio: r.modoPrecio,
+      baseUsd: r.baseUsd?.toString() ?? "",
+      precioManualCop: r.precioManualCop?.toString() ?? "",
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /** Un combo suele cotizarse en dólares — al elegir la categoría "Combo" se
+   * propone USD por defecto, pero sigue siendo editable a COP. */
+  function setCategoria(categoria: ComponentCategory) {
+    setForm((f) => ({
+      ...f,
+      categoria,
+      modoPrecio: categoria === "Combo" ? "USD" : f.modoPrecio,
+    }));
   }
 
   const editing = form.id !== "";
@@ -122,23 +146,16 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
             <span className="text-sm font-medium text-component">
               Categoría
             </span>
-            <select
+            <Select
               name="categoria"
               value={form.categoria}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  categoria: e.target.value as ComponentCategory,
-                })
-              }
-              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
-            >
-              {CATALOG_CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {CATEGORY_LABELS[c]}
-                </option>
-              ))}
-            </select>
+              onChange={setCategoria}
+              options={CATALOG_CATEGORIES.map((c) => ({
+                value: c,
+                label: CATEGORY_LABELS[c],
+              }))}
+              className="mt-1.5"
+            />
           </label>
 
           <label className="block">
@@ -174,17 +191,51 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
 
           <label className="block">
             <span className="text-sm font-medium text-component">
-              Precio (COP)
+              Modo de precio
             </span>
-            <input
-              name="precioCop"
-              inputMode="numeric"
-              value={form.precioCop}
-              onChange={(e) => setForm({ ...form, precioCop: e.target.value })}
-              placeholder="710000"
-              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono outline-none focus:border-panda"
+            <Select
+              name="modoPrecio"
+              value={form.modoPrecio}
+              onChange={(v) => setForm({ ...form, modoPrecio: v })}
+              options={[
+                { value: "COP", label: "COP (precio fijo)" },
+                { value: "USD", label: "USD (convierte con TRM)" },
+              ]}
+              className="mt-1.5"
             />
           </label>
+
+          {form.modoPrecio === "USD" ? (
+            <label className="block">
+              <span className="text-sm font-medium text-component">
+                Precio base (USD)
+              </span>
+              <input
+                name="baseUsd"
+                inputMode="decimal"
+                value={form.baseUsd}
+                onChange={(e) => setForm({ ...form, baseUsd: e.target.value })}
+                placeholder="45"
+                className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono outline-none focus:border-panda"
+              />
+            </label>
+          ) : (
+            <label className="block">
+              <span className="text-sm font-medium text-component">
+                Precio (COP)
+              </span>
+              <input
+                name="precioManualCop"
+                inputMode="numeric"
+                value={form.precioManualCop}
+                onChange={(e) =>
+                  setForm({ ...form, precioManualCop: e.target.value })
+                }
+                placeholder="710000"
+                className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono outline-none focus:border-panda"
+              />
+            </label>
+          )}
 
           <label className="block sm:col-span-2">
             <span className="text-sm font-medium text-component">
@@ -201,6 +252,13 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
             />
           </label>
         </div>
+
+        {form.modoPrecio === "USD" && !trmReady && (
+          <p className="mt-3 text-sm text-accent">
+            No hay TRM configurado: el precio en pesos no se podrá calcular
+            hasta definirlo en Configuración.
+          </p>
+        )}
 
         <div className="mt-5 flex items-center gap-3">
           <Button type="submit" disabled={pending}>
@@ -309,7 +367,9 @@ export function ComponentManager({ rows }: { rows: ComponentRow[] }) {
                     )}
                   </td>
                   <td className="px-4 py-3 font-mono">
-                    {formatCOP(r.precioCop)}
+                    {r.precioCalculado != null
+                      ? formatCOP(r.precioCalculado)
+                      : "—"}
                   </td>
                   <td className="px-4 py-3">
                     <form action={toggleComponentAction}>
