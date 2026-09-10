@@ -24,6 +24,7 @@ import {
 import { COMPONENT_CATEGORIES } from "@/lib/db/types";
 import type { BankAccount } from "@/lib/db/types";
 import type { CatalogOption } from "@/lib/admin/catalog-data";
+import { Combobox } from "@/components/admin/combobox";
 
 export interface ClientOption {
   id: string;
@@ -544,40 +545,33 @@ function CatalogPicker({
 }) {
   if (catalog.length === 0) return null;
 
-  // Agrupar por categoría (orden de COMPONENT_CATEGORIES) para usar <optgroup>.
+  // Agrupar por categoría (orden de COMPONENT_CATEGORIES).
   const grupos = COMPONENT_CATEGORIES.map((cat) => ({
-    cat,
+    label: CATEGORY_LABELS[cat],
     items: catalog.filter((c) => c.categoria === cat),
   })).filter((g) => g.items.length > 0);
 
   return (
-    <select
-      value=""
-      onChange={(e) => {
-        const c = catalog.find((x) => x.id === e.target.value);
-        if (c)
-          onPick({
-            descripcion: c.descripcion
-              ? `${c.modelo} — ${c.descripcion}`
-              : c.modelo,
-            cantidad: 1,
-            valorUnitario: c.precioCop,
-          });
-        e.target.value = "";
-      }}
-      className="border border-hairline bg-vanilla px-2 py-1.5 text-sm text-component outline-none focus:border-panda"
-    >
-      <option value="">+ Desde catálogo…</option>
-      {grupos.map((g) => (
-        <optgroup key={g.cat} label={CATEGORY_LABELS[g.cat]}>
-          {g.items.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.modelo} · {formatCOP(c.precioCop)}
-            </option>
-          ))}
-        </optgroup>
-      ))}
-    </select>
+    <Combobox
+      groups={grupos}
+      getId={(c) => c.id}
+      searchText={(c) => `${c.modelo} ${c.descripcion}`}
+      placeholder="+ Desde catálogo…"
+      onPick={(c) =>
+        onPick({
+          descripcion: c.descripcion ? `${c.modelo} — ${c.descripcion}` : c.modelo,
+          cantidad: 1,
+          valorUnitario: c.precioCop,
+        })
+      }
+      renderItem={(c) => (
+        <>
+          {c.modelo}
+          {c.descripcion ? ` (${c.descripcion})` : ""} ·{" "}
+          {formatCOP(c.precioCop)}
+        </>
+      )}
+    />
   );
 }
 

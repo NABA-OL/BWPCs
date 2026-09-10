@@ -22,6 +22,7 @@ export const COMPONENT_CATEGORIES = [
   "Teclado",
   "Monitor",
   "Audifonos",
+  "Combo",
 ] as const;
 
 export type ComponentCategory = (typeof COMPONENT_CATEGORIES)[number];
@@ -81,7 +82,7 @@ export interface Graphic {
   _id?: ObjectId;
   modelo: string; // "RX 9060 XT 16gb"
   marca: GpuBrand; // chip: NVIDIA / AMD / Intel
-  ensambladora: string; // AIB: MSI, ASUS, Gigabyte, Zotac… (opcional)
+  ensambladora: string; // Descripción (obligatoria) — AIB u otro detalle. Se usa como descripción del ítem al cotizar desde catálogo.
   modoPrecio: PriceMode;
   baseUsd: number | null;
   precioManualCop: number | null;

@@ -45,6 +45,7 @@ export async function saveGraphicAction(
   const precioManualCop = num(form.get("precioManualCop"));
 
   if (!modelo) return { error: "El modelo es obligatorio." };
+  if (!ensambladora) return { error: "La descripción es obligatoria." };
   if (modoPrecio === "USD" && baseUsd == null)
     return { error: "En modo USD ingresa el precio base en dólares." };
   if (modoPrecio === "COP" && precioManualCop == null)
