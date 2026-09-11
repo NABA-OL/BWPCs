@@ -132,6 +132,24 @@ export function QuoteBuilder({
     }));
     setOptionKeys((k) => k.filter((_, i) => i !== oi));
   }
+  function duplicateOption(oi: number) {
+    setData((d) => {
+      const source = d.opciones[oi];
+      const copy = {
+        ...source,
+        titulo: `${source.titulo} (copia)`,
+        items: source.items.map((it) => ({ ...it })),
+      };
+      const opciones = [...d.opciones];
+      opciones.splice(oi + 1, 0, copy);
+      return { ...d, opciones };
+    });
+    setOptionKeys((k) => {
+      const next = [...k];
+      next.splice(oi + 1, 0, crypto.randomUUID());
+      return next;
+    });
+  }
   function moveOption(from: number, to: number) {
     setData((d) => {
       const opciones = [...d.opciones];
@@ -216,6 +234,7 @@ export function QuoteBuilder({
             onRemoveItem={(ii) => removeItem(oi, ii)}
             onMoveItem={(from, to) => moveItem(oi, from, to)}
             onRemoveOption={() => removeOption(oi)}
+            onDuplicateOption={() => duplicateOption(oi)}
           />
         </div>
       ))}
@@ -277,6 +296,7 @@ function OptionEditor({
   onRemoveItem,
   onMoveItem,
   onRemoveOption,
+  onDuplicateOption,
 }: {
   option: QuoteInput["opciones"][number];
   catalog: CatalogOption[];
@@ -294,6 +314,7 @@ function OptionEditor({
   onRemoveItem: (ii: number) => void;
   onMoveItem: (from: number, to: number) => void;
   onRemoveOption: () => void;
+  onDuplicateOption: () => void;
 }) {
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const totals = useMemo(() => {
@@ -354,15 +375,24 @@ function OptionEditor({
             className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
           />
         </div>
-        {canRemove && (
+        <div className="flex shrink-0 items-center gap-4">
           <button
             type="button"
-            onClick={onRemoveOption}
-            className="shrink-0 text-sm text-accent hover:underline"
+            onClick={onDuplicateOption}
+            className="text-sm text-component hover:text-panda"
           >
-            Quitar opción
+            Duplicar opción
           </button>
-        )}
+          {canRemove && (
+            <button
+              type="button"
+              onClick={onRemoveOption}
+              className="text-sm text-accent hover:underline"
+            >
+              Quitar opción
+            </button>
+          )}
+        </div>
       </header>
 
       {isOpen && (
