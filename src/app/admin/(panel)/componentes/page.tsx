@@ -7,6 +7,8 @@
  */
 import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
+import { getSettings } from "@/lib/admin/settings";
+import { componentPrice, effectiveTrm } from "@/lib/pricing";
 import {
   ComponentManager,
   type ComponentRow,
@@ -19,9 +21,12 @@ export const metadata: Metadata = {
 
 export default async function ComponentesPage() {
   let rows: ComponentRow[] = [];
+  let trmReady = false;
   let error: string | null = null;
 
   try {
+    const settings = await getSettings();
+    trmReady = effectiveTrm(settings) != null;
     const col = await collections.components();
     const docs = await col.find({}).sort({ categoria: 1, modelo: 1 }).toArray();
     rows = docs.map((c) => ({
@@ -30,8 +35,11 @@ export default async function ComponentesPage() {
       marca: c.marca,
       modelo: c.modelo,
       descripcion: c.descripcion,
-      precioCop: c.precioCop,
+      modoPrecio: c.modoPrecio,
+      baseUsd: c.baseUsd,
+      precioManualCop: c.precioManualCop,
       activo: c.activo,
+      precioCalculado: componentPrice(c, settings),
     }));
   } catch (e) {
     error = e instanceof Error ? e.message : "Error al cargar componentes.";
@@ -51,7 +59,7 @@ export default async function ComponentesPage() {
           <p className="text-sm text-panda">{error}</p>
         </div>
       ) : (
-        <ComponentManager rows={rows} />
+        <ComponentManager rows={rows} trmReady={trmReady} />
       )}
     </>
   );

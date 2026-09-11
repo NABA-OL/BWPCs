@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { formatCOP } from "@/lib/format";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
+import { Select } from "@/components/admin/select";
 
 type GpuBrand = "AMD" | "NVIDIA" | "Intel";
 type BrandFilter = GpuBrand | "Todas";
@@ -167,18 +168,17 @@ export function GraphicManager({
 
           <label className="block">
             <span className="text-sm font-medium text-component">Marca</span>
-            <select
+            <Select
               name="marca"
               value={form.marca}
-              onChange={(e) =>
-                setForm({ ...form, marca: e.target.value as GpuBrand })
-              }
-              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
-            >
-              <option value="NVIDIA">NVIDIA</option>
-              <option value="AMD">AMD</option>
-              <option value="Intel">Intel</option>
-            </select>
+              onChange={(v) => setForm({ ...form, marca: v })}
+              options={[
+                { value: "NVIDIA", label: "NVIDIA" },
+                { value: "AMD", label: "AMD" },
+                { value: "Intel", label: "Intel" },
+              ]}
+              className="mt-1.5"
+            />
           </label>
 
           <label className="block">
@@ -207,20 +207,16 @@ export function GraphicManager({
             <span className="text-sm font-medium text-component">
               Modo de precio
             </span>
-            <select
+            <Select
               name="modoPrecio"
               value={form.modoPrecio}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  modoPrecio: e.target.value as "USD" | "COP",
-                })
-              }
-              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda"
-            >
-              <option value="USD">USD (convierte con TRM)</option>
-              <option value="COP">COP (precio fijo)</option>
-            </select>
+              onChange={(v) => setForm({ ...form, modoPrecio: v })}
+              options={[
+                { value: "USD", label: "USD (convierte con TRM)" },
+                { value: "COP", label: "COP (precio fijo)" },
+              ]}
+              className="mt-1.5"
+            />
           </label>
 
           {form.modoPrecio === "USD" ? (

@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
 import { CATALOG_CATEGORIES } from "@/lib/categories";
-import type { ComponentCategory, ComponentItem } from "@/lib/db/types";
+import type { ComponentCategory, ComponentItem, PriceMode } from "@/lib/db/types";
 
 export interface ComponentFormState {
   ok?: boolean;
@@ -37,19 +37,26 @@ export async function saveComponentAction(
   const marca = String(form.get("marca") ?? "").trim();
   const modelo = String(form.get("modelo") ?? "").trim();
   const descripcion = String(form.get("descripcion") ?? "").trim();
-  const precioCop = num(form.get("precioCop"));
+  const modoPrecio = String(form.get("modoPrecio") ?? "COP") as PriceMode;
+  const baseUsd = num(form.get("baseUsd"));
+  const precioManualCop = num(form.get("precioManualCop"));
 
   if (!CATALOG_CATEGORIES.includes(categoria))
     return { error: "Categoría inválida." };
   if (!modelo) return { error: "El modelo es obligatorio." };
-  if (precioCop == null) return { error: "Ingresa el precio en pesos." };
+  if (modoPrecio === "USD" && baseUsd == null)
+    return { error: "En modo USD ingresa el precio base en dólares." };
+  if (modoPrecio === "COP" && precioManualCop == null)
+    return { error: "En modo COP ingresa el precio en pesos." };
 
   const data: Omit<ComponentItem, "_id"> = {
     categoria,
     marca,
     modelo,
     descripcion,
-    precioCop,
+    modoPrecio,
+    baseUsd: modoPrecio === "USD" ? baseUsd : null,
+    precioManualCop: modoPrecio === "COP" ? precioManualCop : null,
     activo: true,
     actualizado: new Date(),
   };
