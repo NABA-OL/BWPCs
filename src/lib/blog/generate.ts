@@ -21,10 +21,10 @@ import { GuideSectionSchema, GuideFaqSchema } from "@/lib/blog/schema";
  * escaneo externo costoso.
  */
 
-// gemini-2.0-flash: gratis en Google AI Studio dentro de la cuota diaria/por
+// gemini-3.6-flash: gratis en Google AI Studio dentro de la cuota diaria/por
 // minuto (no es la promo de un proveedor con fecha de expiración).
 const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
-const MODEL = google("gemini-2.0-flash");
+const MODEL = google("gemini-3.6-flash");
 
 const GuideDraftSchema = z.object({
   titulo: z.string(),
