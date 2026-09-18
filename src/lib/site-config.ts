@@ -20,6 +20,23 @@ export const siteConfig = {
     whatsappDisplay: "(+57) 318 842 2533",
     email: "bandwmount@gmail.com",
   },
+  /**
+   * Responsable del tratamiento de datos (Ley 1581 de 2012) y parte de los
+   * términos. Hoy es una persona natural: B & W es un emprendimiento suyo y
+   * BlacKraken (aún sin constituir) NO figura como responsable, porque una
+   * sociedad que no existe no puede serlo. Cuando BlacKraken se constituya:
+   * cambiar `responsable` por su razón social y `descripcion` por, p. ej.,
+   * "sociedad identificada con NIT ..., con domicilio en ...", subir
+   * `versionPolitica`, avisar a los titulares y revisar el cambio con el abogado.
+   * La cédula NO se publica (decisión del titular).
+   */
+  legal: {
+    responsable: "Nicolas Andres Bermudez Angarita",
+    descripcion:
+      "persona natural titular del emprendimiento B & W, con domicilio en Bogotá, D.C., Colombia",
+    versionPolitica: "2026-09-borrador",
+    vigenteDesde: "18 de septiembre de 2026",
+  },
   nav: [
     { label: "Inicio", href: "/" },
     { label: "Servicios", href: "/servicios" },

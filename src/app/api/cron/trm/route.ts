@@ -22,11 +22,10 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
-  if (secret) {
-    const auth = req.headers.get("authorization");
-    if (auth !== `Bearer ${secret}`) {
-      return NextResponse.json({ error: "No autorizado." }, { status: 401 });
-    }
+  // Sin CRON_SECRET nadie puede invocarlo (antes quedaba abierto): defínelo en
+  // Vercel y la plataforma enviará "Authorization: Bearer <CRON_SECRET>".
+  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
+    return NextResponse.json({ error: "No autorizado." }, { status: 401 });
   }
 
   try {

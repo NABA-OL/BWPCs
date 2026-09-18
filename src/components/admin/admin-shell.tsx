@@ -57,12 +57,14 @@ function NavLink({
 export function AdminShell({
   usuario,
   solicitudesPendientes = 0,
+  resenasPendientes = 0,
   borradoresPendientes = 0,
   blogBorradoresPendientes = 0,
   children,
 }: {
   usuario: string;
   solicitudesPendientes?: number;
+  resenasPendientes?: number;
   borradoresPendientes?: number;
   blogBorradoresPendientes?: number;
   children: React.ReactNode;
@@ -232,6 +234,16 @@ export function AdminShell({
             {solicitudesPendientes === 1
               ? "solicitud nueva"
               : "solicitudes nuevas"}{" "}
+            →
+          </Link>
+        )}
+        {resenasPendientes > 0 && (
+          <Link
+            href="/admin/resenas"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            Tienes {resenasPendientes}{" "}
+            {resenasPendientes === 1 ? "reseña por moderar" : "reseñas por moderar"}{" "}
             →
           </Link>
         )}

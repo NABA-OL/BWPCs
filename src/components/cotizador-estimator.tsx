@@ -7,7 +7,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
-import { useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { RecaptchaNotice } from "@/components/recaptcha-notice";
@@ -15,6 +15,8 @@ import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
 import { submitLead } from "@/lib/leads/actions";
 import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
+import { SaveEstimate } from "@/components/account/save-estimate";
+import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -125,6 +127,16 @@ export function CotizadorEstimator({
   const [correo, setCorreo] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  // Con sesión iniciada, prellena el contacto sin pisar lo que ya se escribió.
+  const prefill = useCallback(
+    (u: { name: string; phone: string; email: string }) => {
+      setNombre((v) => v || u.name);
+      setTelefono((v) => v || u.phone);
+      setCorreo((v) => v || u.email);
+    },
+    [],
+  );
 
   function handleContinue() {
     setFormError(null);
@@ -332,6 +344,13 @@ export function CotizadorEstimator({
                 <RecaptchaNotice className="text-center text-[11px] leading-relaxed text-vanilla/40" />
               )}
             </div>
+          )}
+          {ACCOUNTS_ENABLED && (
+            <SaveEstimate
+              resumen={resumen}
+              disabled={!hasSelection}
+              onUser={prefill}
+            />
           )}
           {!hasSelection && (
             <p className="mt-2 px-1 text-center text-xs text-component">

@@ -15,16 +15,21 @@
  *  - El documento de configuración con valores por defecto.
  *  - Índices básicos.
  *
- * La contraseña inicial se toma de ADMIN_PASSWORD o, por defecto, "bwadmin2026".
- * Cámbiala luego desde el panel (o reseteándola en la BD).
+ * ADMIN_USER y ADMIN_PASSWORD son obligatorias: no hay contraseña por defecto.
+ * Elige una larga y única; cámbiala luego desde el panel si hace falta.
  */
 import { MongoClient } from "mongodb";
 import bcrypt from "bcryptjs";
 
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB || "bwpcs";
-const adminUser = process.env.ADMIN_USER || "admin";
-const adminPassword = process.env.ADMIN_PASSWORD || "bwadmin2026";
+const adminUser = process.env.ADMIN_USER;
+const adminPassword = process.env.ADMIN_PASSWORD;
+
+if (!adminUser || !adminPassword || adminPassword.length < 12) {
+  console.error("✗ Define ADMIN_USER y ADMIN_PASSWORD (mínimo 12 caracteres) en .env.local.");
+  process.exit(1);
+}
 
 if (!uri) {
   console.error("✗ Falta MONGODB_URI. Define .env.local y vuelve a correr.");

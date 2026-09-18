@@ -10,9 +10,11 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AccountButton } from "@/components/account/account-button";
 import { BrandLogo } from "@/components/brand-logo";
 import { ButtonLink } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site-config";
+import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 /**
  * Menú de escritorio que se abre en línea, hacia la izquierda de la
@@ -137,35 +139,39 @@ export function SiteHeader() {
         <div className="hidden items-center gap-4 md:flex">
           <ExpandableNav links={links} activeHref={pathname} />
           <ButtonLink href="/cotizador">Cotiza tu PC</ButtonLink>
+          {ACCOUNTS_ENABLED && <AccountButton />}
         </div>
 
-        {/* Toggle móvil */}
-        <button
-          type="button"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={toggleMenu}
-          className="flex h-10 w-10 items-center justify-center md:hidden"
-        >
-          <div className="flex flex-col gap-1.5">
-            <span
-              className={`block h-0.5 w-6 bg-panda transition-transform ${
-                open ? "translate-y-2 rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-6 bg-panda transition-opacity ${
-                open ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-6 bg-panda transition-transform ${
-                open ? "-translate-y-2 -rotate-45" : ""
-              }`}
-            />
-          </div>
-        </button>
+        {/* Cuenta + toggle móvil */}
+        <div className="flex items-center gap-2 md:hidden">
+          {ACCOUNTS_ENABLED && <AccountButton compact />}
+          <button
+            type="button"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={toggleMenu}
+            className="flex h-10 w-10 items-center justify-center"
+          >
+            <div className="flex flex-col gap-1.5">
+              <span
+                className={`block h-0.5 w-6 bg-panda transition-transform ${
+                  open ? "translate-y-2 rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-panda transition-opacity ${
+                  open ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-panda transition-transform ${
+                  open ? "-translate-y-2 -rotate-45" : ""
+                }`}
+              />
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Menú móvil */}

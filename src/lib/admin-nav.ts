@@ -36,6 +36,7 @@ export const adminNav: AdminNavEntry[] = [
     label: "Comercial",
     items: [
       { label: "Solicitudes", href: "/admin/solicitudes", ready: true },
+      { label: "Reseñas", href: "/admin/resenas", ready: true },
       { label: "Cotizador", href: "/admin/promedios", ready: true },
       { label: "Cotizaciones", href: "/admin/cotizaciones", ready: true },
       { label: "Cuentas de cobro", href: "/admin/cuentas-cobro", ready: true },

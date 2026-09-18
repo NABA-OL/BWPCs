@@ -22,6 +22,8 @@ import type {
   Quote,
   Settings,
   WebLead,
+  Review,
+  Upload,
 } from "@/lib/db/types";
 
 /** Acceso tipado a las colecciones. */
@@ -70,6 +72,12 @@ export const collections = {
   },
   async leads() {
     return (await getDb()).collection<WebLead>("leads");
+  },
+  async reviews() {
+    return (await getDb()).collection<Review>("reviews");
+  },
+  async uploads() {
+    return (await getDb()).collection<Upload>("uploads");
   },
 };
 

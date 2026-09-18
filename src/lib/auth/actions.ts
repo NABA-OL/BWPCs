@@ -7,9 +7,12 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
+import { createHash } from "node:crypto";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { collections } from "@/lib/db/collections";
 import { verifyPassword } from "@/lib/auth/password";
+import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
 import {
   signSession,
   createSessionCookie,
@@ -30,6 +33,19 @@ export async function loginAction(
 
   if (!usuario || !password) {
     return { error: "Ingresa usuario y contraseña." };
+  }
+
+  // Fuerza bruta: 10 intentos cada 15 min por IP y por usuario (el de usuario
+  // frena a quien rota IPs contra un mismo admin).
+  const ip = (await headers()).get("x-real-ip") ?? "sin-ip";
+  const userKey = createHash("sha256").update(usuario.toLowerCase()).digest("hex");
+  const rule = { window: 900, max: 10 };
+  const [byIp, byUser] = await Promise.all([
+    rateLimitStorage.consume(`admin-login:ip:${ip}`, rule),
+    rateLimitStorage.consume(`admin-login:user:${userKey}`, rule),
+  ]);
+  if (!byIp.allowed || !byUser.allowed) {
+    return { error: "Demasiados intentos. Espera unos minutos e intenta de nuevo." };
   }
 
   const admins = await collections.admins();

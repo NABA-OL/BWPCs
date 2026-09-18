@@ -77,7 +77,8 @@ export default async function EnsamblesPage() {
       >
         <p>
           Cada equipo que sale de nuestras manos está aquí. Builds gaming,
-          workstation, escritorio y más — armados a la medida de cada cliente.
+          workstation, escritorio y más, todos armados a la medida de cada
+          cliente.
         </p>
       </PageHero>
 

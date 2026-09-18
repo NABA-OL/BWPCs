@@ -265,7 +265,7 @@ export default async function PcGamerPresupuestoPage({
             <div className="space-y-4 text-lg leading-relaxed text-panda">
               <p>{preset.paraQuien}</p>
               <p>
-                Si tu uso es otro —edición, render, arquitectura— cambia el
+                Si tu uso es otro (edición, render, arquitectura) cambia el
                 orden de prioridades: se invierte más en procesador y RAM que en
                 gráfica. Cuéntanos para qué lo vas a usar y lo ajustamos.
               </p>
