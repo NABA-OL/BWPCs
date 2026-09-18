@@ -5,7 +5,7 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-import { UserAvatar } from "@/components/account/user-avatar";
+import { ReviewsShowcase } from "@/components/reviews/reviews-showcase";
 import { Stars } from "@/components/reviews/stars";
 import type { PublicReview } from "@/lib/reviews/reviews";
 
@@ -39,56 +39,7 @@ export function ReviewsSection({
           </p>
         </div>
 
-        <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {reviews.map((r) => (
-            <li
-              key={r.id}
-              className="flex flex-col border border-hairline bg-vanilla p-6"
-            >
-              <div className="flex items-center gap-3">
-                <UserAvatar
-                  style={r.autor.avatarStyle}
-                  seed={r.autor.avatarSeed}
-                  size={44}
-                  className="h-11 w-11 shrink-0 border border-hairline"
-                />
-                <div>
-                  <p className="font-semibold leading-tight">{r.autor.nombre}</p>
-                  <Stars value={r.estrellas} size={14} className="mt-1" />
-                </div>
-              </div>
-
-              <p className="mt-4 whitespace-pre-line text-pretty text-sm leading-relaxed text-panda">
-                {r.comentario}
-              </p>
-
-              {r.fotos.length > 0 && (
-                <ul className="mt-4 flex gap-2">
-                  {r.fotos.map((p) => (
-                    <li key={p.id}>
-                      <a
-                        href={p.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Ver foto de la reseña de ${r.autor.nombre}`}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element -- miniatura ya procesada */}
-                        <img
-                          src={p.thumbUrl}
-                          alt=""
-                          width={96}
-                          height={96}
-                          loading="lazy"
-                          className="h-24 w-24 border border-hairline object-cover"
-                        />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
+        <ReviewsShowcase reviews={reviews} />
       </div>
     </section>
   );

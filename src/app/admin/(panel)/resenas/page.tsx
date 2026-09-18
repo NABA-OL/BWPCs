@@ -6,6 +6,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import type { Metadata } from "next";
+import { PhotoGallery } from "@/components/reviews/photo-gallery";
 import { Stars } from "@/components/reviews/stars";
 import { listReviewsForAdmin, type AdminReview } from "@/lib/reviews/reviews";
 import {
@@ -102,24 +103,10 @@ export default async function ResenasPage() {
                 {r.comentario}
               </p>
 
-              {r.fotos.length > 0 && (
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {r.fotos.map((p) => (
-                    <li key={p.id}>
-                      <a href={p.url} target="_blank" rel="noopener noreferrer">
-                        {/* eslint-disable-next-line @next/next/no-img-element -- miniatura ya procesada */}
-                        <img
-                          src={p.thumbUrl}
-                          alt="Foto de la reseña"
-                          width={80}
-                          height={80}
-                          className="h-20 w-20 border border-hairline object-cover"
-                        />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <PhotoGallery
+                photos={r.fotos}
+                label={`Fotos de la reseña de ${r.autorNombre}`}
+              />
 
               {r.estado === "rechazada" && r.motivo && (
                 <p className="mt-3 text-xs text-component">Motivo: {r.motivo}</p>
