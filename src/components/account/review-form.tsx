@@ -9,7 +9,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { submitReviewAction } from "@/app/(public)/cuenta/resena/actions";
+import { submitReviewAction } from "@/app/(public)/cuenta/(area)/resena/actions";
 import { INPUT, LABEL } from "@/components/account/shared";
 import { Button } from "@/components/ui/button";
 import {

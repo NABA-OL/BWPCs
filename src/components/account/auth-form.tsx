@@ -12,6 +12,8 @@ import Link from "next/link";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { OtpInput } from "@/components/account/otp-input";
+import { PasswordStrength } from "@/components/account/password-strength";
 import { RecaptchaNotice } from "@/components/recaptcha-notice";
 import { authClient } from "@/lib/user-auth/client";
 import {
@@ -35,6 +37,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -167,17 +170,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
           <label htmlFor="otp" className={LABEL}>
             Código de verificación
           </label>
-          <input
-            id="otp"
-            name="otp"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            pattern="\d{6}"
-            maxLength={6}
-            required
-            autoFocus
-            className={`${INPUT} font-mono tracking-[0.4em]`}
-          />
+          <OtpInput id="otp" />
         </div>
         {errorBox}
         <Button type="submit" size="lg" disabled={pending} className="w-full">
@@ -286,10 +279,14 @@ export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
           minLength={8}
           maxLength={128}
           required
+          onChange={(e) => setPassword(e.target.value)}
           className={`${INPUT} font-mono`}
         />
         {mode === "registro" ? (
-          <p className="mt-1 text-xs text-component">Mínimo 8 caracteres.</p>
+          <>
+            <p className="mt-1 text-xs text-component">Mínimo 8 caracteres.</p>
+            <PasswordStrength password={password} />
+          </>
         ) : (
           <Link
             href="/cuenta/recuperar"

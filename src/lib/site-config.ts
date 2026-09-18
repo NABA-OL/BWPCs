@@ -10,6 +10,15 @@
  * NOTA: el contacto (WhatsApp/email) será editable desde el panel admin (settings en BD)
  * en la Fase 2. Por ahora se usan los valores actuales del negocio como respaldo.
  */
+/**
+ * Página pública /componentes (catálogo con precios). Está apagada: los precios
+ * salen del catálogo del admin (Partes → Procesadores/Gráficas/Componentes) y solo
+ * los de gráficas y procesadores se recalculan solos con la TRM; el resto cambia
+ * únicamente cuando alguien los edita, así que se desactualizan. Ponla en true para
+ * volver a mostrarla (menú, sitemap y página).
+ */
+export const SHOW_COMPONENTS_PAGE = false;
+
 export const siteConfig = {
   name: "B & W",
   tagline: "Tu PC Master Race a buen precio",
@@ -40,7 +49,9 @@ export const siteConfig = {
   nav: [
     { label: "Inicio", href: "/" },
     { label: "Servicios", href: "/servicios" },
-    { label: "Componentes", href: "/componentes" },
+    ...(SHOW_COMPONENTS_PAGE
+      ? [{ label: "Componentes", href: "/componentes" }]
+      : []),
     { label: "Ensambles", href: "/ensambles" },
     { label: "Cotizador", href: "/cotizador" },
     { label: "Guías", href: "/guias" },

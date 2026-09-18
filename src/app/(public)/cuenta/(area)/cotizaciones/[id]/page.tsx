@@ -39,9 +39,9 @@ export default async function CotizacionPage({
   if (!quote) notFound();
 
   return (
-    <section className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <section className="max-w-3xl">
       <Link
-        href="/cuenta/cotizaciones"
+        href="/cuenta"
         className="text-sm text-component hover:text-panda"
       >
         ← Mis cotizaciones

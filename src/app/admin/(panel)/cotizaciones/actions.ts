@@ -189,7 +189,8 @@ async function loadQuote(form: FormData) {
 function revalidateQuote(id: string) {
   revalidatePath(`/admin/cotizaciones/${id}`);
   revalidatePath("/admin/cotizaciones");
-  revalidatePath("/cuenta/cotizaciones");
+  revalidatePath("/cuenta");
+  revalidatePath("/cuenta/cotizaciones", "layout");
 }
 
 /** Publica la cotización para su usuario y le envía el aviso por correo. */

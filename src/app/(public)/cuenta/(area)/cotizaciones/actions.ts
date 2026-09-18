@@ -26,5 +26,5 @@ export async function deleteSavedEstimateAction(form: FormData): Promise<void> {
     userId: session.user.id,
     tipo: "guardada",
   });
-  revalidatePath("/cuenta/cotizaciones");
+  revalidatePath("/cuenta");
 }

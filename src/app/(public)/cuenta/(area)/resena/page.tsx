@@ -25,11 +25,8 @@ export default async function ResenaPage() {
   ]);
 
   return (
-    <section className="mx-auto w-full max-w-md px-4 py-12 sm:px-6 sm:py-16">
-      <Link href="/cuenta" className="text-sm text-component hover:text-panda">
-        ← Mi cuenta
-      </Link>
-      <h1 className="mt-3 text-3xl font-extrabold tracking-tight">Mi reseña</h1>
+    <section className="max-w-xl">
+      <h1 className="text-3xl font-extrabold tracking-tight">Mi reseña</h1>
       <p className="mt-2 text-sm text-component">
         Tu opinión ayuda a otras personas. Se muestra con tu nombre y la
         inicial de tu apellido, tu avatar y tus fotos.

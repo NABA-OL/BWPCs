@@ -5,6 +5,7 @@
  */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
@@ -14,7 +15,7 @@ import { getSettings } from "@/lib/admin/settings";
 import { processorPrice, graphicPrice, componentPrice } from "@/lib/pricing";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
-import { whatsappLink } from "@/lib/site-config";
+import { SHOW_COMPONENTS_PAGE, whatsappLink } from "@/lib/site-config";
 import { SITE_URL } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -120,6 +121,9 @@ async function loadCatalog(): Promise<CatalogGroup[]> {
 }
 
 export default async function ComponentesPage() {
+  // Página apagada (ver SHOW_COMPONENTS_PAGE): sin menú, sin sitemap y 404 directo.
+  if (!SHOW_COMPONENTS_PAGE) notFound();
+
   let groups: CatalogGroup[] = [];
   try {
     groups = await loadCatalog();

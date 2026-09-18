@@ -9,7 +9,6 @@ B & W arma PCs a la medida (gaming, workstation, escritorio) y vende componentes
 - [Inicio](https://bw-pcs.com/): presentación de la marca y cómo funciona el servicio.
 - [Cotizador](https://bw-pcs.com/cotizador): estimador de precio de PC a la medida, sin registro.
 - [Servicios](https://bw-pcs.com/servicios): ensamblaje, venta de componentes y asesoría técnica.
-- [Componentes](https://bw-pcs.com/componentes): catálogo con precio en COP (gráficas y procesadores con TRM del día).
 - [Ensambles](https://bw-pcs.com/ensambles): galería de PCs armados para clientes reales.
 - [Guías](https://bw-pcs.com/guias): cuánto cuesta armar un PC en Colombia, cuánta RAM se necesita, cómo elegir la fuente de poder.
 - [Noticias](https://bw-pcs.com/noticias): actualidad de hardware y PC, curada — video semanal de Rincón de Varo + artículos de medios de tecnología reconocidos.

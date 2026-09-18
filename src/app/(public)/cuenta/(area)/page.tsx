@@ -12,7 +12,7 @@ import { getMyLeads, getMyQuotes } from "@/lib/account/quotes";
 import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
 import { getUserSession } from "@/lib/user-auth/session";
-import { deleteSavedEstimateAction } from "./actions";
+import { deleteSavedEstimateAction } from "./cotizaciones/actions";
 
 export const metadata: Metadata = { title: "Mis cotizaciones" };
 
@@ -31,9 +31,9 @@ const fmtFechaCotizacion = new Intl.DateTimeFormat("es-CO", {
   year: "numeric",
 });
 
-export default async function MisCotizacionesPage() {
+export default async function CuentaPage() {
   const session = await getUserSession();
-  if (!session) redirect("/cuenta/ingresar?next=/cuenta/cotizaciones");
+  if (!session) redirect("/cuenta/ingresar?next=/cuenta");
 
   const [quotes, leads] = await Promise.all([
     getMyQuotes(session.user.id),
@@ -41,11 +41,8 @@ export default async function MisCotizacionesPage() {
   ]);
 
   return (
-    <section className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-      <Link href="/cuenta" className="text-sm text-component hover:text-panda">
-        ← Mi cuenta
-      </Link>
-      <h1 className="mt-3 text-3xl font-extrabold tracking-tight">
+    <section className="max-w-3xl">
+      <h1 className="text-3xl font-extrabold tracking-tight">
         Mis cotizaciones
       </h1>
 

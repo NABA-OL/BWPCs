@@ -6,26 +6,26 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   AvatarPicker,
   ProfileForm,
 } from "@/components/account/profile-forms";
-import { SignOutButton } from "@/components/account/sign-out-button";
 import { getUserSession } from "@/lib/user-auth/session";
 
-export const metadata: Metadata = { title: "Mi cuenta" };
+export const metadata: Metadata = { title: "Mi perfil" };
 
-export default async function CuentaPage() {
+export default async function PerfilPage() {
   const session = await getUserSession();
-  if (!session) redirect("/cuenta/ingresar");
+  if (!session) redirect("/cuenta/ingresar?next=/cuenta/perfil");
   const { user } = session;
 
   return (
-    <section className="mx-auto w-full max-w-md px-4 py-12 sm:px-6 sm:py-16">
-      <h1 className="text-3xl font-extrabold tracking-tight">Mi cuenta</h1>
-      <p className="mt-2 text-sm text-component">{user.email}</p>
+    <section className="max-w-xl">
+      <h1 className="text-3xl font-extrabold tracking-tight">Mi perfil</h1>
+      <p className="mt-2 text-sm text-component">
+        Tu avatar y los datos con los que te contactamos.
+      </p>
 
       <div className="mt-8 space-y-6">
         <div className="border border-hairline bg-vanilla p-6">
@@ -44,28 +44,6 @@ export default async function CuentaPage() {
             <ProfileForm name={user.name} phone={user.phone} />
           </div>
         </div>
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <SignOutButton />
-        <Link
-          href="/cuenta/cotizaciones"
-          className="text-sm text-accent hover:underline"
-        >
-          Mis cotizaciones
-        </Link>
-        <Link
-          href="/cuenta/resena"
-          className="text-sm text-accent hover:underline"
-        >
-          Mi reseña
-        </Link>
-        <Link
-          href="/cuenta/seguridad"
-          className="text-sm text-accent hover:underline"
-        >
-          Seguridad: contraseña, correo y eliminar cuenta
-        </Link>
       </div>
     </section>
   );

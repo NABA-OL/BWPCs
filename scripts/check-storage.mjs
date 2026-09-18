@@ -31,6 +31,13 @@ if (missing.length) {
   process.exit(1);
 }
 
+if (publicUrl.includes("r2.cloudflarestorage.com")) {
+  console.error(
+    "R2_PUBLIC_URL apunta a la API S3 (r2.cloudflarestorage.com): solo sirve para subir. Usa la URL PÚBLICA del bucket, su dominio propio (https://img.bw-pcs.com) o la URL pública de desarrollo (https://pub-xxxx.r2.dev).",
+  );
+  process.exit(1);
+}
+
 const storage = createR2Storage({
   accountId,
   accessKeyId,
