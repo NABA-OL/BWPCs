@@ -87,9 +87,15 @@ export function SiteFooter() {
           <SecretAdminTrigger>
             © {year}&nbsp;B &amp; W · All rights reserved.
           </SecretAdminTrigger>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <Link href="/privacidad" className="hover:text-vanilla">
               Privacidad
+            </Link>
+            <Link href="/terminos" className="hover:text-vanilla">
+              Términos
+            </Link>
+            <Link href="/tratamiento-de-datos" className="hover:text-vanilla">
+              Tratamiento de datos
             </Link>
             <a
               href="https://blackraken.com"

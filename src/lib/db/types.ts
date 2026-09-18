@@ -63,6 +63,49 @@ export interface WebLead {
   pagina: string; // de qué página vino, ej. "cotizador"
   revisado: boolean;
   creado: Date;
+  /** Cuenta de usuario (id de `users`) si estaba logueado al enviar/guardar. */
+  userId?: string | null;
+  /** "guardada" = selección guardada en la cuenta, sin avisar a B & W. Ausente = solicitud. */
+  tipo?: "solicitud" | "guardada";
+}
+
+/** Foto de reseña subida por un usuario (guardada en el almacenamiento de objetos). */
+export interface Upload {
+  _id?: ObjectId;
+  /** id de `users`; null si la foto quedó en una reseña conservada tras eliminar la cuenta. */
+  userId: string | null;
+  key: string; // clave de la imagen principal (WebP)
+  thumbKey: string; // clave de la miniatura
+  width: number;
+  height: number;
+  bytes: number; // peso de la imagen principal ya procesada
+  /** "pendiente" hasta que una reseña la adjunta (fase 6); las pendientes vencen. */
+  estado: "pendiente" | "adjunta";
+  /** Reseña a la que pertenece (id como string) cuando `estado` es "adjunta". */
+  reviewId?: string | null;
+  creado: Date;
+}
+
+/** Reseña de una cuenta sobre B & W. Una por cuenta; editarla la vuelve a moderación. */
+export interface Review {
+  _id?: ObjectId;
+  /** id de `users`; único. Ausente si la cuenta se eliminó y la reseña se conservó. */
+  userId?: string;
+  estrellas: number; // 1-5
+  comentario: string;
+  fotoIds: string[]; // ids de `uploads` (máx. 3)
+  estado: "pendiente" | "aprobada" | "rechazada";
+  /** Motivo de un rechazo, visible solo para su autora. */
+  motivo?: string | null;
+  /** Autor tal como se muestra en la home, fijado al aprobar (no cambia solo). */
+  autor?: { nombre: string; avatarStyle: string; avatarSeed: string } | null;
+  creado: Date;
+  actualizado: Date;
+  moderadaEn?: Date | null;
+  /** Elección de la autora al eliminar su cuenta: dejar esta reseña publicada. Se fija justo antes de borrar. */
+  conservarAlEliminar?: boolean;
+  /** La cuenta de la autora ya no existe; la reseña se conservó con su autorización. */
+  cuentaEliminada?: boolean;
 }
 
 export interface Processor {
@@ -142,6 +185,13 @@ export interface Quote {
   cliente: string | null;
   opciones: QuoteOption[];
   creado: Date;
+  /** Cuenta de usuario (id de `users`) a la que se le muestra la cotización. */
+  userId?: string | null;
+  /** Ausente = borrador. Solo las publicadas las ve el cliente en su cuenta. */
+  estado?: "borrador" | "publicada";
+  publicadaEn?: Date | null;
+  /** Cuándo salió el correo "tu cotización está lista" (null = no ha salido). */
+  avisoEnviadoEn?: Date | null;
 }
 
 export interface Admin {

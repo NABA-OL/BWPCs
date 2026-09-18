@@ -101,7 +101,7 @@ export default async function NoticiasPage({
         summary={[
           "Video semanal de Rincón de Varo, canal de noticias de hardware.",
           "Artículos curados de Xataka, Ars Technica, Tom's Hardware y The Verge.",
-          "Cada nota enlaza a su fuente original — no reescribimos el contenido de nadie.",
+          "Cada nota enlaza a su fuente original. No reescribimos el contenido de nadie.",
         ]}
       >
         <p>

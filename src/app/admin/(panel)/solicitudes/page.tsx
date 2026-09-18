@@ -36,7 +36,12 @@ export default async function SolicitudesPage() {
 
   try {
     const col = await collections.leads();
-    const docs = await col.find({}).sort({ creado: -1 }).limit(200).toArray();
+    // Las selecciones guardadas en una cuenta no son solicitudes: no van aquí.
+    const docs = await col
+      .find({ tipo: { $ne: "guardada" } })
+      .sort({ creado: -1 })
+      .limit(200)
+      .toArray();
     leads = docs.map((l) => ({
       id: l._id!.toString(),
       nombre: l.nombre,

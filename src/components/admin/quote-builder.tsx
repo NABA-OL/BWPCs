@@ -20,6 +20,10 @@ import { COMPONENT_CATEGORIES, type ComponentCategory } from "@/lib/db/types";
 import type { QuoteInput, QuoteItemInput } from "@/lib/quote";
 import type { CatalogOption } from "@/lib/admin/catalog-data";
 import { Combobox } from "@/components/admin/combobox";
+import {
+  QuoteUserPicker,
+  type PickerUser,
+} from "@/components/admin/quote-user-picker";
 
 export type { CatalogOption };
 
@@ -39,6 +43,7 @@ export function QuoteBuilder({
   tarjetaPct,
   psePct,
   pdfHref,
+  users,
 }: {
   id: string;
   initial: QuoteInput;
@@ -46,6 +51,7 @@ export function QuoteBuilder({
   tarjetaPct: number;
   psePct: number;
   pdfHref?: string;
+  users: PickerUser[];
 }) {
   const [data, setData] = useState<QuoteInput>(initial);
   // Claves estables por opción (no el índice): así el colapsado y el drag
@@ -202,6 +208,11 @@ export function QuoteBuilder({
             className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono outline-none focus:border-panda"
           />
         </label>
+        <QuoteUserPicker
+          users={users}
+          value={data.userId}
+          onChange={(v) => setData({ ...data, userId: v })}
+        />
       </section>
 
       {/* Opciones */}

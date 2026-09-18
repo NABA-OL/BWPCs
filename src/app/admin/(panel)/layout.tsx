@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { collections } from "@/lib/db/collections";
+import { countPendingReviews } from "@/lib/reviews/reviews";
 
 export default async function PanelLayout({
   children,
@@ -21,7 +22,17 @@ export default async function PanelLayout({
   let solicitudesPendientes = 0;
   try {
     const col = await collections.leads();
-    solicitudesPendientes = await col.countDocuments({ revisado: false });
+    solicitudesPendientes = await col.countDocuments({
+      revisado: false,
+      tipo: { $ne: "guardada" },
+    });
+  } catch {
+    // si falla el conteo, simplemente no se muestra el banner
+  }
+
+  let resenasPendientes = 0;
+  try {
+    resenasPendientes = await countPendingReviews();
   } catch {
     // si falla el conteo, simplemente no se muestra el banner
   }
@@ -46,6 +57,7 @@ export default async function PanelLayout({
     <AdminShell
       usuario={session.usuario}
       solicitudesPendientes={solicitudesPendientes}
+      resenasPendientes={resenasPendientes}
       borradoresPendientes={borradoresPendientes}
       blogBorradoresPendientes={blogBorradoresPendientes}
     >

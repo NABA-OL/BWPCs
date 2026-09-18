@@ -25,6 +25,7 @@ export default async function CotizacionesPage() {
     cliente: string | null;
     fecha: string;
     total: number;
+    publicada: boolean;
   }[] = [];
   let error: string | null = null;
 
@@ -37,6 +38,7 @@ export default async function CotizacionesPage() {
       cliente: q.cliente,
       fecha: fmtDate.format(new Date(q.fecha)),
       total: q.opciones[0]?.totales.base ?? 0,
+      publicada: q.estado === "publicada",
     }));
   } catch (e) {
     error = e instanceof Error ? e.message : "Error al cargar cotizaciones.";

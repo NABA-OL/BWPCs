@@ -13,6 +13,9 @@ import { collections } from "@/lib/db/collections";
 import { isInstagramUrl } from "@/lib/instagram";
 import { JsonLd } from "@/components/json-ld";
 import { localBusinessSchema, websiteSchema } from "@/lib/schema";
+import { ReviewsSection } from "@/components/reviews/reviews-section";
+import { getApprovedReviews, getReviewStats } from "@/lib/reviews/reviews";
+import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 export const revalidate = 3600;
 
@@ -57,6 +60,20 @@ export default async function HomePage() {
       }));
   } catch {
     // fail silently
+  }
+
+  // Reseñas aprobadas: solo con cuentas activas; si algo falla, la sección se omite.
+  let reviews: Awaited<ReturnType<typeof getApprovedReviews>> = [];
+  let reviewStats = { count: 0, average: 0 };
+  if (ACCOUNTS_ENABLED) {
+    try {
+      [reviews, reviewStats] = await Promise.all([
+        getApprovedReviews(6),
+        getReviewStats(),
+      ]);
+    } catch {
+      // fail silently
+    }
   }
 
   return (
@@ -200,6 +217,15 @@ export default async function HomePage() {
           </ol>
         </div>
       </section>
+
+      {/* Reseñas de clientes — solo aparece si hay aprobadas */}
+      {reviews.length > 0 && (
+        <ReviewsSection
+          reviews={reviews}
+          count={reviewStats.count}
+          average={reviewStats.average}
+        />
+      )}
 
       {/* CTA cotizador */}
       <section className="border-t border-hairline/50 bg-component/30">

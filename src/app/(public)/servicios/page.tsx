@@ -66,7 +66,7 @@ const faqs = [
   },
   {
     q: "¿Puedo comprar solo una pieza sin ensamble?",
-    a: "Sí. Vendemos componentes sueltos — gráficas, procesadores, RAM y más — sin obligación de armar el equipo completo. Puedes ver precios en el catálogo de componentes.",
+    a: "Sí. Vendemos componentes sueltos (gráficas, procesadores, RAM y más) sin obligación de armar el equipo completo. Puedes ver precios en el catálogo de componentes.",
   },
   {
     q: "¿Cuánto cuesta armar un PC con ustedes?",
@@ -98,7 +98,7 @@ const pasos = [
   {
     n: "01",
     t: "Cuéntanos qué necesitas",
-    d: "Nos dices para qué vas a usar el equipo — juegos, trabajo, edición — y tu presupuesto.",
+    d: "Nos dices para qué vas a usar el equipo (juegos, trabajo, edición) y tu presupuesto.",
     icon: "chat",
   },
   {

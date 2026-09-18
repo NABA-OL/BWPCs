@@ -23,14 +23,25 @@ const AI_AGENTS = [
   "CCBot",
 ];
 
+// Rutas privadas o sin contenido para buscadores (el grupo de cada agente nombrado
+// reemplaza al de "*", por eso se repite la lista).
+const DISALLOWED = [
+  "/admin/",
+  "/style-guide",
+  "/cuenta/",
+  "/api/user-auth/",
+  "/api/uploads/",
+  "/api/avatar",
+];
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: ["/admin/", "/style-guide"] },
+      { userAgent: "*", allow: "/", disallow: DISALLOWED },
       ...AI_AGENTS.map((userAgent) => ({
         userAgent,
         allow: "/",
-        disallow: ["/admin/", "/style-guide"],
+        disallow: DISALLOWED,
       })),
     ],
     sitemap: "https://bw-pcs.com/sitemap.xml",
