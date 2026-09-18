@@ -35,12 +35,24 @@ export function createR2Storage(config: R2Config): ObjectStorage {
 
   return {
     async put(key, body, contentType) {
+      const url = objectUrl(key);
+      const payload = new Uint8Array(body);
+      const headers = {
+        "Content-Type": contentType,
+        "Cache-Control": CACHE_CONTROL,
+        "Content-Length": String(body.byteLength),
+      };
       let res: Response;
       try {
-        res = await client.fetch(objectUrl(key), {
+        // Se firma aquí y se envía con `fetch(url, { body })`. Con `client.fetch()`
+        // el cuerpo pasa por un objeto Request y llega como flujo SIN Content-Length:
+        // R2 responde 411 en cuanto la foto supera unos KB.
+        const signed = await client.sign(url, { method: "PUT", headers, body: payload });
+        res = await fetch(url, {
           method: "PUT",
-          body: new Uint8Array(body),
-          headers: { "Content-Type": contentType, "Cache-Control": CACHE_CONTROL },
+          headers: signed.headers,
+          body: payload,
+          cache: "no-store",
         });
       } catch (error) {
         // Un R2_ACCOUNT_ID que no existe da "handshake failure" de TLS: el host
