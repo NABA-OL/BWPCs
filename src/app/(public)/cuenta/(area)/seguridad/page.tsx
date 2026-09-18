@@ -25,11 +25,8 @@ export default async function SeguridadPage() {
   const keepChoice = await hasApprovedReview(session.user.id);
 
   return (
-    <section className="mx-auto w-full max-w-md px-4 py-12 sm:px-6 sm:py-16">
-      <Link href="/cuenta" className="text-sm text-component hover:text-panda">
-        ← Mi cuenta
-      </Link>
-      <h1 className="mt-3 text-3xl font-extrabold tracking-tight">Seguridad</h1>
+    <section className="max-w-xl">
+      <h1 className="text-3xl font-extrabold tracking-tight">Seguridad</h1>
 
       <div className="mt-8 space-y-6">
         <ChangePasswordForm />

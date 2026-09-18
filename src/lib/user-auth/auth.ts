@@ -15,6 +15,7 @@ import { randomBytes, randomInt } from "node:crypto";
 import { MongoClient } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
+import { otpEmail } from "@/lib/email/otp-email";
 import { sendEmail } from "@/lib/email/resend";
 import { AVATAR_STYLES } from "@/lib/avatar-styles";
 import { collections } from "@/lib/db/collections";
@@ -38,6 +39,7 @@ import { siteUrl } from "@/lib/user-auth/site-url";
  */
 
 const isProd = process.env.NODE_ENV === "production";
+const OTP_MINUTES = 5;
 
 // Cliente propio, cacheado en globalThis para sobrevivir al hot-reload. Se
 // conecta en la primera operación (comportamiento del driver 7).
@@ -50,18 +52,6 @@ function getMongoClient(): MongoClient {
     globalForAuth._userAuthMongo = new MongoClient(uri);
   }
   return globalForAuth._userAuthMongo;
-}
-
-const OTP_SUBJECTS: Record<string, string> = {
-  "forget-password": "Tu código para restablecer la contraseña",
-  "change-email": "Confirma tu nuevo correo en B & W",
-};
-
-function otpEmail(otp: string, type: string) {
-  const subject = OTP_SUBJECTS[type] ?? "Tu código de verificación de B & W";
-  const text = `Tu código es ${otp}. Vence en 5 minutos. Si no lo pediste, ignora este correo.`;
-  const html = `<p>Tu código es <strong style="font-size:24px;letter-spacing:4px">${otp}</strong></p><p>Vence en 5 minutos. Si no lo pediste, ignora este correo.</p>`;
-  return { subject, html, text };
 }
 
 /**
@@ -80,6 +70,33 @@ function authSecret(): string | undefined {
   }
   return secret;
 }
+
+/**
+ * Con las cuentas activas TODO lo que necesitan debe estar configurado. Sin esto
+ * el fallo es silencioso y confuso: sin Upstash el límite de intentos falla
+ * cerrado y todo responde "demasiados intentos"; sin Resend no salen los
+ * códigos; sin reCAPTCHA nadie pasa. Falla el build/arranque con la lista exacta.
+ */
+function assertAccountsEnv() {
+  if (!ACCOUNTS_ENABLED) return;
+  const required = [
+    "MONGODB_URI",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+    "RESEND_API_KEY",
+    "EMAIL_FROM",
+    "RECAPTCHA_SECRET_KEY",
+    "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
+  ];
+  const missing = required.filter((name) => !process.env[name]);
+  if (missing.length > 0) {
+    throw new Error(
+      `NEXT_PUBLIC_ACCOUNTS_ENABLED=true pero faltan variables de entorno: ${missing.join(", ")}.`,
+    );
+  }
+}
+
+assertAccountsEnv();
 
 // Correo anterior de quien está cambiando su correo, hasta que el cambio se
 // confirma (el aviso de seguridad va al correo viejo).
@@ -260,12 +277,12 @@ export const auth = betterAuth({
       // Los códigos se guardan con hash: quien lea la BD no puede usarlos.
       storeOTP: "hashed",
       otpLength: 6,
-      expiresIn: 300,
+      expiresIn: OTP_MINUTES * 60,
       allowedAttempts: 3,
       async sendVerificationOTP({ email, otp, type }) {
         // Sin await: evita filtrar por tiempo si el correo existe o no.
         after(() =>
-          sendEmail({ to: email, ...otpEmail(otp, type) }).catch(
+          sendEmail({ to: email, ...otpEmail({ otp, type, minutes: OTP_MINUTES }) }).catch(
             (error: unknown) => {
               console.error("[user-auth] fallo al enviar OTP", error);
             },

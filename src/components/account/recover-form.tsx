@@ -10,6 +10,8 @@
 import { useEffect, useState, type FormEvent } from "react";
 import Script from "next/script";
 import { Button, ButtonLink } from "@/components/ui/button";
+import { OtpInput } from "@/components/account/otp-input";
+import { PasswordStrength } from "@/components/account/password-strength";
 import { RecaptchaNotice } from "@/components/recaptcha-notice";
 import {
   CAPTCHA_ERROR,
@@ -32,6 +34,7 @@ export function RecoverForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -170,17 +173,7 @@ export function RecoverForm() {
             <label htmlFor="otp" className={LABEL}>
               Código
             </label>
-            <input
-              id="otp"
-              name="otp"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="\d{6}"
-              maxLength={6}
-              required
-              autoFocus
-              className={`${INPUT} font-mono tracking-[0.4em]`}
-            />
+            <OtpInput id="otp" />
           </div>
           <div>
             <label htmlFor="password" className={LABEL}>
@@ -194,9 +187,11 @@ export function RecoverForm() {
               minLength={8}
               maxLength={128}
               required
+              onChange={(e) => setPassword(e.target.value)}
               className={`${INPUT} font-mono`}
             />
             <p className="mt-1 text-xs text-component">Mínimo 8 caracteres.</p>
+            <PasswordStrength password={password} />
           </div>
           {errorBox}
           <Button type="submit" size="lg" disabled={pending} className="w-full">

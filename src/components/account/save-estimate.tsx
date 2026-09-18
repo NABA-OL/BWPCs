@@ -85,7 +85,7 @@ export function SaveEstimate({
       </button>
       {saved && (
         <p className="text-xs text-vanilla/60">
-          <Link href="/cuenta/cotizaciones" className="underline hover:no-underline">
+          <Link href="/cuenta" className="underline hover:no-underline">
             Ver mis cotizaciones
           </Link>
         </p>

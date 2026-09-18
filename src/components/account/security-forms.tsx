@@ -10,11 +10,13 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { OtpInput } from "@/components/account/otp-input";
+import { PasswordStrength } from "@/components/account/password-strength";
 import { INPUT, LABEL, errorText } from "@/components/account/shared";
 import {
   deleteAccountAction,
   requestEmailChangeAction,
-} from "@/app/(public)/cuenta/seguridad/actions";
+} from "@/app/(public)/cuenta/(area)/seguridad/actions";
 import { siteConfig } from "@/lib/site-config";
 import { authClient } from "@/lib/user-auth/client";
 
@@ -49,6 +51,7 @@ function Message({ error, ok }: { error?: string | null; ok?: string | null }) {
 }
 
 export function ChangePasswordForm() {
+  const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -68,6 +71,7 @@ export function ChangePasswordForm() {
       });
       if (err) return setError(errorText(err));
       form.reset();
+      setNewPassword("");
       setOk("Contraseña actualizada. Cerramos tus otras sesiones.");
     } finally {
       setPending(false);
@@ -103,8 +107,10 @@ export function ChangePasswordForm() {
             minLength={8}
             maxLength={128}
             required
+            onChange={(e) => setNewPassword(e.target.value)}
             className={`${INPUT} font-mono`}
           />
+          <PasswordStrength password={newPassword} />
         </div>
         <Message error={error} ok={ok} />
         <Button type="submit" disabled={pending}>
@@ -177,17 +183,7 @@ export function ChangeEmailForm({ currentEmail }: { currentEmail: string }) {
             <label htmlFor="otp-email" className={LABEL}>
               Código
             </label>
-            <input
-              id="otp-email"
-              name="otp"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="\d{6}"
-              maxLength={6}
-              required
-              autoFocus
-              className={`${INPUT} font-mono tracking-[0.4em]`}
-            />
+            <OtpInput id="otp-email" />
           </div>
           <Message error={error} />
           <div className="flex items-center gap-4">

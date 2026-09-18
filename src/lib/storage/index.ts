@@ -29,6 +29,14 @@ export function getStorage(): ObjectStorage {
     R2_PUBLIC_URL: publicUrl,
   } = process.env;
 
+  // La URL de la API S3 solo sirve para subir (con firma); leer con ella da 400.
+  // R2_PUBLIC_URL debe ser la URL PÚBLICA del bucket (dominio propio o r2.dev).
+  if (publicUrl?.includes("r2.cloudflarestorage.com")) {
+    throw new Error(
+      "R2_PUBLIC_URL apunta a la API S3 (r2.cloudflarestorage.com). Usa la URL pública del bucket: su dominio propio (ej. https://img.bw-pcs.com) o la URL pública de desarrollo (https://pub-xxxx.r2.dev).",
+    );
+  }
+
   if (accountId && accessKeyId && secretAccessKey && bucket && publicUrl) {
     cached = createR2Storage({
       accountId,

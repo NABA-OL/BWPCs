@@ -8,6 +8,7 @@
 import "server-only";
 import { after } from "next/server";
 import { sendEmail } from "@/lib/email/resend";
+import { renderEmail, type EmailContent } from "@/lib/email/template";
 import { siteConfig } from "@/lib/site-config";
 import { siteUrl } from "@/lib/user-auth/site-url";
 
@@ -21,32 +22,36 @@ function maskEmail(email: string): string {
   return `${local.slice(0, 1)}***@${domain}`;
 }
 
-function send(to: string, subject: string, lines: string[]) {
-  const text = lines.join("\n\n");
-  const html = lines.map((l) => `<p>${l}</p>`).join("");
+function send(to: string, subject: string, content: EmailContent) {
+  const { html, text } = renderEmail(content);
   after(() =>
-    sendEmail({ to, subject, text, html }).catch((error: unknown) => {
+    sendEmail({ to, subject, html, text }).catch((error: unknown) => {
       console.error("[user-auth] fallo al enviar aviso de seguridad", error);
     }),
   );
 }
 
-const IF_NOT_YOU = (path: string) =>
-  `Si no fuiste tú, restablece tu contraseña ahora en ${siteUrl}${path} y escríbenos a ${siteConfig.contact.email}.`;
-
 export function notifyPasswordChanged(email: string) {
-  send(email, "Cambió la contraseña de tu cuenta de B & W", [
-    "La contraseña de tu cuenta de B & W acaba de cambiar y cerramos tus otras sesiones.",
-    "Si fuiste tú, no tienes que hacer nada.",
-    IF_NOT_YOU("/cuenta/recuperar"),
-  ]);
+  send(email, "Cambió la contraseña de tu cuenta de B & W", {
+    preheader: "La contraseña de tu cuenta acaba de cambiar.",
+    title: "Cambió la contraseña de tu cuenta",
+    paragraphs: [
+      "La contraseña de tu cuenta de B & W acaba de cambiar y cerramos tus otras sesiones.",
+      "Si fuiste tú, no tienes que hacer nada. Si no fuiste tú, restablécela ahora y escríbenos.",
+    ],
+    button: { label: "Restablecer contraseña", url: `${siteUrl}/cuenta/recuperar` },
+  });
 }
 
 /** Se envía al correo ANTERIOR: es el que un dueño legítimo sigue leyendo. */
 export function notifyEmailChanged(oldEmail: string, newEmail: string) {
-  send(oldEmail, "Cambió el correo de tu cuenta de B & W", [
-    `El correo de tu cuenta de B & W cambió a ${maskEmail(newEmail)}.`,
-    "Si fuiste tú, no tienes que hacer nada.",
-    `Si no fuiste tú, escríbenos de inmediato a ${siteConfig.contact.email}.`,
-  ]);
+  send(oldEmail, "Cambió el correo de tu cuenta de B & W", {
+    preheader: "El correo de tu cuenta acaba de cambiar.",
+    title: "Cambió el correo de tu cuenta",
+    paragraphs: [
+      `El correo de tu cuenta de B & W cambió a ${maskEmail(newEmail)}.`,
+      "Si fuiste tú, no tienes que hacer nada. Si no fuiste tú, escríbenos de inmediato.",
+    ],
+    button: { label: "Escribirnos", url: `mailto:${siteConfig.contact.email}` },
+  });
 }

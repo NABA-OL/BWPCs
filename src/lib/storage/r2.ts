@@ -35,11 +35,20 @@ export function createR2Storage(config: R2Config): ObjectStorage {
 
   return {
     async put(key, body, contentType) {
-      const res = await client.fetch(objectUrl(key), {
-        method: "PUT",
-        body: new Uint8Array(body),
-        headers: { "Content-Type": contentType, "Cache-Control": CACHE_CONTROL },
-      });
+      let res: Response;
+      try {
+        res = await client.fetch(objectUrl(key), {
+          method: "PUT",
+          body: new Uint8Array(body),
+          headers: { "Content-Type": contentType, "Cache-Control": CACHE_CONTROL },
+        });
+      } catch (error) {
+        // Un R2_ACCOUNT_ID que no existe da "handshake failure" de TLS: el host
+        // <id>.r2.cloudflarestorage.com no tiene certificado.
+        throw new Error(
+          `R2: no se pudo conectar a ${config.accountId}.r2.cloudflarestorage.com (¿R2_ACCOUNT_ID correcto? es el de 32 caracteres de la URL S3 del bucket): ${String(error)}`,
+        );
+      }
       if (!res.ok) throw new Error(`R2 PUT ${key}: HTTP ${res.status}`);
     },
 
