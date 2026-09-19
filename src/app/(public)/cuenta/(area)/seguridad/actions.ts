@@ -15,11 +15,13 @@ import { auth } from "@/lib/user-auth/auth";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
 import { getUserSession } from "@/lib/user-auth/session";
+import { hasPasswordAccount } from "@/lib/user-auth/users";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
 const deleteAccountSchema = z.object({
-  password: z.string().min(1).max(128),
+  // Sin contraseña solo para cuentas que entran únicamente con Google (se comprueba en la acción).
+  password: z.string().min(1).max(128).optional(),
   keepReview: z.boolean(),
 });
 
@@ -115,24 +117,25 @@ export async function deleteAccountAction(input: unknown): Promise<ActionResult>
   }
 
   const requestHeaders = await headers();
-  try {
-    await auth.api.verifyPassword({
-      body: { password: parsed.data.password },
-      headers: requestHeaders,
-    });
-  } catch (error) {
-    if (error instanceof APIError) return { ok: false, error: "La contraseña no es correcta." };
-    throw error;
+  // Con contraseña propia se exige siempre; solo una cuenta sin contraseña (entra con Google) puede
+  // omitirla, y entonces Better Auth pide una sesión reciente.
+  const hasPassword = await hasPasswordAccount(userId);
+  const password = parsed.data.password;
+  if (hasPassword) {
+    if (!password) return { ok: false, error: "Escribe tu contraseña para eliminar la cuenta." };
+    try {
+      await auth.api.verifyPassword({ body: { password }, headers: requestHeaders });
+    } catch (error) {
+      if (error instanceof APIError) return { ok: false, error: "La contraseña no es correcta." };
+      throw error;
+    }
   }
 
   // La elección se guarda solo tras verificar la contraseña, y se revierte si el
   // borrado falla, para que no quede una preferencia colgada.
   await setKeepReviewOnDelete(userId, parsed.data.keepReview);
   try {
-    await auth.api.deleteUser({
-      body: { password: parsed.data.password },
-      headers: requestHeaders,
-    });
+    await auth.api.deleteUser({ body: hasPassword ? { password } : {}, headers: requestHeaders });
   } catch (error) {
     await setKeepReviewOnDelete(userId, false);
     // Incluye fallos al borrar las fotos del almacenamiento: el borrado se aborta

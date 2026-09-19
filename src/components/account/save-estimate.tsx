@@ -44,6 +44,8 @@ export function SaveEstimate({
   const [pending, startTransition] = useTransition();
 
   const userId = user?.id;
+  // Cuenta de Google que aún no da su celular ni acepta los términos: no puede solicitar todavía.
+  const incomplete = Boolean(user) && (!user?.phone || user?.acceptTerms !== true);
   useEffect(() => {
     if (user) onUser({ name: user.name, phone: user.phone, email: user.email });
     // Solo al aparecer la sesión, no en cada render del padre.
@@ -59,7 +61,7 @@ export function SaveEstimate({
   // Vuelve de crear una cuenta o iniciar sesión con una selección pendiente: se guarda en la cuenta.
   const [restored, setRestored] = useState<"saved" | "error" | null>(null);
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || incomplete) return;
     const pendingResumen = takePendingEstimate();
     if (!pendingResumen) return;
     void saveEstimateAction({ resumen: pendingResumen }).then((result) => setRestored(result.ok ? "saved" : "error"));
@@ -69,6 +71,17 @@ export function SaveEstimate({
   useEffect(() => setSaved(false), [resumen]);
 
   if (isPending) return null;
+
+  if (user && incomplete) {
+    return (
+      <p className="mt-4 text-center text-xs text-vanilla/60">
+        <Link href="/cuenta/completar?next=/cotizador" className="underline hover:no-underline">
+          Completa tu cuenta
+        </Link>{" "}
+        (celular y términos) para solicitar tu cotización.
+      </p>
+    );
+  }
 
   if (!user) {
     return (

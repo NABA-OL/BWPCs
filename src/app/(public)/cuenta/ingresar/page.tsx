@@ -9,17 +9,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/account/auth-form";
-import { getUserSession, safeNextPath } from "@/lib/user-auth/session";
+import { googleEnabled } from "@/lib/user-auth/google";
+import { isProfileComplete } from "@/lib/user-auth/profile";
+import { getRawUserSession, safeNextPath } from "@/lib/user-auth/session";
 
 export const metadata: Metadata = { title: "Ingresar" };
 
 export default async function IngresarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string | string[] }>;
+  searchParams: Promise<{ next?: string | string[]; google?: string }>;
 }) {
-  const next = safeNextPath((await searchParams).next);
-  if (await getUserSession()) redirect(next);
+  const params = await searchParams;
+  const next = safeNextPath(params.next);
+  const session = await getRawUserSession();
+  if (session) {
+    redirect(isProfileComplete(session.user) ? next : `/cuenta/completar?next=${encodeURIComponent(next)}`);
+  }
 
   return (
     <section className="mx-auto w-full max-w-md px-4 py-12 sm:px-6 sm:py-16">
@@ -28,7 +34,7 @@ export default async function IngresarPage({
         Entra a tu cuenta de B &amp; W.
       </p>
       <div className="mt-8 border border-hairline bg-vanilla p-6">
-        <AuthForm mode="ingreso" next={next} />
+        <AuthForm mode="ingreso" next={next} google={googleEnabled()} googleFailed={params.google === "error"} />
       </div>
       <p className="mt-6 text-center text-sm text-component">
         ¿No tienes cuenta?{" "}

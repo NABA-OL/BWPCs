@@ -12,9 +12,11 @@ import {
   ChangeEmailForm,
   ChangePasswordForm,
   DeleteAccountForm,
+  GoogleOnlyNotice,
 } from "@/components/account/security-forms";
 import { hasApprovedReview } from "@/lib/reviews/reviews";
 import { getUserSession } from "@/lib/user-auth/session";
+import { hasPasswordAccount } from "@/lib/user-auth/users";
 
 export const metadata: Metadata = { title: "Seguridad de la cuenta" };
 
@@ -22,16 +24,25 @@ export default async function SeguridadPage() {
   const session = await getUserSession();
   if (!session) redirect("/cuenta/ingresar?next=/cuenta/seguridad");
 
-  const keepChoice = await hasApprovedReview(session.user.id);
+  const [keepChoice, hasPassword] = await Promise.all([
+    hasApprovedReview(session.user.id),
+    hasPasswordAccount(session.user.id),
+  ]);
 
   return (
     <section className="max-w-xl">
       <h1 className="text-3xl font-extrabold tracking-tight">Seguridad</h1>
 
       <div className="mt-8 space-y-6">
-        <ChangePasswordForm />
-        <ChangeEmailForm currentEmail={session.user.email} />
-        <DeleteAccountForm hasApprovedReview={keepChoice} />
+        {hasPassword ? (
+          <>
+            <ChangePasswordForm />
+            <ChangeEmailForm currentEmail={session.user.email} />
+          </>
+        ) : (
+          <GoogleOnlyNotice />
+        )}
+        <DeleteAccountForm hasApprovedReview={keepChoice} hasPassword={hasPassword} />
       </div>
     </section>
   );

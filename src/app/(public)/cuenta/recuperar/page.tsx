@@ -9,12 +9,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { RecoverForm } from "@/components/account/recover-form";
-import { getUserSession } from "@/lib/user-auth/session";
+import { isProfileComplete } from "@/lib/user-auth/profile";
+import { getRawUserSession } from "@/lib/user-auth/session";
 
 export const metadata: Metadata = { title: "Recuperar contraseña" };
 
 export default async function RecuperarPage() {
-  if (await getUserSession()) redirect("/cuenta/seguridad");
+  const session = await getRawUserSession();
+  if (session) redirect(isProfileComplete(session.user) ? "/cuenta/seguridad" : "/cuenta/completar");
 
   return (
     <section className="mx-auto w-full max-w-md px-4 py-12 sm:px-6 sm:py-16">

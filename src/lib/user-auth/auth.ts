@@ -20,10 +20,12 @@ import { sendEmail } from "@/lib/email/resend";
 import { AVATAR_STYLES } from "@/lib/avatar-styles";
 import { collections } from "@/lib/db/collections";
 import { siteConfig } from "@/lib/site-config";
+import { googleEnabled } from "@/lib/user-auth/google";
 import { runGuards } from "@/lib/user-auth/guards";
 import {
   notifyEmailChanged,
   notifyPasswordChanged,
+  notifyWelcome,
 } from "@/lib/user-auth/notices";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 import { deleteRevisionsOfUser } from "@/lib/quote-requests";
@@ -112,6 +114,8 @@ export const auth = betterAuth({
   basePath: "/api/user-auth",
   secret: authSecret(),
   trustedOrigins: [siteUrl],
+  // Un fallo al volver de Google sin destino propio (p. ej. sin la cookie de estado) cae en nuestro ingreso.
+  onAPIError: { errorURL: `${siteUrl}/cuenta/ingresar?google=error` },
   database: mongodbAdapter(client.db(process.env.MONGODB_DB ?? "bwpcs"), {
     client,
   }),
@@ -178,16 +182,22 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: async (user) => ({
-          data: {
-            ...user,
-            consentAt: new Date(),
-            consentVersion: siteConfig.legal.versionPolitica,
-            // Avatar inicial al azar; la persona lo cambia en su perfil.
-            avatarStyle: AVATAR_STYLES[randomInt(AVATAR_STYLES.length)].id,
-            avatarSeed: randomBytes(9).toString("base64url"),
-          },
-        }),
+        before: async (user) => {
+          // El registro por correo exige `acceptTerms` (guards). Una cuenta de Google nace sin
+          // aceptarlos: el consentimiento se registra recién en /cuenta/completar.
+          const accepted = (user as { acceptTerms?: unknown }).acceptTerms === true;
+          return {
+            data: {
+              ...user,
+              ...(accepted
+                ? { consentAt: new Date(), consentVersion: siteConfig.legal.versionPolitica }
+                : {}),
+              // Avatar inicial al azar; la persona lo cambia en su perfil.
+              avatarStyle: AVATAR_STYLES[randomInt(AVATAR_STYLES.length)].id,
+              avatarSeed: randomBytes(9).toString("base64url"),
+            },
+          };
+        },
       },
       update: {
         before: async (data, context) => {
@@ -232,8 +242,9 @@ export const auth = betterAuth({
       if (ctx.path === "/sign-up/email") return ctx.json({ ok: true });
       if (ctx.path === "/email-otp/verify-email") {
         // Solo el primer correo verificado (registro): el cambio de correo usa otra ruta.
-        const returned = ctx.context.returned as { user?: { name?: string } } | undefined;
+        const returned = ctx.context.returned as { user?: { name?: string; email?: string } } | undefined;
         notifyNewAccount(returned?.user?.name);
+        if (returned?.user?.email) notifyWelcome(returned.user.email, returned.user.name);
       } else if (ctx.path === "/email-otp/reset-password") {
         const email = (ctx.body as { email?: unknown } | undefined)?.email;
         if (typeof email === "string") notifyPasswordChanged(email);
@@ -246,7 +257,28 @@ export const auth = betterAuth({
     }),
   },
   session: { modelName: "user_sessions" },
-  account: { modelName: "user_accounts" },
+  account: {
+    modelName: "user_accounts",
+    // Una cuenta de Google se une a la de correo/contraseña SOLO si el correo local está
+    // verificado (`requireLocalEmailVerified`, por defecto) y Google lo da por verificado:
+    // así nadie "pre-crea" una cuenta con el correo de otra persona.
+    accountLinking: { enabled: true },
+    // Los tokens de Google (solo se usa la identidad) se guardan cifrados.
+    encryptOAuthTokens: true,
+  },
+  socialProviders: googleEnabled()
+    ? {
+        google: {
+          clientId: process.env.GOOGLE_CLIENT_ID as string,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+          // Siempre deja elegir la cuenta de Google (evita entrar sin querer con otra).
+          prompt: "select_account",
+          // El celular y los términos los da la persona en /cuenta/completar; la foto de Google
+          // no se guarda (el avatar es el de DiceBear).
+          mapProfileToUser: () => ({ phone: "", acceptTerms: false, image: undefined }),
+        },
+      }
+    : {},
   verification: { modelName: "user_verifications" },
   emailAndPassword: {
     enabled: true,
@@ -271,6 +303,7 @@ export const auth = betterAuth({
       "/get-session": false,
       "/sign-out": false,
       "/sign-in/email": { window: 600, max: 5 },
+      "/sign-in/social": { window: 600, max: 20 },
       "/sign-up/email": { window: 600, max: 5 },
       "/email-otp/send-verification-otp": { window: 60, max: 3 },
       "/email-otp/verify-email": { window: 600, max: 10 },

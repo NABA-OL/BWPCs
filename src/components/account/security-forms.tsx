@@ -7,6 +7,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
+import Link from "next/link";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,22 @@ function Message({ error, ok }: { error?: string | null; ok?: string | null }) {
     );
   }
   return null;
+}
+
+/** Cuenta que entra solo con Google: no hay contraseña ni correo propio que cambiar. */
+export function GoogleOnlyNotice() {
+  return (
+    <Card title="Contraseña y correo">
+      <p className="text-sm text-component">
+        Tu cuenta entra con Google y su correo es el de esa cuenta de Google. Si además quieres entrar con
+        contraseña, créala desde{" "}
+        <Link href="/cuenta/recuperar" className="text-accent hover:underline">
+          Recuperar contraseña
+        </Link>
+        .
+      </p>
+    </Card>
+  );
 }
 
 export function ChangePasswordForm() {
@@ -244,8 +261,11 @@ export function ChangeEmailForm({ currentEmail }: { currentEmail: string }) {
 
 export function DeleteAccountForm({
   hasApprovedReview,
+  hasPassword = true,
 }: {
   hasApprovedReview: boolean;
+  /** false: la cuenta entra solo con Google y no tiene contraseña que pedir. */
+  hasPassword?: boolean;
 }) {
   const router = useRouter();
   const [keep, setKeep] = useState<"keep" | "delete" | null>(null);
@@ -262,7 +282,7 @@ export function DeleteAccountForm({
     setPending(true);
     try {
       const result = await deleteAccountAction({
-        password,
+        password: hasPassword ? password : undefined,
         keepReview: hasApprovedReview && keep === "keep",
       });
       if (!result.ok) return setError(result.error);
@@ -320,20 +340,27 @@ export function DeleteAccountForm({
           </fieldset>
         )}
 
-        <div>
-          <label htmlFor="delete-password" className={LABEL}>
-            Tu contraseña
-          </label>
-          <input
-            id="delete-password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            maxLength={128}
-            required
-            className={`${INPUT} font-mono`}
-          />
-        </div>
+        {hasPassword ? (
+          <div>
+            <label htmlFor="delete-password" className={LABEL}>
+              Tu contraseña
+            </label>
+            <input
+              id="delete-password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              maxLength={128}
+              required
+              className={`${INPUT} font-mono`}
+            />
+          </div>
+        ) : (
+          <p className="text-sm text-component">
+            Tu cuenta entra con Google, así que no pedimos contraseña; por seguridad la sesión debe ser
+            reciente (si te lo pide, cierra sesión y vuelve a entrar con Google).
+          </p>
+        )}
         <label className="flex items-start gap-2 text-sm text-component">
           <input
             type="checkbox"
