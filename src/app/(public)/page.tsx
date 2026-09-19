@@ -13,6 +13,7 @@ import { collections } from "@/lib/db/collections";
 import { isInstagramUrl } from "@/lib/instagram";
 import { JsonLd } from "@/components/json-ld";
 import { localBusinessSchema, websiteSchema } from "@/lib/schema";
+import { SectionNav } from "@/components/section-nav";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { getApprovedReviews, getReviewStats } from "@/lib/reviews/reviews";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
@@ -95,50 +96,68 @@ export default async function HomePage() {
     }
   }
 
+  // Secciones del indicador lateral, en el mismo orden y con las mismas condiciones que la página.
+  const navItems = [
+    { id: "inicio", label: "Inicio" },
+    { id: "confianza", label: "Confianza" },
+    { id: "hacemos", label: "Lo que hacemos" },
+    ...(recentBuilds.length > 0 ? [{ id: "ensambles", label: "Ensambles" }] : []),
+    { id: "funciona", label: "Cómo funciona" },
+    ...(reviews.length > 0 ? [{ id: "opiniones", label: "Opiniones" }] : []),
+    ...(ACCOUNTS_ENABLED ? [{ id: "cuenta", label: "Tu cuenta" }] : []),
+    { id: "cotizar", label: "Cotizar" },
+  ];
+
   return (
     <>
       <JsonLd data={localBusinessSchema()} />
       <JsonLd data={websiteSchema()} />
+      {/* Indicador de sección (margen izquierdo, pantallas anchas) */}
+      <SectionNav items={navItems} />
+
       {/* Hero — PC line-art que se ensambla y queda fijo en el centro al hacer scroll */}
-      <AssemblyHero>
-        <p className="font-mono text-sm text-component">
-          Ensamble &amp; componentes · Colombia
-        </p>
-        <h1 className="mt-4 text-balance text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-          <span className="relative inline-block whitespace-nowrap">
-            Ensamblamos
-            <span
-              aria-hidden="true"
-              className="bw-accent-mark absolute right-[-0.18em] top-[0.16em] h-[0.24em] w-[0.24em] bg-accent"
-            />
-          </span>
-          <br />
-          tu PC a la medida.
-        </h1>
-        <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-panda">
-          Armamos tu equipo con los componentes que elegimos contigo, al precio
-          justo. ¿Solo necesitas una pieza? También.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-5">
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/cotizador" size="lg">
-              Cotiza tu PC
-            </ButtonLink>
-            <ButtonLink href="/servicios" size="lg" variant="secondary">
-              Ver servicios
-            </ButtonLink>
+      <div id="inicio">
+        <AssemblyHero>
+          <p className="font-mono text-sm text-component">
+            Ensamble &amp; componentes · Colombia
+          </p>
+          <h1 className="mt-4 text-balance text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-[-0.04em]">
+            <span className="relative inline-block whitespace-nowrap">
+              Ensamblamos
+              <span
+                aria-hidden="true"
+                className="bw-accent-mark absolute right-[-0.18em] top-[0.16em] h-[0.24em] w-[0.24em] bg-accent"
+              />
+            </span>
+            <br />
+            tu PC a la medida.
+          </h1>
+          <p className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-panda">
+            Armamos tu equipo con los componentes que elegimos contigo, al precio
+            justo. ¿Solo necesitas una pieza? También.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="/cotizador" size="lg">
+                Cotiza tu PC
+              </ButtonLink>
+              <ButtonLink href="/servicios" size="lg" variant="secondary">
+                Ver servicios
+              </ButtonLink>
+            </div>
+            <ShareButton title="B & W — Tu PC Master Race a buen precio" />
           </div>
-          <ShareButton title="B & W — Tu PC Master Race a buen precio" />
-        </div>
-      </AssemblyHero>
+        </AssemblyHero>
+      </div>
 
       {/* Confianza: lo que respalda la compra (todo lo que dice ya es política del negocio) */}
       <section
-        aria-labelledby="confianza"
+        id="confianza"
+        aria-labelledby="confianza-titulo"
         className="border-t border-hairline/50 bg-vanilla/40"
       >
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-          <h2 id="confianza" className="text-balance text-xl font-bold">
+          <h2 id="confianza-titulo" className="text-balance text-xl font-bold">
             Compra con tranquilidad
           </h2>
           <ul className="mt-6 grid gap-x-10 gap-y-6 border-y border-hairline py-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -155,7 +174,7 @@ export default async function HomePage() {
       </section>
 
       {/* Lo que hacemos */}
-      <section className="border-t border-hairline/50 bg-vanilla/40">
+      <section id="hacemos" className="border-t border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Lo que hacemos
@@ -189,7 +208,7 @@ export default async function HomePage() {
 
       {/* Ensambles recientes — solo aparece si hay builds cargados */}
       {recentBuilds.length > 0 && (
-        <section className="border-t border-hairline/50 bg-vanilla/40">
+        <section id="ensambles" className="border-t border-hairline/50 bg-vanilla/40">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <div className="flex items-end justify-between gap-4">
               <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
@@ -230,7 +249,7 @@ export default async function HomePage() {
       )}
 
       {/* Cómo funciona */}
-      <section className="border-t border-hairline/50 bg-vanilla/40">
+      <section id="funciona" className="border-t border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Cómo funciona
@@ -259,9 +278,20 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Reseñas de clientes — solo aparece si hay aprobadas */}
+      {reviews.length > 0 && (
+        <div id="opiniones">
+          <ReviewsSection
+            reviews={reviews}
+            count={reviewStats.count}
+            average={reviewStats.average}
+          />
+        </div>
+      )}
+
       {/* Tu cuenta: explica para qué sirve la cuenta y el inicio de sesión con Google (requisito de verificación de Google) */}
       {ACCOUNTS_ENABLED && (
-        <section className="border-t border-hairline/50 bg-vanilla/40">
+        <section id="cuenta" className="border-t border-hairline/50 bg-vanilla/40">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
               Tu cuenta en B &amp; W
@@ -282,17 +312,8 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Reseñas de clientes — solo aparece si hay aprobadas */}
-      {reviews.length > 0 && (
-        <ReviewsSection
-          reviews={reviews}
-          count={reviewStats.count}
-          average={reviewStats.average}
-        />
-      )}
-
       {/* CTA cotizador */}
-      <section className="border-t border-hairline/50 bg-component/30">
+      <section id="cotizar" className="border-t border-hairline/50 bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-[-0.02em]">
