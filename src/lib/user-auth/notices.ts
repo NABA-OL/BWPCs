@@ -57,6 +57,30 @@ export function notifyWelcome(email: string, name: string | undefined) {
   });
 }
 
+export function notifyGoogleLinked(email: string) {
+  send(email, "Vinculaste Google a tu cuenta de B & W", {
+    preheader: "Ahora también puedes entrar con Google.",
+    title: "Vinculaste Google a tu cuenta",
+    paragraphs: [
+      "Una cuenta de Google quedó vinculada a tu cuenta de B & W: desde ahora puedes entrar también con Google.",
+      "Si fuiste tú, no tienes que hacer nada. Si no fuiste tú, cambia tu contraseña y desvincula Google en la sección Seguridad de tu cuenta, y escríbenos.",
+    ],
+    button: { label: "Revisar mi seguridad", url: `${siteUrl}/cuenta/seguridad` },
+  });
+}
+
+export function notifyGoogleUnlinked(email: string) {
+  send(email, "Desvinculaste Google de tu cuenta de B & W", {
+    preheader: "Ya no se puede entrar con Google.",
+    title: "Desvinculaste Google de tu cuenta",
+    paragraphs: [
+      "La cuenta de Google que estaba vinculada a tu cuenta de B & W ya no puede usarse para entrar.",
+      "Si no fuiste tú, cambia tu contraseña de inmediato y escríbenos.",
+    ],
+    button: { label: "Restablecer contraseña", url: `${siteUrl}/cuenta/recuperar` },
+  });
+}
+
 export function notifyPasswordChanged(email: string) {
   send(email, "Cambió la contraseña de tu cuenta de B & W", {
     preheader: "La contraseña de tu cuenta acaba de cambiar.",

@@ -24,6 +24,7 @@ import { googleEnabled } from "@/lib/user-auth/google";
 import { runGuards } from "@/lib/user-auth/guards";
 import {
   notifyEmailChanged,
+  notifyGoogleLinked,
   notifyPasswordChanged,
   notifyWelcome,
 } from "@/lib/user-auth/notices";
@@ -33,6 +34,7 @@ import { deleteUserReview, detachKeptReview } from "@/lib/reviews/reviews";
 import { deleteAllUserPhotos } from "@/lib/uploads/review-photos";
 import { notifyDeletedAccount, notifyNewAccount } from "@/lib/user-auth/account-telegram";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
+import { getPublicUser, hasPasswordAccount } from "@/lib/user-auth/users";
 import { siteUrl } from "@/lib/user-auth/site-url";
 
 /**
@@ -180,6 +182,19 @@ export const auth = betterAuth({
     },
   },
   databaseHooks: {
+    account: {
+      create: {
+        after: async (account) => {
+          // Un Google que se une a una cuenta que YA tiene contraseña (enlace por mismo correo o
+          // vinculación desde Seguridad): aviso al dueño. La cuenta nueva de Google no lo dispara.
+          if (account.providerId !== "google") return;
+          const userId = String(account.userId);
+          if (!(await hasPasswordAccount(userId))) return;
+          const owner = await getPublicUser(userId);
+          if (owner) notifyGoogleLinked(owner.email);
+        },
+      },
+    },
     user: {
       create: {
         before: async (user) => {
@@ -262,7 +277,10 @@ export const auth = betterAuth({
     // Una cuenta de Google se une a la de correo/contraseña SOLO si el correo local está
     // verificado (`requireLocalEmailVerified`, por defecto) y Google lo da por verificado:
     // así nadie "pre-crea" una cuenta con el correo de otra persona.
-    accountLinking: { enabled: true },
+    // `allowDifferentEmails`: la persona, ya con sesión, puede vincular un Google con OTRO correo
+    // (el principal sigue siendo el de la cuenta). Solo aplica al vincular desde Seguridad; el
+    // enlace automático al iniciar sesión sigue exigiendo el mismo correo.
+    accountLinking: { enabled: true, allowDifferentEmails: true },
     // Los tokens de Google (solo se usa la identidad) se guardan cifrados.
     encryptOAuthTokens: true,
   },

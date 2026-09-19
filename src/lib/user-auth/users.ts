@@ -128,6 +128,27 @@ async function deleteUsersCascade(list: PublicUser[]): Promise<void> {
   await (await users()).deleteMany({ _id: { $in: list.map((u) => u._id) } });
 }
 
+/**
+ * ¿Tiene Google vinculado? Con el correo de esa cuenta de Google (puede ser distinto del principal),
+ * leído del `id_token` que Google entregó al vincular; sin él, solo se sabe que está vinculado.
+ */
+export async function getGoogleLink(userId: string): Promise<{ id: string; email: string | null } | null> {
+  const db = await getDb();
+  const ids = ObjectId.isValid(userId) ? [userId, new ObjectId(userId)] : [userId];
+  const account = await db
+    .collection("user_accounts")
+    .findOne({ userId: { $in: ids }, providerId: "google" }, { projection: { idToken: 1 } });
+  if (!account) return null;
+  let email: string | null = null;
+  try {
+    const payload = JSON.parse(Buffer.from(String(account.idToken).split(".")[1], "base64url").toString("utf8"));
+    if (typeof payload.email === "string") email = payload.email;
+  } catch {
+    // sin id_token legible: solo se muestra que está vinculado
+  }
+  return { id: account._id.toString(), email };
+}
+
 /** ¿Tiene contraseña propia? (las cuentas creadas solo con Google no la tienen). */
 export async function hasPasswordAccount(userId: string): Promise<boolean> {
   const db = await getDb();

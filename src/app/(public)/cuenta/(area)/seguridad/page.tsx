@@ -12,21 +12,29 @@ import {
   ChangeEmailForm,
   ChangePasswordForm,
   DeleteAccountForm,
-  GoogleOnlyNotice,
+  CreatePasswordForm,
+  GoogleLinkCard,
 } from "@/components/account/security-forms";
 import { hasApprovedReview } from "@/lib/reviews/reviews";
 import { getUserSession } from "@/lib/user-auth/session";
-import { hasPasswordAccount } from "@/lib/user-auth/users";
+import { googleEnabled } from "@/lib/user-auth/google";
+import { getGoogleLink, hasPasswordAccount } from "@/lib/user-auth/users";
 
 export const metadata: Metadata = { title: "Seguridad de la cuenta" };
 
-export default async function SeguridadPage() {
+export default async function SeguridadPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ google?: string }>;
+}) {
+  const { google } = await searchParams;
   const session = await getUserSession();
   if (!session) redirect("/cuenta/ingresar?next=/cuenta/seguridad");
 
-  const [keepChoice, hasPassword] = await Promise.all([
+  const [keepChoice, hasPassword, googleLink] = await Promise.all([
     hasApprovedReview(session.user.id),
     hasPasswordAccount(session.user.id),
+    getGoogleLink(session.user.id),
   ]);
 
   return (
@@ -40,7 +48,16 @@ export default async function SeguridadPage() {
             <ChangeEmailForm currentEmail={session.user.email} />
           </>
         ) : (
-          <GoogleOnlyNotice />
+          <CreatePasswordForm email={session.user.email} />
+        )}
+        {(googleEnabled() || googleLink) && (
+          <GoogleLinkCard
+            linked={googleLink !== null}
+            googleEmail={googleLink?.email ?? null}
+            hasPassword={hasPassword}
+            primaryEmail={session.user.email}
+            status={google === "vinculado" || google === "error" ? google : undefined}
+          />
         )}
         <DeleteAccountForm hasApprovedReview={keepChoice} hasPassword={hasPassword} />
       </div>

@@ -268,9 +268,14 @@ export function AuthForm({
               No pudimos entrar con Google. Intenta de nuevo o usa tu correo.
             </p>
           )}
-          {mode === "registro" && (
+          {mode === "registro" ? (
             <p className="mt-2 text-xs text-component">
               Con Google te pediremos tu celular y aceptar los términos antes de usar la cuenta.
+            </p>
+          ) : (
+            <p className="mt-2 text-xs text-component">
+              ¿Ya tienes cuenta con otro correo? Entra con tu correo y vincula Google desde Seguridad, para no
+              duplicarla.
             </p>
           )}
           <p className="mt-5 flex items-center gap-3 text-xs text-component">
