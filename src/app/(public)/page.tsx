@@ -13,7 +13,7 @@ import { collections } from "@/lib/db/collections";
 import { isInstagramUrl } from "@/lib/instagram";
 import { JsonLd } from "@/components/json-ld";
 import { localBusinessSchema, websiteSchema } from "@/lib/schema";
-import { HomeSectionNav } from "@/components/home-section-nav";
+import { SectionNav } from "@/components/section-nav";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { getApprovedReviews, getReviewStats } from "@/lib/reviews/reviews";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
@@ -113,7 +113,7 @@ export default async function HomePage() {
       <JsonLd data={localBusinessSchema()} />
       <JsonLd data={websiteSchema()} />
       {/* Indicador de sección (margen izquierdo, pantallas anchas) */}
-      <HomeSectionNav items={navItems} />
+      <SectionNav items={navItems} />
 
       {/* Hero — PC line-art que se ensambla y queda fijo en el centro al hacer scroll */}
       <div id="inicio">

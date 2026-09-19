@@ -19,12 +19,12 @@ const ROW_REM = 2;
 const HEADER_PX = 64;
 
 /**
- * Indicador de sección del inicio, en el margen izquierdo (solo pantallas anchas). Un cuadrado de
+ * Indicador de sección de las páginas largas (inicio y servicios), en el margen izquierdo (solo pantallas anchas). Un cuadrado de
  * acento marca dónde estás y, al pasar a la siguiente sección, se desliza y gira 45°: cuadrado →
  * rombo → cuadrado… Con menos de 1536 px de ancho solo se ven las marcas (con la etiqueta como
  * tooltip); con menos de 1280 px no se muestra.
  */
-export function HomeSectionNav({ items }: { items: SectionNavItem[] }) {
+export function SectionNav({ items }: { items: SectionNavItem[] }) {
   const [active, setActive] = useState(0);
   const key = items.map((i) => i.id).join("|");
 
