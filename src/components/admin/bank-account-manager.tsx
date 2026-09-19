@@ -16,6 +16,8 @@ import {
 } from "@/app/admin/(panel)/cuentas-bancarias/actions";
 import { Button } from "@/components/ui/button";
 import type { BankAccount } from "@/lib/db/types";
+import { TrashLabel } from "@/components/ui/trash-label";
+import { EditLabel, RowActions } from "@/components/admin/row-actions";
 
 export interface BankAccountRow {
   id: string;
@@ -212,7 +214,7 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
                 <th className="px-4 py-3 font-medium">Cuenta</th>
                 <th className="px-4 py-3 font-medium">Bre-B</th>
                 <th className="px-4 py-3 font-medium">Titular</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-center font-medium">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -230,41 +232,43 @@ export function BankAccountManager({ rows }: { rows: BankAccountRow[] }) {
                   </td>
                   <td className="px-4 py-3 text-component">{r.titular}</td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setForm({
-                            id: r.id,
-                            banco: r.banco,
-                            titular: r.titular,
-                            tieneCuenta: Boolean(r.numero),
-                            tipoCuenta: r.tipoCuenta ?? "Ahorros",
-                            numero: r.numero ?? "",
-                            tieneBreB: Boolean(r.llave),
-                            llave: r.llave ?? "",
-                          });
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="text-component hover:text-panda"
-                      >
-                        Editar
-                      </button>
-                      <form
-                        action={deleteBankAccountAction}
-                        onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar la cuenta de ${r.banco}?`))
-                            e.preventDefault();
-                        }}
-                      >
-                        <input type="hidden" name="id" value={r.id} />
+                    <div className="flex items-center justify-center gap-3">
+                      <RowActions>
                         <button
-                          type="submit"
-                          className="text-accent hover:underline"
+                          type="button"
+                          onClick={() => {
+                            setForm({
+                              id: r.id,
+                              banco: r.banco,
+                              titular: r.titular,
+                              tieneCuenta: Boolean(r.numero),
+                              tipoCuenta: r.tipoCuenta ?? "Ahorros",
+                              numero: r.numero ?? "",
+                              tieneBreB: Boolean(r.llave),
+                              llave: r.llave ?? "",
+                            });
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          className="text-component hover:text-panda"
                         >
-                          Eliminar
+                          <EditLabel />
                         </button>
-                      </form>
+                        <form
+                          action={deleteBankAccountAction}
+                          onSubmit={(e) => {
+                            if (!confirm(`¿Eliminar la cuenta de ${r.banco}?`))
+                              e.preventDefault();
+                          }}
+                        >
+                          <input type="hidden" name="id" value={r.id} />
+                          <button
+                            type="submit"
+                            className="text-accent hover:underline"
+                          >
+                            <TrashLabel />
+                          </button>
+                        </form>
+                                          </RowActions>
                     </div>
                   </td>
                 </tr>

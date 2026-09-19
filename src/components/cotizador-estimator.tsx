@@ -345,7 +345,7 @@ export function CotizadorEstimator({
               size="lg"
               className="mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep"
             >
-              Contactanos por WhatsApp
+              Contáctanos por WhatsApp
             </Button>
           ) : (
             <div className="mt-6 space-y-3 border-t border-vanilla/15 pt-5">

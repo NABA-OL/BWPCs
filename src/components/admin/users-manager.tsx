@@ -22,6 +22,7 @@ import {
   type ProfileState,
 } from "@/app/admin/(panel)/usuarios/actions";
 import { Button } from "@/components/ui/button";
+import { TrashLabel } from "@/components/ui/trash-label";
 
 export interface AdminRow {
   id: string;
@@ -329,7 +330,7 @@ export function UsersManager({
                           type="submit"
                           className="text-accent hover:underline"
                         >
-                          Eliminar
+                          <TrashLabel />
                         </button>
                       </form>
                     ) : (

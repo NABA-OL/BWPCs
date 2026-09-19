@@ -17,6 +17,7 @@ import {
   deleteReviewAction,
   rejectReviewAction,
 } from "./actions";
+import { TrashLabel } from "@/components/ui/trash-label";
 
 export const metadata: Metadata = {
   title: "Reseñas",
@@ -193,7 +194,7 @@ export default async function ResenasPage({
                 <form action={deleteReviewAction}>
                   <input type="hidden" name="id" value={r.id} />
                   <button type="submit" className={`${BTN} text-accent`}>
-                    Eliminar
+                    <TrashLabel />
                   </button>
                 </form>
               </div>

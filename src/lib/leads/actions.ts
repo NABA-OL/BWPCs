@@ -5,6 +5,7 @@
  * Fecha de creación: 2026-09-04
  */
 
+import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod";
 import { collections } from "@/lib/db/collections";
@@ -71,17 +72,19 @@ export async function submitLead(
   }
 
   // La notificación no debe demorar la respuesta al usuario.
-  after(() =>
-    sendTelegramMessage(
-      `🖥️ <b>Nueva cotización</b>\n` +
-        `<b>Nombre:</b> ${escapeHtml(nombre)}\n` +
-        `<b>Teléfono:</b> ${escapeHtml(telefono)}\n` +
-        `<b>Correo:</b> ${escapeHtml(correo)}\n\n` +
-        `${escapeHtml(resumen)}`,
-    ),
-  );
+  after(() => notifyNewLead({ nombre, telefono, correo, resumen }));
 
   return { ok: true };
+}
+
+function notifyNewLead(lead: { nombre: string; telefono: string; correo: string; resumen: string }) {
+  return sendTelegramMessage(
+    `🖥️ <b>Nueva cotización</b>\n` +
+      `<b>Nombre:</b> ${escapeHtml(lead.nombre)}\n` +
+      `<b>Teléfono:</b> ${escapeHtml(lead.telefono)}\n` +
+      `<b>Correo:</b> ${escapeHtml(lead.correo)}\n\n` +
+      `${escapeHtml(lead.resumen)}`,
+  );
 }
 
 async function currentUserId(): Promise<string | null> {
@@ -96,8 +99,9 @@ async function currentUserId(): Promise<string | null> {
 const MAX_SAVED_ESTIMATES = 20;
 
 /**
- * "Guardar en mi cuenta": guarda la selección del cotizador en la cuenta, sin
- * abrir WhatsApp ni avisar por Telegram (no es una solicitud a B & W).
+ * Guarda la selección del cotizador en la cuenta, sin abrir WhatsApp ni avisar por Telegram
+ * (no es una solicitud a B & W). Ya no tiene botón propio: la usa `SaveEstimate` al volver de
+ * crear una cuenta o iniciar sesión con una selección pendiente.
  */
 export async function saveEstimateAction(input: {
   resumen: string;
@@ -139,6 +143,49 @@ export async function saveEstimateAction(input: {
     userId: user.id,
     tipo: "guardada",
   });
+  return { ok: true };
+}
+
+/**
+ * "Solicitar cotización" con la sesión iniciada: manda la selección a B & W (solicitudes del
+ * admin + Telegram) con los datos de la cuenta, sin pasar por WhatsApp, y queda en la cuenta
+ * como "Enviada". Sin reCAPTCHA: la cuenta ya está verificada y el límite es por usuario.
+ */
+export async function requestEstimateAction(input: {
+  resumen: string;
+}): Promise<SubmitLeadResult> {
+  if (!ACCOUNTS_ENABLED) return { ok: false, error: "No disponible." };
+
+  const parsed = z.string().trim().min(1).max(2000).safeParse(input.resumen);
+  if (!parsed.success) return { ok: false, error: "Selecciona algo para cotizar." };
+
+  const session = await getUserSession();
+  if (!session) return { ok: false, error: "Inicia sesión para solicitar la cotización." };
+  const { user } = session;
+
+  const { allowed } = await rateLimitStorage.consume(`solicitud:${user.id}`, {
+    window: 3600,
+    max: 5,
+  });
+  if (!allowed) {
+    return { ok: false, error: "Enviaste varias solicitudes seguidas. Prueba de nuevo más tarde." };
+  }
+
+  const lead = { nombre: user.name, telefono: user.phone, correo: user.email, resumen: parsed.data };
+  try {
+    await (await collections.leads()).insertOne({
+      ...lead,
+      pagina: "cotizador",
+      revisado: false,
+      creado: new Date(),
+      userId: user.id,
+    });
+  } catch {
+    return { ok: false, error: "No se pudo enviar la solicitud. Intenta de nuevo." };
+  }
+
+  after(() => notifyNewLead(lead));
+  revalidatePath("/cuenta");
   return { ok: true };
 }
 

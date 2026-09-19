@@ -14,6 +14,7 @@ import {
   unpublishPostAction,
   deletePostAction,
 } from "../actions";
+import { TrashLabel } from "@/components/ui/trash-label";
 
 export const metadata: Metadata = {
   title: "Editar noticia",
@@ -179,7 +180,7 @@ export default async function EditarNoticiaPage({
             type="submit"
             className="text-sm text-component hover:text-accent"
           >
-            Eliminar
+            <TrashLabel />
           </button>
         </form>
       </div>
