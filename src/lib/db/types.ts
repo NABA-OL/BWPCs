@@ -94,6 +94,8 @@ export interface Review {
   estrellas: number; // 1-5
   comentario: string;
   fotoIds: string[]; // ids de `uploads` (máx. 3)
+  /** La autora tenía una compra pagada al enviarla (se exige para reseñar). Ausente en reseñas anteriores a esa regla. */
+  compraVerificada?: boolean;
   estado: "pendiente" | "aprobada" | "rechazada";
   /** Motivo de un rechazo, visible solo para su autora. */
   motivo?: string | null;
@@ -199,6 +201,8 @@ export interface Quote {
   estadoComercial?: "en_revision" | "compra_solicitada";
   /** Versión enviada al cliente; ausente = 1. */
   version?: number;
+  /** Última versión que el cliente abrió en su cuenta; menor que `version` = tiene algo nuevo por ver. */
+  vistaVersion?: number;
   /** Cada versión enviada al cliente, con sus totales al momento de enviarla. */
   historial?: QuoteVersionEntry[];
 }

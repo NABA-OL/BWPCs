@@ -19,7 +19,8 @@ const LeadInput = z.object({
   nombre: z.string().trim().min(2, "Escribe tu nombre completo."),
   telefono: z.string().trim().min(7, "Escribe un teléfono válido."),
   correo: z.string().trim().email("Escribe un correo válido."),
-  resumen: z.string().trim().min(1),
+  // Tope: el resumen viaja por Telegram (límite de 4096 caracteres) y se guarda tal cual.
+  resumen: z.string().trim().min(1).max(2000),
   pagina: z.string().trim().min(1),
   recaptchaToken: z.string().optional(),
 });

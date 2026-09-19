@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod";
 import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
+import { collections } from "@/lib/db/collections";
 import { ensureClientForUser } from "@/lib/clients";
 import { createDraftFromPurchase } from "@/lib/cuenta-cobro-draft";
 import { formatCOP } from "@/lib/format";
@@ -224,4 +225,17 @@ function revalidateAfterRequest(quoteId: string) {
   revalidatePath(`/cuenta/cotizaciones/${quoteId}`);
   revalidatePath("/admin/cotizaciones");
   revalidatePath("/admin");
+}
+
+/** El cliente abrió su cotización: deja de contar como "nueva" en los avisos de su cuenta. */
+export async function markQuoteSeenAction(id: unknown): Promise<void> {
+  if (!ACCOUNTS_ENABLED || typeof id !== "string" || id.length > 40) return;
+  const session = await getUserSession();
+  if (!session) return;
+  const quote = await getMyQuote(session.user.id, id);
+  if (!quote) return;
+  const version = quote.version ?? 1;
+  if ((quote.vistaVersion ?? 0) >= version) return;
+  await (await collections.quotes()).updateOne({ _id: quote._id }, { $set: { vistaVersion: version } });
+  revalidatePath("/cuenta", "layout"); // refresca el aviso de arriba
 }

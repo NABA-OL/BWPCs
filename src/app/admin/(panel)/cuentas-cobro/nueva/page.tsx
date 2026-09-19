@@ -26,7 +26,7 @@ export default async function NuevaCuentaCobroPage() {
 
   const initial: CuentaCobroInput | null = data
     ? {
-        numero: "",
+        numero: data.nextNumero,
         userId: "",
         formaPago: "",
         enlacePagoTarjeta: "",

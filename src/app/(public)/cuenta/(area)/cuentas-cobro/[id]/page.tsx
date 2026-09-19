@@ -10,6 +10,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { CardPayButton, RefreshWhilePending } from "@/components/account/card-payment";
 import { QrZoom } from "@/components/account/qr-zoom";
+import { ProofLink } from "@/components/proof-viewer";
 import { CuentaCobroActions } from "@/components/account/cuenta-cobro-actions";
 import { PaymentMethodPicker, type MethodChoice } from "@/components/account/payment-method-picker";
 import { getMyCuentaCobro } from "@/lib/account/cuentas-cobro";
@@ -283,14 +284,11 @@ export default async function CuentaCobroPage({
         )}
         {lastProof && (estado === "pago_reportado" || estado === "pagada") && (
           <p className="mt-3 text-sm">
-            <a
-              href={`/api/comprobantes/${lastProof.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
+            <ProofLink
+              proofs={(cuenta.comprobantes ?? []).map((c) => ({ id: c.id, width: c.width, height: c.height }))}
             >
               Ver el comprobante que enviaste
-            </a>
+            </ProofLink>
           </p>
         )}
         {estado === "pagada" && (

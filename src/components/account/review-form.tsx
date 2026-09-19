@@ -35,6 +35,8 @@ interface ReviewFormProps {
   } | null;
 }
 
+const STAR_LABEL = ["Malo", "Regular", "Bueno", "Muy bueno", "Excelente"];
+
 const STATUS_TEXT = {
   pendiente: "Tu reseña está en revisión. La publicamos en cuanto la aprobemos.",
   aprobada:
@@ -158,13 +160,19 @@ export function ReviewForm({ initial }: ReviewFormProps) {
                 height="36"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                fill="currentColor"
-                className={stars >= n ? "text-accent" : "text-hairline hover:text-accent/40"}
+                fill={stars >= n ? "currentColor" : "none"}
+                stroke="currentColor"
+                strokeWidth={stars >= n ? 0 : 1.5}
+                strokeLinejoin="round"
+                className={stars >= n ? "text-accent" : "text-panda/45 hover:text-accent/60"}
               >
                 <path d="M12 2.5l2.94 6.1 6.56.9-4.8 4.6 1.2 6.6L12 17.6l-5.9 3.1 1.2-6.6-4.8-4.6 6.56-.9L12 2.5z" />
               </svg>
             </button>
           ))}
+          {stars > 0 && (
+            <span className="ml-2 self-center text-sm font-medium text-panda">{STAR_LABEL[stars - 1]}</span>
+          )}
         </div>
       </div>
 

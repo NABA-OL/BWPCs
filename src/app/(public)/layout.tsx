@@ -15,7 +15,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-dvh flex-col">
       <NodesBackground />
       <a
         href="#main-content"

@@ -85,3 +85,21 @@ export function withPaymentMethod(
   const next = surcharge > 0 ? [...base, { descripcion: concept, cantidad: 1, valorUnitario: surcharge, recargo: true }] : base;
   return { items: next, ...computeCuentaCobro(next, descuentoPct) };
 }
+
+/** Cantidad de números por año: 26³ bloques de letras × 1000 (AAA000 … ZZZ999). */
+export const CUENTA_NUMEROS_POR_ANIO = 26 ** 3 * 1000;
+
+/**
+ * Número de una cuenta de cobro: "AAAA-LLLNNN" = año, tres letras y tres dígitos, incremental.
+ * `sequence` parte de 0: 0 → 2026-AAA000, 1 → 2026-AAA001, 999 → 2026-AAA999, 1000 → 2026-AAB000…
+ */
+export function cuentaNumero(year: number, sequence: number): string {
+  if (!Number.isInteger(sequence) || sequence < 0 || sequence >= CUENTA_NUMEROS_POR_ANIO) {
+    throw new RangeError("Se agotaron los números de cuenta de cobro del año.");
+  }
+  const block = Math.floor(sequence / 1000);
+  const letters = [Math.floor(block / 676) % 26, Math.floor(block / 26) % 26, block % 26]
+    .map((i) => String.fromCharCode(65 + i))
+    .join("");
+  return `${year}-${letters}${String(sequence % 1000).padStart(3, "0")}`;
+}

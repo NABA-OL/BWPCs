@@ -244,6 +244,11 @@ export function CuentaCobroBuilder({
             readOnly
             className={`${inputCls} bg-hairline/30 font-mono text-component`}
           />
+          {!id && (
+            <span className="mt-1 block text-xs text-component">
+              Automático: se confirma al guardar (si otra cuenta se crea antes, toma el siguiente).
+            </span>
+          )}
         </label>
         <label className="block">
           <span className="text-sm font-medium text-component">Fecha</span>

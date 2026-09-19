@@ -10,6 +10,7 @@ import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
 import { getCatalogOptions, type CatalogOption } from "@/lib/admin/catalog-data";
 import { boldAvailable } from "@/lib/bold-payments";
+import { peekNextCuentaNumero } from "@/lib/cuentas-cobro";
 import { listPublicUsers } from "@/lib/user-auth/users";
 import type { PickerUser } from "@/components/admin/quote-user-picker";
 import type { ClientOption } from "@/components/admin/cuenta-cobro-builder";
@@ -26,6 +27,8 @@ export interface CuentaCobroBuilderData {
   /** Recargo de la tarjeta (fracción) y si Bold cobra solo: para armar el formulario según el medio de pago. */
   tarjetaPct: number;
   boldEnabled: boolean;
+  /** Número que se asignará al guardar una cuenta nueva (solo informativo). */
+  nextNumero: string;
 }
 
 export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderData> {
@@ -75,5 +78,6 @@ export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderDat
     users,
     tarjetaPct: settings.mediosPago.tarjeta,
     boldEnabled: boldAvailable(),
+    nextNumero: await peekNextCuentaNumero(),
   };
 }

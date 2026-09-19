@@ -109,13 +109,18 @@ export function CotizadorEstimator({
     breBPct,
   ]);
 
+  // Para qué va a usar el equipo (opcional): ayuda a afinar la propuesta (p. ej. más gráfica que procesador).
+  const [comentario, setComentario] = useState("");
+
   const resumen = useMemo(() => {
     const items = chosen.map((c) => `• ${c.label}: ${c.opcion}`).join("\n");
+    const uso = comentario.replace(/\s+/g, " ").trim();
     return (
       `${items}${servicio ? "\n• Ensamblaje" : ""}\n\n` +
-      `Estimado aproximado: ${formatCOP(total)} (con tarjeta ${formatCOP(conTarjeta)}).`
+      `Estimado aproximado: ${formatCOP(total)} (con tarjeta ${formatCOP(conTarjeta)}).` +
+      (uso ? `\n\nComentarios del cliente: ${uso}` : "")
     );
-  }, [chosen, servicio, total, conTarjeta]);
+  }, [chosen, servicio, total, conTarjeta, comentario]);
 
   function buildWaMessage(nombre: string) {
     return `Hola B & W, mi nombre es ${nombre}. Estoy interesado en cotizar un PC con:\n${resumen}\n\n¿Me ayudan a afinarlo?`;
@@ -282,6 +287,22 @@ export function CotizadorEstimator({
             className="h-4 w-4 accent-accent"
           />
         </label>
+
+        <div className="mt-4">
+          <label htmlFor="estimator-comment" className="text-sm font-medium">
+            ¿Para qué lo vas a usar? <span className="font-normal text-component">(opcional)</span>
+          </label>
+          <textarea
+            id="estimator-comment"
+            value={comentario}
+            onChange={(e) => setComentario(e.target.value)}
+            maxLength={400}
+            rows={3}
+            placeholder="Ej.: jugar en 1440p, editar video, estudiar arquitectura… Así afinamos la propuesta (quizá no necesitas tanto procesador y sí una mejor gráfica)."
+            className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 text-sm outline-none focus:border-panda"
+          />
+          <p className="mt-1 text-xs text-component">{comentario.length}/400</p>
+        </div>
       </div>
 
       {/* Panel de estimado */}
@@ -392,9 +413,9 @@ export function CotizadorEstimator({
             Este valor es solo un aproximado
           </strong>{" "}
           según la gama que elegiste, para que te hagas una idea. No es el
-          precio final y puede variar —muchas veces sale más económico—. El
-          valor exacto lo confirmamos contigo por WhatsApp según los modelos y
-          la disponibilidad.
+          precio final y puede variar: a veces sale más económico y otras un poco
+          más alto, según los modelos, la disponibilidad y el dólar. El valor
+          exacto lo confirmamos contigo por WhatsApp.
         </p>
       </div>
     </div>

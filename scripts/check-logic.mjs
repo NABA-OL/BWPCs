@@ -13,7 +13,7 @@ import { join } from "node:path";
 import { ESTADOS_VISIBLES, esEditable, estadoDe, sendMissing } from "../src/lib/cuenta-cobro-estado.ts";
 import { env } from "../src/lib/env.ts";
 import { boldReference, boldSignature, expirationNanos, parseBoldCheckoutUrl, verifyBoldSignature } from "../src/lib/bold-signature.ts";
-import { computeCuentaCobro, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
+import { CUENTA_NUMEROS_POR_ANIO, computeCuentaCobro, cuentaNumero, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 
 // --- Estados de la cuenta de cobro ---
@@ -57,6 +57,19 @@ assert.equal(totalFor("bre-b", totales), 100);
 assert.equal(totalFor("efectivo", totales), 100);
 assert.equal(totalFor("tarjeta", totales), 110);
 assert.equal(totalFor("pse", totales), 105);
+
+// --- Número de cuenta de cobro: AAAA-LLLNNN incremental ---
+assert.equal(cuentaNumero(2026, 0), "2026-AAA000");
+assert.equal(cuentaNumero(2026, 1), "2026-AAA001");
+assert.equal(cuentaNumero(2026, 999), "2026-AAA999");
+assert.equal(cuentaNumero(2026, 1000), "2026-AAB000", "tras AAA999 sigue AAB000");
+assert.equal(cuentaNumero(2026, 26_000), "2026-ABA000");
+assert.equal(cuentaNumero(2026, 676_000), "2026-BAA000");
+assert.equal(cuentaNumero(2027, CUENTA_NUMEROS_POR_ANIO - 1), "2027-ZZZ999");
+assert.throws(() => cuentaNumero(2026, CUENTA_NUMEROS_POR_ANIO), RangeError, "sin números: falla en vez de repetir");
+assert.throws(() => cuentaNumero(2026, -1), RangeError);
+const numeros = new Set(Array.from({ length: 5000 }, (_, i) => cuentaNumero(2026, i)));
+assert.equal(numeros.size, 5000, "sin repetidos");
 
 // --- El total sigue al medio de pago ---
 const base = [{ descripcion: "PC", cantidad: 1, valorUnitario: 100_000 }];

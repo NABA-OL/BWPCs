@@ -79,7 +79,12 @@ export function getPrivateStorage(): PrivateStorage {
   } else if (process.env.NODE_ENV !== "production") {
     cachedPrivate = createDevPrivateStorage();
   } else {
-    throw new StorageNotConfiguredError();
+    const missing = Object.entries({ R2_ACCOUNT_ID: accountId, R2_ACCESS_KEY_ID: accessKeyId, R2_SECRET_ACCESS_KEY: secretAccessKey, R2_PRIVATE_BUCKET: bucket })
+      .filter(([, v]) => !v)
+      .map(([k]) => k);
+    throw new StorageNotConfiguredError(
+      `El almacenamiento privado de comprobantes no está configurado: faltan ${missing.join(", ")} en este entorno.`,
+    );
   }
   return cachedPrivate;
 }

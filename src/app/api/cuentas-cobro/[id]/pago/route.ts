@@ -86,6 +86,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         "pagos",
       ),
     );
+    revalidatePath("/cuenta", "layout");
     revalidatePath(`/cuenta/cuentas-cobro/${id}`);
     revalidatePath("/cuenta/cuentas-cobro");
     revalidatePath("/admin/cuentas-cobro");

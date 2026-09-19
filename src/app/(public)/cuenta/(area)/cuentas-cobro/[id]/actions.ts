@@ -44,6 +44,7 @@ async function guard(id: unknown) {
 }
 
 function revalidate(id: string) {
+  revalidatePath("/cuenta", "layout"); // avisos de la cuenta (cuentas por pagar)
   revalidatePath(`/cuenta/cuentas-cobro/${id}`);
   revalidatePath("/cuenta/cuentas-cobro");
   revalidatePath("/admin/cuentas-cobro");

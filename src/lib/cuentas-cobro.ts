@@ -9,10 +9,9 @@ import "server-only";
 import { MongoServerError, ObjectId, type Filter } from "mongodb";
 import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
-import { withPaymentMethod } from "@/lib/cuenta-cobro";
+import { cuentaNumero, withPaymentMethod } from "@/lib/cuenta-cobro";
 import type { CuentaCobro, CuentaCobroEstado, PaymentMethod } from "@/lib/db/types";
 import { PAYMENT_LABEL, surchargeConcept, surchargePct } from "@/lib/payment-methods";
-import { suggestCode } from "@/lib/quote";
 
 let indexReady: Promise<unknown> | null = null;
 
@@ -36,27 +35,39 @@ async function cuentasCol() {
   return col;
 }
 
+/** Año actual en Bogotá (en Vercel el reloj es UTC: cerca del 31 de diciembre el año cambiaría antes de hora). */
+const bogotaYear = (now: Date) => Number(now.toLocaleDateString("en-CA", { timeZone: "America/Bogota" }).slice(0, 4));
+
 /**
- * Siguiente número "AAAA-NN" del año, atómico: dos cuentas creadas a la vez no
- * comparten número. El contador arranca en la cantidad de cuentas ya emitidas ese año.
+ * Siguiente número "AAAA-LLLNNN" (2026-AAA000, 2026-AAA001…), atómico: dos cuentas creadas a la vez no
+ * comparten número. Vale igual para las hechas a mano y para los borradores automáticos. El contador es
+ * nuevo (`v2`): las cuentas con el formato anterior ("2026-01") conservan su número.
  */
 export async function nextCuentaNumero(now = new Date()): Promise<string> {
-  const year = now.getFullYear();
+  const year = bogotaYear(now);
   const counters = await collections.counters();
-  const key = `cuentaCobro-${year}`;
-  const existing = await (await cuentasCol()).countDocuments({ numero: { $regex: `^${year}-` } });
-  try {
-    await counters.updateOne({ _id: key }, { $setOnInsert: { seq: existing } }, { upsert: true });
-  } catch (error) {
-    // Otra petición lo creó a la vez: basta con incrementarlo.
-    if (!(error instanceof MongoServerError && error.code === 11000)) throw error;
+  const key = `cuentaCobro-v2-${year}`;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      // Un único $inc con upsert es atómico; solo la primera vez dos peticiones pueden chocar al crear el documento.
+      const updated = await counters.findOneAndUpdate(
+        { _id: key },
+        { $inc: { seq: 1 } },
+        { upsert: true, returnDocument: "after" },
+      );
+      return cuentaNumero(year, (updated?.seq ?? 1) - 1);
+    } catch (error) {
+      if (attempt < 2 && error instanceof MongoServerError && error.code === 11000) continue;
+      throw error;
+    }
   }
-  const updated = await counters.findOneAndUpdate(
-    { _id: key },
-    { $inc: { seq: 1 } },
-    { returnDocument: "after" },
-  );
-  return suggestCode(year, updated?.seq ?? existing + 1);
+}
+
+/** Número que se asignaría ahora (solo para mostrarlo en el formulario; no reserva nada). */
+export async function peekNextCuentaNumero(now = new Date()): Promise<string> {
+  const year = bogotaYear(now);
+  const current = await (await collections.counters()).findOne({ _id: `cuentaCobro-v2-${year}` });
+  return cuentaNumero(year, current?.seq ?? 0);
 }
 
 export { cuentasCol };

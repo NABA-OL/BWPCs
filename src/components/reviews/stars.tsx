@@ -30,8 +30,11 @@ export function Stars({
           height={size}
           viewBox="0 0 24 24"
           aria-hidden="true"
-          className={rounded >= n ? "text-accent" : "text-hairline"}
-          fill="currentColor"
+          className={rounded >= n ? "text-accent" : "text-panda/45"}
+          fill={rounded >= n ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth={rounded >= n ? 0 : 1.5}
+          strokeLinejoin="round"
         >
           <path d="M12 2.5l2.94 6.1 6.56.9-4.8 4.6 1.2 6.6L12 17.6l-5.9 3.1 1.2-6.6-4.8-4.6 6.56-.9L12 2.5z" />
         </svg>

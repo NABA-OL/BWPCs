@@ -6,6 +6,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import Link from "next/link";
+import { ProofThumbs } from "@/components/proof-viewer";
 import {
   annulCuentaCobroAction,
   checkBoldPaymentAction,
@@ -196,23 +197,9 @@ export function CuentaCobroStatusPanel({
           <h3 className="text-sm font-medium">
             Comprobante{cuenta.comprobantes.length > 1 ? "s" : ""} del cliente
           </h3>
-          <ul className="mt-3 flex flex-wrap gap-4">
-            {cuenta.comprobantes.map((c) => (
-              <li key={c.id} className="text-xs text-component">
-                <a href={`/api/comprobantes/${c.id}`} target="_blank" rel="noopener noreferrer">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- imagen privada servida con sesión */}
-                  <img
-                    src={`/api/comprobantes/${c.id}`}
-                    alt="Comprobante de pago"
-                    width={c.width}
-                    height={c.height}
-                    className="max-h-56 w-auto border border-hairline"
-                  />
-                </a>
-                <p className="mt-1 font-mono">{fmt(c.subidoEn)}</p>
-              </li>
-            ))}
-          </ul>
+          <ProofThumbs
+            proofs={cuenta.comprobantes.map((c) => ({ id: c.id, width: c.width, height: c.height, caption: fmt(c.subidoEn) }))}
+          />
         </div>
       )}
 

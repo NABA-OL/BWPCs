@@ -28,7 +28,7 @@ export interface PrivateStorage {
 }
 
 export class StorageNotConfiguredError extends Error {
-  constructor() {
-    super("El almacenamiento de imágenes no está configurado (variables R2_*).");
+  constructor(message = "El almacenamiento de imágenes no está configurado (variables R2_*).") {
+    super(message);
   }
 }

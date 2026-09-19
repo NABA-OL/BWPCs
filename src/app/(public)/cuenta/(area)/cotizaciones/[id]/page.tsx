@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PurchaseForm } from "@/components/account/purchase-form";
+import { MarkQuoteSeen } from "@/components/account/mark-quote-seen";
 import { RevisionForm } from "@/components/account/revision-form";
 import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
 import { listQuoteRequests } from "@/lib/quote-requests";
@@ -60,6 +61,7 @@ export default async function CotizacionPage({
 
   return (
     <section className="max-w-3xl">
+      <MarkQuoteSeen id={id} unseen={(quote.vistaVersion ?? 0) < (quote.version ?? 1)} />
       <Link
         href="/cuenta"
         className="text-sm text-component hover:text-panda"

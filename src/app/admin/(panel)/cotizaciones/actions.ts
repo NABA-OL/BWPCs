@@ -242,6 +242,7 @@ export async function publishQuoteAction(form: FormData): Promise<void> {
         avisoEnviadoEn: sent ? new Date() : null,
         // La primera vez se registra la versión 1 (después la avanza `sendRevisionAction`).
         version: quote.version ?? 1,
+        vistaVersion: 0, // recién publicada: el cliente la ve como nueva hasta que la abra
         historial: quote.historial?.length ? quote.historial : [versionEntry(quote, 1, null)],
       },
     },

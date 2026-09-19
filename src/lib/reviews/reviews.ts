@@ -83,6 +83,7 @@ export async function saveMyReview(input: SaveInput): Promise<Review> {
     estrellas: input.estrellas,
     comentario: input.comentario,
     fotoIds: input.fotoIds,
+    compraVerificada: true, // quien llega aquí pasó `hasPaidPurchase` en la acción
     estado: "pendiente" as const,
     motivo: null,
     autor: null,
@@ -115,6 +116,7 @@ export interface PublicReview {
   comentario: string;
   autor: { nombre: string; avatarStyle: string; avatarSeed: string };
   fotos: PhotoDto[];
+  compraVerificada: boolean;
 }
 
 /** Reseñas aprobadas para la home (las más recientes primero). */
@@ -131,6 +133,7 @@ export async function getApprovedReviews(limit = 6): Promise<PublicReview[]> {
       comentario: r.comentario,
       autor: r.autor!,
       fotos: await getPhotos(r.fotoIds),
+      compraVerificada: r.compraVerificada === true,
     })),
   );
 }

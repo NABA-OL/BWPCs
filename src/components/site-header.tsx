@@ -90,7 +90,7 @@ function ExpandableNav({
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          className={`transition-transform duration-300 ${open ? "" : "rotate-180 bw-nudge"}`}
           aria-hidden="true"
         >
           <path d="M1 1l6 6-6 6" />

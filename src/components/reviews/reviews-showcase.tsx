@@ -237,6 +237,9 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
             <div>
               <h3 className="text-2xl font-bold leading-tight">{current.autor.nombre}</h3>
               <Stars value={current.estrellas} size={18} className="mt-1" />
+              {current.compraVerificada && (
+                <p className="mt-1 text-xs font-medium text-component">Compra verificada</p>
+              )}
             </div>
           </div>
           <p className="mt-6 whitespace-pre-line text-pretty text-lg leading-relaxed text-panda md:text-xl">
