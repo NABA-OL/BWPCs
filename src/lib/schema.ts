@@ -89,7 +89,7 @@ export function localBusinessSchema() {
         },
       ],
     },
-    sameAs: ["https://www.instagram.com/bw_mountpc/"],
+    sameAs: [siteConfig.contact.instagram],
   };
 }
 

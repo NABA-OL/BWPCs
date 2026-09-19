@@ -52,6 +52,8 @@ export const siteConfig = {
     whatsapp: "+573188422533",
     whatsappDisplay: "(+57) 318 842 2533",
     email: "bandwmount@gmail.com",
+    /** Perfil de Instagram (sin el parámetro `stkn` de "compartir", que es un token de seguimiento). */
+    instagram: "https://www.instagram.com/bw_mountpc/",
   },
   /**
    * Responsable del tratamiento de datos (Ley 1581 de 2012) y parte de los
