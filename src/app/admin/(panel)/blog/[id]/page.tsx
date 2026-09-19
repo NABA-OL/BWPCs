@@ -10,6 +10,7 @@ import { ObjectId } from "mongodb";
 import { collections } from "@/lib/db/collections";
 import { GuideEditForm } from "@/components/admin/guide-edit-form";
 import { publishGuideAction, unpublishGuideAction, deleteGuideAction } from "../actions";
+import { TrashLabel } from "@/components/ui/trash-label";
 
 export const metadata: Metadata = {
   title: "Editar guía",
@@ -70,7 +71,7 @@ export default async function EditarGuiaPage({
         <form action={deleteGuideAction}>
           <input type="hidden" name="id" value={id} />
           <button type="submit" className="text-sm text-component hover:text-accent">
-            Eliminar
+            <TrashLabel />
           </button>
         </form>
       </div>

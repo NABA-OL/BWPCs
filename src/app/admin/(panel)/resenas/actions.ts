@@ -13,7 +13,9 @@ import {
   approveReview,
   deleteReview,
   rejectReview,
+  setReviewDetails,
 } from "@/lib/reviews/reviews";
+import { parseAssemblyDetails } from "@/lib/reviews/rules";
 
 function refresh() {
   revalidatePath("/admin/resenas");
@@ -25,7 +27,17 @@ const idOf = (form: FormData) => String(form.get("id") ?? "").trim();
 
 export async function approveReviewAction(form: FormData): Promise<void> {
   if (!(await getSession())) return;
-  await approveReview(idOf(form), String(form.get("version") ?? ""));
+  await approveReview(
+    idOf(form),
+    String(form.get("version") ?? ""),
+    parseAssemblyDetails(String(form.get("componentes") ?? "")),
+  );
+  refresh();
+}
+
+export async function saveReviewDetailsAction(form: FormData): Promise<void> {
+  if (!(await getSession())) return;
+  await setReviewDetails(idOf(form), parseAssemblyDetails(String(form.get("componentes") ?? "")));
   refresh();
 }
 

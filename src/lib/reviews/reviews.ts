@@ -9,6 +9,7 @@ import "server-only";
 import { ObjectId } from "mongodb";
 import { collections } from "@/lib/db/collections";
 import type { Review } from "@/lib/db/types";
+import { cuentasCol } from "@/lib/cuentas-cobro";
 import { shortName } from "@/lib/reviews/rules";
 import { getPublicUser, getPublicUsers } from "@/lib/user-auth/users";
 import {
@@ -117,6 +118,7 @@ export interface PublicReview {
   autor: { nombre: string; avatarStyle: string; avatarSeed: string };
   fotos: PhotoDto[];
   compraVerificada: boolean;
+  componentes: string[];
 }
 
 /** Reseñas aprobadas para la home (las más recientes primero). */
@@ -134,6 +136,7 @@ export async function getApprovedReviews(limit = 6): Promise<PublicReview[]> {
       autor: r.autor!,
       fotos: await getPhotos(r.fotoIds),
       compraVerificada: r.compraVerificada === true,
+      componentes: r.componentes ?? [],
     })),
   );
 }
@@ -166,6 +169,10 @@ export interface AdminReview {
   cuentaEliminada: boolean;
   fotos: PhotoDto[];
   actualizado: Date;
+  /** Detalles del ensamble ya guardados. */
+  componentes: string[];
+  /** Sugeridos desde la cuenta de cobro pagada de la autora (solo si aún no hay detalles). */
+  sugeridos: string[];
 }
 
 export const REVIEWS_PAGE_SIZE = 10;
@@ -206,6 +213,9 @@ export async function listReviewsForAdmin(
     getPhotos(docs.flatMap((d) => d.fotoIds)),
   ]);
   const photoById = new Map(photos.map((p) => [p.id, p]));
+  const suggestions = await suggestAssemblyDetails(
+    docs.flatMap((d) => (d.userId && !d.componentes?.length ? [d.userId] : [])),
+  );
 
   const reviews = docs.map((r) => ({
     id: r._id!.toString(),
@@ -222,12 +232,53 @@ export async function listReviewsForAdmin(
     cuentaEliminada: !r.userId,
     fotos: r.fotoIds.flatMap((id) => photoById.get(id) ?? []),
     actualizado: r.actualizado,
+    componentes: r.componentes ?? [],
+    sugeridos: (r.userId && suggestions.get(r.userId)) || [],
   }));
   return { reviews, page, totalPages, counts };
 }
 
-/** Aprueba y fija cómo se verá el autor en la home (nombre corto + avatar). */
-export async function approveReview(id: string, version: string): Promise<boolean> {
+/** Renglones de la cuenta de cobro que no describen un componente (se quitan de la sugerencia). */
+const NOT_A_COMPONENT = /ensambl|recargo|env[ií]o|flete|mano de obra/i;
+
+/**
+ * Para cada cuenta, los componentes de su cuenta de cobro pagada más reciente ("Procesador: Ryzen 5
+ * 7600"…), sin precios ni servicios: es solo el punto de partida que el admin revisa al moderar.
+ */
+async function suggestAssemblyDetails(userIds: string[]): Promise<Map<string, string[]>> {
+  const result = new Map<string, string[]>();
+  if (userIds.length === 0) return result;
+  const cuentas = await (await cuentasCol())
+    .find({ userId: { $in: userIds }, estado: "pagada" })
+    .sort({ creado: -1 })
+    .toArray();
+  for (const c of cuentas) {
+    if (!c.userId || result.has(c.userId)) continue;
+    const lines = c.items
+      .filter((i) => !i.recargo && !NOT_A_COMPONENT.test(i.descripcion))
+      .map((i) => i.descripcion.trim())
+      .filter(Boolean);
+    result.set(c.userId, lines);
+  }
+  return result;
+}
+
+/** Guarda los detalles del ensamble de una reseña (sin cambiar su estado ni su versión). */
+export async function setReviewDetails(id: string, componentes: string[]): Promise<boolean> {
+  if (!ObjectId.isValid(id)) return false;
+  const { matchedCount } = await (await reviewsCol()).updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { componentes } },
+  );
+  return matchedCount > 0;
+}
+
+/** Aprueba y fija cómo se verá el autor en la home (nombre corto + avatar) y los detalles del ensamble. */
+export async function approveReview(
+  id: string,
+  version: string,
+  componentes: string[],
+): Promise<boolean> {
   if (!ObjectId.isValid(id)) return false;
   const col = await reviewsCol();
   const review = await col.findOne({ _id: new ObjectId(id) });
@@ -244,6 +295,7 @@ export async function approveReview(id: string, version: string): Promise<boolea
       $set: {
         estado: "aprobada",
         motivo: null,
+        componentes,
         moderadaEn: new Date(),
         autor: {
           nombre: shortName(user.name),

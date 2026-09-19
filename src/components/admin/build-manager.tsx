@@ -18,6 +18,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
 import { isInstagramUrl } from "@/lib/instagram";
+import { TrashLabel } from "@/components/ui/trash-label";
+import { EditLabel, RowActions } from "@/components/admin/row-actions";
 
 export interface BuildRow {
   id: string;
@@ -256,7 +258,7 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
                 <th className="px-4 py-3 font-medium">Título</th>
                 <th className="px-4 py-3 font-medium">Orden</th>
                 <th className="px-4 py-3 font-medium">Estado</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-center font-medium">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -313,29 +315,31 @@ export function BuildManager({ rows }: { rows: BuildRow[] }) {
                     </form>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-3">
-                      <button
-                        type="button"
-                        onClick={() => edit(r)}
-                        className="text-component hover:text-panda"
-                      >
-                        Editar
-                      </button>
-                      <form
-                        action={deleteBuildAction}
-                        onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar "${r.titulo}"?`))
-                            e.preventDefault();
-                        }}
-                      >
-                        <input type="hidden" name="id" value={r.id} />
+                    <div className="flex items-center justify-center gap-3">
+                      <RowActions>
                         <button
-                          type="submit"
-                          className="text-accent hover:underline"
+                          type="button"
+                          onClick={() => edit(r)}
+                          className="text-component hover:text-panda"
                         >
-                          Eliminar
+                          <EditLabel />
                         </button>
-                      </form>
+                        <form
+                          action={deleteBuildAction}
+                          onSubmit={(e) => {
+                            if (!confirm(`¿Eliminar "${r.titulo}"?`))
+                              e.preventDefault();
+                          }}
+                        >
+                          <input type="hidden" name="id" value={r.id} />
+                          <button
+                            type="submit"
+                            className="text-accent hover:underline"
+                          >
+                            <TrashLabel />
+                          </button>
+                        </form>
+                                          </RowActions>
                     </div>
                   </td>
                 </tr>

@@ -13,6 +13,7 @@ import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
 import { getUserSession } from "@/lib/user-auth/session";
 import { deleteSavedEstimateAction } from "./cotizaciones/actions";
+import { TrashLabel } from "@/components/ui/trash-label";
 
 export const metadata: Metadata = { title: "Mis cotizaciones" };
 
@@ -93,11 +94,11 @@ export default async function CuentaPage() {
       </h2>
       {leads.length === 0 ? (
         <p className="mt-3 border border-hairline p-6 text-sm text-component">
-          Aquí aparecen las selecciones que guardes desde el{" "}
+          Aquí aparecen las cotizaciones que solicites desde el{" "}
           <Link href="/cotizador" className="text-accent hover:underline">
             cotizador
           </Link>{" "}
-          y las solicitudes que envíes con tu sesión iniciada.
+          con tu sesión iniciada.
         </p>
       ) : (
         <ul className="mt-3 divide-y divide-hairline border border-hairline">
@@ -121,7 +122,7 @@ export default async function CuentaPage() {
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent hover:underline"
+                        className="rounded-[2px] bg-accent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-accent/90"
                       >
                         Pedir por WhatsApp
                       </a>
@@ -129,9 +130,9 @@ export default async function CuentaPage() {
                         <input type="hidden" name="id" value={id} />
                         <button
                           type="submit"
-                          className="text-component hover:text-panda"
+                          className="p-1 text-component transition-colors hover:text-accent"
                         >
-                          Eliminar
+                          <TrashLabel />
                         </button>
                       </form>
                     </div>
