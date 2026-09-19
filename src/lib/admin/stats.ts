@@ -7,6 +7,7 @@
  */
 import "server-only";
 import { collections } from "@/lib/db/collections";
+import { getDb } from "@/lib/db/mongodb";
 import type { ComponentCategory, Settings } from "@/lib/db/types";
 
 export interface BrandCount {
@@ -118,5 +119,81 @@ export async function getAdminStats(): Promise<AdminStats> {
     quotes: quotesCount,
     settings,
     trmEfectivo,
+  };
+}
+
+export interface ActivityStats {
+  accounts: number;
+  /** Registros verificados por semana (lunes, hora de Bogotá): las últimas 12. */
+  weekly: { label: string; value: number }[];
+  quotes: { borrador: number; publicada: number };
+  /** Reseñas aprobadas por número de estrellas (5 → 1). */
+  stars: { label: string; value: number }[];
+  withPublishedQuote: number;
+  withReview: number;
+}
+
+const WEEKS = 12;
+const TZ = "America/Bogota";
+const DAY_MS = 86_400_000;
+const isoDay = (d: Date) => d.toISOString().slice(0, 10);
+
+/** Lunes de las últimas `WEEKS` semanas en hora de Bogotá (UTC-5, sin horario de verano). */
+function lastMondays(): string[] {
+  const bogota = new Date(Date.now() - 5 * 3_600_000);
+  const monday = new Date(bogota.getTime() - ((bogota.getUTCDay() + 6) % 7) * DAY_MS);
+  return Array.from({ length: WEEKS }, (_, i) => isoDay(new Date(monday.getTime() - (WEEKS - 1 - i) * 7 * DAY_MS)));
+}
+
+export async function getActivityStats(): Promise<ActivityStats> {
+  const users = (await getDb()).collection("users");
+  const [quotesCol, reviewsCol] = await Promise.all([collections.quotes(), collections.reviews()]);
+  const since = new Date(Date.now() - (WEEKS * 7 + 7) * DAY_MS);
+
+  const [accounts, weekly, quoteStates, starGroups, quoteUsers, reviewUsers] = await Promise.all([
+    users.countDocuments({ emailVerified: true }),
+    users
+      .aggregate<{ _id: string; n: number }>([
+        { $match: { emailVerified: true, createdAt: { $gte: since } } },
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                timezone: TZ,
+                date: { $dateTrunc: { date: "$createdAt", unit: "week", startOfWeek: "monday", timezone: TZ } },
+              },
+            },
+            n: { $sum: 1 },
+          },
+        },
+      ])
+      .toArray(),
+    quotesCol.aggregate<{ _id: string | null; n: number }>([{ $group: { _id: "$estado", n: { $sum: 1 } } }]).toArray(),
+    reviewsCol
+      .aggregate<{ _id: number; n: number }>([
+        { $match: { estado: "aprobada" } },
+        { $group: { _id: "$estrellas", n: { $sum: 1 } } },
+      ])
+      .toArray(),
+    quotesCol.distinct("userId", { estado: "publicada", userId: { $type: "string" } }),
+    reviewsCol.distinct("userId", { userId: { $type: "string" } }),
+  ]);
+
+  const byWeek = new Map(weekly.map((w) => [w._id, w.n]));
+  const publicada = quoteStates.find((q) => q._id === "publicada")?.n ?? 0;
+  const total = quoteStates.reduce((a, q) => a + q.n, 0);
+  const byStars = new Map(starGroups.map((g) => [g._id, g.n]));
+
+  return {
+    accounts,
+    weekly: lastMondays().map((day) => ({
+      label: `${day.slice(8)}/${day.slice(5, 7)}`,
+      value: byWeek.get(day) ?? 0,
+    })),
+    quotes: { publicada, borrador: total - publicada },
+    stars: [5, 4, 3, 2, 1].map((n) => ({ label: `${n} ★`, value: byStars.get(n) ?? 0 })),
+    withPublishedQuote: quoteUsers.length,
+    withReview: reviewUsers.length,
   };
 }

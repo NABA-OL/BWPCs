@@ -15,6 +15,7 @@ import { authClient } from "@/lib/user-auth/client";
 
 const ITEMS = [
   { href: "/cuenta", label: "Mis cotizaciones", match: (p: string) => p === "/cuenta" || p.startsWith("/cuenta/cotizaciones") },
+  { href: "/cuenta/cuentas-cobro", label: "Cuentas de cobro", match: (p: string) => p.startsWith("/cuenta/cuentas-cobro") },
   { href: "/cuenta/resena", label: "Mi reseña", match: (p: string) => p.startsWith("/cuenta/resena") },
   { href: "/cuenta/perfil", label: "Mi perfil", match: (p: string) => p.startsWith("/cuenta/perfil") },
   { href: "/cuenta/seguridad", label: "Seguridad", match: (p: string) => p.startsWith("/cuenta/seguridad") },

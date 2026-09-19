@@ -16,6 +16,7 @@ import {
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
 import type { Quote } from "@/lib/db/types";
+import { SHOW_PSE } from "@/lib/site-config";
 
 const COLORS = {
   panda: "#0A0A0A",
@@ -195,13 +196,15 @@ function OptionTable({ option }: { option: Quote["opciones"][number] }) {
         </Text>
         <View style={styles.totalSpacer} />
       </View>
-      <View style={styles.totalRow}>
-        <Text style={styles.totalLabel}>Con PSE / Bre-B</Text>
-        <Text style={styles.totalValue}>
-          {formatCOP(option.totales.conPse)}
-        </Text>
-        <View style={styles.totalSpacer} />
-      </View>
+      {SHOW_PSE && (
+        <View style={styles.totalRow}>
+          <Text style={styles.totalLabel}>Con PSE / Bre-B</Text>
+          <Text style={styles.totalValue}>
+            {formatCOP(option.totales.conPse)}
+          </Text>
+          <View style={styles.totalSpacer} />
+        </View>
+      )}
     </View>
   );
 }
@@ -271,7 +274,7 @@ export function QuotePDF({
             {logo ? (
               <Image src={logo} style={{ width: 22, height: 22 }} />
             ) : null}
-            <Text style={styles.footerPay}>Bre-B · Bold · Tarjeta · PSE</Text>
+            <Text style={styles.footerPay}>{SHOW_PSE ? "Bre-B · Bold · Tarjeta · PSE" : "Bre-B · Bold · Tarjeta"}</Text>
           </View>
           <Text style={styles.footerText}>
             {contactWhatsapp} · {contactEmail.toUpperCase()}

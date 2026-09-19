@@ -132,7 +132,7 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
 
   return (
     <div
-      className="mt-10 grid gap-8 md:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] md:items-center md:gap-16"
+      className="mt-10 grid gap-8 md:grid-cols-[minmax(0,26rem)_minmax(0,28rem)] md:items-center md:justify-center md:gap-14"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}

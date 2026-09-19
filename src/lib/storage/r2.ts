@@ -6,7 +6,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import { AwsClient } from "aws4fetch";
-import type { ObjectStorage } from "./types";
+import type { ObjectStorage, PrivateStorage } from "./types";
 
 export interface R2Config {
   accountId: string;
@@ -17,12 +17,28 @@ export interface R2Config {
   publicUrl: string;
 }
 
+export type R2PrivateConfig = Omit<R2Config, "publicUrl">;
+
 // 1 día: al borrar una foto, el CDN y los navegadores la dejan de servir en
 // menos de 24 h (con caché de un año un borrado —Ley 1581— no se notaría).
 const CACHE_CONTROL = "public, max-age=86400, s-maxage=86400";
+// Lo privado nunca se guarda en cachés compartidas.
+const PRIVATE_CACHE_CONTROL = "private, no-store";
 
 /** Cloudflare R2 por su API compatible con S3 (firmada con aws4fetch). */
 export function createR2Storage(config: R2Config): ObjectStorage {
+  return {
+    ...r2Operations(config, CACHE_CONTROL),
+    url: (key) => `${config.publicUrl}/${key}`,
+  };
+}
+
+/** Bucket de R2 SIN acceso público: solo el servidor lee, con sus credenciales. */
+export function createR2PrivateStorage(config: R2PrivateConfig): PrivateStorage {
+  return r2Operations(config, PRIVATE_CACHE_CONTROL);
+}
+
+function r2Operations(config: R2PrivateConfig, cacheControl: string): PrivateStorage {
   const client = new AwsClient({
     accessKeyId: config.accessKeyId,
     secretAccessKey: config.secretAccessKey,
@@ -39,7 +55,7 @@ export function createR2Storage(config: R2Config): ObjectStorage {
       const payload = new Uint8Array(body);
       const headers = {
         "Content-Type": contentType,
-        "Cache-Control": CACHE_CONTROL,
+        "Cache-Control": cacheControl,
         "Content-Length": String(body.byteLength),
       };
       let res: Response;
@@ -64,6 +80,16 @@ export function createR2Storage(config: R2Config): ObjectStorage {
       if (!res.ok) throw new Error(`R2 PUT ${key}: HTTP ${res.status}`);
     },
 
+    async get(key) {
+      const res = await client.fetch(objectUrl(key), { method: "GET", cache: "no-store" });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
+      return {
+        body: Buffer.from(await res.arrayBuffer()),
+        contentType: res.headers.get("content-type") ?? "application/octet-stream",
+      };
+    },
+
     async remove(keys) {
       await Promise.all(
         keys.map(async (key) => {
@@ -75,6 +101,5 @@ export function createR2Storage(config: R2Config): ObjectStorage {
       );
     },
 
-    url: (key) => `${config.publicUrl}/${key}`,
   };
 }

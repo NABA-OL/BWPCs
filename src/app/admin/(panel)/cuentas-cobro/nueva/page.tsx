@@ -26,7 +26,8 @@ export default async function NuevaCuentaCobroPage() {
 
   const initial: CuentaCobroInput | null = data
     ? {
-        numero: data.nextNumero,
+        numero: "",
+        userId: "",
         fecha: new Date().toISOString().slice(0, 10),
         cliente: {
           nombre: "",
@@ -73,6 +74,7 @@ export default async function NuevaCuentaCobroPage() {
         </div>
       ) : (
         <CuentaCobroBuilder
+          users={data.users}
           id=""
           initial={initial}
           clients={data.clients}

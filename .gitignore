@@ -43,3 +43,4 @@ next-env.d.ts
 
 # fotos subidas en desarrollo sin R2 (ver lib/storage)
 /public/_dev-uploads/
+/.dev-private-uploads/

@@ -25,6 +25,7 @@ import { COMPONENT_CATEGORIES } from "@/lib/db/types";
 import type { BankAccount } from "@/lib/db/types";
 import type { CatalogOption } from "@/lib/admin/catalog-data";
 import { Combobox } from "@/components/admin/combobox";
+import { QuoteUserPicker, type PickerUser } from "@/components/admin/quote-user-picker";
 
 export interface ClientOption {
   id: string;
@@ -33,6 +34,8 @@ export interface ClientOption {
   direccion: string;
   telefono: string;
   email: string;
+  /** Cuenta de usuario ligada a este cliente ("" = ninguna). */
+  userId: string;
 }
 
 export interface BankAccountOption {
@@ -61,10 +64,15 @@ export function CuentaCobroBuilder({
   bankAccounts,
   signers,
   catalog,
+  users,
+  locked = false,
   pdfHref,
 }: {
   id: string;
   initial: CuentaCobroInput;
+  users: PickerUser[];
+  /** Cuenta ya enviada/pagada/anulada: solo lectura. */
+  locked?: boolean;
   clients: ClientOption[];
   bankAccounts: BankAccountOption[];
   signers: SignerOption[];
@@ -115,7 +123,7 @@ export function CuentaCobroBuilder({
     setClientChoice(clientId);
     if (clientId === "otro") return;
     const c = clients.find((x) => x.id === clientId);
-    if (c) setData((d) => ({ ...d, cliente: { ...c } }));
+    if (c) setData((d) => ({ ...d, cliente: { ...c }, userId: c.userId || d.userId }));
   }
   function pickBank(bankId: string) {
     setBankChoice(bankId);
@@ -144,15 +152,16 @@ export function CuentaCobroBuilder({
     <form action={formAction} className="mt-8 space-y-8">
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="payload" value={JSON.stringify(data)} />
+      <fieldset disabled={locked} className="contents">
 
       {/* Encabezado */}
       <section className="grid gap-4 border border-hairline p-6 sm:grid-cols-2">
         <label className="block">
           <span className="text-sm font-medium text-component">Número</span>
           <input
-            value={data.numero}
-            onChange={(e) => setData({ ...data, numero: e.target.value })}
-            className={`${inputCls} font-mono`}
+            value={data.numero || "Se asigna al guardar"}
+            readOnly
+            className={`${inputCls} bg-hairline/30 font-mono text-component`}
           />
         </label>
         <label className="block">
@@ -164,6 +173,14 @@ export function CuentaCobroBuilder({
             className={`${inputCls} font-mono`}
           />
         </label>
+        <QuoteUserPicker
+          users={users}
+          value={data.userId}
+          onChange={(userId) => setData({ ...data, userId })}
+          label="Cuenta del cliente en la web (opcional)"
+          hint="Si eliges una cuenta, podrás enviarle esta cuenta de cobro y ella podrá verla y avisar su pago."
+          className="sm:col-span-2"
+        />
       </section>
 
       {/* Cliente */}
@@ -177,7 +194,7 @@ export function CuentaCobroBuilder({
           <option value="otro">Otro (llenar a mano)</option>
           {clients.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.nombre} · {c.identificacion}
+              {c.identificacion ? `${c.nombre} · ${c.identificacion}` : c.nombre}
             </option>
           ))}
         </select>
@@ -500,15 +517,19 @@ export function CuentaCobroBuilder({
         </div>
       </section>
 
+      </fieldset>
+
       {/* Acciones */}
       <div className="flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
-        <Button type="submit" size="lg" disabled={pending}>
-          {pending
-            ? "Guardando…"
-            : id
-              ? "Guardar cambios"
-              : "Crear cuenta de cobro"}
-        </Button>
+        {!locked && (
+          <Button type="submit" size="lg" disabled={pending}>
+            {pending
+              ? "Guardando…"
+              : id
+                ? "Guardar cambios"
+                : "Crear cuenta de cobro"}
+          </Button>
+        )}
         {pdfHref && (
           <a
             href={pdfHref}

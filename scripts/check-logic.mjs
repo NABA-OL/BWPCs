@@ -1,0 +1,132 @@
+/*
+ * Propiedad de BlacKraken Solutions <blackraken.com>
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-09-18
+ * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
+// Comprobaciones rápidas de la lógica del flujo de compra que no necesitan base de datos.
+// Uso: pnpm check:logic
+import assert from "node:assert/strict";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
+import { ESTADOS_VISIBLES, esEditable, estadoDe, sendMissing } from "../src/lib/cuenta-cobro-estado.ts";
+import { env } from "../src/lib/env.ts";
+import { boldReference, boldSignature, expirationNanos, verifyBoldSignature } from "../src/lib/bold-signature.ts";
+import { computeCuentaCobro, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
+import { OFFERED_PAYMENT_METHODS, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
+
+// --- Estados de la cuenta de cobro ---
+assert.equal(estadoDe({}), "enviada", "sin estado = cuenta anterior, ya emitida");
+assert.equal(estadoDe({ estado: "borrador" }), "borrador");
+for (const estado of ["borrador", "correccion_solicitada"]) assert.ok(esEditable({ estado }), estado);
+assert.ok(esEditable({}), "las cuentas antiguas siguen editables");
+for (const estado of ["enviada", "pago_reportado", "pagada", "anulada"]) assert.ok(!esEditable({ estado }), estado);
+assert.ok(!ESTADOS_VISIBLES.includes("borrador"), "el cliente nunca ve borradores");
+
+const completa = {
+  userId: "u1",
+  cliente: { nombre: "A", identificacion: "123", direccion: "", telefono: "", email: "" },
+  cuentaBanco: { banco: "B", tipoCuenta: "Ahorros", numero: "1", llave: null, titular: "T" },
+  firmante: { nombre: "N", cedula: "1", firmaBase64: null },
+  total: 1000,
+};
+assert.deepEqual(sendMissing(completa), []);
+assert.ok(sendMissing({ ...completa, userId: null }).length === 1);
+assert.ok(sendMissing({ ...completa, cliente: { ...completa.cliente, identificacion: " " } }).length === 1);
+assert.ok(sendMissing({ ...completa, cuentaBanco: { ...completa.cuentaBanco, numero: null } }).length === 1);
+assert.deepEqual(sendMissing({ ...completa, cuentaBanco: { ...completa.cuentaBanco, numero: null, llave: "@llave" } }), []);
+assert.ok(sendMissing({ ...completa, firmante: { ...completa.firmante, nombre: "" } }).length === 1);
+assert.ok(sendMissing({ ...completa, total: 0 }).length === 1);
+
+// --- Total según el medio de pago ---
+const totales = { base: 100, conTarjeta: 110, conPse: 105 };
+assert.equal(totalFor("transferencia", totales), 100);
+assert.equal(totalFor("bre-b", totales), 100);
+assert.equal(totalFor("efectivo", totales), 100);
+assert.equal(totalFor("tarjeta", totales), 110);
+assert.equal(totalFor("pse", totales), 105);
+
+// --- El total sigue al medio de pago ---
+const base = [{ descripcion: "PC", cantidad: 1, valorUnitario: 100_000 }];
+const conRecargo = withPaymentMethod(base, 0, 0.06, "Recargo por pago con tarjeta");
+assert.equal(conRecargo.total, 106_000);
+assert.equal(conRecargo.items.length, 2);
+assert.equal(conRecargo.items[1].recargo, true);
+assert.equal(withPaymentMethod(conRecargo.items, 0, 0.06, "x").total, 106_000, "aplicar dos veces no duplica el recargo");
+const vuelta = withPaymentMethod(conRecargo.items, 0, 0, "x");
+assert.equal(vuelta.total, 100_000, "al cambiar a Bre-B vuelve el valor original");
+assert.equal(vuelta.items.length, 1);
+const conDescuento = withPaymentMethod(base, 10, 0.06, "r"); // el descuento no rebaja el recargo
+assert.equal(computeCuentaCobro(conDescuento.items, 10).descuentoValor, 10_000);
+assert.equal(conDescuento.total, 95_400);
+const medios = { tarjeta: 0.06, pse: 0.03, breB: 0 };
+assert.equal(surchargePct("tarjeta", medios), 0.06);
+assert.equal(surchargePct("bre-b", medios), 0);
+assert.equal(surchargePct("transferencia", medios), 0);
+assert.ok(!OFFERED_PAYMENT_METHODS.some((m) => m.id === "pse"), "PSE oculto mientras SHOW_PSE sea false");
+
+// --- Bold: firma del webhook, vigencia en nanosegundos, referencia ---
+const body = '{"id":"evt-1","type":"SALE_APPROVED","data":{"metadata":{"reference":"ref-1"}}}';
+const firmaVacia = boldSignature(body, "");
+assert.match(firmaVacia, /^[0-9a-f]{64}$/, "HMAC-SHA256 en hex");
+// Vector fijo: HMAC-SHA256 con clave vacía sobre base64(cuerpo), como en la documentación de Bold.
+assert.equal(firmaVacia, boldSignature(body, ""), "determinista");
+assert.notEqual(boldSignature(body, "otra"), firmaVacia, "la clave cambia la firma");
+assert.ok(verifyBoldSignature(body, firmaVacia, [""]), "firma válida con clave vacía (pruebas)");
+assert.ok(verifyBoldSignature(body, firmaVacia.toUpperCase(), [""]), "acepta mayúsculas");
+assert.ok(verifyBoldSignature(body, boldSignature(body, "secreta"), ["", "secreta"]));
+assert.ok(!verifyBoldSignature(body + " ", firmaVacia, [""]), "un cuerpo alterado no pasa");
+assert.ok(!verifyBoldSignature(body, boldSignature(body, "otra"), ["secreta"]), "clave equivocada");
+assert.ok(!verifyBoldSignature(body, null, [""]) && !verifyBoldSignature(body, "", [""]), "sin firma no pasa");
+assert.ok(!verifyBoldSignature(body, "abc", [""]), "longitud distinta no lanza");
+assert.equal(expirationNanos(1_789_794_259_551), "1789794259551000000", "ms × 1e6 sin perder precisión");
+assert.equal(expirationNanos(1_789_794_259_551).length, 19);
+const ref = boldReference("6aadf11d88590260b764280d", Date.now());
+assert.ok(ref.length <= 60 && /^[A-Za-z0-9_-]+$/.test(ref), "referencia válida para Bold");
+assert.notEqual(boldReference("6aadf11d88590260b764280d", 1), boldReference("6aadf11d88590260b764280d", 2));
+
+// --- Temas de Telegram: variable propia y respaldo a la configuración anterior ---
+const THREAD_VARS = [
+  "TELEGRAM_THREAD_ID",
+  "TELEGRAM_CONTENT_THREAD_ID",
+  ...["SOLICITUDES", "COTIZACIONES", "COMPRAS", "PAGOS", "RESENAS", "CUENTAS", "CONTENIDO"].map(
+    (t) => `TELEGRAM_THREAD_${t}`,
+  ),
+];
+for (const name of THREAD_VARS) delete process.env[name];
+assert.equal(env.telegramThread("pagos"), null, "sin variables: al tema General");
+process.env.TELEGRAM_THREAD_ID = "10";
+process.env.TELEGRAM_CONTENT_THREAD_ID = "20";
+assert.equal(env.telegramThread("compras"), "10", "respaldo: TELEGRAM_THREAD_ID");
+assert.equal(env.telegramThread("contenido"), "20");
+assert.equal(env.telegramThread("resenas"), "20", "las reseñas seguían yendo al tema de contenido");
+process.env.TELEGRAM_THREAD_PAGOS = "33";
+process.env.TELEGRAM_THREAD_RESENAS = "44";
+assert.equal(env.telegramThread("pagos"), "33", "la variable propia manda");
+assert.equal(env.telegramThread("resenas"), "44");
+assert.equal(env.telegramThread("compras"), "10");
+for (const name of THREAD_VARS) delete process.env[name];
+
+// --- Regla dura: "pagada" solo la fija el admin o el pago de Bold verificado ---
+const ADMIN_ACTIONS = join("src", "app", "admin", "(panel)", "cuentas-cobro", "actions.ts");
+const BOLD_PAYMENTS = join("src", "lib", "bold-payments.ts");
+function* sources(dir) {
+  for (const name of readdirSync(dir)) {
+    const path = join(dir, name);
+    if (statSync(path).isDirectory()) yield* sources(path);
+    else if (/\.(ts|tsx)$/.test(name)) yield path;
+  }
+}
+const files = [...sources("src")];
+const offenders = files.filter(
+  (file) => ![ADMIN_ACTIONS, BOLD_PAYMENTS].includes(file) && /to:\s*["']pagada["']/.test(readFileSync(file, "utf8")),
+);
+assert.deepEqual(offenders, [], `solo ${ADMIN_ACTIONS} y ${BOLD_PAYMENTS} pueden llevar una cuenta a "pagada"`);
+// Y en el módulo de Bold, solo a través de applyBoldApproval (que exige un pago verificado).
+const applyCallers = files.filter((f) => f !== BOLD_PAYMENTS && /applyBoldApproval\(/.test(readFileSync(f, "utf8")));
+assert.deepEqual(applyCallers, [], "applyBoldApproval solo se usa dentro de bold-payments.ts (webhook firmado y consulta a Bold)");
+const boldSource = readFileSync(BOLD_PAYMENTS, "utf8");
+assert.equal((boldSource.match(/to:\s*["']pagada["']/g) ?? []).length, 1, "un único punto de aprobación");
+
+console.log("check:logic OK");

@@ -9,7 +9,8 @@ import "server-only";
 import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
 import { getCatalogOptions, type CatalogOption } from "@/lib/admin/catalog-data";
-import { suggestCode } from "@/lib/quote";
+import { listPublicUsers } from "@/lib/user-auth/users";
+import type { PickerUser } from "@/components/admin/quote-user-picker";
 import type { ClientOption } from "@/components/admin/cuenta-cobro-builder";
 import type { BankAccountOption } from "@/components/admin/cuenta-cobro-builder";
 import type { SignerOption } from "@/components/admin/cuenta-cobro-builder";
@@ -20,24 +21,23 @@ export interface CuentaCobroBuilderData {
   signers: SignerOption[];
   catalog: CatalogOption[];
   servicioBase: number;
-  nextNumero: string;
+  users: PickerUser[];
 }
 
 export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderData> {
   const settings = await getSettings();
 
-  const [clientCol, bankCol, adminCol, cuentaCol] = await Promise.all([
+  const [clientCol, bankCol, adminCol] = await Promise.all([
     collections.clients(),
     collections.bankAccounts(),
     collections.admins(),
-    collections.cuentasCobro(),
   ]);
 
-  const [clientDocs, bankDocs, adminDocs, cuentaCount, catalog] = await Promise.all([
+  const [clientDocs, bankDocs, adminDocs, users, catalog] = await Promise.all([
     clientCol.find({}).sort({ nombre: 1 }).toArray(),
     bankCol.find({}).sort({ banco: 1 }).toArray(),
     adminCol.find({}).sort({ usuario: 1 }).toArray(),
-    cuentaCol.countDocuments(),
+    listPublicUsers(),
     getCatalogOptions(settings),
   ]);
 
@@ -49,6 +49,7 @@ export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderDat
       direccion: c.direccion,
       telefono: c.telefono,
       email: c.email,
+      userId: c.userId ?? "",
     })),
     bankAccounts: bankDocs.map((b) => ({
       id: b._id!.toString(),
@@ -67,6 +68,6 @@ export async function getCuentaCobroBuilderData(): Promise<CuentaCobroBuilderDat
     })),
     catalog,
     servicioBase: settings.servicioBase,
-    nextNumero: suggestCode(new Date().getFullYear(), cuentaCount + 1),
+    users,
   };
 }

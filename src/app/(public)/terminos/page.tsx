@@ -59,7 +59,8 @@ const secciones: readonly LegalSection[] = [
     titulo: "Cotizaciones formales y compras",
     parrafos: [
       "Una cotización formal es una propuesta. Sus precios pueden cambiar si varía el dólar o la disponibilidad antes de que la confirmes.",
-      "La compra se concreta cuando ambas partes confirman por escrito, por WhatsApp o correo, los componentes, el precio, el medio de pago y el plazo de entrega.",
+      "La compra se concreta cuando ambas partes confirman por escrito, por WhatsApp o correo, los componentes, el precio, el medio de pago y el plazo de entrega. Pedir una compra desde tu cuenta es una solicitud: no te cobra nada ni nos obliga hasta que la confirmemos.",
+      "Después te enviamos una cuenta de cobro que ves en tu cuenta. Al pagar, puedes avisarlo adjuntando el comprobante (una imagen), pero avisar no confirma el pago: el pago solo queda confirmado cuando lo verificamos en nuestra cuenta bancaria. Si eliges pagar con tarjeta, el pago se hace en Bold, una pasarela de pagos externa: allí escribes los datos de tu tarjeta y B & W no los recibe. Si algo de la cuenta de cobro está mal, puedes pedir una corrección antes de pagar.",
       "Las garantías, los cambios y el derecho de retracto se rigen por la Ley 1480 de 2011 (Estatuto del Consumidor). Cada componente tiene la garantía de su fabricante, y el ensamblaje queda cubierto por nosotros según lo informado en cada pedido.",
     ],
   },

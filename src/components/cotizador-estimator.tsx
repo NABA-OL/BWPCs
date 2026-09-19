@@ -12,7 +12,7 @@ import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { RecaptchaNotice } from "@/components/recaptcha-notice";
 import { formatCOP } from "@/lib/format";
-import { whatsappLink } from "@/lib/site-config";
+import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { submitLead } from "@/lib/leads/actions";
 import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
 import { SaveEstimate } from "@/components/account/save-estimate";
@@ -277,10 +277,12 @@ export function CotizadorEstimator({
               <dt className="text-vanilla/60">Con tarjeta</dt>
               <dd className="font-mono">{formatCOP(conTarjeta)}</dd>
             </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-vanilla/60">Con PSE</dt>
-              <dd className="font-mono">{formatCOP(conPse)}</dd>
-            </div>
+            {SHOW_PSE && (
+              <div className="flex items-center justify-between">
+                <dt className="text-vanilla/60">Con PSE</dt>
+                <dd className="font-mono">{formatCOP(conPse)}</dd>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <dt className="text-vanilla/60">
                 Con Bre-B{breBPct === 0 ? " (sin recargo)" : ""}

@@ -12,6 +12,8 @@ import Link from "next/link";
 import { formatCOP } from "@/lib/format";
 import { deleteCuentaCobroAction } from "@/app/admin/(panel)/cuentas-cobro/actions";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
+import { ESTADO_LABEL } from "@/lib/cuenta-cobro-estado";
+import type { CuentaCobroEstado } from "@/lib/db/types";
 
 export interface CuentaCobroRow {
   id: string;
@@ -19,6 +21,11 @@ export interface CuentaCobroRow {
   clienteNombre: string;
   fecha: string;
   total: number;
+  estado: CuentaCobroEstado;
+  /** Cuenta anterior a los estados: no sabemos si ya se pagó. */
+  sinEstado: boolean;
+  /** Solo los borradores (y las cuentas antiguas sin estado) se pueden borrar. */
+  deletable: boolean;
 }
 
 export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
@@ -93,6 +100,15 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                 >
                   <td className="px-4 py-3 font-mono font-medium">
                     {r.numero}
+                    <span
+                      className={`ml-2 border px-1.5 py-0.5 font-sans text-[10px] font-normal uppercase tracking-wide ${
+                        r.estado === "pago_reportado" || r.estado === "correccion_solicitada"
+                          ? "border-accent/40 text-accent"
+                          : "border-hairline text-component"
+                      }`}
+                    >
+                      {r.sinEstado ? "Sin estado" : ESTADO_LABEL[r.estado]}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-component">
                     {r.clienteNombre || "—"}
@@ -113,8 +129,9 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                         href={`/admin/cuentas-cobro/${r.id}`}
                         className="text-component hover:text-panda"
                       >
-                        Editar
+                        Abrir
                       </Link>
+                      {r.deletable && (
                       <form
                         action={deleteCuentaCobroAction}
                         onSubmit={(e) => {
@@ -134,6 +151,7 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                           Eliminar
                         </button>
                       </form>
+                      )}
                     </div>
                   </td>
                 </tr>

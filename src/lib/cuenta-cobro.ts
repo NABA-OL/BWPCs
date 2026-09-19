@@ -9,6 +9,8 @@ export interface CuentaCobroItemInput {
   descripcion: string;
   cantidad: number;
   valorUnitario: number;
+  /** Renglón de recargo por el medio de pago (ver `withPaymentMethod`). */
+  recargo?: boolean;
 }
 
 export interface CuentaCobroPartyInput {
@@ -34,7 +36,10 @@ export interface CuentaCobroSignerInput {
 }
 
 export interface CuentaCobroInput {
+  /** Solo informativo: el servidor lo asigna al crear y nunca lo cambia. */
   numero: string;
+  /** Cuenta de usuario (id) que verá y pagará la cuenta de cobro; "" = ninguna. */
+  userId: string;
   fecha: string; // ISO yyyy-mm-dd
   cliente: CuentaCobroPartyInput;
   cuentaBanco: CuentaCobroBankInput;
@@ -43,16 +48,36 @@ export interface CuentaCobroInput {
   descuentoPct: number;
 }
 
-/** Recalcula subtotal/descuento/total desde los ítems crudos (fuente de verdad server-side). */
+/**
+ * Recalcula subtotal/descuento/total desde los ítems crudos (fuente de verdad server-side).
+ * El descuento se aplica solo a los ítems normales: el recargo del medio de pago no se descuenta.
+ */
 export function computeCuentaCobro(
   items: CuentaCobroItemInput[],
   descuentoPct: number,
 ): { subtotal: number; descuentoValor: number; total: number } {
-  const subtotal = items.reduce(
-    (acc, i) => acc + Math.max(0, i.cantidad) * Math.max(0, i.valorUnitario),
-    0,
-  );
+  const line = (i: CuentaCobroItemInput) => Math.max(0, i.cantidad) * Math.max(0, i.valorUnitario);
+  const subtotal = items.reduce((acc, i) => acc + line(i), 0);
+  const discountable = items.filter((i) => !i.recargo).reduce((acc, i) => acc + line(i), 0);
   const pct = Math.min(100, Math.max(0, descuentoPct || 0));
-  const descuentoValor = Math.round(subtotal * (pct / 100));
+  const descuentoValor = Math.round(discountable * (pct / 100));
   return { subtotal, descuentoValor, total: subtotal - descuentoValor };
+}
+
+/**
+ * Deja los ítems según el medio de pago: quita el recargo anterior y, si el medio lo
+ * tiene (`surchargePct` > 0, p. ej. tarjeta), agrega un renglón de recargo sobre el
+ * valor base. Con Bre-B, transferencia o efectivo el total vuelve al valor original.
+ */
+export function withPaymentMethod(
+  items: CuentaCobroItemInput[],
+  descuentoPct: number,
+  surchargePct: number,
+  concept: string,
+): { items: CuentaCobroItemInput[]; subtotal: number; descuentoValor: number; total: number } {
+  const base = items.filter((i) => !i.recargo);
+  const baseTotal = computeCuentaCobro(base, descuentoPct).total;
+  const surcharge = surchargePct > 0 ? Math.round(baseTotal * (1 + surchargePct)) - baseTotal : 0;
+  const next = surcharge > 0 ? [...base, { descripcion: concept, cantidad: 1, valorUnitario: surcharge, recargo: true }] : base;
+  return { items: next, ...computeCuentaCobro(next, descuentoPct) };
 }

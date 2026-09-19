@@ -6,11 +6,11 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 import "server-only";
-import { createDevStorage } from "./dev";
-import { createR2Storage } from "./r2";
-import { StorageNotConfiguredError, type ObjectStorage } from "./types";
+import { createDevPrivateStorage, createDevStorage } from "./dev";
+import { createR2PrivateStorage, createR2Storage } from "./r2";
+import { StorageNotConfiguredError, type ObjectStorage, type PrivateStorage } from "./types";
 
-export { StorageNotConfiguredError, type ObjectStorage } from "./types";
+export { StorageNotConfiguredError, type ObjectStorage, type PrivateStorage } from "./types";
 
 let cached: ObjectStorage | null = null;
 
@@ -51,4 +51,35 @@ export function getStorage(): ObjectStorage {
     throw new StorageNotConfiguredError();
   }
   return cached;
+}
+
+let cachedPrivate: PrivateStorage | null = null;
+
+/**
+ * Almacenamiento PRIVADO para los comprobantes: otro bucket de R2 (`R2_PRIVATE_BUCKET`,
+ * con el acceso público DESACTIVADO) y las mismas credenciales. En desarrollo sin él,
+ * una carpeta local fuera de `public/`; en producción sin él, falla: un comprobante
+ * jamás debe caer en el bucket público.
+ */
+export function getPrivateStorage(): PrivateStorage {
+  if (cachedPrivate) return cachedPrivate;
+
+  const {
+    R2_ACCOUNT_ID: accountId,
+    R2_ACCESS_KEY_ID: accessKeyId,
+    R2_SECRET_ACCESS_KEY: secretAccessKey,
+    R2_PRIVATE_BUCKET: bucket,
+  } = process.env;
+
+  if (accountId && accessKeyId && secretAccessKey && bucket) {
+    if (bucket === process.env.R2_BUCKET) {
+      throw new Error("R2_PRIVATE_BUCKET debe ser un bucket distinto del público (R2_BUCKET).");
+    }
+    cachedPrivate = createR2PrivateStorage({ accountId, accessKeyId, secretAccessKey, bucket });
+  } else if (process.env.NODE_ENV !== "production") {
+    cachedPrivate = createDevPrivateStorage();
+  } else {
+    throw new StorageNotConfiguredError();
+  }
+  return cachedPrivate;
 }

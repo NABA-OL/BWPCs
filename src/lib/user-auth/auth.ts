@@ -26,8 +26,10 @@ import {
   notifyPasswordChanged,
 } from "@/lib/user-auth/notices";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
+import { deleteRevisionsOfUser } from "@/lib/quote-requests";
 import { deleteUserReview, detachKeptReview } from "@/lib/reviews/reviews";
 import { deleteAllUserPhotos } from "@/lib/uploads/review-photos";
+import { notifyDeletedAccount, notifyNewAccount } from "@/lib/user-auth/account-telegram";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
 import { siteUrl } from "@/lib/user-auth/site-url";
 
@@ -132,10 +134,15 @@ export const auth = betterAuth({
         } catch {
           // fuera de un contexto de petición no hay caché que invalidar
         }
-        const [leads, quotes] = await Promise.all([
+        const [leads, quotes, clients] = await Promise.all([
           collections.leads(),
           collections.quotes(),
+          collections.clients(),
         ]);
+        // El cliente creado por la propia persona (compra) se borra con su cuenta; el que
+        // el admin registró a mano queda como registro suyo, sin vínculo con la cuenta.
+        await clients.deleteMany({ userId: user.id, origen: { $in: ["compra", "cuenta"] } });
+        await clients.updateMany({ userId: user.id }, { $set: { userId: null } });
         await leads.deleteMany({ userId: user.id, tipo: "guardada" });
         await leads.updateMany({ userId: user.id }, { $set: { userId: null } });
         await quotes.updateMany(
@@ -147,8 +154,13 @@ export const auth = betterAuth({
               publicadaEn: null,
               avisoEnviadoEn: null,
             },
+            $unset: { estadoComercial: "" },
           },
         );
+        await deleteRevisionsOfUser(user.id);
+        // Las cuentas de cobro son soporte contable: se conservan, sin vínculo con la cuenta.
+        await (await collections.cuentasCobro()).updateMany({ userId: user.id }, { $set: { userId: null } });
+        notifyDeletedAccount(user.name);
       },
     },
     additionalFields: {
@@ -218,7 +230,11 @@ export const auth = betterAuth({
       // Registro: misma respuesta exista o no el correo. Better Auth devuelve un
       // usuario sintético para correos ya registrados, distinguible del real.
       if (ctx.path === "/sign-up/email") return ctx.json({ ok: true });
-      if (ctx.path === "/email-otp/reset-password") {
+      if (ctx.path === "/email-otp/verify-email") {
+        // Solo el primer correo verificado (registro): el cambio de correo usa otra ruta.
+        const returned = ctx.context.returned as { user?: { name?: string } } | undefined;
+        notifyNewAccount(returned?.user?.name);
+      } else if (ctx.path === "/email-otp/reset-password") {
         const email = (ctx.body as { email?: unknown } | undefined)?.email;
         if (typeof email === "string") notifyPasswordChanged(email);
       } else if (ctx.path === "/change-password") {

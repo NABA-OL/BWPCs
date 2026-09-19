@@ -90,7 +90,7 @@ export async function submitReviewAction(input: unknown): Promise<ReviewResult> 
         `<b>Fotos:</b> ${parsed.data.fotoIds.length}\n\n` +
         `${escapeHtml(comentario.slice(0, 300))}\n\n` +
         `${siteUrl}/admin/resenas`,
-      "contenido",
+      "resenas",
     ),
   );
 
