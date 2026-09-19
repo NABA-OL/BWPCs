@@ -28,19 +28,41 @@ export interface CuentaCobroRow {
   deletable: boolean;
 }
 
+type Filter = "todas" | CuentaCobroEstado | "sin_estado";
+
+/** Filtros por estado, en el orden en que se muestran. Las cuentas antiguas sin estado tienen el suyo. */
+const FILTERS: readonly { id: Filter; label: string }[] = [
+  { id: "todas", label: "Todas" },
+  { id: "enviada", label: "Por pagar" },
+  { id: "pago_reportado", label: "Pago por confirmar" },
+  { id: "correccion_solicitada", label: "Corrección pedida" },
+  { id: "pagada", label: "Pagadas" },
+  { id: "anulada", label: "Anuladas" },
+  { id: "borrador", label: "Borradores" },
+  { id: "sin_estado", label: "Sin estado" },
+];
+
+const keyOf = (r: CuentaCobroRow): Filter => (r.sinEstado ? "sin_estado" : r.estado);
+
 export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<Filter>("todas");
   const [page, setPage] = useState(1);
+
+  const counts = useMemo(() => {
+    const map = new Map<Filter, number>([["todas", rows.length]]);
+    for (const r of rows) map.set(keyOf(r), (map.get(keyOf(r)) ?? 0) + 1);
+    return map;
+  }, [rows]);
 
   const visible = useMemo(() => {
     const q = query.toLowerCase().trim();
-    if (!q) return rows;
     return rows.filter(
       (r) =>
-        r.numero.toLowerCase().includes(q) ||
-        r.clienteNombre.toLowerCase().includes(q),
+        (filter === "todas" || keyOf(r) === filter) &&
+        (!q || r.numero.toLowerCase().includes(q) || r.clienteNombre.toLowerCase().includes(q)),
     );
-  }, [rows, query]);
+  }, [rows, query, filter]);
 
   const handleQuery = (v: string) => {
     setQuery(v);
@@ -53,6 +75,26 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
 
   return (
     <div className="mt-8 space-y-4">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por estado">
+        {FILTERS.filter((f) => f.id === "todas" || (counts.get(f.id) ?? 0) > 0).map((f) => (
+          <button
+            key={f.id}
+            type="button"
+            aria-pressed={filter === f.id}
+            onClick={() => {
+              setFilter(f.id);
+              setPage(1);
+            }}
+            className={`border px-3 py-1.5 text-xs font-medium transition-colors ${
+              filter === f.id
+                ? "border-panda bg-panda text-vanilla"
+                : "border-hairline text-component hover:border-panda hover:text-panda"
+            }`}
+          >
+            {f.label} <span className="ml-1 font-mono">{counts.get(f.id) ?? 0}</span>
+          </button>
+        ))}
+      </div>
       <div className="relative max-w-xs">
         <svg
           className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"

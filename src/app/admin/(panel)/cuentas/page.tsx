@@ -93,13 +93,14 @@ export default async function CuentasPage({
         </div>
       ) : (
         <div className="mt-6 overflow-x-auto border border-hairline">
-          <table className="w-full min-w-[42rem] text-left text-sm">
+          <table className="w-full min-w-[46rem] text-left text-sm">
             <thead className="border-b border-hairline text-component">
               <tr>
                 <th className="px-4 py-3 font-medium">Nombre</th>
                 <th className="px-4 py-3 font-medium">Teléfono</th>
                 <th className="px-4 py-3 font-medium">Registro</th>
                 <th className="px-4 py-3 text-right font-medium">Cotizaciones</th>
+                <th className="px-4 py-3 text-right font-medium">Compras</th>
                 <th className="px-4 py-3 font-medium">Reseña</th>
               </tr>
             </thead>
@@ -116,6 +117,7 @@ export default async function CuentasPage({
                   <td className="px-4 py-3 font-mono text-xs">{r.phone ?? "—"}</td>
                   <td className="px-4 py-3 text-component">{fmtFecha(r.createdAt)}</td>
                   <td className="px-4 py-3 text-right font-mono tabular-nums">{r.publishedQuotes}</td>
+                  <td className="px-4 py-3 text-right font-mono tabular-nums">{r.purchases}</td>
                   <td className="px-4 py-3 text-component">
                     {r.review ? REVIEW_LABEL[r.review] : "—"}
                   </td>

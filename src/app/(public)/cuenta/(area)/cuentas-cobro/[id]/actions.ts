@@ -10,8 +10,9 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod";
 import { moveCuentaCobro, setCuentaPaymentMethod } from "@/lib/cuentas-cobro";
-import { getOrCreateBoldLink } from "@/lib/bold-payments";
-import { OFFERED_PAYMENT_METHODS } from "@/lib/payment-methods";
+import { boldAvailable, getOrCreateBoldLink } from "@/lib/bold-payments";
+import { formatCOP } from "@/lib/format";
+import { OFFERED_PAYMENT_METHODS, cardIsManual } from "@/lib/payment-methods";
 import type { PaymentMethod } from "@/lib/db/types";
 import { shortName } from "@/lib/reviews/rules";
 import { sendTelegramMessage } from "@/lib/telegram";
@@ -104,8 +105,22 @@ export async function setPaymentMethodAction(input: unknown): Promise<CuentaCobr
   if (!checked.ok) return checked;
 
   const result = await setCuentaPaymentMethod(parsed.data.id, checked.user.id, parsed.data.method as PaymentMethod);
-  if (result.ok) revalidate(parsed.data.id);
-  return result;
+  if (!result.ok) return result;
+
+  // Con tarjeta que no se cobra sola (sobre el tope de Bold o sin Bold) el admin debe crear el enlace.
+  if (parsed.data.method === "tarjeta" && cardIsManual(result.total, boldAvailable())) {
+    after(() =>
+      sendTelegramMessage(
+        `💳 <b>Eligió pagar con tarjeta: falta el enlace de pago</b>\n` +
+          `<b>De:</b> ${escapeHtml(shortName(checked.user.name))}\n` +
+          `<b>Cuenta de cobro:</b> ${escapeHtml(result.numero)} · ${formatCOP(result.total)}\n\n` +
+          `${siteUrl}/admin/cuentas-cobro/${parsed.data.id}`,
+        "pagos",
+      ),
+    );
+  }
+  revalidate(parsed.data.id);
+  return { ok: true };
 }
 
 /** Lleva al cliente al checkout de Bold (tarjeta): crea o reutiliza el enlace de pago de su cuenta. */

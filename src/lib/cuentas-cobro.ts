@@ -11,7 +11,7 @@ import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
 import { withPaymentMethod } from "@/lib/cuenta-cobro";
 import type { CuentaCobro, CuentaCobroEstado, PaymentMethod } from "@/lib/db/types";
-import { CARD_MAX_COP, PAYMENT_LABEL, surchargeConcept, surchargePct } from "@/lib/payment-methods";
+import { PAYMENT_LABEL, surchargeConcept, surchargePct } from "@/lib/payment-methods";
 import { suggestCode } from "@/lib/quote";
 
 let indexReady: Promise<unknown> | null = null;
@@ -21,6 +21,7 @@ async function cuentasCol() {
   // Un número nunca se repite. Si ya hubiera duplicados el índice no se crea y solo se registra.
   indexReady ??= Promise.all([
     col.createIndex({ numero: 1 }, { name: "numero_unique", unique: true }),
+    col.createIndex({ "origen.quoteId": 1 }, { name: "origen_quoteId" }),
     // Una solicitud de compra genera a lo sumo un borrador.
     col.createIndex(
       { "origen.requestId": 1 },
@@ -109,7 +110,7 @@ export async function getCuentaForQuote(quoteId: string) {
   return cuenta ? { id: cuenta._id!.toString(), numero: cuenta.numero, estado: cuenta.estado } : null;
 }
 
-export type SetMethodResult = { ok: true } | { ok: false; error: string };
+export type SetMethodResult = { ok: true; total: number; numero: string } | { ok: false; error: string };
 
 /**
  * El cliente elige (o cambia) con qué medio va a pagar mientras la cuenta está "por pagar":
@@ -126,7 +127,7 @@ export async function setCuentaPaymentMethod(
   const col = await cuentasCol();
   const cuenta = await col.findOne({ _id: new ObjectId(id), userId, estado: "enviada" });
   if (!cuenta) return { ok: false, error: "Esta cuenta de cobro ya no admite cambiar el medio de pago." };
-  if (cuenta.formaPago === method) return { ok: true }; // ya estaba elegido: nada que registrar
+  if (cuenta.formaPago === method) return { ok: true, total: cuenta.total, numero: cuenta.numero }; // ya estaba elegido
 
   const { mediosPago } = await getSettings();
   const next = withPaymentMethod(
@@ -135,10 +136,6 @@ export async function setCuentaPaymentMethod(
     surchargePct(method, mediosPago),
     surchargeConcept(method),
   );
-  if (method === "tarjeta" && next.total > CARD_MAX_COP) {
-    return { ok: false, error: "El pago con tarjeta solo está disponible hasta $5.000.000. Elige Bre-B o transferencia." };
-  }
-
   const updated = await col.updateOne(
     { _id: cuenta._id, userId, estado: "enviada" },
     {
@@ -160,6 +157,6 @@ export async function setCuentaPaymentMethod(
     },
   );
   return updated.modifiedCount === 1
-    ? { ok: true }
+    ? { ok: true, total: next.total, numero: cuenta.numero }
     : { ok: false, error: "Esta cuenta de cobro ya no admite cambiar el medio de pago." };
 }

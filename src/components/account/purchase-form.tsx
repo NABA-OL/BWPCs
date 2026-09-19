@@ -14,7 +14,7 @@ import { INPUT, LABEL } from "@/components/account/shared";
 import { requestPurchaseAction } from "@/app/(public)/cuenta/(area)/cotizaciones/[id]/actions";
 import type { PaymentMethod, QuoteOption } from "@/lib/db/types";
 import { formatCOP } from "@/lib/format";
-import { CARD_MAX_COP, OFFERED_PAYMENT_METHODS, totalFor } from "@/lib/payment-methods";
+import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, totalFor } from "@/lib/payment-methods";
 import { CARD_AND_PSE_TEXT } from "@/lib/site-config";
 
 interface PurchaseOption {
@@ -32,7 +32,7 @@ export function PurchaseForm({
 }) {
   const router = useRouter();
   const [option, setOption] = useState<number | null>(options.length === 1 ? 0 : null);
-  const [method, setMethod] = useState<PaymentMethod>("transferencia");
+  const [method, setMethod] = useState<PaymentMethod>(DEFAULT_PAYMENT_METHOD);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -69,10 +69,7 @@ export function PurchaseForm({
                 type="radio"
                 name="option"
                 checked={option === i}
-                onChange={() => {
-                  setOption(i);
-                  if (method === "tarjeta" && totalFor("tarjeta", options[i].totales) > CARD_MAX_COP) setMethod("transferencia");
-                }}
+                onChange={() => setOption(i)}
                 className="h-4 w-4 accent-accent"
               />
               <span className="flex-1">{o.titulo}</span>
@@ -88,18 +85,21 @@ export function PurchaseForm({
           const total = option === null ? null : totalFor(m.id, options[option].totales);
           const overCardCap = m.id === "tarjeta" && total !== null && total > CARD_MAX_COP;
           return (
-            <label key={m.id} className={`flex items-center gap-2 text-sm ${overCardCap ? "opacity-50" : ""}`}>
+            <label key={m.id} className="flex items-center gap-2 text-sm">
               <input
                 type="radio"
                 name="method"
                 checked={method === m.id}
-                disabled={overCardCap}
                 onChange={() => setMethod(m.id)}
                 className="h-4 w-4 accent-accent"
               />
               <span className="flex-1">
                 {m.label}
-                {overCardCap && <span className="block text-xs text-component">Solo disponible hasta $5.000.000</span>}
+                {overCardCap && (
+                  <span className="block text-xs text-component">
+                    Sobre $5.000.000 te enviamos un enlace de pago y subes el comprobante
+                  </span>
+                )}
               </span>
               <span className="font-mono text-component">{total === null ? "" : formatCOP(total)}</span>
             </label>

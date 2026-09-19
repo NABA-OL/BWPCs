@@ -10,7 +10,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PurchaseForm } from "@/components/account/purchase-form";
 import { RevisionForm } from "@/components/account/revision-form";
-import { getMyQuote } from "@/lib/account/quotes";
+import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
 import { listQuoteRequests } from "@/lib/quote-requests";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
@@ -50,7 +50,7 @@ export default async function CotizacionPage({
   const quote = await getMyQuote(session.user.id, id);
   if (!quote) notFound();
 
-  const requests = await listQuoteRequests(id);
+  const [requests, purchased] = await Promise.all([listQuoteRequests(id), isQuotePurchased(id)]);
   const pendingRequest = requests.find((r) => r.estado === "pendiente");
   const pastRequests = requests.filter((r) => r.estado === "atendida");
   const version = quote.version ?? 1;
@@ -149,6 +149,22 @@ export default async function CotizacionPage({
         ))}
       </div>
 
+      {purchased ? (
+        <section className="mt-10 border border-hairline p-6">
+          <h2 className="text-lg font-semibold">Esta cotización ya fue comprada</h2>
+          <p className="mt-2 text-sm text-component">
+            Queda aquí como historial. Si quieres algo nuevo o distinto, solicita otra cotización desde el{" "}
+            <Link href="/cotizador" className="text-accent hover:underline">
+              cotizador
+            </Link>{" "}
+            o escríbenos por WhatsApp. Tus cuentas de cobro están en{" "}
+            <Link href="/cuenta/cuentas-cobro" className="text-accent hover:underline">
+              Cuentas de cobro
+            </Link>
+            .
+          </p>
+        </section>
+      ) : (
       <section className="mt-10 space-y-6" aria-labelledby="ajustes">
         <h2 id="ajustes" className="text-lg font-semibold">
           ¿Y ahora?
@@ -230,6 +246,7 @@ export default async function CotizacionPage({
           </div>
         )}
       </section>
+      )}
 
       <p className="mt-6 text-sm text-component">
         Los precios son de referencia y pueden variar según disponibilidad.{" "}

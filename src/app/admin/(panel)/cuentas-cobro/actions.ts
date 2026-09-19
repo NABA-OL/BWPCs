@@ -278,3 +278,47 @@ export async function checkBoldPaymentAction(form: FormData): Promise<void> {
   }
   revalidateCuenta(id);
 }
+
+/** Hosts de los que puede venir un enlace de pago de Bold (los de su checkout). */
+const BOLD_LINK_HOSTS = new Set(["checkout.bold.co", "bold.co", "www.bold.co"]);
+
+/**
+ * El admin pega el enlace de pago con tarjeta que creó en Bold (cuando la tarjeta no se cobra
+ * sola) y avisa al cliente por correo. Solo https y solo dominios de Bold.
+ */
+export async function saveCardLinkAction(form: FormData): Promise<void> {
+  const id = await formId(form);
+  if (!id) return;
+  let url: URL;
+  try {
+    url = new URL(String(form.get("enlace") ?? "").trim());
+  } catch {
+    return;
+  }
+  if (url.protocol !== "https:" || !BOLD_LINK_HOSTS.has(url.hostname)) return;
+
+  const col = await collections.cuentasCobro();
+  const updated = await col.findOneAndUpdate(
+    { _id: new ObjectId(id), estado: { $in: ["enviada", "correccion_solicitada"] }, formaPago: "tarjeta" },
+    { $set: { enlacePagoTarjeta: url.toString() } },
+    { returnDocument: "after" },
+  );
+  if (!updated) return;
+
+  const user = updated.userId ? await getPublicUser(updated.userId) : null;
+  if (user && updated.estado === "enviada" && (await consumeNoticeMail())) {
+    try {
+      await sendCuentaCobroEmail({
+        to: user.email,
+        name: user.name,
+        numero: updated.numero,
+        totalCop: updated.total,
+        cuentaId: id,
+        cardLinkReady: true,
+      });
+    } catch (error) {
+      console.error("[cuentas-cobro] fallo al avisar el enlace de pago", error);
+    }
+  }
+  revalidateCuenta(id);
+}

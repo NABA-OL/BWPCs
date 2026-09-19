@@ -10,6 +10,7 @@
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { saveEstimateAction } from "@/lib/leads/actions";
+import { stashPendingEstimate, takePendingEstimate } from "@/lib/pending-estimate";
 import { authClient } from "@/lib/user-auth/client";
 
 interface AccountContact {
@@ -27,10 +28,13 @@ export function SaveEstimate({
   resumen,
   disabled,
   onUser,
+  onGuest,
 }: {
   resumen: string;
   disabled: boolean;
   onUser: (contact: AccountContact) => void;
+  /** La sesión ya cargó y no hay usuario (permite ofrecer crear una cuenta). */
+  onGuest: () => void;
 }) {
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
@@ -45,6 +49,21 @@ export function SaveEstimate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
+  useEffect(() => {
+    if (!isPending && !user) onGuest();
+    // Solo cuando la sesión termina de cargar.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPending, userId]);
+
+  // Vuelve de crear una cuenta o iniciar sesión con una selección pendiente: se guarda en la cuenta.
+  const [restored, setRestored] = useState<"saved" | "error" | null>(null);
+  useEffect(() => {
+    if (!userId) return;
+    const pendingResumen = takePendingEstimate();
+    if (!pendingResumen) return;
+    void saveEstimateAction({ resumen: pendingResumen }).then((result) => setRestored(result.ok ? "saved" : "error"));
+  }, [userId]);
+
   // Cambiar la selección deja de ser "lo guardado".
   useEffect(() => setSaved(false), [resumen]);
 
@@ -54,12 +73,21 @@ export function SaveEstimate({
     return (
       <p className="mt-4 text-center text-xs text-vanilla/60">
         <Link
-          href="/cuenta/ingresar?next=/cotizador"
+          href="/cuenta/registro?next=/cotizador"
+          onClick={() => !disabled && stashPendingEstimate(resumen)}
           className="underline hover:no-underline"
         >
-          Inicia sesión
+          Crea una cuenta
         </Link>{" "}
-        para guardar esta cotización en tu cuenta.
+        o{" "}
+        <Link
+          href="/cuenta/ingresar?next=/cotizador"
+          onClick={() => !disabled && stashPendingEstimate(resumen)}
+          className="underline hover:no-underline"
+        >
+          inicia sesión
+        </Link>{" "}
+        para guardar tu cotización.
       </p>
     );
   }
@@ -75,6 +103,17 @@ export function SaveEstimate({
 
   return (
     <div className="mt-4 space-y-2 text-center">
+      {restored === "saved" && (
+        <p className="border border-vanilla/20 px-3 py-2 text-xs text-vanilla/80">
+          Guardamos en tu cuenta la cotización que estabas armando.{" "}
+          <Link href="/cuenta" className="underline hover:no-underline">
+            Ver mis cotizaciones
+          </Link>
+        </p>
+      )}
+      {restored === "error" && (
+        <p className="text-xs text-accent">No pudimos guardar la cotización que armaste antes. Guárdala de nuevo abajo.</p>
+      )}
       <button
         type="button"
         onClick={save}

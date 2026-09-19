@@ -81,7 +81,17 @@ export function CuentaCobroBuilder({
 }) {
   const [data, setData] = useState<CuentaCobroInput>(initial);
   const [clientChoice, setClientChoice] = useState("otro");
-  const [bankChoice, setBankChoice] = useState("otro");
+  // Cuenta bancaria: "" = aún sin elegir (no se muestran los campos), "otro" = a mano (campos editables) o el id
+  // de una cuenta guardada (campos bloqueados). Si el documento ya trae datos, se parte de la guardada que
+  // coincida (bloqueada) o, si no hay, de "a mano".
+  const [bankChoice, setBankChoice] = useState(() => {
+    const b = initial.cuentaBanco;
+    if (!b.banco && !b.numero && !b.llave) return "";
+    const same = bankAccounts.find(
+      (x) => x.banco === b.banco && (x.numero ?? "") === (b.numero ?? "") && (x.llave ?? "") === (b.llave ?? "") && x.titular === b.titular,
+    );
+    return same ? same.id : "otro";
+  });
   const [signerChoice, setSignerChoice] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [state, formAction, pending] = useActionState<
@@ -127,10 +137,15 @@ export function CuentaCobroBuilder({
   }
   function pickBank(bankId: string) {
     setBankChoice(bankId);
-    if (bankId === "otro") return;
+    if (bankId === "otro") {
+      // A mano: campos vacíos para llenar.
+      setData((d) => ({ ...d, cuentaBanco: { banco: "", tipoCuenta: null, numero: "", llave: "", titular: "" } }));
+      return;
+    }
     const b = bankAccounts.find((x) => x.id === bankId);
-    if (b) setData((d) => ({ ...d, cuentaBanco: { ...b } }));
+    if (b) setData((d) => ({ ...d, cuentaBanco: { banco: b.banco, tipoCuenta: b.tipoCuenta, numero: b.numero, llave: b.llave, titular: b.titular } }));
   }
+  const bankLocked = bankChoice !== "" && bankChoice !== "otro";
   function pickSigner(signerId: string) {
     setSignerChoice(signerId);
     const s = signers.find((x) => x.id === signerId);
@@ -254,6 +269,7 @@ export function CuentaCobroBuilder({
           onChange={(e) => pickBank(e.target.value)}
           className={`${inputCls} max-w-sm`}
         >
+          {bankChoice === "" && <option value="">Selecciona una cuenta…</option>}
           <option value="otro">Otra (llenar a mano)</option>
           {bankAccounts.map((b) => (
             <option key={b.id} value={b.id}>
@@ -264,8 +280,11 @@ export function CuentaCobroBuilder({
           ))}
         </select>
 
+        {bankChoice !== "" && (
+          <>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Field
+            disabled={bankLocked}
             label="Banco"
             value={data.cuentaBanco.banco}
             onChange={(v) =>
@@ -276,6 +295,7 @@ export function CuentaCobroBuilder({
             }
           />
           <Field
+            disabled={bankLocked}
             label="Titular"
             value={data.cuentaBanco.titular}
             onChange={(v) =>
@@ -294,6 +314,7 @@ export function CuentaCobroBuilder({
               <span className="text-component/60">(opcional)</span>
             </span>
             <select
+              disabled={bankLocked}
               value={data.cuentaBanco.tipoCuenta ?? ""}
               onChange={(e) =>
                 setData({
@@ -313,6 +334,7 @@ export function CuentaCobroBuilder({
             </select>
           </label>
           <Field
+            disabled={bankLocked}
             label="Número de cuenta (opcional)"
             value={data.cuentaBanco.numero ?? ""}
             onChange={(v) =>
@@ -324,6 +346,7 @@ export function CuentaCobroBuilder({
             mono
           />
           <Field
+            disabled={bankLocked}
             label="Llave Bre-B (opcional)"
             value={data.cuentaBanco.llave ?? ""}
             onChange={(v) =>
@@ -335,6 +358,8 @@ export function CuentaCobroBuilder({
             mono
           />
         </div>
+          </>
+        )}
       </section>
 
       {/* Firmante */}
@@ -601,19 +626,22 @@ function Field({
   value,
   onChange,
   mono = false,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   mono?: boolean;
+  disabled?: boolean;
 }) {
   return (
     <label className="block">
       <span className="text-sm font-medium text-component">{label}</span>
       <input
         value={value}
+        disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
-        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda ${
+        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda disabled:bg-hairline/30 disabled:text-component ${
           mono ? "font-mono" : ""
         }`}
       />

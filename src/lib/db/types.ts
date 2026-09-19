@@ -342,6 +342,11 @@ export interface CuentaCobro {
   historial?: CuentaCobroEvento[];
   /** Solicitud de compra de la que salió este borrador (cotización y pedido). */
   origen?: { quoteId: string; requestId: string } | null;
+  /**
+   * Enlace de cobro con tarjeta que crea el admin en Bold cuando la tarjeta no se cobra sola
+   * (sobre el tope de Bold o sin Bold configurado). El cliente paga allí y sube el comprobante.
+   */
+  enlacePagoTarjeta?: string | null;
   /** Enlace de pago con tarjeta de Bold (el más reciente). */
   pagoBold?: PagoBold | null;
   /** Medio con el que el cliente va a pagar; el total incluye o no el recargo según este medio. */

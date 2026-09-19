@@ -67,7 +67,7 @@ const secciones: readonly LegalSection[] = [
   {
     titulo: "Reseñas y contenido que publicas",
     parrafos: [
-      "Puedes dejar una reseña si tienes al menos una cotización que te hayamos publicado en tu cuenta. Revisamos cada reseña y sus fotos antes de mostrarlas, y podemos rechazar u ocultar las que incumplan estas reglas.",
+      "Puedes dejar una reseña si tienes al menos una compra confirmada con nosotros (una cuenta de cobro tuya con el pago confirmado, sin importar el medio de pago). Revisamos cada reseña y sus fotos antes de mostrarlas, y podemos rechazar u ocultar las que incumplan estas reglas.",
     ],
     lista: [
       "Debe basarse en tu experiencia real con B & W y solo puedes dejar una por cuenta.",

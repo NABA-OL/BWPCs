@@ -27,6 +27,12 @@ export const SHOW_COMPONENTS_PAGE = false;
  */
 export const SHOW_PSE = false;
 
+/**
+ * Medios de pago que se ofrecen al cliente. Bre-B ya cubre la transferencia y el efectivo,
+ * así que solo se ofrecen Bre-B y tarjeta (y PSE si `SHOW_PSE`). Los demás siguen en el código.
+ */
+export const OFFERED_PAYMENT_METHOD_IDS: readonly string[] = ["bre-b", "tarjeta", ...(SHOW_PSE ? ["pse"] : [])];
+
 /** "tarjeta y PSE" o solo "tarjeta", según `SHOW_PSE`, para los textos. */
 export const CARD_AND_PSE_TEXT = SHOW_PSE ? "tarjeta y PSE" : "tarjeta";
 /** Lista de medios de pago para los textos públicos. */

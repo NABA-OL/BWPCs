@@ -8,8 +8,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import Image from "next/image";
 import { CardPayButton, RefreshWhilePending } from "@/components/account/card-payment";
+import { QrZoom } from "@/components/account/qr-zoom";
 import { CuentaCobroActions } from "@/components/account/cuenta-cobro-actions";
 import { PaymentMethodPicker, type MethodChoice } from "@/components/account/payment-method-picker";
 import { getMyCuentaCobro } from "@/lib/account/cuentas-cobro";
@@ -20,9 +20,10 @@ import { formatCOP } from "@/lib/format";
 import { withPaymentMethod } from "@/lib/cuenta-cobro";
 import { getSettings } from "@/lib/admin/settings";
 import {
-  CARD_MAX_COP,
+  DEFAULT_PAYMENT_METHOD,
   OFFERED_PAYMENT_METHODS,
   PAYMENT_LABEL,
+  cardIsManual,
   surchargeConcept,
   surchargePct,
 } from "@/lib/payment-methods";
@@ -73,9 +74,14 @@ export default async function CuentaCobroPage({
 
   const estado = estadoDe(cuenta);
   const { cuentaBanco: banco } = cuenta;
-  const method = cuenta.formaPago ?? "transferencia";
+  const method = cuenta.formaPago ?? DEFAULT_PAYMENT_METHOD;
   const isCash = method === "efectivo";
   const isCard = method === "tarjeta" || method === "pse";
+  // Tarjeta que se cobra sola con Bold, o con enlace que crea el admin (sobre el tope de Bold o sin Bold).
+  const manualCard = method === "tarjeta" && cardIsManual(cuenta.total, boldAvailable());
+  const autoCard = method === "tarjeta" && !manualCard;
+  const cardLink = cuenta.enlacePagoTarjeta ?? null;
+  const canReportPayment = method === "bre-b" || method === "transferencia" || (manualCard && cardLink !== null);
   // Total de la cuenta con cada medio (el recargo de la tarjeta se suma al valor base).
   const { mediosPago } = await getSettings();
   const choices: MethodChoice[] = OFFERED_PAYMENT_METHODS.map((m) => {
@@ -85,13 +91,7 @@ export default async function CuentaCobroPage({
       surchargePct(m.id, mediosPago),
       surchargeConcept(m.id),
     ).total;
-    return {
-      id: m.id,
-      label: m.label,
-      total,
-      disabledReason:
-        m.id === "tarjeta" && total > CARD_MAX_COP ? "Solo disponible hasta $5.000.000" : null,
-    };
+    return { id: m.id, label: m.label, total, disabledReason: null };
   });
   const lastProof = cuenta.comprobantes?.at(-1);
   const lastCorrection =
@@ -154,7 +154,7 @@ export default async function CuentaCobroPage({
 
       {estado === "enviada" && (
         <div className="mt-6">
-          <PaymentMethodPicker id={id} current={method} choices={choices} />
+          <PaymentMethodPicker id={id} current={method} choices={choices} hasChoice={cuenta.formaPago !== undefined} />
         </div>
       )}
 
@@ -164,12 +164,11 @@ export default async function CuentaCobroPage({
 
           {method === "bre-b" && (
             <div className="mt-3 grid gap-5 sm:grid-cols-[auto_1fr] sm:items-center">
-              <Image
+              <QrZoom
                 src={BRE_B_QR.src}
                 width={BRE_B_QR.width}
                 height={BRE_B_QR.height}
                 alt="Código QR de Bre-B para pagar"
-                className="h-auto w-56 border border-hairline"
               />
               <div className="space-y-2">
                 <p>
@@ -211,7 +210,7 @@ export default async function CuentaCobroPage({
             </p>
           )}
 
-          {isCard && estado === "enviada" && boldAvailable() && method === "tarjeta" && (
+          {autoCard && estado === "enviada" && (
             <>
               <p className="mt-3 text-component">El total incluye el recargo de la tarjeta.</p>
               {boldStatus === "PROCESSING" && (
@@ -222,13 +221,40 @@ export default async function CuentaCobroPage({
               )}
               {boldStatus === "REJECTED" && (
                 <p className="mt-3 border border-accent/30 bg-accent/5 p-3 text-accent">
-                  Bold no aprobó el pago. Puedes intentarlo de nuevo con otra tarjeta o elegir Bre-B o transferencia.
+                  Bold no aprobó el pago. Puedes intentarlo de nuevo con otra tarjeta o elegir Bre-B.
                 </p>
               )}
               <CardPayButton id={id} total={cuenta.total} />
             </>
           )}
-          {isCard && !(estado === "enviada" && boldAvailable() && method === "tarjeta") && (
+
+          {manualCard && (
+            <div className="mt-3 space-y-3">
+              <p className="text-component">El total incluye el recargo de la tarjeta.</p>
+              {cardLink ? (
+                <>
+                  <a
+                    href={cardLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-panda px-6 py-3 text-sm font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-accent"
+                  >
+                    Pagar con tarjeta · {formatCOP(cuenta.total)}
+                  </a>
+                  <p className="text-xs text-component">
+                    Pagas en Bold, una pasarela segura; B &amp; W no ve los datos de tu tarjeta. Cuando termines, guarda el
+                    comprobante (captura o descarga) y súbelo abajo para que lo confirmemos.
+                  </p>
+                </>
+              ) : (
+                <p className="border border-hairline p-3">
+                  Estamos preparando tu enlace de pago con tarjeta. Te avisamos por correo cuando esté listo.
+                </p>
+              )}
+            </div>
+          )}
+
+          {isCard && !autoCard && !manualCard && (
             <p className="mt-3 text-component">
               Te contactamos para hacer el cobro con tarjeta por un enlace de pago seguro. El total incluye el recargo del medio.
             </p>
@@ -237,7 +263,7 @@ export default async function CuentaCobroPage({
       )}
 
       <div className="mt-8">
-        {estado === "enviada" && <CuentaCobroActions id={id} canReportPayment={!isCash && !isCard} />}
+        {estado === "enviada" && <CuentaCobroActions id={id} canReportPayment={canReportPayment} />}
         {estado === "pago_reportado" && (
           <p className="border border-hairline p-5 text-sm">
             Avisaste tu pago

@@ -26,14 +26,18 @@ export function PaymentMethodPicker({
   id,
   current,
   choices,
+  hasChoice,
 }: {
   id: string;
   current: PaymentMethod;
   choices: MethodChoice[];
+  /** El medio ya viene elegido (al pedir la compra): se muestra resumido, con opción de cambiarlo. */
+  hasChoice: boolean;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState<PaymentMethod | null>(null);
+  const [open, setOpen] = useState(!hasChoice);
 
   async function choose(method: PaymentMethod) {
     if (method === current || pending) return;
@@ -46,6 +50,21 @@ export function PaymentMethodPicker({
     } finally {
       setPending(null);
     }
+  }
+
+  if (!open) {
+    const chosen = choices.find((c) => c.id === current);
+    return (
+      <div className="flex flex-wrap items-center justify-between gap-3 border border-hairline p-5 text-sm">
+        <p>
+          Medio de pago: <strong className="font-medium">{chosen?.label ?? current}</strong>
+          {chosen && <span className="ml-2 font-mono">{formatCOP(chosen.total)}</span>}
+        </p>
+        <button type="button" onClick={() => setOpen(true)} className="text-accent hover:underline">
+          Cambiar medio de pago
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -74,8 +93,7 @@ export function PaymentMethodPicker({
         ))}
       </div>
       <p className="mt-3 text-xs text-component">
-        El valor de la cuenta cambia según el medio: la tarjeta lleva un recargo; con Bre-B o transferencia pagas el valor
-        original.
+        El valor de la cuenta cambia según el medio: la tarjeta lleva un recargo; con Bre-B pagas el valor original.
       </p>
       {error && (
         <p role="alert" className="mt-3 border border-accent/30 bg-accent/5 px-3 py-2 text-sm text-accent">

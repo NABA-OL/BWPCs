@@ -11,6 +11,8 @@ import { MongoServerError, ObjectId } from "mongodb";
 import { ImageError, processProofImage } from "@/lib/images/process";
 import { cuentasCol, moveCuentaCobro } from "@/lib/cuentas-cobro";
 import type { Comprobante, CuentaCobro } from "@/lib/db/types";
+import { boldAvailable } from "@/lib/bold-payments";
+import { DEFAULT_PAYMENT_METHOD, cardIsManual } from "@/lib/payment-methods";
 import { getPrivateStorage } from "@/lib/storage";
 
 const KEY_PREFIX = "comprobantes";
@@ -61,9 +63,16 @@ export async function reportPaymentWithProof(
 
   const current = await col.findOne({ _id: new ObjectId(cuentaId), userId });
   if (!current) throw new ProofRejectedError("Esta cuenta de cobro ya no admite ese aviso.");
-  // Con tarjeta se paga en línea y en efectivo lo confirmamos nosotros: no hay comprobante que subir.
-  if (current.formaPago && current.formaPago !== "transferencia" && current.formaPago !== "bre-b") {
-    throw new ProofRejectedError("Con el medio de pago elegido no se avisa con comprobante. Cámbialo a Bre-B o transferencia.");
+  // Con tarjeta cobrada por Bold (enlace automático) el pago se confirma solo; en efectivo lo confirmamos
+  // nosotros. Con Bre-B, transferencia o tarjeta por enlace manual del admin se avisa con comprobante.
+  const method = current.formaPago ?? DEFAULT_PAYMENT_METHOD;
+  const manualCard = method === "tarjeta" && cardIsManual(current.total, boldAvailable());
+  if (method !== "bre-b" && method !== "transferencia" && !(manualCard && current.enlacePagoTarjeta)) {
+    throw new ProofRejectedError(
+      method === "tarjeta"
+        ? "El pago con tarjeta se confirma solo o cuando tengas el enlace de pago. Si ya pagaste, escríbenos por WhatsApp."
+        : "Con el medio de pago elegido no se avisa con comprobante.",
+    );
   }
 
   const id = randomUUID();

@@ -9,7 +9,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod";
-import { getMyQuote } from "@/lib/account/quotes";
+import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
 import { ensureClientForUser } from "@/lib/clients";
 import { createDraftFromPurchase } from "@/lib/cuenta-cobro-draft";
 import { formatCOP } from "@/lib/format";
@@ -52,6 +52,8 @@ const purchaseSchema = z.object({
   comentario: z.string().trim().max(500),
 });
 
+const PURCHASED_ERROR = "Esta cotización ya fue comprada. Si quieres algo nuevo, solicita otra cotización.";
+
 const escapeHtml = (v: string) =>
   v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -86,6 +88,7 @@ export async function requestRevisionAction(input: unknown): Promise<RequestResu
   if (!quote) return { ok: false, error: "No encontramos esa cotización." };
   // Siempre el id real del documento (isValid acepta cadenas de 12 caracteres que no son hex).
   const quoteId = quote._id.toString();
+  if (await isQuotePurchased(quoteId)) return { ok: false, error: PURCHASED_ERROR };
   if (opcionPreferida !== null && opcionPreferida >= quote.opciones.length) {
     return { ok: false, error: "Elige una de las opciones de la lista." };
   }
@@ -145,6 +148,7 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
   const quote = await getMyQuote(user.id, parsed.data.quoteId);
   if (!quote) return { ok: false, error: "No encontramos esa cotización." };
   const quoteId = quote._id.toString();
+  if (await isQuotePurchased(quoteId)) return { ok: false, error: PURCHASED_ERROR };
   const chosen = quote.opciones[opcion];
   if (!chosen) return { ok: false, error: "Elige una de las opciones de la lista." };
 
@@ -160,9 +164,6 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
   }
 
   const totalCop = totalFor(formaPago, chosen.totales);
-  if (formaPago === "tarjeta" && totalCop > CARD_MAX_COP) {
-    return { ok: false, error: "El pago con tarjeta solo está disponible hasta $5.000.000. Elige Bre-B o transferencia." };
-  }
   const result = await createQuoteRequest("compra", {
     quoteId,
     userId: user.id,
@@ -206,7 +207,9 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
         `<b>De:</b> ${escapeHtml(shortName(user.name))}\n` +
         `<b>Cotización:</b> ${escapeHtml(quote.codigo)}\n` +
         `<b>Opción:</b> ${escapeHtml(chosen.titulo)}\n` +
-        `<b>Pago:</b> ${PAYMENT_LABEL[formaPago]} · ${formatCOP(totalCop)}\n\n` +
+        `<b>Pago:</b> ${PAYMENT_LABEL[formaPago]} · ${formatCOP(totalCop)}\n` +
+        (formaPago === "tarjeta" && totalCop > CARD_MAX_COP ? `⚠️ Sobre el tope de Bold: genera tú el enlace de pago.\n` : "") +
+        `\n` +
         `${siteUrl}/admin/cotizaciones/${quoteId}`,
       "compras",
     ),

@@ -10,7 +10,7 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { z } from "zod";
-import { hasPublishedQuote } from "@/lib/account/quotes";
+import { hasPaidPurchase } from "@/lib/account/quotes";
 import {
   REVIEW_MAX_CHARS,
   REVIEW_MAX_PHOTOS,
@@ -43,10 +43,10 @@ export async function submitReviewAction(input: unknown): Promise<ReviewResult> 
   if (!session) return { ok: false, error: "Tu sesión expiró. Ingresa de nuevo." };
   const { user } = session;
 
-  if (!(await hasPublishedQuote(user.id))) {
+  if (!(await hasPaidPurchase(user.id))) {
     return {
       ok: false,
-      error: "Podrás dejar tu reseña cuando tengas una cotización con B & W.",
+      error: "Podrás dejar tu reseña cuando tengas una compra confirmada con B & W.",
     };
   }
 

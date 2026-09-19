@@ -5,7 +5,7 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-import { hasPublishedQuote } from "@/lib/account/quotes";
+import { hasPaidPurchase } from "@/lib/account/quotes";
 import { ImageError } from "@/lib/images/process";
 import { StorageNotConfiguredError } from "@/lib/storage";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
@@ -52,8 +52,8 @@ export async function POST(req: Request) {
   if (auth.error) return auth.error;
   const { userId } = auth;
 
-  if (!(await hasPublishedQuote(userId))) {
-    return json({ error: "Las fotos se pueden subir después de tener una cotización con B & W." }, 403);
+  if (!(await hasPaidPurchase(userId))) {
+    return json({ error: "Las fotos se pueden subir después de tener una compra confirmada con B & W." }, 403);
   }
 
   const { allowed } = await rateLimitStorage.consume(`upload:${userId}`, {

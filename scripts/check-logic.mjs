@@ -14,7 +14,7 @@ import { ESTADOS_VISIBLES, esEditable, estadoDe, sendMissing } from "../src/lib/
 import { env } from "../src/lib/env.ts";
 import { boldReference, boldSignature, expirationNanos, verifyBoldSignature } from "../src/lib/bold-signature.ts";
 import { computeCuentaCobro, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
-import { OFFERED_PAYMENT_METHODS, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
+import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 
 // --- Estados de la cuenta de cobro ---
 assert.equal(estadoDe({}), "enviada", "sin estado = cuenta anterior, ya emitida");
@@ -64,7 +64,11 @@ const medios = { tarjeta: 0.06, pse: 0.03, breB: 0 };
 assert.equal(surchargePct("tarjeta", medios), 0.06);
 assert.equal(surchargePct("bre-b", medios), 0);
 assert.equal(surchargePct("transferencia", medios), 0);
-assert.ok(!OFFERED_PAYMENT_METHODS.some((m) => m.id === "pse"), "PSE oculto mientras SHOW_PSE sea false");
+assert.deepEqual(OFFERED_PAYMENT_METHODS.map((m) => m.id), ["bre-b", "tarjeta"], "solo Bre-B y tarjeta (PSE oculto con SHOW_PSE=false)");
+assert.equal(DEFAULT_PAYMENT_METHOD, "bre-b");
+assert.ok(cardIsManual(CARD_MAX_COP + 1, true), "sobre el tope de Bold el enlace lo crea el admin");
+assert.ok(!cardIsManual(CARD_MAX_COP, true), "hasta el tope se cobra solo con Bold");
+assert.ok(cardIsManual(1_000, false), "sin Bold configurado la tarjeta también es manual");
 
 // --- Bold: firma del webhook, vigencia en nanosegundos, referencia ---
 const body = '{"id":"evt-1","type":"SALE_APPROVED","data":{"metadata":{"reference":"ref-1"}}}';

@@ -15,7 +15,9 @@ import { formatCOP } from "@/lib/format";
 import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { submitLead } from "@/lib/leads/actions";
 import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
+import { RegisterPrompt } from "@/components/account/register-prompt";
 import { SaveEstimate } from "@/components/account/save-estimate";
+import { stashPendingEstimate } from "@/lib/pending-estimate";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -138,12 +140,25 @@ export function CotizadorEstimator({
     [],
   );
 
+  // Sin cuenta: antes de abrir WhatsApp se ofrece registrarse (o seguir solo por WhatsApp).
+  const [guest, setGuest] = useState(false);
+  const [promptOpen, setPromptOpen] = useState(false);
+  const markGuest = useCallback(() => setGuest(true), []);
+
   function handleContinue() {
     setFormError(null);
     if (!nombre.trim() || !telefono.trim() || !correo.trim()) {
       setFormError("Completa los tres campos para continuar.");
       return;
     }
+    if (ACCOUNTS_ENABLED && guest) {
+      setPromptOpen(true);
+      return;
+    }
+    sendLead();
+  }
+
+  function sendLead() {
     startTransition(async () => {
       const recaptchaToken = await getRecaptchaToken();
       const result = await submitLead({
@@ -154,6 +169,7 @@ export function CotizadorEstimator({
         pagina: "cotizador",
         recaptchaToken,
       });
+      setPromptOpen(false);
       if (!result.ok) {
         setFormError(result.error ?? "Algo salió mal. Intenta de nuevo.");
         return;
@@ -168,6 +184,15 @@ export function CotizadorEstimator({
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
           strategy="afterInteractive"
+        />
+      )}
+
+      {promptOpen && (
+        <RegisterPrompt
+          pending={pending}
+          onRegister={() => stashPendingEstimate(resumen)}
+          onContinue={sendLead}
+          onClose={() => setPromptOpen(false)}
         />
       )}
 
@@ -352,6 +377,7 @@ export function CotizadorEstimator({
               resumen={resumen}
               disabled={!hasSelection}
               onUser={prefill}
+              onGuest={markGuest}
             />
           )}
           {!hasSelection && (

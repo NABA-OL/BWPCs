@@ -22,6 +22,8 @@ export interface AccountRow {
   verified: boolean;
   createdAt: Date | null;
   publishedQuotes: number;
+  /** Compras confirmadas: cuentas de cobro suyas en estado "pagada". */
+  purchases: number;
   review: Review["estado"] | null;
 }
 
@@ -61,11 +63,12 @@ export async function listAccounts(
     .toArray();
 
   const ids = docs.map((u) => u._id.toString());
-  const [quotesCol, reviewsCol] = await Promise.all([
+  const [quotesCol, reviewsCol, cuentasCol] = await Promise.all([
     collections.quotes(),
     collections.reviews(),
+    collections.cuentasCobro(),
   ]);
-  const [quoteCounts, reviews] = await Promise.all([
+  const [quoteCounts, reviews, purchaseCounts] = await Promise.all([
     quotesCol
       .aggregate<{ _id: string; n: number }>([
         { $match: { userId: { $in: ids }, estado: "publicada" } },
@@ -75,7 +78,14 @@ export async function listAccounts(
     reviewsCol
       .find({ userId: { $in: ids } }, { projection: { userId: 1, estado: 1 } })
       .toArray(),
+    cuentasCol
+      .aggregate<{ _id: string; n: number }>([
+        { $match: { userId: { $in: ids }, estado: "pagada" } },
+        { $group: { _id: "$userId", n: { $sum: 1 } } },
+      ])
+      .toArray(),
   ]);
+  const purchasesByUser = new Map(purchaseCounts.map((c) => [c._id, c.n]));
   const quotesByUser = new Map(quoteCounts.map((c) => [c._id, c.n]));
   const reviewByUser = new Map(reviews.map((r) => [r.userId, r.estado]));
 
@@ -89,6 +99,7 @@ export async function listAccounts(
       verified: u.emailVerified === true,
       createdAt: u.createdAt ?? null,
       publishedQuotes: quotesByUser.get(id) ?? 0,
+      purchases: purchasesByUser.get(id) ?? 0,
       review: reviewByUser.get(id) ?? null,
     };
   });
