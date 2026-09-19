@@ -3,6 +3,7 @@
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-08-27
  */
+import { PAYMENT_MEDIA_TEXT } from "@/lib/site-config";
 
 /**
  * Versión en Markdown de cada página pública, servida vía content negotiation
@@ -63,14 +64,14 @@ Ver [ensambles entregados](/ensambles) o [contacto](/contacto).
 - **WhatsApp** (canal principal): respondemos cotizaciones, dudas y pedidos.
 - **Correo**: bandwmount@gmail.com
 - **Cobertura**: Bogotá y envíos a todo Colombia.
-- **Medios de pago**: Bre-B, tarjeta, PSE, Daviplata, Nequi.
+- **Medios de pago**: ${PAYMENT_MEDIA_TEXT.replace(' y ', ', ')}.
 
 Ver [cotizador](/cotizador) antes de escribir para tener un estimado listo.
 `,
 
   cotizador: `# Cotizador de PC
 
-Estimador de precio en pesos colombianos (COP), sin registro. Elige la gama de cada categoría de componente (Procesador, Gráfica, RAM, Board, Fuente, Chasis, Refrigeración) y obtén un total aproximado al instante, con recargo según medio de pago (Bre-B, tarjeta, PSE, Daviplata, Nequi).
+Estimador de precio en pesos colombianos (COP), sin registro. Elige la gama de cada categoría de componente (Procesador, Gráfica, RAM, Board, Fuente, Chasis, Refrigeración) y obtén un total aproximado al instante, con recargo según medio de pago (${PAYMENT_MEDIA_TEXT.replace(' y ', ', ')}).
 
 El precio es un estimado aproximado; el precio final se confirma por WhatsApp — ver [contacto](/contacto).
 

@@ -20,22 +20,23 @@ export function QuoteUserPicker({
   users,
   value,
   onChange,
+  label = "Cuenta del cliente (opcional)",
+  hint = "Si eliges una cuenta, podrás publicarle esta cotización y avisarle por correo.",
+  className = "sm:col-span-3",
 }: {
   users: PickerUser[];
   value: string;
   onChange: (id: string) => void;
+  label?: string;
+  hint?: string;
+  className?: string;
 }) {
   const selected = users.find((u) => u.id === value);
 
   return (
-    <div className="sm:col-span-3">
-      <span className="text-sm font-medium text-component">
-        Cuenta del cliente (opcional)
-      </span>
-      <p className="mt-0.5 text-xs text-component">
-        Si eliges una cuenta, podrás publicarle esta cotización y avisarle por
-        correo.
-      </p>
+    <div className={className}>
+      <span className="text-sm font-medium text-component">{label}</span>
+      <p className="mt-0.5 text-xs text-component">{hint}</p>
       <div className="mt-1.5">
         {value && !selected ? (
           <p className="text-sm text-accent">

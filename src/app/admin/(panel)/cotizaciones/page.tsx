@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { collections } from "@/lib/db/collections";
+import { pendingRequestTypes } from "@/lib/quote-requests";
 import { ButtonLink } from "@/components/ui/button";
 import { QuoteList } from "@/components/admin/quote-list";
 
@@ -26,13 +27,18 @@ export default async function CotizacionesPage() {
     fecha: string;
     total: number;
     publicada: boolean;
+    pedido: "revision" | "compra" | null;
   }[] = [];
   let error: string | null = null;
 
   try {
     const col = await collections.quotes();
-    const docs = await col.find({}).sort({ creado: -1 }).toArray();
+    const [docs, pending] = await Promise.all([
+      col.find({}).sort({ creado: -1 }).toArray(),
+      pendingRequestTypes(),
+    ]);
     rows = docs.map((q) => ({
+      pedido: pending.get(q._id!.toString()) ?? null,
       id: q._id!.toString(),
       codigo: q.codigo,
       cliente: q.cliente,
@@ -40,6 +46,8 @@ export default async function CotizacionesPage() {
       total: q.opciones[0]?.totales.base ?? 0,
       publicada: q.estado === "publicada",
     }));
+    // Las que esperan una versión nueva van primero (sort estable: el resto conserva su orden).
+    rows.sort((a, b) => Number(b.pedido !== null) - Number(a.pedido !== null));
   } catch (e) {
     error = e instanceof Error ? e.message : "Error al cargar cotizaciones.";
   }

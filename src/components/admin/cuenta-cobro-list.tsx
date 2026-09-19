@@ -12,6 +12,8 @@ import Link from "next/link";
 import { formatCOP } from "@/lib/format";
 import { deleteCuentaCobroAction } from "@/app/admin/(panel)/cuentas-cobro/actions";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
+import { ESTADO_LABEL } from "@/lib/cuenta-cobro-estado";
+import type { CuentaCobroEstado } from "@/lib/db/types";
 
 export interface CuentaCobroRow {
   id: string;
@@ -19,21 +21,48 @@ export interface CuentaCobroRow {
   clienteNombre: string;
   fecha: string;
   total: number;
+  estado: CuentaCobroEstado;
+  /** Cuenta anterior a los estados: no sabemos si ya se pagó. */
+  sinEstado: boolean;
+  /** Solo los borradores (y las cuentas antiguas sin estado) se pueden borrar. */
+  deletable: boolean;
 }
+
+type Filter = "todas" | CuentaCobroEstado | "sin_estado";
+
+/** Filtros por estado, en el orden en que se muestran. Las cuentas antiguas sin estado tienen el suyo. */
+const FILTERS: readonly { id: Filter; label: string }[] = [
+  { id: "todas", label: "Todas" },
+  { id: "enviada", label: "Por pagar" },
+  { id: "pago_reportado", label: "Pago por confirmar" },
+  { id: "correccion_solicitada", label: "Corrección pedida" },
+  { id: "pagada", label: "Pagadas" },
+  { id: "anulada", label: "Anuladas" },
+  { id: "borrador", label: "Borradores" },
+  { id: "sin_estado", label: "Sin estado" },
+];
+
+const keyOf = (r: CuentaCobroRow): Filter => (r.sinEstado ? "sin_estado" : r.estado);
 
 export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<Filter>("todas");
   const [page, setPage] = useState(1);
+
+  const counts = useMemo(() => {
+    const map = new Map<Filter, number>([["todas", rows.length]]);
+    for (const r of rows) map.set(keyOf(r), (map.get(keyOf(r)) ?? 0) + 1);
+    return map;
+  }, [rows]);
 
   const visible = useMemo(() => {
     const q = query.toLowerCase().trim();
-    if (!q) return rows;
     return rows.filter(
       (r) =>
-        r.numero.toLowerCase().includes(q) ||
-        r.clienteNombre.toLowerCase().includes(q),
+        (filter === "todas" || keyOf(r) === filter) &&
+        (!q || r.numero.toLowerCase().includes(q) || r.clienteNombre.toLowerCase().includes(q)),
     );
-  }, [rows, query]);
+  }, [rows, query, filter]);
 
   const handleQuery = (v: string) => {
     setQuery(v);
@@ -46,6 +75,26 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
 
   return (
     <div className="mt-8 space-y-4">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por estado">
+        {FILTERS.filter((f) => f.id === "todas" || (counts.get(f.id) ?? 0) > 0).map((f) => (
+          <button
+            key={f.id}
+            type="button"
+            aria-pressed={filter === f.id}
+            onClick={() => {
+              setFilter(f.id);
+              setPage(1);
+            }}
+            className={`border px-3 py-1.5 text-xs font-medium transition-colors ${
+              filter === f.id
+                ? "border-panda bg-panda text-vanilla"
+                : "border-hairline text-component hover:border-panda hover:text-panda"
+            }`}
+          >
+            {f.label} <span className="ml-1 font-mono">{counts.get(f.id) ?? 0}</span>
+          </button>
+        ))}
+      </div>
       <div className="relative max-w-xs">
         <svg
           className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-component"
@@ -93,6 +142,15 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                 >
                   <td className="px-4 py-3 font-mono font-medium">
                     {r.numero}
+                    <span
+                      className={`ml-2 border px-1.5 py-0.5 font-sans text-[10px] font-normal uppercase tracking-wide ${
+                        r.estado === "pago_reportado" || r.estado === "correccion_solicitada"
+                          ? "border-accent/40 text-accent"
+                          : "border-hairline text-component"
+                      }`}
+                    >
+                      {r.sinEstado ? "Sin estado" : ESTADO_LABEL[r.estado]}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-component">
                     {r.clienteNombre || "—"}
@@ -113,8 +171,9 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                         href={`/admin/cuentas-cobro/${r.id}`}
                         className="text-component hover:text-panda"
                       >
-                        Editar
+                        Abrir
                       </Link>
+                      {r.deletable && (
                       <form
                         action={deleteCuentaCobroAction}
                         onSubmit={(e) => {
@@ -134,6 +193,7 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                           Eliminar
                         </button>
                       </form>
+                      )}
                     </div>
                   </td>
                 </tr>

@@ -79,6 +79,29 @@ export function SiteFooter() {
           >
             {siteConfig.contact.email}
           </a>
+          <a
+            href={siteConfig.contact.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram de B & W (@bw_mountpc)"
+            className="mt-3 inline-flex text-vanilla/70 transition-colors hover:text-vanilla focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4.2" />
+              <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none" />
+            </svg>
+          </a>
         </div>
       </div>
 

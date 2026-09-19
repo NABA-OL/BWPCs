@@ -68,7 +68,7 @@ export default async function HomePage() {
   if (ACCOUNTS_ENABLED) {
     try {
       [reviews, reviewStats] = await Promise.all([
-        getApprovedReviews(6),
+        getApprovedReviews(12),
         getReviewStats(),
       ]);
     } catch {

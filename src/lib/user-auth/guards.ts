@@ -43,9 +43,10 @@ const MAIL_PER_EMAIL = [
 ] as const;
 
 // Tope global de correos de código por día. El plan gratuito de Resend permite 100
-// al día y comparte cupo con los avisos de cotización: al llegar aquí se pausan los
-// registros nuevos en vez de dejar sin cupo lo demás. Súbelo al pasar a un plan de pago.
-const MAX_OTP_MAILS_PER_DAY = 70;
+// al día y comparte cupo con los avisos de cotización (35, ver `lib/email/budget.ts`):
+// al llegar aquí se pausan los registros nuevos en vez de dejar sin cupo lo demás.
+// Súbelo al pasar a un plan de pago.
+const MAX_OTP_MAILS_PER_DAY = 55;
 
 const GUARDS: Record<string, Guard> = {
   "/sign-up/email": { action: "user_register", mail: true },

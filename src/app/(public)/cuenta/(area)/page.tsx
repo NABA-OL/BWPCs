@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getMyLeads, getMyQuotes } from "@/lib/account/quotes";
+import { getMyLeads, getMyQuotes, purchasedQuoteIds } from "@/lib/account/quotes";
 import { formatCOP } from "@/lib/format";
 import { whatsappLink } from "@/lib/site-config";
 import { getUserSession } from "@/lib/user-auth/session";
@@ -40,6 +40,8 @@ export default async function CuentaPage() {
     getMyLeads(session.user.id),
   ]);
 
+  const purchased = await purchasedQuoteIds(quotes.map((q) => q._id!.toString()));
+
   return (
     <section className="max-w-3xl">
       <h1 className="text-3xl font-extrabold tracking-tight">
@@ -61,7 +63,14 @@ export default async function CuentaPage() {
                 className="flex flex-wrap items-center justify-between gap-3 p-5 transition-colors hover:bg-hairline/30"
               >
                 <div>
-                  <p className="font-mono font-medium">{q.codigo}</p>
+                  <p className="font-mono font-medium">
+                    {q.codigo}
+                    {purchased.has(q._id!.toString()) && (
+                      <span className="ml-2 border border-hairline px-1.5 py-0.5 font-sans text-[10px] font-normal uppercase tracking-wide text-component">
+                        Comprada
+                      </span>
+                    )}
+                  </p>
                   <p className="mt-0.5 text-xs text-component">
                     {fmtFechaCotizacion.format(new Date(q.fecha))} ·{" "}
                     {q.opciones.length === 1

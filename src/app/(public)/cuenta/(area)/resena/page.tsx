@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReviewForm } from "@/components/account/review-form";
-import { hasPublishedQuote } from "@/lib/account/quotes";
+import { hasPaidPurchase } from "@/lib/account/quotes";
 import { getMyReview } from "@/lib/reviews/reviews";
 import { getUserSession } from "@/lib/user-auth/session";
 
@@ -20,7 +20,7 @@ export default async function ResenaPage() {
   if (!session) redirect("/cuenta/ingresar?next=/cuenta/resena");
 
   const [eligible, mine] = await Promise.all([
-    hasPublishedQuote(session.user.id),
+    hasPaidPurchase(session.user.id),
     getMyReview(session.user.id),
   ]);
 
@@ -33,7 +33,7 @@ export default async function ResenaPage() {
       </p>
 
       <div className="mt-8 border border-hairline bg-vanilla p-6">
-        {eligible || mine ? (
+        {eligible ? (
           <ReviewForm
             initial={
               mine
@@ -52,9 +52,16 @@ export default async function ResenaPage() {
                 : null
             }
           />
+        ) : mine ? (
+          <div className="space-y-3 text-sm">
+            <p className="text-component">
+              Tu reseña sigue como estaba. Para editarla necesitas una compra confirmada con B &amp; W.
+            </p>
+            <p className="whitespace-pre-line border-l-2 border-hairline pl-3">{mine.review.comentario}</p>
+          </div>
         ) : (
           <p className="text-sm text-component">
-            Podrás dejar tu reseña cuando tengas una cotización con B &amp; W.{" "}
+            Las reseñas son de quienes ya compraron: podrás dejar la tuya cuando tu compra esté confirmada.{" "}
             <Link href="/cotizador" className="text-accent hover:underline">
               Cotiza tu PC
             </Link>

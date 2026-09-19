@@ -3,7 +3,7 @@
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-09-04
  */
-import { siteConfig } from "@/lib/site-config";
+import { SHOW_PSE, siteConfig } from "@/lib/site-config";
 
 export const SITE_URL = "https://bw-pcs.com";
 
@@ -49,7 +49,7 @@ export function localBusinessSchema() {
     ],
     priceRange: "$$",
     currenciesAccepted: "COP",
-    paymentAccepted: "Bre-B, Tarjeta de crédito, PSE, Daviplata, Nequi",
+    paymentAccepted: SHOW_PSE ? "Bre-B, Tarjeta de crédito, PSE, Daviplata, Nequi" : "Bre-B, Tarjeta de crédito, Daviplata, Nequi",
     knowsAbout: [
       "Ensamble de computadores",
       "Componentes de PC",
@@ -89,7 +89,7 @@ export function localBusinessSchema() {
         },
       ],
     },
-    sameAs: ["https://www.instagram.com/bw_mountpc/"],
+    sameAs: [siteConfig.contact.instagram],
   };
 }
 

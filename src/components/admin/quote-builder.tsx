@@ -54,6 +54,19 @@ export function QuoteBuilder({
   users: PickerUser[];
 }) {
   const [data, setData] = useState<QuoteInput>(initial);
+  // Con cuenta ligada el nombre sale de la cuenta, salvo que se escriba otro a propósito.
+  const [customName, setCustomName] = useState(() => {
+    const owner = users.find((u) => u.id === initial.userId);
+    return !!owner && initial.cliente !== "" && initial.cliente !== owner.name;
+  });
+  const owner = users.find((u) => u.id === data.userId);
+  const nameFromAccount = !!owner && !customName;
+
+  function pickAccount(userId: string) {
+    const picked = users.find((u) => u.id === userId);
+    setCustomName(false);
+    setData((d) => ({ ...d, userId, cliente: picked ? picked.name : d.cliente }));
+  }
   // Claves estables por opción (no el índice): así el colapsado y el drag
   // siguen a la opción correcta aunque se reordenen.
   const [optionKeys, setOptionKeys] = useState<string[]>(() =>
@@ -192,13 +205,44 @@ export function QuoteBuilder({
           onChange={(v) => setData({ ...data, codigo: v })}
           placeholder="2025-31"
         />
-        <Field
-          label="Cliente (opcional)"
-          value={data.cliente}
-          onChange={(v) => setData({ ...data, cliente: v })}
-          placeholder="Nombre"
-          mono={false}
-        />
+        <div>
+          <Field
+            label="Cliente (opcional)"
+            value={nameFromAccount ? owner.name : data.cliente}
+            onChange={(v) => setData({ ...data, cliente: v })}
+            placeholder="Nombre"
+            mono={false}
+            disabled={nameFromAccount}
+          />
+          {nameFromAccount ? (
+            <p className="mt-1 text-xs text-component">
+              Viene de la cuenta.{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomName(true);
+                  setData((d) => ({ ...d, cliente: owner.name }));
+                }}
+                className="underline hover:text-panda hover:no-underline"
+              >
+                Escribir otro nombre
+              </button>
+            </p>
+          ) : (
+            owner &&
+            customName && (
+              <p className="mt-1 text-xs text-component">
+                <button
+                  type="button"
+                  onClick={() => pickAccount(owner.id)}
+                  className="underline hover:text-panda hover:no-underline"
+                >
+                  Usar el nombre de la cuenta
+                </button>
+              </p>
+            )
+          )}
+        </div>
         <label className="block">
           <span className="text-sm font-medium text-component">Fecha</span>
           <input
@@ -211,7 +255,7 @@ export function QuoteBuilder({
         <QuoteUserPicker
           users={users}
           value={data.userId}
-          onChange={(v) => setData({ ...data, userId: v })}
+          onChange={pickAccount}
         />
       </section>
 
@@ -591,12 +635,14 @@ function Field({
   onChange,
   placeholder,
   mono = true,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   mono?: boolean;
+  disabled?: boolean;
 }) {
   return (
     <label className="block">
@@ -605,7 +651,8 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda ${
+        disabled={disabled}
+        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda disabled:bg-hairline/30 disabled:text-component ${
           mono ? "font-mono" : ""
         }`}
       />

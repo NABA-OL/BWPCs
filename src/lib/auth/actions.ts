@@ -12,6 +12,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { collections } from "@/lib/db/collections";
 import { verifyPassword } from "@/lib/auth/password";
+import { env } from "@/lib/env";
+import { verifyRecaptcha } from "@/lib/recaptcha";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
 import {
   signSession,
@@ -46,6 +48,19 @@ export async function loginAction(
   ]);
   if (!byIp.allowed || !byUser.allowed) {
     return { error: "Demasiados intentos. Espera unos minutos e intenta de nuevo." };
+  }
+
+  // reCAPTCHA v3 (tras el límite de intentos, para no gastar consultas a Google con un atacante que ya
+  // está frenado). Estricto: falla cerrado si Google no responde, el token no es de este sitio o la
+  // puntuación es baja. Solo se omite si el entorno no tiene reCAPTCHA configurado (p. ej. un despliegue
+  // sin llaves), para no dejar al administrador fuera de su propio panel.
+  if (env.recaptchaSecretKey) {
+    const captcha = await verifyRecaptcha(String(formData.get("recaptcha") ?? "") || undefined, "admin_login", {
+      strict: true,
+    });
+    if (!captcha.ok) {
+      return { error: "No se pudo verificar la solicitud. Recarga la página e intenta de nuevo." };
+    }
   }
 
   const admins = await collections.admins();

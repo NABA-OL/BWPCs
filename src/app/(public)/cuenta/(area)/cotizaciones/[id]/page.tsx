@@ -8,10 +8,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { getMyQuote } from "@/lib/account/quotes";
+import { PurchaseForm } from "@/components/account/purchase-form";
+import { MarkQuoteSeen } from "@/components/account/mark-quote-seen";
+import { RevisionForm } from "@/components/account/revision-form";
+import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
+import { listQuoteRequests } from "@/lib/quote-requests";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
-import { whatsappLink } from "@/lib/site-config";
+import { PAYMENT_LABEL } from "@/lib/payment-methods";
+import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { getUserSession } from "@/lib/user-auth/session";
 
 export const metadata: Metadata = { title: "Cotización" };
@@ -22,6 +27,14 @@ const fmtFecha = new Intl.DateTimeFormat("es-CO", {
   day: "2-digit",
   month: "long",
   year: "numeric",
+});
+
+const fmtMoment = new Intl.DateTimeFormat("es-CO", {
+  timeZone: "America/Bogota",
+  day: "2-digit",
+  month: "short",
+  hour: "2-digit",
+  minute: "2-digit",
 });
 
 export default async function CotizacionPage({
@@ -38,8 +51,17 @@ export default async function CotizacionPage({
   const quote = await getMyQuote(session.user.id, id);
   if (!quote) notFound();
 
+  const [requests, purchased] = await Promise.all([listQuoteRequests(id), isQuotePurchased(id)]);
+  const pendingRequest = requests.find((r) => r.estado === "pendiente");
+  const pastRequests = requests.filter((r) => r.estado === "atendida");
+  const version = quote.version ?? 1;
+  const lastChange = version > 1 ? quote.historial?.at(-1) : undefined;
+  const optionName = (index: number | null) =>
+    index === null ? "Sin preferencia" : (quote.opciones[index]?.titulo ?? "Opción eliminada");
+
   return (
     <section className="max-w-3xl">
+      <MarkQuoteSeen id={id} unseen={(quote.vistaVersion ?? 0) < (quote.version ?? 1)} />
       <Link
         href="/cuenta"
         className="text-sm text-component hover:text-panda"
@@ -54,6 +76,7 @@ export default async function CotizacionPage({
           </h1>
           <p className="mt-1 text-sm text-component">
             {fmtFecha.format(new Date(quote.fecha))}
+            {version > 1 && <span className="ml-2 font-mono text-xs">· versión {version}</span>}
           </p>
         </div>
         <a
@@ -65,6 +88,13 @@ export default async function CotizacionPage({
           Descargar PDF
         </a>
       </div>
+
+      {lastChange?.nota && (
+        <p className="mt-6 border border-hairline bg-hairline/30 px-4 py-3 text-sm">
+          <strong className="font-medium">Qué cambió en la versión {version}:</strong>{" "}
+          {lastChange.nota}
+        </p>
+      )}
 
       <div className="mt-8 space-y-6">
         {quote.opciones.map((o) => (
@@ -110,14 +140,115 @@ export default async function CotizacionPage({
                 <dt>Con tarjeta</dt>
                 <dd className="font-mono">{formatCOP(o.totales.conTarjeta)}</dd>
               </div>
-              <div className="flex justify-between text-component">
-                <dt>Con PSE</dt>
-                <dd className="font-mono">{formatCOP(o.totales.conPse)}</dd>
-              </div>
+              {SHOW_PSE && (
+                <div className="flex justify-between text-component">
+                  <dt>Con PSE</dt>
+                  <dd className="font-mono">{formatCOP(o.totales.conPse)}</dd>
+                </div>
+              )}
             </dl>
           </div>
         ))}
       </div>
+
+      {purchased ? (
+        <section className="mt-10 border border-hairline p-6">
+          <h2 className="text-lg font-semibold">Esta cotización ya fue comprada</h2>
+          <p className="mt-2 text-sm text-component">
+            Queda aquí como historial. Si quieres algo nuevo o distinto, solicita otra cotización desde el{" "}
+            <Link href="/cotizador" className="text-accent hover:underline">
+              cotizador
+            </Link>{" "}
+            o escríbenos por WhatsApp. Tus cuentas de cobro están en{" "}
+            <Link href="/cuenta/cuentas-cobro" className="text-accent hover:underline">
+              Cuentas de cobro
+            </Link>
+            .
+          </p>
+        </section>
+      ) : (
+      <section className="mt-10 space-y-6" aria-labelledby="ajustes">
+        <h2 id="ajustes" className="text-lg font-semibold">
+          ¿Y ahora?
+        </h2>
+
+        {pendingRequest?.tipo === "compra" ? (
+          <div className="space-y-2 border border-hairline p-6 text-sm">
+            <p className="font-medium">
+              Pediste comprar el {fmtMoment.format(new Date(pendingRequest.creado))}. Te
+              contactamos para coordinar el pago y la entrega.
+            </p>
+            <p className="text-component">
+              <strong className="font-medium text-panda">Opción:</strong>{" "}
+              {optionName(pendingRequest.opcionPreferida)}
+              {pendingRequest.formaPago && (
+                <>
+                  {" · "}
+                  <strong className="font-medium text-panda">Pago:</strong>{" "}
+                  {PAYMENT_LABEL[pendingRequest.formaPago]}
+                  {pendingRequest.totalCop ? ` · ${formatCOP(pendingRequest.totalCop)}` : ""}
+                </>
+              )}
+            </p>
+            {pendingRequest.comentario && (
+              <p className="whitespace-pre-line border-l-2 border-hairline pl-3 text-component">
+                {pendingRequest.comentario}
+              </p>
+            )}
+          </div>
+        ) : pendingRequest ? (
+          <div className="space-y-2 border border-hairline p-6 text-sm">
+            <p className="font-medium">
+              Pediste cambios el {fmtMoment.format(new Date(pendingRequest.creado))}. Te avisamos
+              por correo cuando la nueva versión esté lista.
+            </p>
+            <p className="text-component">
+              <strong className="font-medium text-panda">Opción:</strong>{" "}
+              {optionName(pendingRequest.opcionPreferida)}
+            </p>
+            <p className="whitespace-pre-line border-l-2 border-hairline pl-3 text-component">
+              {pendingRequest.comentario}
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="border border-hairline p-6">
+              <h3 className="font-semibold">Quiero comprar</h3>
+              <p className="mb-4 mt-1 text-sm text-component">
+                Elige la opción y cómo pagarías. No se cobra nada: te contactamos para acordar
+                todo.
+              </p>
+              <PurchaseForm
+                quoteId={id}
+                options={quote.opciones.map((o) => ({ titulo: o.titulo, totales: o.totales }))}
+              />
+            </div>
+            <div className="border border-hairline p-6">
+              <h3 className="font-semibold">Quiero ajustar algo</h3>
+              <p className="mb-4 mt-1 text-sm text-component">
+                Cuéntanos qué te gustaría cambiar y preparamos una versión nueva.
+              </p>
+              <RevisionForm quoteId={id} options={quote.opciones.map((o) => o.titulo)} />
+            </div>
+          </div>
+        )}
+
+        {pastRequests.length > 0 && (
+          <div className="border-t border-hairline pt-4">
+            <h3 className="text-sm font-medium text-component">Solicitudes anteriores</h3>
+            <ul className="mt-2 space-y-2 text-sm">
+              {pastRequests.map((r) => (
+                <li key={r._id!.toString()} className="text-component">
+                  <span className="font-mono text-xs">{fmtMoment.format(new Date(r.creado))}</span>{" "}
+                  · {r.tipo === "compra" ? "Compra" : "Cambios"} · {optionName(r.opcionPreferida)}
+                  {r.comentario ? `: ${r.comentario}` : ""}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+      )}
 
       <p className="mt-6 text-sm text-component">
         Los precios son de referencia y pueden variar según disponibilidad.{" "}

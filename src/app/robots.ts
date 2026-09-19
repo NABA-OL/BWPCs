@@ -32,6 +32,9 @@ const DISALLOWED = [
   "/api/user-auth/",
   "/api/uploads/",
   "/api/avatar",
+  "/api/comprobantes/",
+  "/api/cuentas-cobro/",
+  "/api/webhooks/",
 ];
 
 export default function robots(): MetadataRoute.Robots {

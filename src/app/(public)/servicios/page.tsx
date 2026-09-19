@@ -14,6 +14,7 @@ import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { JsonLd } from "@/components/json-ld";
 import { assemblyServiceSchema } from "@/lib/schema";
+import { PAYMENT_MEDIA_TEXT } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Ensamblaje de PC a la medida y componentes",
@@ -62,7 +63,7 @@ const faqs = [
   },
   {
     q: "¿Qué medios de pago aceptan?",
-    a: "Bre-B, tarjeta, PSE, Daviplata y Nequi. Puedes ver el total con cada recargo desde el cotizador.",
+    a: `${PAYMENT_MEDIA_TEXT}. Puedes ver el total con cada recargo desde el cotizador.`,
   },
   {
     q: "¿Puedo comprar solo una pieza sin ensamble?",

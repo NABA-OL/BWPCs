@@ -36,8 +36,23 @@ export async function getMyLeads(userId: string) {
   return col.find({ userId }).sort({ creado: -1 }).limit(50).toArray();
 }
 
-/** ¿Tiene al menos una cotización publicada? (requisito para subir fotos/reseñar). */
-export async function hasPublishedQuote(userId: string): Promise<boolean> {
-  const col = await collections.quotes();
-  return (await col.countDocuments({ userId, estado: "publicada" }, { limit: 1 })) > 0;
+/**
+ * ¿Tiene al menos una compra confirmada? (alguna cuenta de cobro suya en estado "pagada", sea cual
+ * sea el medio). Es el requisito para reseñar y subir fotos: solo opina quien compró.
+ */
+export async function hasPaidPurchase(userId: string): Promise<boolean> {
+  const col = await collections.cuentasCobro();
+  return (await col.countDocuments({ userId, estado: "pagada" }, { limit: 1 })) > 0;
+}
+
+/** Cotizaciones (de estos ids) que ya se compraron: alguna cuenta de cobro nacida de ellas quedó pagada. */
+export async function purchasedQuoteIds(quoteIds: string[]): Promise<Set<string>> {
+  if (quoteIds.length === 0) return new Set();
+  const col = await collections.cuentasCobro();
+  const paid = await col.distinct("origen.quoteId", { "origen.quoteId": { $in: quoteIds }, estado: "pagada" });
+  return new Set(paid.filter((id): id is string => typeof id === "string"));
+}
+
+export async function isQuotePurchased(quoteId: string): Promise<boolean> {
+  return (await purchasedQuoteIds([quoteId])).has(quoteId);
 }

@@ -40,6 +40,7 @@ export const adminNav: AdminNavEntry[] = [
       { label: "Cotizador", href: "/admin/promedios", ready: true },
       { label: "Cotizaciones", href: "/admin/cotizaciones", ready: true },
       { label: "Cuentas de cobro", href: "/admin/cuentas-cobro", ready: true },
+      { label: "Cuentas de clientes", href: "/admin/cuentas", ready: true },
       { label: "Clientes", href: "/admin/clientes", ready: true },
       { label: "Cuentas bancarias", href: "/admin/cuentas-bancarias", ready: true },
       { label: "Ensambles", href: "/admin/ensambles", ready: true },

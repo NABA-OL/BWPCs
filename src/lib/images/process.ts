@@ -65,3 +65,31 @@ export async function processImage(input: Buffer): Promise<ProcessedImage> {
     throw new ImageError("No pudimos leer la imagen. Prueba con otra foto.");
   }
 }
+
+const PROOF = { size: 2000, quality: 85 };
+
+/**
+ * Prepara un comprobante de pago: solo imágenes (JPG, PNG o WebP, validadas por su
+ * contenido), orientadas y SIN metadatos, re-codificadas a WebP. Se conserva más
+ * resolución que en una foto de reseña para que se lean los números.
+ */
+export async function processProofImage(
+  input: Buffer,
+): Promise<{ data: Buffer; width: number; height: number }> {
+  try {
+    const source = sharp(input, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error", sequentialRead: true });
+    const { format } = await source.metadata();
+    if (!format || !ALLOWED_FORMATS.has(format)) {
+      throw new ImageError("Formato no admitido. Sube una imagen JPG, PNG o WebP del comprobante.");
+    }
+    const out = await source
+      .rotate()
+      .resize({ width: PROOF.size, height: PROOF.size, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: PROOF.quality })
+      .toBuffer({ resolveWithObject: true });
+    return { data: out.data, width: out.info.width, height: out.info.height };
+  } catch (error) {
+    if (error instanceof ImageError) throw error;
+    throw new ImageError("No pudimos leer la imagen. Prueba con otra captura o foto.");
+  }
+}

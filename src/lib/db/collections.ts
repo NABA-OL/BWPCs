@@ -12,7 +12,9 @@ import type {
   Build,
   CategoryAverage,
   CategoryOptions,
+  BoldEventRecord,
   Client,
+  Counter,
   ComponentItem,
   CuentaCobro,
   Graphic,
@@ -20,6 +22,7 @@ import type {
   NewsPost,
   Processor,
   Quote,
+  QuoteRequest,
   Settings,
   WebLead,
   Review,
@@ -70,8 +73,17 @@ export const collections = {
   async cuentasCobro() {
     return (await getDb()).collection<CuentaCobro>("cuentasCobro");
   },
+  async boldEvents() {
+    return (await getDb()).collection<BoldEventRecord>("boldEvents");
+  },
+  async counters() {
+    return (await getDb()).collection<Counter>("counters");
+  },
   async leads() {
     return (await getDb()).collection<WebLead>("leads");
+  },
+  async quoteRequests() {
+    return (await getDb()).collection<QuoteRequest>("quoteRequests");
   },
   async reviews() {
     return (await getDb()).collection<Review>("reviews");

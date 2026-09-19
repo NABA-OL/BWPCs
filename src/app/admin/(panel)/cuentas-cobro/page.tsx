@@ -10,6 +10,10 @@ import Link from "next/link";
 import { collections } from "@/lib/db/collections";
 import { ButtonLink } from "@/components/ui/button";
 import { CuentaCobroList } from "@/components/admin/cuenta-cobro-list";
+import { estadoDe } from "@/lib/cuenta-cobro-estado";
+import type { CuentaCobroEstado } from "@/lib/db/types";
+
+const NEEDS_ACTION = new Set<CuentaCobroEstado>(["pago_reportado", "correccion_solicitada"]);
 
 export const metadata: Metadata = {
   title: "Cuentas de cobro",
@@ -25,6 +29,9 @@ export default async function CuentasCobroPage() {
     clienteNombre: string;
     fecha: string;
     total: number;
+    estado: CuentaCobroEstado;
+    sinEstado: boolean;
+    deletable: boolean;
   }[] = [];
   let error: string | null = null;
 
@@ -37,7 +44,12 @@ export default async function CuentasCobroPage() {
       clienteNombre: c.cliente.nombre,
       fecha: fmtDate.format(new Date(c.fecha)),
       total: c.total,
+      estado: estadoDe(c),
+      sinEstado: c.estado === undefined,
+      deletable: c.estado === undefined || c.estado === "borrador",
     }));
+    // Lo que espera acción del admin va primero (sort estable: el resto conserva su orden).
+    rows.sort((a, b) => Number(NEEDS_ACTION.has(b.estado)) - Number(NEEDS_ACTION.has(a.estado)));
   } catch (e) {
     error =
       e instanceof Error ? e.message : "Error al cargar cuentas de cobro.";

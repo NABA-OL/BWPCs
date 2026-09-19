@@ -19,6 +19,30 @@
  */
 export const SHOW_COMPONENTS_PAGE = false;
 
+/**
+ * PSE ya casi no se usa (Bre-B lo reemplaza) y su cobro pasaría por Bold. Con `false`
+ * desaparece de todo lo que ve el cliente: cotizador, cotización, PDF, correos, textos
+ * y formulario de compra. El código, los tipos y el admin no se tocan: ponla en `true`
+ * para volver a mostrarlo.
+ */
+export const SHOW_PSE = false;
+
+/**
+ * Medios de pago que se ofrecen al cliente. Bre-B ya cubre la transferencia y el efectivo,
+ * así que solo se ofrecen Bre-B y tarjeta (y PSE si `SHOW_PSE`). Los demás siguen en el código.
+ */
+export const OFFERED_PAYMENT_METHOD_IDS: readonly string[] = ["bre-b", "tarjeta", ...(SHOW_PSE ? ["pse"] : [])];
+
+/** "tarjeta y PSE" o solo "tarjeta", según `SHOW_PSE`, para los textos. */
+export const CARD_AND_PSE_TEXT = SHOW_PSE ? "tarjeta y PSE" : "tarjeta";
+/** Lista de medios de pago para los textos públicos. */
+export const PAYMENT_MEDIA_TEXT = SHOW_PSE
+  ? "Bre-B, tarjeta, PSE, Daviplata y Nequi"
+  : "Bre-B, tarjeta, Daviplata y Nequi";
+
+/** QR estático de Bre-B (no lleva valor): se muestra junto a la llave en las cuentas de cobro. */
+export const BRE_B_QR = { src: "/pagos/qr-bre-b.png", width: 1056, height: 993 } as const;
+
 export const siteConfig = {
   name: "B & W",
   tagline: "Tu PC Master Race a buen precio",
@@ -28,6 +52,8 @@ export const siteConfig = {
     whatsapp: "+573188422533",
     whatsappDisplay: "(+57) 318 842 2533",
     email: "bandwmount@gmail.com",
+    /** Perfil de Instagram (sin el parámetro `stkn` de "compartir", que es un token de seguimiento). */
+    instagram: "https://www.instagram.com/bw_mountpc/",
   },
   /**
    * Responsable del tratamiento de datos (Ley 1581 de 2012) y parte de los

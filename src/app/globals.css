@@ -111,6 +111,22 @@ body {
   overflow: hidden;
 }
 
+/* Entrada del texto de una reseña y de la foto del visor */
+@keyframes bw-review-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bw-review-in {
+  animation: bw-review-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Entrada del menú móvil */
 @keyframes bw-menu-in {
   from {
@@ -147,7 +163,24 @@ body {
   }
 }
 
+@keyframes bw-nudge {
+  0%, 55%, 100% {
+    transform: translateX(0);
+  }
+  70% {
+    transform: translateX(-5px);
+  }
+  85% {
+    transform: translateX(-1px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  /* Invita a abrir el menú del header (flechita hacia donde se despliega). */
+  .bw-nudge {
+    animation: bw-nudge 2.8s ease-in-out infinite;
+  }
+
   .bw-menu {
     transform-origin: top;
     animation: bw-menu-in 240ms cubic-bezier(0.16, 1, 0.3, 1);

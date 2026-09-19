@@ -35,6 +35,10 @@ async function reviewsCol() {
         partialFilterExpression: { userId: { $type: "string" } },
       },
     );
+    // Solo acelera el listado del admin: si falla, no debe tumbar las reseñas.
+    await col
+      .createIndex({ estado: 1, actualizado: -1 }, { name: "estado_actualizado" })
+      .catch((error: unknown) => console.error("[reviews] índice estado_actualizado", error));
   })();
   await indexReady;
   return col;
@@ -79,6 +83,7 @@ export async function saveMyReview(input: SaveInput): Promise<Review> {
     estrellas: input.estrellas,
     comentario: input.comentario,
     fotoIds: input.fotoIds,
+    compraVerificada: true, // quien llega aquí pasó `hasPaidPurchase` en la acción
     estado: "pendiente" as const,
     motivo: null,
     autor: null,
@@ -111,6 +116,7 @@ export interface PublicReview {
   comentario: string;
   autor: { nombre: string; avatarStyle: string; avatarSeed: string };
   fotos: PhotoDto[];
+  compraVerificada: boolean;
 }
 
 /** Reseñas aprobadas para la home (las más recientes primero). */
@@ -127,6 +133,7 @@ export async function getApprovedReviews(limit = 6): Promise<PublicReview[]> {
       comentario: r.comentario,
       autor: r.autor!,
       fotos: await getPhotos(r.fotoIds),
+      compraVerificada: r.compraVerificada === true,
     })),
   );
 }
@@ -161,36 +168,62 @@ export interface AdminReview {
   actualizado: Date;
 }
 
-/** Todas las reseñas para moderar: primero las pendientes. */
-export async function listReviewsForAdmin(): Promise<AdminReview[]> {
-  const docs = await (await reviewsCol())
-    .find({})
-    .sort({ actualizado: -1 })
-    .limit(200)
+export const REVIEWS_PAGE_SIZE = 10;
+
+export interface AdminReviewPage {
+  reviews: AdminReview[];
+  page: number;
+  totalPages: number;
+  /** Conteo por estado, para las pestañas. */
+  counts: Record<Review["estado"], number>;
+}
+
+/** Reseñas de un estado, la más reciente primero, paginadas en el servidor. */
+export async function listReviewsForAdmin(
+  estado: Review["estado"],
+  requestedPage: number,
+): Promise<AdminReviewPage> {
+  const col = await reviewsCol();
+  const counts: AdminReviewPage["counts"] = { pendiente: 0, aprobada: 0, rechazada: 0 };
+  const grouped = await col
+    .aggregate<{ _id: Review["estado"]; n: number }>([
+      { $group: { _id: "$estado", n: { $sum: 1 } } },
+    ])
     .toArray();
-  const users = await getPublicUsers(
-    docs.flatMap((d) => (d.userId ? [d.userId] : [])),
-  );
-  const rows = await Promise.all(
-    docs.map(async (r) => ({
-      id: r._id!.toString(),
-      version: r.actualizado.toISOString(),
-      estado: r.estado,
-      estrellas: r.estrellas,
-      comentario: r.comentario,
-      motivo: r.motivo ?? null,
-      autorNombre:
-        (r.userId && users.get(r.userId)?.name) ||
-        r.autor?.nombre ||
-        "Cuenta eliminada",
-      autorCorreo: (r.userId && users.get(r.userId)?.email) || "",
-      cuentaEliminada: !r.userId,
-      fotos: await getPhotos(r.fotoIds),
-      actualizado: r.actualizado,
-    })),
-  );
-  const rank = { pendiente: 0, rechazada: 1, aprobada: 2 } as const;
-  return rows.sort((a, b) => rank[a.estado] - rank[b.estado]);
+  for (const g of grouped) counts[g._id] = g.n;
+
+  const totalPages = Math.max(1, Math.ceil(counts[estado] / REVIEWS_PAGE_SIZE));
+  const page = Math.min(Math.max(1, requestedPage), totalPages);
+  const docs = await col
+    .find({ estado })
+    .sort({ actualizado: -1 })
+    .skip((page - 1) * REVIEWS_PAGE_SIZE)
+    .limit(REVIEWS_PAGE_SIZE)
+    .toArray();
+
+  const [users, photos] = await Promise.all([
+    getPublicUsers(docs.flatMap((d) => (d.userId ? [d.userId] : []))),
+    getPhotos(docs.flatMap((d) => d.fotoIds)),
+  ]);
+  const photoById = new Map(photos.map((p) => [p.id, p]));
+
+  const reviews = docs.map((r) => ({
+    id: r._id!.toString(),
+    version: r.actualizado.toISOString(),
+    estado: r.estado,
+    estrellas: r.estrellas,
+    comentario: r.comentario,
+    motivo: r.motivo ?? null,
+    autorNombre:
+      (r.userId && users.get(r.userId)?.name) ||
+      r.autor?.nombre ||
+      "Cuenta eliminada",
+    autorCorreo: (r.userId && users.get(r.userId)?.email) || "",
+    cuentaEliminada: !r.userId,
+    fotos: r.fotoIds.flatMap((id) => photoById.get(id) ?? []),
+    actualizado: r.actualizado,
+  }));
+  return { reviews, page, totalPages, counts };
 }
 
 /** Aprueba y fija cómo se verá el autor en la home (nombre corto + avatar). */

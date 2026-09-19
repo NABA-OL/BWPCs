@@ -28,8 +28,8 @@ export interface EmailContent {
   paragraphs: string[];
   /** Código destacado (verificación, recuperación…). */
   code?: string;
-  /** Recuadro con un dato clave, p. ej. el precio de una cotización. */
-  fact?: { label: string; value: string };
+  /** Recuadro con datos clave, una fila por dato (p. ej. el precio de cada opción de una cotización). */
+  facts?: { label: string; value: string }[];
   button?: { label: string; url: string };
   /** Nota final en gris, más pequeña. */
   footnote?: string;
@@ -63,9 +63,15 @@ export function renderEmail(c: EmailContent): { html: string; text: string } {
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 22px;"><tr><td style="background:#ffffff;border:2px solid ${PANDA};padding:14px 22px;font-family:${MONO};font-size:34px;font-weight:700;letter-spacing:10px;color:${PANDA};">${esc(c.code)}</td></tr></table>`
     : "";
 
-  const fact = c.fact
-    ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;border:1px solid ${HAIRLINE};background:#ffffff;"><tr><td style="padding:14px 16px;font-family:${SANS};font-size:13px;color:${GRAY};">${esc(c.fact.label)}</td><td align="right" style="padding:14px 16px;font-family:${MONO};font-size:18px;font-weight:700;color:${PANDA};">${esc(c.fact.value)}</td></tr></table>`
-    : "";
+  const facts =
+    c.facts && c.facts.length > 0
+      ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;border:1px solid ${HAIRLINE};background:#ffffff;">${c.facts
+          .map(
+            (f, i) =>
+              `<tr><td style="padding:12px 16px;${i > 0 ? `border-top:1px solid ${HAIRLINE};` : ""}font-family:${SANS};font-size:14px;color:${PANDA};">${esc(f.label)}</td><td align="right" style="padding:12px 16px;${i > 0 ? `border-top:1px solid ${HAIRLINE};` : ""}font-family:${MONO};font-size:16px;font-weight:700;color:${PANDA};white-space:nowrap;">${esc(f.value)}</td></tr>`,
+          )
+          .join("")}</table>`
+      : "";
 
   const button = c.button
     ? `<p style="margin:0 0 24px;"><a href="${esc(c.button.url)}" style="display:inline-block;background:${ACCENT};color:#ffffff;text-decoration:none;font-family:${SANS};font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;padding:14px 28px;border-radius:2px;">${esc(c.button.label)}</a></p>`
@@ -90,7 +96,7 @@ ${preheader}
 <tr><td style="padding:32px 32px 8px;">
 ${c.greeting ? `<p style="margin:0 0 8px;font-family:${SANS};font-size:15px;color:${GRAY};">${esc(c.greeting)}</p>` : ""}
 <h1 style="margin:0 0 18px;font-family:${SANS};font-size:26px;line-height:1.2;font-weight:800;letter-spacing:-0.5px;color:${PANDA};">${esc(c.title)}</h1>
-${paragraphs}${code}${fact}${button}${footnote}
+${paragraphs}${code}${facts}${button}${footnote}
 </td></tr>
 <tr><td style="padding:12px 32px 28px;font-family:${SANS};font-size:13px;line-height:1.6;color:${GRAY};">¿Dudas? Escríbenos por <a href="${esc(whatsappLink())}" style="color:${ACCENT};">WhatsApp</a> o a <a href="mailto:${esc(contact.email)}" style="color:${ACCENT};">${esc(contact.email)}</a>.</td></tr>
 <tr><td style="border-top:1px solid ${HAIRLINE};padding:16px 32px;font-family:${SANS};font-size:11px;color:${GRAY};">B &amp; W · Ensamble de PC y venta de componentes en Colombia · Mensaje automático de bw-pcs.com</td></tr>
@@ -103,7 +109,7 @@ ${paragraphs}${code}${fact}${button}${footnote}
     c.title,
     ...c.paragraphs,
     c.code ? `Tu código: ${c.code}` : undefined,
-    c.fact ? `${c.fact.label}: ${c.fact.value}` : undefined,
+    ...(c.facts ?? []).map((f) => `${f.label}: ${f.value}`),
     c.button ? `${c.button.label}: ${c.button.url}` : undefined,
     c.footnote,
     `¿Dudas? WhatsApp ${whatsappLink()} o ${contact.email}`,

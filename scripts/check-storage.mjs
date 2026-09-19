@@ -7,7 +7,7 @@
  */
 // Comprueba las credenciales de R2: sube un archivo de prueba, lo lee por la URL
 // pública y lo borra. Uso: pnpm check:storage
-import { createR2Storage } from "../src/lib/storage/r2.ts";
+import { createR2PrivateStorage, createR2Storage } from "../src/lib/storage/r2.ts";
 
 const {
   R2_ACCOUNT_ID: accountId,
@@ -64,4 +64,27 @@ try {
 } catch (error) {
   console.error("Falló:", error instanceof Error ? error.message : error);
   process.exit(1);
+}
+
+// Bucket PRIVADO de comprobantes (opcional en desarrollo; obligatorio en producción).
+const privateBucket = process.env.R2_PRIVATE_BUCKET;
+if (!privateBucket) {
+  console.log("Bucket privado (comprobantes): R2_PRIVATE_BUCKET no está definida, se omite.");
+} else {
+  const priv = createR2PrivateStorage({ accountId, accessKeyId, secretAccessKey, bucket: privateBucket });
+  const privKey = `_check/ping-${Date.now()}.txt`;
+  try {
+    await priv.put(privKey, Buffer.from("ok"), "text/plain");
+    const back = await priv.get(privKey);
+    console.log(
+      back?.body.toString() === "ok"
+        ? "Bucket privado: subida y lectura con el token OK"
+        : "Bucket privado: la lectura con el token FALLÓ",
+    );
+    await priv.remove([privKey]);
+    console.log("Bucket privado: borrado OK. Confirma en Cloudflare que su acceso público está DESACTIVADO.");
+  } catch (error) {
+    console.error("Bucket privado falló:", error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
 }

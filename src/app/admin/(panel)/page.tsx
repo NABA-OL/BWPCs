@@ -7,8 +7,11 @@
  */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { StatBars, StatColumns } from "@/components/admin/stat-bars";
 import {
+  getActivityStats,
   getAdminStats,
+  type ActivityStats,
   type AdminStats,
   type BrandCount,
 } from "@/lib/admin/stats";
@@ -22,9 +25,10 @@ export const metadata: Metadata = {
 
 export default async function AdminDashboard() {
   let stats: AdminStats | null = null;
+  let activity: ActivityStats | null = null;
   let error: string | null = null;
   try {
-    stats = await getAdminStats();
+    [stats, activity] = await Promise.all([getAdminStats(), getActivityStats()]);
   } catch (e) {
     error =
       e instanceof Error
@@ -125,6 +129,8 @@ export default async function AdminDashboard() {
               )}
             </section>
 
+            {activity && <ActivityPanel activity={activity} />}
+
             {/* TRM */}
             <section className="mt-6 border border-hairline p-6">
               <h2 className="text-sm font-medium text-component">
@@ -216,5 +222,59 @@ function Chip({ brand, big = false }: { brand: BrandCount; big?: boolean }) {
       <span className="text-component">{brand.marca}</span>
       <span className="font-mono font-medium">{brand.count}</span>
     </span>
+  );
+}
+
+function ActivityPanel({ activity }: { activity: ActivityStats }) {
+  const { accounts, weekly, quotes, stars, withPublishedQuote, withReview } = activity;
+  return (
+    <section className="mt-6 border border-hairline p-6">
+      <div className="flex items-center justify-between">
+        <h2 className="font-semibold">Actividad de clientes</h2>
+        <Link href="/admin/cuentas" className="text-sm text-accent hover:underline">
+          Ver cuentas
+        </Link>
+      </div>
+
+      <div className="mt-5">
+        <p className="text-sm text-component">
+          Registros por semana (últimas {weekly.length}) ·{" "}
+          <span className="font-mono">{accounts}</span> cuentas verificadas
+        </p>
+        <div className="mt-3">
+          <StatColumns items={weekly} />
+          <div className="mt-1 flex justify-between font-mono text-[10px] text-component">
+            <span>{weekly[0]?.label}</span>
+            <span>{weekly[weekly.length - 1]?.label}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-component">Cotizaciones</h3>
+          <StatBars
+            items={[
+              { label: "Publicadas", value: quotes.publicada },
+              { label: "Borradores", value: quotes.borrador },
+            ]}
+          />
+        </div>
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-component">Reseñas aprobadas</h3>
+          <StatBars items={stars} />
+        </div>
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-component">De cuenta a cliente</h3>
+          <StatBars
+            items={[
+              { label: "Cuentas", value: accounts },
+              { label: "Con cotización", value: withPublishedQuote },
+              { label: "Con reseña", value: withReview },
+            ]}
+          />
+        </div>
+      </div>
+    </section>
   );
 }
