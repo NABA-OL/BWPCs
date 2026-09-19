@@ -19,6 +19,25 @@ import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 export const revalidate = 3600;
 
+const trust = [
+  {
+    title: "Garantía",
+    body: "Cada componente lleva la garantía de su fabricante, y el ensamblaje queda cubierto por nosotros.",
+  },
+  {
+    title: "Probado antes de entregar",
+    body: "Armamos, formateamos y configuramos tu equipo desde cero, y lo probamos para que llegue con todo funcionando.",
+  },
+  {
+    title: "Pagos seguros",
+    body: "Pagas con Bre-B o con tarjeta en la pasarela segura de Bold. Los datos de tu tarjeta nunca pasan por nosotros.",
+  },
+  {
+    title: "Todo por escrito",
+    body: "Recibes una cotización formal en PDF con cada componente y su precio, y una cuenta de cobro numerada por tu compra.",
+  },
+];
+
 const steps = [
   {
     title: "Cotiza en la web",
@@ -112,6 +131,28 @@ export default async function HomePage() {
           <ShareButton title="B & W — Tu PC Master Race a buen precio" />
         </div>
       </AssemblyHero>
+
+      {/* Confianza: lo que respalda la compra (todo lo que dice ya es política del negocio) */}
+      <section
+        aria-labelledby="confianza"
+        className="border-t border-hairline/50 bg-vanilla/40"
+      >
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+          <h2 id="confianza" className="text-balance text-xl font-bold">
+            Compra con tranquilidad
+          </h2>
+          <ul className="mt-6 grid gap-x-10 gap-y-6 border-y border-hairline py-6 sm:grid-cols-2 lg:grid-cols-4">
+            {trust.map((item) => (
+              <li key={item.title}>
+                <h3 className="text-base font-semibold">{item.title}</h3>
+                <p className="mt-2 text-pretty text-sm leading-relaxed text-panda">
+                  {item.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       {/* Lo que hacemos */}
       <section className="border-t border-hairline/50 bg-vanilla/40">
