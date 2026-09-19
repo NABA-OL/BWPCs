@@ -11,6 +11,10 @@ import { ObjectId } from "mongodb";
 import { collections } from "@/lib/db/collections";
 import { getQuoteBuilderData } from "@/lib/admin/quote-data";
 import { QuoteBuilder } from "@/components/admin/quote-builder";
+import { QuotePublishPanel } from "@/components/admin/quote-publish-panel";
+import { getCuentaForQuote } from "@/lib/cuentas-cobro";
+import { listQuoteRequests } from "@/lib/quote-requests";
+import { getPublicUser, listPublicUsers } from "@/lib/user-auth/users";
 import type { QuoteInput } from "@/lib/quote";
 
 export const metadata: Metadata = {
@@ -30,11 +34,18 @@ export default async function EditarCotizacionPage({
   const quote = await col.findOne({ _id: new ObjectId(id) });
   if (!quote) notFound();
 
-  const data = await getQuoteBuilderData();
+  const [data, users, owner, requests, cuenta] = await Promise.all([
+    getQuoteBuilderData(),
+    listPublicUsers(),
+    quote.userId ? getPublicUser(quote.userId) : null,
+    listQuoteRequests(id),
+    getCuentaForQuote(id),
+  ]);
 
   const initial: QuoteInput = {
     codigo: quote.codigo,
     cliente: quote.cliente ?? "",
+    userId: quote.userId ?? "",
     fecha: new Date(quote.fecha).toISOString().slice(0, 10),
     opciones: quote.opciones.map((o) => ({
       titulo: o.titulo,
@@ -57,7 +68,15 @@ export default async function EditarCotizacionPage({
         <p className="mt-1 text-component">Edita y descarga el PDF.</p>
       </header>
 
+      <QuotePublishPanel
+        quote={quote}
+        userLabel={owner ? `${owner.name} (${owner.email})` : null}
+        requests={requests}
+        cuenta={cuenta}
+      />
+
       <QuoteBuilder
+        users={users}
         id={id}
         initial={initial}
         catalog={data.catalog}

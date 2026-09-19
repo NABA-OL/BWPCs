@@ -7,14 +7,18 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
-import { useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { RecaptchaNotice } from "@/components/recaptcha-notice";
 import { formatCOP } from "@/lib/format";
-import { whatsappLink } from "@/lib/site-config";
+import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { submitLead } from "@/lib/leads/actions";
 import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
+import { RegisterPrompt } from "@/components/account/register-prompt";
+import { SaveEstimate } from "@/components/account/save-estimate";
+import { stashPendingEstimate } from "@/lib/pending-estimate";
+import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -105,13 +109,18 @@ export function CotizadorEstimator({
     breBPct,
   ]);
 
+  // Para qué va a usar el equipo (opcional): ayuda a afinar la propuesta (p. ej. más gráfica que procesador).
+  const [comentario, setComentario] = useState("");
+
   const resumen = useMemo(() => {
     const items = chosen.map((c) => `• ${c.label}: ${c.opcion}`).join("\n");
+    const uso = comentario.replace(/\s+/g, " ").trim();
     return (
       `${items}${servicio ? "\n• Ensamblaje" : ""}\n\n` +
-      `Estimado aproximado: ${formatCOP(total)} (con tarjeta ${formatCOP(conTarjeta)}).`
+      `Estimado aproximado: ${formatCOP(total)} (con tarjeta ${formatCOP(conTarjeta)}).` +
+      (uso ? `\n\nComentarios del cliente: ${uso}` : "")
     );
-  }, [chosen, servicio, total, conTarjeta]);
+  }, [chosen, servicio, total, conTarjeta, comentario]);
 
   function buildWaMessage(nombre: string) {
     return `Hola B & W, mi nombre es ${nombre}. Estoy interesado en cotizar un PC con:\n${resumen}\n\n¿Me ayudan a afinarlo?`;
@@ -126,12 +135,35 @@ export function CotizadorEstimator({
   const [formError, setFormError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
+  // Con sesión iniciada, prellena el contacto sin pisar lo que ya se escribió.
+  const prefill = useCallback(
+    (u: { name: string; phone: string; email: string }) => {
+      setNombre((v) => v || u.name);
+      setTelefono((v) => v || u.phone);
+      setCorreo((v) => v || u.email);
+    },
+    [],
+  );
+
+  // Sin cuenta: antes de abrir WhatsApp se ofrece registrarse (o seguir solo por WhatsApp).
+  const [guest, setGuest] = useState(false);
+  const [promptOpen, setPromptOpen] = useState(false);
+  const markGuest = useCallback(() => setGuest(true), []);
+
   function handleContinue() {
     setFormError(null);
     if (!nombre.trim() || !telefono.trim() || !correo.trim()) {
       setFormError("Completa los tres campos para continuar.");
       return;
     }
+    if (ACCOUNTS_ENABLED && guest) {
+      setPromptOpen(true);
+      return;
+    }
+    sendLead();
+  }
+
+  function sendLead() {
     startTransition(async () => {
       const recaptchaToken = await getRecaptchaToken();
       const result = await submitLead({
@@ -142,6 +174,7 @@ export function CotizadorEstimator({
         pagina: "cotizador",
         recaptchaToken,
       });
+      setPromptOpen(false);
       if (!result.ok) {
         setFormError(result.error ?? "Algo salió mal. Intenta de nuevo.");
         return;
@@ -156,6 +189,15 @@ export function CotizadorEstimator({
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
           strategy="afterInteractive"
+        />
+      )}
+
+      {promptOpen && (
+        <RegisterPrompt
+          pending={pending}
+          onRegister={() => stashPendingEstimate(resumen)}
+          onContinue={sendLead}
+          onClose={() => setPromptOpen(false)}
         />
       )}
 
@@ -245,6 +287,22 @@ export function CotizadorEstimator({
             className="h-4 w-4 accent-accent"
           />
         </label>
+
+        <div className="mt-4">
+          <label htmlFor="estimator-comment" className="text-sm font-medium">
+            ¿Para qué lo vas a usar? <span className="font-normal text-component">(opcional)</span>
+          </label>
+          <textarea
+            id="estimator-comment"
+            value={comentario}
+            onChange={(e) => setComentario(e.target.value)}
+            maxLength={400}
+            rows={3}
+            placeholder="Ej.: jugar en 1440p, editar video, estudiar arquitectura… Así afinamos la propuesta (quizá no necesitas tanto procesador y sí una mejor gráfica)."
+            className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 text-sm outline-none focus:border-panda"
+          />
+          <p className="mt-1 text-xs text-component">{comentario.length}/400</p>
+        </div>
       </div>
 
       {/* Panel de estimado */}
@@ -265,10 +323,12 @@ export function CotizadorEstimator({
               <dt className="text-vanilla/60">Con tarjeta</dt>
               <dd className="font-mono">{formatCOP(conTarjeta)}</dd>
             </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-vanilla/60">Con PSE</dt>
-              <dd className="font-mono">{formatCOP(conPse)}</dd>
-            </div>
+            {SHOW_PSE && (
+              <div className="flex items-center justify-between">
+                <dt className="text-vanilla/60">Con PSE</dt>
+                <dd className="font-mono">{formatCOP(conPse)}</dd>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <dt className="text-vanilla/60">
                 Con Bre-B{breBPct === 0 ? " (sin recargo)" : ""}
@@ -333,6 +393,14 @@ export function CotizadorEstimator({
               )}
             </div>
           )}
+          {ACCOUNTS_ENABLED && (
+            <SaveEstimate
+              resumen={resumen}
+              disabled={!hasSelection}
+              onUser={prefill}
+              onGuest={markGuest}
+            />
+          )}
           {!hasSelection && (
             <p className="mt-2 px-1 text-center text-xs text-component">
               Selecciona al menos un componente para cotizar.
@@ -345,9 +413,9 @@ export function CotizadorEstimator({
             Este valor es solo un aproximado
           </strong>{" "}
           según la gama que elegiste, para que te hagas una idea. No es el
-          precio final y puede variar —muchas veces sale más económico—. El
-          valor exacto lo confirmamos contigo por WhatsApp según los modelos y
-          la disponibilidad.
+          precio final y puede variar: a veces sale más económico y otras un poco
+          más alto, según los modelos, la disponibilidad y el dólar. El valor
+          exacto lo confirmamos contigo por WhatsApp.
         </p>
       </div>
     </div>

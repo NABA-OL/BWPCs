@@ -18,13 +18,16 @@ import { formatCOP } from "@/lib/format";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import {
   computeCuentaCobro,
+  withPaymentMethod,
   type CuentaCobroInput,
   type CuentaCobroItemInput,
 } from "@/lib/cuenta-cobro";
 import { COMPONENT_CATEGORIES } from "@/lib/db/types";
+import { CARD_MAX_COP, OFFERED_PAYMENT_METHODS, PAYMENT_LABEL, cardIsManual, surchargeConcept } from "@/lib/payment-methods";
 import type { BankAccount } from "@/lib/db/types";
 import type { CatalogOption } from "@/lib/admin/catalog-data";
 import { Combobox } from "@/components/admin/combobox";
+import { QuoteUserPicker, type PickerUser } from "@/components/admin/quote-user-picker";
 
 export interface ClientOption {
   id: string;
@@ -33,6 +36,8 @@ export interface ClientOption {
   direccion: string;
   telefono: string;
   email: string;
+  /** Cuenta de usuario ligada a este cliente ("" = ninguna). */
+  userId: string;
 }
 
 export interface BankAccountOption {
@@ -61,19 +66,70 @@ export function CuentaCobroBuilder({
   bankAccounts,
   signers,
   catalog,
+  users,
+  tarjetaPct,
+  boldEnabled,
+  locked = false,
   pdfHref,
 }: {
   id: string;
   initial: CuentaCobroInput;
+  users: PickerUser[];
+  /** Recargo de la tarjeta (fracción, p. ej. 0.06). */
+  tarjetaPct: number;
+  /** Bold está configurado: la tarjeta hasta el tope se cobra sola. */
+  boldEnabled: boolean;
+  /** Cuenta ya enviada/pagada/anulada: solo lectura. */
+  locked?: boolean;
   clients: ClientOption[];
   bankAccounts: BankAccountOption[];
   signers: SignerOption[];
   catalog: CatalogOption[];
   pdfHref?: string;
 }) {
-  const [data, setData] = useState<CuentaCobroInput>(initial);
-  const [clientChoice, setClientChoice] = useState("otro");
-  const [bankChoice, setBankChoice] = useState("otro");
+  // Cliente: si el documento ya trae uno, se busca entre los guardados (misma cuenta web o mismos datos).
+  // Si coincide, se abre seleccionado y con los datos ACTUALES del cliente guardado; si no, en "Otro".
+  const matchedClient = (() => {
+    const c = initial.cliente;
+    if (!c.nombre && !c.identificacion && !c.email) return null;
+    return (
+      clients.find((x) => initial.userId !== "" && x.userId === initial.userId) ??
+      clients.find((x) => x.nombre === c.nombre && x.identificacion === c.identificacion && x.email === c.email) ??
+      null
+    );
+  })();
+  const [data, setData] = useState<CuentaCobroInput>(() =>
+    matchedClient && !locked
+      ? {
+          ...initial,
+          cliente: {
+            nombre: matchedClient.nombre,
+            identificacion: matchedClient.identificacion,
+            direccion: matchedClient.direccion,
+            telefono: matchedClient.telefono,
+            email: matchedClient.email,
+          },
+        }
+      : initial,
+  );
+  // "" = aún sin elegir (no se muestran los campos), "otro" = a mano (editables) o el id de un cliente
+  // guardado (campos bloqueados).
+  const [clientChoice, setClientChoice] = useState(() => {
+    const c = initial.cliente;
+    if (!c.nombre && !c.identificacion && !c.email) return "";
+    return matchedClient ? matchedClient.id : "otro";
+  });
+  // Cuenta bancaria: "" = aún sin elegir (no se muestran los campos), "otro" = a mano (campos editables) o el id
+  // de una cuenta guardada (campos bloqueados). Si el documento ya trae datos, se parte de la guardada que
+  // coincida (bloqueada) o, si no hay, de "a mano".
+  const [bankChoice, setBankChoice] = useState(() => {
+    const b = initial.cuentaBanco;
+    if (!b.banco && !b.numero && !b.llave) return "";
+    const same = bankAccounts.find(
+      (x) => x.banco === b.banco && (x.numero ?? "") === (b.numero ?? "") && (x.llave ?? "") === (b.llave ?? "") && x.titular === b.titular,
+    );
+    return same ? same.id : "otro";
+  });
   const [signerChoice, setSignerChoice] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [state, formAction, pending] = useActionState<
@@ -85,6 +141,21 @@ export function CuentaCobroBuilder({
     () => computeCuentaCobro(data.items, data.descuentoPct),
     [data.items, data.descuentoPct],
   );
+
+  // Medio de pago: cambia el total (la tarjeta lleva recargo) y qué se muestra abajo: cuenta bancaria o enlace de pago.
+  const cardChosen = data.formaPago === "tarjeta";
+  function changeMethod(formaPago: string) {
+    setData((d) => {
+      const method = formaPago === "tarjeta" ? "tarjeta" : "";
+      const next = withPaymentMethod(
+        d.items,
+        d.descuentoPct,
+        method === "tarjeta" ? tarjetaPct : 0,
+        surchargeConcept("tarjeta"),
+      );
+      return { ...d, formaPago, items: next.items };
+    });
+  }
 
   function setItem(
     ii: number,
@@ -113,16 +184,34 @@ export function CuentaCobroBuilder({
 
   function pickClient(clientId: string) {
     setClientChoice(clientId);
-    if (clientId === "otro") return;
+    if (clientId === "otro") {
+      // A mano: campos vacíos para llenar (la cuenta web ligada no se toca).
+      setData((d) => ({ ...d, cliente: { nombre: "", identificacion: "", direccion: "", telefono: "", email: "" } }));
+      return;
+    }
     const c = clients.find((x) => x.id === clientId);
-    if (c) setData((d) => ({ ...d, cliente: { ...c } }));
+    if (c) {
+      setData((d) => ({
+        ...d,
+        cliente: { nombre: c.nombre, identificacion: c.identificacion, direccion: c.direccion, telefono: c.telefono, email: c.email },
+        userId: c.userId || d.userId,
+      }));
+    }
   }
+  const clientLocked = clientChoice !== "" && clientChoice !== "otro";
+  // Si el cliente guardado no tiene cédula/NIT, se puede escribir aquí (se le completa al guardar la cuenta).
+  const savedClientNoId = clientLocked && (clients.find((x) => x.id === clientChoice)?.identificacion ?? "") === "";
   function pickBank(bankId: string) {
     setBankChoice(bankId);
-    if (bankId === "otro") return;
+    if (bankId === "otro") {
+      // A mano: campos vacíos para llenar.
+      setData((d) => ({ ...d, cuentaBanco: { banco: "", tipoCuenta: null, numero: "", llave: "", titular: "" } }));
+      return;
+    }
     const b = bankAccounts.find((x) => x.id === bankId);
-    if (b) setData((d) => ({ ...d, cuentaBanco: { ...b } }));
+    if (b) setData((d) => ({ ...d, cuentaBanco: { banco: b.banco, tipoCuenta: b.tipoCuenta, numero: b.numero, llave: b.llave, titular: b.titular } }));
   }
+  const bankLocked = bankChoice !== "" && bankChoice !== "otro";
   function pickSigner(signerId: string) {
     setSignerChoice(signerId);
     const s = signers.find((x) => x.id === signerId);
@@ -144,16 +233,22 @@ export function CuentaCobroBuilder({
     <form action={formAction} className="mt-8 space-y-8">
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="payload" value={JSON.stringify(data)} />
+      <fieldset disabled={locked} className="contents">
 
       {/* Encabezado */}
       <section className="grid gap-4 border border-hairline p-6 sm:grid-cols-2">
         <label className="block">
           <span className="text-sm font-medium text-component">Número</span>
           <input
-            value={data.numero}
-            onChange={(e) => setData({ ...data, numero: e.target.value })}
-            className={`${inputCls} font-mono`}
+            value={data.numero || "Se asigna al guardar"}
+            readOnly
+            className={`${inputCls} bg-hairline/30 font-mono text-component`}
           />
+          {!id && (
+            <span className="mt-1 block text-xs text-component">
+              Automático: se confirma al guardar (si otra cuenta se crea antes, toma el siguiente).
+            </span>
+          )}
         </label>
         <label className="block">
           <span className="text-sm font-medium text-component">Fecha</span>
@@ -163,6 +258,35 @@ export function CuentaCobroBuilder({
             onChange={(e) => setData({ ...data, fecha: e.target.value })}
             className={`${inputCls} font-mono`}
           />
+        </label>
+        <QuoteUserPicker
+          users={users}
+          value={data.userId}
+          onChange={(userId) => setData({ ...data, userId })}
+          label="Cuenta del cliente en la web (opcional)"
+          hint="Si eliges una cuenta, podrás enviarle esta cuenta de cobro y ella podrá verla y avisar su pago."
+          className="sm:col-span-2"
+        />
+        <label className="block sm:col-span-2">
+          <span className="text-sm font-medium text-component">Medio de pago</span>
+          <select
+            value={data.formaPago}
+            onChange={(e) => changeMethod(e.target.value)}
+            className={`${inputCls} max-w-sm`}
+          >
+            <option value="">Sin definir (lo elige el cliente)</option>
+            {OFFERED_PAYMENT_METHODS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label}
+              </option>
+            ))}
+            {data.formaPago !== "" && !OFFERED_PAYMENT_METHODS.some((m) => m.id === data.formaPago) && (
+              <option value={data.formaPago}>{PAYMENT_LABEL[data.formaPago as keyof typeof PAYMENT_LABEL] ?? data.formaPago}</option>
+            )}
+          </select>
+          <span className="mt-1 block text-xs text-component">
+            Con tarjeta el total lleva recargo y en lugar de la cuenta bancaria se pide un enlace de pago.
+          </span>
         </label>
       </section>
 
@@ -174,15 +298,19 @@ export function CuentaCobroBuilder({
           onChange={(e) => pickClient(e.target.value)}
           className={`${inputCls} max-w-sm`}
         >
+          {clientChoice === "" && <option value="">Selecciona un cliente…</option>}
           <option value="otro">Otro (llenar a mano)</option>
           {clients.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.nombre} · {c.identificacion}
+              {c.identificacion ? `${c.nombre} · ${c.identificacion}` : c.nombre}
             </option>
           ))}
         </select>
+        {clientChoice !== "" && (
+          <>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Field
+            disabled={clientLocked}
             label="Nombre"
             value={data.cliente.nombre}
             onChange={(v) =>
@@ -190,6 +318,7 @@ export function CuentaCobroBuilder({
             }
           />
           <Field
+            disabled={clientLocked && !savedClientNoId}
             label="Identificación"
             value={data.cliente.identificacion}
             onChange={(v) =>
@@ -201,6 +330,7 @@ export function CuentaCobroBuilder({
             mono
           />
           <Field
+            disabled={clientLocked}
             label="Dirección"
             value={data.cliente.direccion}
             onChange={(v) =>
@@ -208,6 +338,7 @@ export function CuentaCobroBuilder({
             }
           />
           <Field
+            disabled={clientLocked}
             label="Teléfono"
             value={data.cliente.telefono}
             onChange={(v) =>
@@ -216,6 +347,7 @@ export function CuentaCobroBuilder({
             mono
           />
           <Field
+            disabled={clientLocked}
             label="Email"
             value={data.cliente.email}
             onChange={(v) =>
@@ -223,9 +355,47 @@ export function CuentaCobroBuilder({
             }
           />
         </div>
+            {savedClientNoId && (
+              <p className="text-xs text-component sm:col-span-2">
+                Este cliente no tiene cédula o NIT guardado: escríbelo aquí y se le guarda también en Clientes.
+              </p>
+            )}
+          </>
+        )}
       </section>
 
-      {/* Cuenta bancaria */}
+      {cardChosen ? (
+        <section className="border border-hairline p-6">
+          <h2 className="text-lg font-semibold">Pago con tarjeta</h2>
+          {cardIsManual(totals.total, boldEnabled) ? (
+            <>
+              <p className="mt-1 text-sm text-component">
+                {boldEnabled && totals.total > CARD_MAX_COP
+                  ? "Este valor pasa el tope de Bold para cobrar solo. "
+                  : ""}
+                Crea el enlace de pago en Bold por{" "}
+                <strong className="font-mono text-panda">{formatCOP(totals.total)}</strong> y pégalo aquí. El cliente paga
+                allá y sube el comprobante.
+              </p>
+              <label className="mt-4 block max-w-2xl">
+                <span className="text-sm font-medium text-component">Enlace de pago (Bold)</span>
+                <input
+                  type="url"
+                  value={data.enlacePagoTarjeta}
+                  onChange={(e) => setData({ ...data, enlacePagoTarjeta: e.target.value })}
+                  placeholder="https://checkout.bold.co/payment/LNK_…"
+                  className={`${inputCls} font-mono text-sm`}
+                />
+              </label>
+            </>
+          ) : (
+            <p className="mt-1 text-sm text-component">
+              Este valor se cobra solo con Bold (hasta $5.000.000): no hace falta cuenta bancaria ni enlace. El cliente ve el
+              botón de pago en su cuenta.
+            </p>
+          )}
+        </section>
+      ) : (
       <section className="border border-hairline p-6">
         <h2 className="text-lg font-semibold">Cuenta bancaria</h2>
         <p className="mt-1 text-sm text-component">
@@ -237,6 +407,7 @@ export function CuentaCobroBuilder({
           onChange={(e) => pickBank(e.target.value)}
           className={`${inputCls} max-w-sm`}
         >
+          {bankChoice === "" && <option value="">Selecciona una cuenta…</option>}
           <option value="otro">Otra (llenar a mano)</option>
           {bankAccounts.map((b) => (
             <option key={b.id} value={b.id}>
@@ -247,8 +418,11 @@ export function CuentaCobroBuilder({
           ))}
         </select>
 
+        {bankChoice !== "" && (
+          <>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Field
+            disabled={bankLocked}
             label="Banco"
             value={data.cuentaBanco.banco}
             onChange={(v) =>
@@ -259,6 +433,7 @@ export function CuentaCobroBuilder({
             }
           />
           <Field
+            disabled={bankLocked}
             label="Titular"
             value={data.cuentaBanco.titular}
             onChange={(v) =>
@@ -277,6 +452,7 @@ export function CuentaCobroBuilder({
               <span className="text-component/60">(opcional)</span>
             </span>
             <select
+              disabled={bankLocked}
               value={data.cuentaBanco.tipoCuenta ?? ""}
               onChange={(e) =>
                 setData({
@@ -296,6 +472,7 @@ export function CuentaCobroBuilder({
             </select>
           </label>
           <Field
+            disabled={bankLocked}
             label="Número de cuenta (opcional)"
             value={data.cuentaBanco.numero ?? ""}
             onChange={(v) =>
@@ -307,6 +484,7 @@ export function CuentaCobroBuilder({
             mono
           />
           <Field
+            disabled={bankLocked}
             label="Llave Bre-B (opcional)"
             value={data.cuentaBanco.llave ?? ""}
             onChange={(v) =>
@@ -318,7 +496,10 @@ export function CuentaCobroBuilder({
             mono
           />
         </div>
+          </>
+        )}
       </section>
+      )}
 
       {/* Firmante */}
       <section className="border border-hairline p-6">
@@ -500,15 +681,19 @@ export function CuentaCobroBuilder({
         </div>
       </section>
 
+      </fieldset>
+
       {/* Acciones */}
       <div className="flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
-        <Button type="submit" size="lg" disabled={pending}>
-          {pending
-            ? "Guardando…"
-            : id
-              ? "Guardar cambios"
-              : "Crear cuenta de cobro"}
-        </Button>
+        {!locked && (
+          <Button type="submit" size="lg" disabled={pending}>
+            {pending
+              ? "Guardando…"
+              : id
+                ? "Guardar cambios"
+                : "Crear cuenta de cobro"}
+          </Button>
+        )}
         {pdfHref && (
           <a
             href={pdfHref}
@@ -580,19 +765,22 @@ function Field({
   value,
   onChange,
   mono = false,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   mono?: boolean;
+  disabled?: boolean;
 }) {
   return (
     <label className="block">
       <span className="text-sm font-medium text-component">{label}</span>
       <input
         value={value}
+        disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
-        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda ${
+        className={`mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 outline-none focus:border-panda disabled:bg-hairline/30 disabled:text-component ${
           mono ? "font-mono" : ""
         }`}
       />

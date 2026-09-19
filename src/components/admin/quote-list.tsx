@@ -19,6 +19,9 @@ export interface QuoteRow {
   cliente: string | null;
   fecha: string;
   total: number;
+  publicada: boolean;
+  /** Pedido del cliente que espera respuesta: cambios o compra. */
+  pedido: "revision" | "compra" | null;
 }
 
 export function QuoteList({ rows }: { rows: QuoteRow[] }) {
@@ -94,6 +97,16 @@ export function QuoteList({ rows }: { rows: QuoteRow[] }) {
                 >
                   <td className="px-4 py-3 font-mono font-medium">
                     {r.codigo}
+                    {r.publicada && (
+                      <span className="ml-2 border border-hairline px-1.5 py-0.5 font-sans text-[10px] font-normal uppercase tracking-wide text-component">
+                        Publicada
+                      </span>
+                    )}
+                    {r.pedido && (
+                      <span className="ml-2 border border-accent/40 px-1.5 py-0.5 font-sans text-[10px] font-normal uppercase tracking-wide text-accent">
+                        {r.pedido === "compra" ? "Quiere comprar" : "Cambios pedidos"}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-component">
                     {r.cliente || "—"}

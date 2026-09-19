@@ -23,6 +23,16 @@ export interface ClientRow {
   direccion: string;
   telefono: string;
   email: string;
+  /** id de la cuenta de usuario ligada ("" = ninguna). */
+  userId: string;
+  /** Correo de la cuenta ligada, para mostrarlo en la tabla. */
+  cuenta: string | null;
+}
+
+interface AccountOption {
+  id: string;
+  name: string;
+  email: string;
 }
 
 const EMPTY = {
@@ -32,9 +42,16 @@ const EMPTY = {
   direccion: "",
   telefono: "",
   email: "",
+  userId: "",
 };
 
-export function ClientManager({ rows }: { rows: ClientRow[] }) {
+export function ClientManager({
+  rows,
+  accounts,
+}: {
+  rows: ClientRow[];
+  accounts: AccountOption[];
+}) {
   const router = useRouter();
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
   const [state, formAction, pending] = useActionState<
@@ -79,11 +96,13 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
           </label>
           <label className="block">
             <span className="text-sm font-medium text-component">
-              Identificación
+              Identificación{" "}
+              <span className="text-component/60">
+                (opcional; se exige al emitir una cuenta de cobro)
+              </span>
             </span>
             <input
               name="identificacion"
-              required
               value={form.identificacion}
               onChange={(e) =>
                 setForm({ ...form, identificacion: e.target.value })
@@ -126,6 +145,24 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
               className={inputCls}
             />
           </label>
+          <label className="block sm:col-span-2">
+            <span className="text-sm font-medium text-component">
+              Cuenta en la web <span className="text-component/60">(opcional)</span>
+            </span>
+            <select
+              name="userId"
+              value={form.userId}
+              onChange={(e) => setForm({ ...form, userId: e.target.value })}
+              className={inputCls}
+            >
+              <option value="">Sin cuenta</option>
+              {accounts.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} · {a.email}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <div className="mt-5 flex items-center gap-3">
@@ -161,6 +198,7 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
                 <th className="px-4 py-3 font-medium">Nombre</th>
                 <th className="px-4 py-3 font-medium">Identificación</th>
                 <th className="px-4 py-3 font-medium">Contacto</th>
+                <th className="px-4 py-3 font-medium">Cuenta</th>
                 <th className="px-4 py-3 text-right font-medium">Acciones</th>
               </tr>
             </thead>
@@ -172,10 +210,13 @@ export function ClientManager({ rows }: { rows: ClientRow[] }) {
                 >
                   <td className="px-4 py-3 font-medium">{r.nombre}</td>
                   <td className="px-4 py-3 font-mono text-component">
-                    {r.identificacion}
+                    {r.identificacion || "—"}
                   </td>
                   <td className="px-4 py-3 text-component">
                     {[r.telefono, r.email].filter(Boolean).join(" · ") || "—"}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-xs text-component">
+                    {r.cuenta ?? "—"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-3">

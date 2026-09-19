@@ -19,7 +19,7 @@ import {
   CotizadorEstimator,
   type EstimatorCategory,
 } from "@/components/cotizador-estimator";
-import { whatsappLink } from "@/lib/site-config";
+import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Cotizador de PC gamer: precio en Colombia",
@@ -59,7 +59,9 @@ const faqs = [
   },
   {
     q: "¿Por qué el total cambia según el medio de pago?",
-    a: "Tarjeta y PSE cobran una comisión que se refleja en el total. Con Bre-B no hay recargo. El cotizador te muestra los tres valores para que compares.",
+    a: SHOW_PSE
+      ? "Tarjeta y PSE cobran una comisión que se refleja en el total. Con Bre-B no hay recargo. El cotizador te muestra los tres valores para que compares."
+      : "La tarjeta cobra una comisión que se refleja en el total. Con Bre-B no hay recargo. El cotizador te muestra los valores para que compares.",
   },
   {
     q: "¿Puedo cotizar solo algunos componentes?",
@@ -134,7 +136,7 @@ export default async function CotizadorPage() {
         summary={[
           "Elige la gama de cada componente: procesador, gráfica, RAM y más.",
           "Ve el total aproximado en pesos colombianos al instante.",
-          "Compara el precio con tarjeta, PSE o Bre-B.",
+          SHOW_PSE ? "Compara el precio con tarjeta, PSE o Bre-B." : "Compara el precio con tarjeta o Bre-B.",
           "Sin registro. Confirmas y afinas detalles por WhatsApp.",
         ]}
       >

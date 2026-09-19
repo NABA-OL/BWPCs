@@ -14,7 +14,11 @@ import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
 import { getSession } from "@/lib/auth/session";
 import { optionTotals, type QuoteInput } from "@/lib/quote";
-import { COMPONENT_CATEGORIES, type Quote } from "@/lib/db/types";
+import { COMPONENT_CATEGORIES, type Quote, type QuoteVersionEntry } from "@/lib/db/types";
+import { consumeNoticeMail } from "@/lib/email/budget";
+import { sendQuoteReadyEmail } from "@/lib/email/quote-ready";
+import { closePendingRequest, deleteRevisionsOfQuote } from "@/lib/quote-requests";
+import { getPublicUser } from "@/lib/user-auth/users";
 
 export interface QuoteFormState {
   ok?: boolean;
@@ -54,6 +58,7 @@ function sanitize(raw: unknown): QuoteInput | null {
   return {
     codigo: String(q.codigo ?? "").trim(),
     cliente: String(q.cliente ?? "").trim(),
+    userId: String(q.userId ?? "").trim(),
     fecha: String(q.fecha ?? "").trim(),
     opciones: opciones.length > 0 ? opciones : [],
   };
@@ -79,6 +84,13 @@ export async function saveQuoteAction(
   if (input.opciones.length === 0)
     return { error: "Agrega al menos una opción con ítems." };
 
+  const owner = input.userId ? await getPublicUser(input.userId) : null;
+  if (input.userId && !owner) {
+    return { error: "El usuario elegido ya no existe." };
+  }
+  // Con cuenta ligada, el nombre sale de la cuenta si no se escribió otro.
+  if (owner && !input.cliente) input.cliente = owner.name;
+
   const settings = await getSettings();
 
   const opciones: Quote["opciones"] = input.opciones.map((o) => ({
@@ -90,18 +102,28 @@ export async function saveQuoteAction(
 
   const fecha = input.fecha ? new Date(input.fecha) : new Date();
   let newId: string | null = null;
+  let ownerChangedQuoteId: string | null = null;
 
   try {
     const col = await collections.quotes();
     if (id) {
+      const previous = await col.findOne({ _id: new ObjectId(id) });
+      // Si cambia el usuario, la cotización deja de estar publicada: no debe
+      // quedar visible (ni avisada) para alguien que ya no es su destinatario.
+      const ownerChanged = (previous?.userId ?? "") !== input.userId;
+      if (ownerChanged) ownerChangedQuoteId = id;
       await col.updateOne(
         { _id: new ObjectId(id) },
         {
           $set: {
             codigo: input.codigo,
             cliente: input.cliente || null,
+            userId: input.userId || null,
             fecha,
             opciones,
+            ...(ownerChanged
+              ? { estado: "borrador" as const, publicadaEn: null, avisoEnviadoEn: null }
+              : {}),
           },
         },
       );
@@ -109,6 +131,10 @@ export async function saveQuoteAction(
       const { insertedId } = await col.insertOne({
         codigo: input.codigo,
         cliente: input.cliente || null,
+        userId: input.userId || null,
+        estado: "borrador",
+        publicadaEn: null,
+        avisoEnviadoEn: null,
         fecha,
         opciones,
         creado: new Date(),
@@ -118,6 +144,9 @@ export async function saveQuoteAction(
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Error al guardar." };
   }
+
+  // Si cambió la dueña, sus pedidos de cambios ya no aplican.
+  if (id && ownerChangedQuoteId === id) await closePendingRequest(id, "cancelada");
 
   revalidatePath("/admin/cotizaciones");
   revalidatePath("/admin");
@@ -133,6 +162,148 @@ export async function deleteQuoteAction(form: FormData): Promise<void> {
   if (!id) return;
   const col = await collections.quotes();
   await col.deleteOne({ _id: new ObjectId(id) });
+  await deleteRevisionsOfQuote(id);
   revalidatePath("/admin/cotizaciones");
   revalidatePath("/admin");
+}
+
+function versionEntry(quote: Quote, version: number, nota: string | null): QuoteVersionEntry {
+  return {
+    version,
+    enviadaEn: new Date(),
+    nota,
+    totales: quote.opciones.map((o) => ({ titulo: o.titulo, totalCop: o.totales.base })),
+  };
+}
+
+/**
+ * Envía el correo "tu cotización está lista" (o "actualizada" con `update`);
+ * true si Resend lo aceptó. Respeta el cupo diario de avisos.
+ */
+async function notifyQuoteReady(
+  quote: Quote,
+  update?: { version: number; nota: string | null },
+): Promise<boolean> {
+  if (!quote._id || !quote.userId) return false;
+  const user = await getPublicUser(quote.userId);
+  if (!user) return false;
+  if (!(await consumeNoticeMail())) {
+    console.error("[cotizaciones] cupo diario de avisos agotado");
+    return false;
+  }
+  try {
+    await sendQuoteReadyEmail({
+      to: user.email,
+      name: user.name,
+      codigo: quote.codigo,
+      quoteId: quote._id.toString(),
+      options: quote.opciones.map((o) => ({
+        titulo: o.titulo,
+        totalCop: o.totales.base,
+      })),
+      update,
+    });
+    return true;
+  } catch (error) {
+    console.error("[cotizaciones] fallo al enviar el aviso", error);
+    return false;
+  }
+}
+
+async function loadQuote(form: FormData) {
+  if (!(await getSession())) return null;
+  const id = String(form.get("id") ?? "").trim();
+  if (!ObjectId.isValid(id)) return null;
+  const col = await collections.quotes();
+  const quote = await col.findOne({ _id: new ObjectId(id) });
+  return quote ? { col, quote } : null;
+}
+
+function revalidateQuote(id: string) {
+  revalidatePath(`/admin/cotizaciones/${id}`);
+  revalidatePath("/admin/cotizaciones");
+  revalidatePath("/cuenta");
+  revalidatePath("/cuenta/cotizaciones", "layout");
+}
+
+/** Publica la cotización para su usuario y le envía el aviso por correo. */
+export async function publishQuoteAction(form: FormData): Promise<void> {
+  const loaded = await loadQuote(form);
+  if (!loaded || !loaded.quote.userId) return;
+  const { col, quote } = loaded;
+
+  const sent = await notifyQuoteReady(quote);
+  await col.updateOne(
+    { _id: quote._id },
+    {
+      $set: {
+        estado: "publicada",
+        publicadaEn: quote.publicadaEn ?? new Date(),
+        avisoEnviadoEn: sent ? new Date() : null,
+        // La primera vez se registra la versión 1 (después la avanza `sendRevisionAction`).
+        version: quote.version ?? 1,
+        vistaVersion: 0, // recién publicada: el cliente la ve como nueva hasta que la abra
+        historial: quote.historial?.length ? quote.historial : [versionEntry(quote, 1, null)],
+      },
+    },
+  );
+  revalidateQuote(quote._id!.toString());
+}
+
+/**
+ * Envía al cliente la versión ajustada: sube la versión, guarda qué cambió,
+ * avisa por correo y cierra el pedido de cambios pendiente (si lo hay).
+ */
+export async function sendRevisionAction(form: FormData): Promise<void> {
+  const loaded = await loadQuote(form);
+  if (!loaded || loaded.quote.estado !== "publicada" || !loaded.quote.userId) return;
+  const { col, quote } = loaded;
+  const id = quote._id!.toString();
+  const nota = String(form.get("nota") ?? "").trim().slice(0, 500) || null;
+
+  const version = (quote.version ?? 1) + 1;
+  const sent = await notifyQuoteReady(quote, { version, nota });
+  await col.updateOne(
+    { _id: quote._id },
+    {
+      $set: { version, avisoEnviadoEn: sent ? new Date() : null },
+      $push: { historial: versionEntry(quote, version, nota) },
+    },
+  );
+  await closePendingRequest(id, "atendida");
+  revalidateQuote(id);
+  revalidatePath("/admin");
+}
+
+/** Cierra el pedido pendiente del cliente (p. ej. una compra ya gestionada) sin enviar versión nueva. */
+export async function closeRequestAction(form: FormData): Promise<void> {
+  const loaded = await loadQuote(form);
+  if (!loaded) return;
+  const id = loaded.quote._id!.toString();
+  await closePendingRequest(id, "atendida");
+  revalidateQuote(id);
+  revalidatePath("/admin");
+}
+
+/** Reenvía el aviso de una cotización ya publicada. */
+export async function resendQuoteNoticeAction(form: FormData): Promise<void> {
+  const loaded = await loadQuote(form);
+  if (!loaded || loaded.quote.estado !== "publicada") return;
+  const { col, quote } = loaded;
+
+  if (await notifyQuoteReady(quote)) {
+    await col.updateOne({ _id: quote._id }, { $set: { avisoEnviadoEn: new Date() } });
+  }
+  revalidateQuote(quote._id!.toString());
+}
+
+/** Vuelve la cotización a borrador: el cliente deja de verla. */
+export async function unpublishQuoteAction(form: FormData): Promise<void> {
+  const loaded = await loadQuote(form);
+  if (!loaded) return;
+  await loaded.col.updateOne(
+    { _id: loaded.quote._id },
+    { $set: { estado: "borrador", publicadaEn: null, avisoEnviadoEn: null } },
+  );
+  revalidateQuote(loaded.quote._id!.toString());
 }

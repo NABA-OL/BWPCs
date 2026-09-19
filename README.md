@@ -126,7 +126,7 @@ npm run seed         # Crea el admin inicial y settings en MongoDB
 ```
 
 El seed crea:
-- **Admin:** usuario `admin`, contraseña `bwadmin2026`
+- **Admin:** usuario y contraseña tomados de `ADMIN_USER` y `ADMIN_PASSWORD` en `.env.local` (obligatorias, mínimo 12 caracteres; no hay valores por defecto)
 - **Settings** por defecto (TRM manual = 3950, frases del wordmark, opciones del cotizador)
 
 ---

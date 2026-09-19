@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import { getQuoteBuilderData } from "@/lib/admin/quote-data";
 import { QuoteBuilder } from "@/components/admin/quote-builder";
+import { listPublicUsers } from "@/lib/user-auth/users";
 import type { QuoteInput } from "@/lib/quote";
 
 export const metadata: Metadata = {
@@ -24,10 +25,13 @@ export default async function NuevaCotizacionPage() {
     error = e instanceof Error ? e.message : "Error al cargar datos.";
   }
 
+  const users = data ? await listPublicUsers() : [];
+
   const initial: QuoteInput | null = data
     ? {
         codigo: data.nextCode,
         cliente: "",
+        userId: "",
         fecha: new Date().toISOString().slice(0, 10),
         opciones: [
           {
@@ -58,6 +62,7 @@ export default async function NuevaCotizacionPage() {
         </div>
       ) : (
         <QuoteBuilder
+          users={users}
           id=""
           initial={initial}
           catalog={data.catalog}

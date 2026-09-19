@@ -25,6 +25,8 @@ export interface QuoteOptionInput {
 export interface QuoteInput {
   codigo: string;
   cliente: string;
+  /** Cuenta de usuario a la que se le muestra la cotización ("" = ninguna). */
+  userId: string;
   fecha: string; // ISO yyyy-mm-dd
   opciones: QuoteOptionInput[];
 }

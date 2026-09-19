@@ -7,6 +7,7 @@
  */
 import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
+import { getPublicUsers, listPublicUsers } from "@/lib/user-auth/users";
 import {
   ClientManager,
   type ClientRow,
@@ -19,12 +20,20 @@ export const metadata: Metadata = {
 
 export default async function ClientesPage() {
   let rows: ClientRow[] = [];
+  let accounts: Awaited<ReturnType<typeof listPublicUsers>> = [];
   let error: string | null = null;
 
   try {
     const col = await collections.clients();
     const docs = await col.find({}).sort({ nombre: 1 }).toArray();
+    const [linked, all] = await Promise.all([
+      getPublicUsers(docs.flatMap((c) => (c.userId ? [c.userId] : []))),
+      listPublicUsers(),
+    ]);
+    accounts = all;
     rows = docs.map((c) => ({
+      userId: c.userId ?? "",
+      cuenta: (c.userId && linked.get(c.userId)?.email) || null,
       id: c._id!.toString(),
       nombre: c.nombre,
       identificacion: c.identificacion,
@@ -50,7 +59,7 @@ export default async function ClientesPage() {
           <p className="text-sm text-panda">{error}</p>
         </div>
       ) : (
-        <ClientManager rows={rows} />
+        <ClientManager rows={rows} accounts={accounts} />
       )}
     </>
   );

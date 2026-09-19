@@ -7,6 +7,7 @@
  */
 import type { MetadataRoute } from "next";
 import { getPublishedGuides } from "@/lib/guides";
+import { SHOW_COMPONENTS_PAGE } from "@/lib/site-config";
 
 const BASE = "https://bw-pcs.com";
 
@@ -25,7 +26,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: BASE, changeFrequency: "weekly", priority: 1.0 },
     { url: `${BASE}/cotizador`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/servicios`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/componentes`, changeFrequency: "weekly", priority: 0.8 },
+    ...(SHOW_COMPONENTS_PAGE
+      ? [{ url: `${BASE}/componentes`, changeFrequency: "weekly" as const, priority: 0.8 }]
+      : []),
     { url: `${BASE}/ensambles`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/guias`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/noticias`, changeFrequency: "daily", priority: 0.6 },
@@ -48,5 +51,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/contacto`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/nosotros`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/privacidad`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/terminos`, changeFrequency: "yearly", priority: 0.3 },
+    {
+      url: `${BASE}/tratamiento-de-datos`,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 }

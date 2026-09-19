@@ -17,7 +17,7 @@ import { logoutAction } from "@/lib/auth/actions";
 function isItemActive(item: AdminNavItem, pathname: string): boolean {
   return item.href === "/admin"
     ? pathname === "/admin"
-    : pathname.startsWith(item.href);
+    : pathname === item.href || pathname.startsWith(`${item.href}/`);
 }
 
 function NavLink({
@@ -57,12 +57,22 @@ function NavLink({
 export function AdminShell({
   usuario,
   solicitudesPendientes = 0,
+  resenasPendientes = 0,
+  revisionesPendientes = 0,
+  comprasPendientes = 0,
+  pagosPorConfirmar = 0,
+  correccionesPendientes = 0,
   borradoresPendientes = 0,
   blogBorradoresPendientes = 0,
   children,
 }: {
   usuario: string;
   solicitudesPendientes?: number;
+  resenasPendientes?: number;
+  revisionesPendientes?: number;
+  comprasPendientes?: number;
+  pagosPorConfirmar?: number;
+  correccionesPendientes?: number;
   borradoresPendientes?: number;
   blogBorradoresPendientes?: number;
   children: React.ReactNode;
@@ -232,6 +242,60 @@ export function AdminShell({
             {solicitudesPendientes === 1
               ? "solicitud nueva"
               : "solicitudes nuevas"}{" "}
+            →
+          </Link>
+        )}
+        {comprasPendientes > 0 && (
+          <Link
+            href="/admin/cotizaciones"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm font-medium text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            {comprasPendientes === 1
+              ? "1 cliente quiere comprar una cotización"
+              : `${comprasPendientes} clientes quieren comprar una cotización`}{" "}
+            →
+          </Link>
+        )}
+        {pagosPorConfirmar > 0 && (
+          <Link
+            href="/admin/cuentas-cobro"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm font-medium text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            {pagosPorConfirmar === 1
+              ? "1 cuenta de cobro con pago por confirmar"
+              : `${pagosPorConfirmar} cuentas de cobro con pago por confirmar`}{" "}
+            →
+          </Link>
+        )}
+        {correccionesPendientes > 0 && (
+          <Link
+            href="/admin/cuentas-cobro"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            {correccionesPendientes === 1
+              ? "1 cuenta de cobro con corrección pedida"
+              : `${correccionesPendientes} cuentas de cobro con corrección pedida`}{" "}
+            →
+          </Link>
+        )}
+        {revisionesPendientes > 0 && (
+          <Link
+            href="/admin/cotizaciones"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            {revisionesPendientes === 1
+              ? "1 cliente pidió cambios a una cotización"
+              : `${revisionesPendientes} clientes pidieron cambios a sus cotizaciones`}{" "}
+            →
+          </Link>
+        )}
+        {resenasPendientes > 0 && (
+          <Link
+            href="/admin/resenas"
+            className="block border-b border-accent/30 bg-accent/5 px-4 py-2.5 text-center text-sm text-accent transition-colors hover:bg-accent/10 sm:px-8"
+          >
+            Tienes {resenasPendientes}{" "}
+            {resenasPendientes === 1 ? "reseña por moderar" : "reseñas por moderar"}{" "}
             →
           </Link>
         )}

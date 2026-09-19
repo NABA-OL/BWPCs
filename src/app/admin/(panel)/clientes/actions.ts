@@ -7,11 +7,13 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
-import { ObjectId } from "mongodb";
+import { MongoServerError, ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
 import type { Client } from "@/lib/db/types";
+import { clientsCol } from "@/lib/clients";
+import { getPublicUser } from "@/lib/user-auth/users";
 
 export interface ClientFormState {
   ok?: boolean;
@@ -30,26 +32,33 @@ export async function saveClientAction(
   const direccion = String(form.get("direccion") ?? "").trim();
   const telefono = String(form.get("telefono") ?? "").trim();
   const email = String(form.get("email") ?? "").trim();
+  const userId = String(form.get("userId") ?? "").trim();
 
   if (!nombre) return { error: "El nombre es obligatorio." };
-  if (!identificacion) return { error: "La identificación es obligatoria." };
+  if (userId && !(await getPublicUser(userId))) {
+    return { error: "La cuenta elegida ya no existe." };
+  }
 
-  const data: Omit<Client, "_id" | "creado"> = {
+  const data: Omit<Client, "_id" | "creado" | "origen"> = {
     nombre,
     identificacion,
     direccion,
     telefono,
     email,
+    userId: userId || null,
   };
 
   try {
-    const col = await collections.clients();
+    const col = await clientsCol();
     if (id) {
       await col.updateOne({ _id: new ObjectId(id) }, { $set: data });
     } else {
-      await col.insertOne({ ...data, creado: new Date() });
+      await col.insertOne({ ...data, origen: "manual", creado: new Date() });
     }
   } catch (e) {
+    if (e instanceof MongoServerError && e.code === 11000) {
+      return { error: "Esa cuenta ya está ligada a otro cliente." };
+    }
     return { error: e instanceof Error ? e.message : "Error al guardar." };
   }
 

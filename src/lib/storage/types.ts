@@ -1,0 +1,34 @@
+/*
+ * Propiedad de BlacKraken Solutions <blackraken.com>
+ * Desarrollado por: NABAOL
+ * Fecha de creación: 2026-09-18
+ * Correo: nabaol.dev@gmail.com
+ * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
+ */
+
+/** Almacenamiento de objetos (fotos). Hoy Cloudflare R2; ver `index.ts`. */
+export interface ObjectStorage {
+  /** Guarda un objeto público e inmutable (las claves llevan un id aleatorio). */
+  put(key: string, body: Buffer, contentType: string): Promise<void>;
+  /** Borra objetos; los que no existan se ignoran. */
+  remove(keys: string[]): Promise<void>;
+  /** URL pública de un objeto. */
+  url(key: string): string;
+}
+
+/**
+ * Almacenamiento PRIVADO (comprobantes de pago): sin URL pública. Solo el servidor
+ * lee los objetos, tras comprobar quién los pide (ver `/api/comprobantes/[id]`).
+ */
+export interface PrivateStorage {
+  put(key: string, body: Buffer, contentType: string): Promise<void>;
+  /** Lee un objeto; null si no existe. */
+  get(key: string): Promise<{ body: Buffer; contentType: string } | null>;
+  remove(keys: string[]): Promise<void>;
+}
+
+export class StorageNotConfiguredError extends Error {
+  constructor(message = "El almacenamiento de imágenes no está configurado (variables R2_*).") {
+    super(message);
+  }
+}

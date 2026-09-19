@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { siteConfig, whatsappLink } from "@/lib/site-config";
+import { siteConfig, whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
 };
 
-const mediosPago = ["Bre-B", "Tarjeta", "PSE", "Daviplata", "Nequi"];
+const mediosPago = ["Bre-B", "Tarjeta", ...(SHOW_PSE ? ["PSE"] : []), "Daviplata", "Nequi"];
 
 export default function ContactoPage() {
   return (

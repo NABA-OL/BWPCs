@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 graphify-out/
-# env files (can opt-in for committing if needed)
-.env.local
+# env files: nada de .env* salvo el ejemplo
+.env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,7 @@ graphify-out/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# fotos subidas en desarrollo sin R2 (ver lib/storage)
+/public/_dev-uploads/
+/.dev-private-uploads/

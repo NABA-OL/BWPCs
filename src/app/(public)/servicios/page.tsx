@@ -14,6 +14,7 @@ import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { JsonLd } from "@/components/json-ld";
 import { assemblyServiceSchema } from "@/lib/schema";
+import { PAYMENT_MEDIA_TEXT } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Ensamblaje de PC a la medida y componentes",
@@ -62,11 +63,11 @@ const faqs = [
   },
   {
     q: "¿Qué medios de pago aceptan?",
-    a: "Bre-B, tarjeta, PSE, Daviplata y Nequi. Puedes ver el total con cada recargo desde el cotizador.",
+    a: `${PAYMENT_MEDIA_TEXT}. Puedes ver el total con cada recargo desde el cotizador.`,
   },
   {
     q: "¿Puedo comprar solo una pieza sin ensamble?",
-    a: "Sí. Vendemos componentes sueltos — gráficas, procesadores, RAM y más — sin obligación de armar el equipo completo. Puedes ver precios en el catálogo de componentes.",
+    a: "Sí. Vendemos componentes sueltos (gráficas, procesadores, RAM y más) sin obligación de armar el equipo completo. Puedes ver precios en el catálogo de componentes.",
   },
   {
     q: "¿Cuánto cuesta armar un PC con ustedes?",
@@ -98,7 +99,7 @@ const pasos = [
   {
     n: "01",
     t: "Cuéntanos qué necesitas",
-    d: "Nos dices para qué vas a usar el equipo — juegos, trabajo, edición — y tu presupuesto.",
+    d: "Nos dices para qué vas a usar el equipo (juegos, trabajo, edición) y tu presupuesto.",
     icon: "chat",
   },
   {

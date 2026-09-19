@@ -19,6 +19,16 @@ function required(name: string): string {
   return value;
 }
 
+/** Tipos de aviso de Telegram: cada uno puede tener su propio tema en el grupo. */
+export type TelegramThreadName =
+  | "solicitudes"
+  | "cotizaciones"
+  | "compras"
+  | "pagos"
+  | "resenas"
+  | "cuentas"
+  | "contenido";
+
 export const env = {
   get mongodbUri() {
     return required("MONGODB_URI");
@@ -37,13 +47,20 @@ export const env = {
   get telegramChatId() {
     return process.env.TELEGRAM_CHAT_ID ?? null;
   },
-  get telegramThreadId() {
-    return process.env.TELEGRAM_THREAD_ID ?? null;
-  },
-  // Tema/canal aparte para avisos de contenido (borradores de blog/noticias) —
-  // deliberadamente distinto del de solicitudes, para no mezclar los dos flujos.
-  get telegramContentThreadId() {
-    return process.env.TELEGRAM_CONTENT_THREAD_ID ?? null;
+  /**
+   * Tema del grupo de Telegram para un tipo de aviso. Cada tema tiene su variable
+   * `TELEGRAM_THREAD_<TEMA>`; si no está, se usan las variables anteriores
+   * (`TELEGRAM_THREAD_ID` para todo lo de ventas, `TELEGRAM_CONTENT_THREAD_ID` para
+   * contenido y reseñas), así un despliegue con la configuración vieja sigue igual.
+   */
+  telegramThread(thread: TelegramThreadName): string | null {
+    const legacy = process.env.TELEGRAM_THREAD_ID ?? null;
+    const legacyContent = process.env.TELEGRAM_CONTENT_THREAD_ID ?? null;
+    const own = process.env[`TELEGRAM_THREAD_${thread.toUpperCase()}`] || null;
+    if (own) return own;
+    if (thread === "contenido") return legacyContent;
+    if (thread === "resenas") return legacyContent ?? legacy;
+    return legacy;
   },
   // Anti-spam del formulario de cotización — opcional, se omite la
   // verificación si no está configurado (no bloquea el flujo).

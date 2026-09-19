@@ -275,6 +275,15 @@ export function CuentaCobroPDF({
           </View>
         </View>
 
+        {cuenta.formaPago === "tarjeta" ? (
+          /* Con tarjeta no hay cuenta bancaria: se paga por un enlace de pago seguro. */
+          <View style={styles.bankBlock} wrap={false}>
+            <Text style={styles.blockLabel}>FORMA DE PAGO</Text>
+            <Text style={styles.blockText}>Tarjeta, por un enlace de pago seguro (Bold).</Text>
+            <Text style={styles.blockText}>Lo encuentras en tu cuenta de B &amp; W, en «Cuentas de cobro».</Text>
+          </View>
+        ) : (
+          <>
         {/* Cuenta bancaria — cuenta normal y/o llave Bre-B, lo que aplique */}
         <View style={styles.bankBlock} wrap={false}>
           <Text style={styles.blockLabel}>CONSIGNAR A</Text>
@@ -293,6 +302,8 @@ export function CuentaCobroPDF({
             Titular: {cuenta.cuentaBanco.titular}
           </Text>
         </View>
+          </>
+        )}
 
         {/* Firma */}
         <View style={styles.signBlock} wrap={false}>
