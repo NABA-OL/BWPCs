@@ -245,6 +245,16 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
           <p className="mt-6 whitespace-pre-line text-pretty text-lg leading-relaxed text-panda md:text-xl">
             “{current.comentario}”
           </p>
+          {current.componentes.length > 0 && (
+            <details className="mt-6 border-t border-hairline pt-4">
+              <summary className="cursor-pointer text-sm font-semibold">Detalles del ensamble</summary>
+              <ul className="mt-3 space-y-1 text-sm text-component">
+                {current.componentes.map((line, i) => (
+                  <li key={`${i}-${line}`}>{line}</li>
+                ))}
+              </ul>
+            </details>
+          )}
         </div>
 
         {n > 1 && (
