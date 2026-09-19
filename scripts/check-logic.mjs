@@ -12,7 +12,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { ESTADOS_VISIBLES, esEditable, estadoDe, sendMissing } from "../src/lib/cuenta-cobro-estado.ts";
 import { env } from "../src/lib/env.ts";
-import { boldReference, boldSignature, expirationNanos, verifyBoldSignature } from "../src/lib/bold-signature.ts";
+import { boldReference, boldSignature, expirationNanos, parseBoldCheckoutUrl, verifyBoldSignature } from "../src/lib/bold-signature.ts";
 import { computeCuentaCobro, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 
@@ -31,13 +31,24 @@ const completa = {
   firmante: { nombre: "N", cedula: "1", firmaBase64: null },
   total: 1000,
 };
-assert.deepEqual(sendMissing(completa), []);
-assert.ok(sendMissing({ ...completa, userId: null }).length === 1);
-assert.ok(sendMissing({ ...completa, cliente: { ...completa.cliente, identificacion: " " } }).length === 1);
-assert.ok(sendMissing({ ...completa, cuentaBanco: { ...completa.cuentaBanco, numero: null } }).length === 1);
-assert.deepEqual(sendMissing({ ...completa, cuentaBanco: { ...completa.cuentaBanco, numero: null, llave: "@llave" } }), []);
-assert.ok(sendMissing({ ...completa, firmante: { ...completa.firmante, nombre: "" } }).length === 1);
-assert.ok(sendMissing({ ...completa, total: 0 }).length === 1);
+assert.deepEqual(sendMissing(completa, false), []);
+assert.ok(sendMissing({ ...completa, userId: null }, false).length === 1);
+assert.ok(sendMissing({ ...completa, cliente: { ...completa.cliente, identificacion: " " } }, false).length === 1);
+assert.ok(sendMissing({ ...completa, cuentaBanco: { ...completa.cuentaBanco, numero: null } }, false).length === 1);
+assert.deepEqual(sendMissing({ ...completa, cuentaBanco: { ...completa.cuentaBanco, numero: null, llave: "@llave" } }, false), []);
+assert.ok(sendMissing({ ...completa, firmante: { ...completa.firmante, nombre: "" } }, false).length === 1);
+assert.ok(sendMissing({ ...completa, total: 0 }, false).length === 1);
+// Con tarjeta no se pide cuenta bancaria; se pide el enlace solo si la tarjeta no se cobra sola.
+const sinBanco = { ...completa, formaPago: "tarjeta", cuentaBanco: { banco: "", tipoCuenta: null, numero: null, llave: null, titular: "" } };
+assert.deepEqual(sendMissing(sinBanco, false), [], "tarjeta automática: sin banco ni enlace");
+assert.equal(sendMissing(sinBanco, true).length, 1, "tarjeta manual sin enlace: falta el enlace");
+assert.deepEqual(sendMissing({ ...sinBanco, enlacePagoTarjeta: "https://checkout.bold.co/payment/LNK_X" }, true), []);
+assert.equal(sendMissing({ ...sinBanco, formaPago: "bre-b" }, false).length, 1, "con Bre-B sí se pide la cuenta bancaria");
+assert.equal(parseBoldCheckoutUrl("https://checkout.bold.co/payment/LNK_X"), "https://checkout.bold.co/payment/LNK_X");
+assert.equal(parseBoldCheckoutUrl("http://checkout.bold.co/x"), null, "solo https");
+assert.equal(parseBoldCheckoutUrl("https://evil.example.com/x"), null, "solo dominios de Bold");
+assert.equal(parseBoldCheckoutUrl("https://checkout.bold.co.evil.com/x"), null, "el host debe ser exacto");
+assert.equal(parseBoldCheckoutUrl("javascript:alert(1)"), null);
 
 // --- Total según el medio de pago ---
 const totales = { base: 100, conTarjeta: 110, conPse: 105 };

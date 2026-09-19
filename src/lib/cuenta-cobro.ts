@@ -40,6 +40,10 @@ export interface CuentaCobroInput {
   numero: string;
   /** Cuenta de usuario (id) que verá y pagará la cuenta de cobro; "" = ninguna. */
   userId: string;
+  /** Medio de pago (id de `PaymentMethod`); "" = sin definir (lo elige el cliente). */
+  formaPago: string;
+  /** Enlace de pago con tarjeta creado en Bold ("" = ninguno). Solo aplica con tarjeta. */
+  enlacePagoTarjeta: string;
   fecha: string; // ISO yyyy-mm-dd
   cliente: CuentaCobroPartyInput;
   cuentaBanco: CuentaCobroBankInput;

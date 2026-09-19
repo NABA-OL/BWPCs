@@ -41,6 +41,8 @@ export default async function EditarCuentaCobroPage({
   const initial: CuentaCobroInput = {
     numero: cuenta.numero,
     userId: cuenta.userId ?? "",
+    formaPago: cuenta.formaPago ?? "",
+    enlacePagoTarjeta: cuenta.enlacePagoTarjeta ?? "",
     fecha: new Date(cuenta.fecha).toISOString().slice(0, 10),
     cliente: { ...cuenta.cliente },
     cuentaBanco: { ...cuenta.cuentaBanco },
@@ -68,6 +70,8 @@ export default async function EditarCuentaCobroPage({
       <CuentaCobroBuilder
         id={id}
         users={data.users}
+        tarjetaPct={data.tarjetaPct}
+        boldEnabled={data.boldEnabled}
         locked={!esEditable(cuenta)}
         initial={initial}
         clients={data.clients}

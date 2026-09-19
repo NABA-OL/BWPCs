@@ -12,14 +12,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
-import { computeCuentaCobro, type CuentaCobroInput } from "@/lib/cuenta-cobro";
+import { computeCuentaCobro, withPaymentMethod, type CuentaCobroInput } from "@/lib/cuenta-cobro";
 import type { BankAccount, CuentaCobro } from "@/lib/db/types";
 import { esEditable, sendMissing } from "@/lib/cuenta-cobro-estado";
-import { reconcileBoldLink } from "@/lib/bold-payments";
+import { boldAvailable, reconcileBoldLink } from "@/lib/bold-payments";
+import { parseBoldCheckoutUrl } from "@/lib/bold-signature";
+import { PAYMENT_METHODS, cardIsManual, surchargeConcept, surchargePct } from "@/lib/payment-methods";
+import { getSettings } from "@/lib/admin/settings";
 import { closePurchaseRequest } from "@/lib/quote-requests";
 import { moveCuentaCobro, nextCuentaNumero } from "@/lib/cuentas-cobro";
 import { consumeNoticeMail } from "@/lib/email/budget";
 import { sendCuentaCobroEmail } from "@/lib/email/cuenta-cobro-ready";
+import { clientsCol } from "@/lib/clients";
 import { getPublicUser } from "@/lib/user-auth/users";
 
 export interface CuentaCobroFormState {
@@ -82,6 +86,8 @@ function sanitize(raw: unknown): CuentaCobroInput | null {
     },
     items,
     descuentoPct: Math.min(100, Math.max(0, Number(q.descuentoPct) || 0)),
+    formaPago: PAYMENT_METHODS.some((m) => m.id === q.formaPago) ? String(q.formaPago) : "",
+    enlacePagoTarjeta: String(q.enlacePagoTarjeta ?? "").trim().slice(0, 300),
   };
 }
 
@@ -103,15 +109,31 @@ export async function saveCuentaCobroAction(
   if (!input) return { error: "Datos inválidos." };
   if (!input.cliente.nombre) return { error: "El nombre del cliente es obligatorio." };
   if (!input.firmante.nombre) return { error: "Selecciona un firmante." };
-  if (!input.cuentaBanco.numero && !input.cuentaBanco.llave)
+  // Con tarjeta no hay cuenta bancaria: se cobra por un enlace de pago. Con cualquier otro medio sí.
+  const card = input.formaPago === "tarjeta";
+  if (!card && !input.cuentaBanco.numero && !input.cuentaBanco.llave)
     return {
       error: "Agrega una cuenta bancaria, una llave Bre-B, o ambas.",
     };
+  const cardLink = card && input.enlacePagoTarjeta ? parseBoldCheckoutUrl(input.enlacePagoTarjeta) : null;
+  if (card && input.enlacePagoTarjeta && !cardLink) {
+    return { error: "El enlace de pago debe ser un https de Bold (checkout.bold.co)." };
+  }
   if (input.items.length === 0)
     return { error: "Agrega al menos un ítem." };
 
-  // Recálculo server-side: nunca confiar en el total que mandó el cliente.
-  const totals = computeCuentaCobro(input.items, input.descuentoPct);
+  // Recálculo server-side: nunca confiar en el total ni en el recargo que mandó el cliente. Con un medio de
+  // pago definido el recargo (tarjeta) sale de la configuración; sin medio, los ítems se toman tal cual.
+  const method = PAYMENT_METHODS.find((m) => m.id === input.formaPago)?.id ?? null;
+  const priced = method
+    ? withPaymentMethod(
+        input.items,
+        input.descuentoPct,
+        surchargePct(method, (await getSettings()).mediosPago),
+        surchargeConcept(method),
+      )
+    : { items: input.items, ...computeCuentaCobro(input.items, input.descuentoPct) };
+  const totals = priced;
 
   if (input.userId && !(await getPublicUser(input.userId))) {
     return { error: "La cuenta de usuario elegida ya no existe." };
@@ -127,7 +149,7 @@ export async function saveCuentaCobroAction(
     cliente: input.cliente,
     cuentaBanco: input.cuentaBanco,
     firmante: input.firmante,
-    items: input.items,
+    items: priced.items,
     descuentoPct: input.descuentoPct,
     subtotal: totals.subtotal,
     descuentoValor: totals.descuentoValor,
@@ -142,10 +164,18 @@ export async function saveCuentaCobroAction(
       if (!esEditable(current)) {
         return { error: "Esta cuenta ya no se puede editar en su estado actual." };
       }
-      await col.updateOne({ _id: current._id }, { $set: doc });
+      await col.updateOne(
+        { _id: current._id },
+        {
+          $set: { ...doc, ...(method ? { formaPago: method } : {}), ...(cardLink ? { enlacePagoTarjeta: cardLink } : {}) },
+          $unset: { ...(method ? {} : { formaPago: "" }), ...(cardLink ? {} : { enlacePagoTarjeta: "" }) },
+        },
+      );
     } else {
       const { insertedId } = await col.insertOne({
         ...doc,
+        ...(method ? { formaPago: method } : {}),
+        ...(cardLink ? { enlacePagoTarjeta: cardLink } : {}),
         numero: await nextCuentaNumero(),
         estado: "borrador",
         historial: [{ estado: "borrador", en: new Date(), por: "admin", nota: null }],
@@ -155,6 +185,18 @@ export async function saveCuentaCobroAction(
     }
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Error al guardar." };
+  }
+
+  // Si el cliente guardado (ligado a esa cuenta web) no tenía cédula o NIT y aquí se escribió, se le completa.
+  if (input.userId && input.cliente.identificacion) {
+    try {
+      await (await clientsCol()).updateOne(
+        { userId: input.userId, identificacion: "" },
+        { $set: { identificacion: input.cliente.identificacion } },
+      );
+    } catch (error) {
+      console.error("[cuentas-cobro] no se pudo completar la identificación del cliente", error);
+    }
   }
 
   revalidatePath("/admin/cuentas-cobro");
@@ -196,7 +238,7 @@ export async function sendCuentaCobroAction(form: FormData): Promise<void> {
   const col = await collections.cuentasCobro();
   const current = await col.findOne({ _id: new ObjectId(id) });
   // Para emitirla hace falta destinatario, identificación (C.C. o NIT), datos de pago y firmante.
-  if (!current || sendMissing(current).length > 0) return;
+  if (!current || sendMissing(current, cardIsManual(current.total, boldAvailable())).length > 0) return;
 
   const corrected = current.estado === "correccion_solicitada";
   const updated = await moveCuentaCobro(id, {
@@ -279,9 +321,6 @@ export async function checkBoldPaymentAction(form: FormData): Promise<void> {
   revalidateCuenta(id);
 }
 
-/** Hosts de los que puede venir un enlace de pago de Bold (los de su checkout). */
-const BOLD_LINK_HOSTS = new Set(["checkout.bold.co", "bold.co", "www.bold.co"]);
-
 /**
  * El admin pega el enlace de pago con tarjeta que creó en Bold (cuando la tarjeta no se cobra
  * sola) y avisa al cliente por correo. Solo https y solo dominios de Bold.
@@ -289,18 +328,13 @@ const BOLD_LINK_HOSTS = new Set(["checkout.bold.co", "bold.co", "www.bold.co"]);
 export async function saveCardLinkAction(form: FormData): Promise<void> {
   const id = await formId(form);
   if (!id) return;
-  let url: URL;
-  try {
-    url = new URL(String(form.get("enlace") ?? "").trim());
-  } catch {
-    return;
-  }
-  if (url.protocol !== "https:" || !BOLD_LINK_HOSTS.has(url.hostname)) return;
+  const link = parseBoldCheckoutUrl(String(form.get("enlace") ?? ""));
+  if (!link) return;
 
   const col = await collections.cuentasCobro();
   const updated = await col.findOneAndUpdate(
-    { _id: new ObjectId(id), estado: { $in: ["enviada", "correccion_solicitada"] }, formaPago: "tarjeta" },
-    { $set: { enlacePagoTarjeta: url.toString() } },
+    { _id: new ObjectId(id), estado: { $in: ["borrador", "enviada", "correccion_solicitada"] }, formaPago: "tarjeta" },
+    { $set: { enlacePagoTarjeta: link } },
     { returnDocument: "after" },
   );
   if (!updated) return;

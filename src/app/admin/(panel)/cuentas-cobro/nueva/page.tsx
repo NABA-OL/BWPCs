@@ -28,6 +28,8 @@ export default async function NuevaCuentaCobroPage() {
     ? {
         numero: "",
         userId: "",
+        formaPago: "",
+        enlacePagoTarjeta: "",
         fecha: new Date().toISOString().slice(0, 10),
         cliente: {
           nombre: "",
@@ -75,6 +77,8 @@ export default async function NuevaCuentaCobroPage() {
       ) : (
         <CuentaCobroBuilder
           users={data.users}
+        tarjetaPct={data.tarjetaPct}
+        boldEnabled={data.boldEnabled}
           id=""
           initial={initial}
           clients={data.clients}

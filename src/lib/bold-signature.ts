@@ -37,3 +37,16 @@ export function expirationNanos(expiresAtMs: number): string {
 export function boldReference(cuentaId: string, nowMs: number): string {
   return `${cuentaId}-${nowMs.toString(36)}`.replace(/[^A-Za-z0-9_-]/g, "").slice(0, 60);
 }
+
+/** Hosts de los que puede venir un enlace de pago de Bold (los de su checkout). */
+const BOLD_LINK_HOSTS = new Set(["checkout.bold.co", "bold.co", "www.bold.co"]);
+
+/** Enlace de pago de Bold normalizado, o null si no es https de un dominio de Bold. */
+export function parseBoldCheckoutUrl(raw: string): string | null {
+  try {
+    const url = new URL(raw.trim());
+    return url.protocol === "https:" && BOLD_LINK_HOSTS.has(url.hostname) ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}

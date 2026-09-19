@@ -37,12 +37,16 @@ export const ESTADOS_VISIBLES: readonly CuentaCobroEstado[] = [
 
 /** Lo que falta para poder enviar la cuenta al cliente (vacío = lista para enviar). */
 export function sendMissing(
-  cuenta: Pick<CuentaCobro, "userId" | "cliente" | "cuentaBanco" | "firmante" | "total">,
+  cuenta: Pick<CuentaCobro, "userId" | "cliente" | "cuentaBanco" | "firmante" | "total" | "formaPago" | "enlacePagoTarjeta">,
+  /** La tarjeta se cobra con un enlace que crea el admin (sobre el tope de Bold o sin Bold). */
+  cardManual: boolean,
 ): string[] {
+  const card = cuenta.formaPago === "tarjeta";
   return [
     !cuenta.userId && "elige la cuenta del cliente",
     !cuenta.cliente.identificacion.trim() && "falta su cédula o NIT",
-    !cuenta.cuentaBanco.numero && !cuenta.cuentaBanco.llave && "falta la cuenta bancaria o la llave Bre-B",
+    !card && !cuenta.cuentaBanco.numero && !cuenta.cuentaBanco.llave && "falta la cuenta bancaria o la llave Bre-B",
+    card && cardManual && !cuenta.enlacePagoTarjeta && "falta el enlace de pago con tarjeta",
     !cuenta.firmante.nombre.trim() && "falta el firmante",
     cuenta.total <= 0 && "el total es cero",
   ].filter((m): m is string => typeof m === "string");

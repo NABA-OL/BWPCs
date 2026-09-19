@@ -57,7 +57,8 @@ export async function createDraftFromPurchase(input: DraftInput): Promise<string
     admins.find({}).sort({ usuario: 1 }).toArray(),
   ]);
   if (!client) return null;
-  const bank = pickBankAccount(bankDocs, formaPago);
+  // Con tarjeta no hay cuenta bancaria (se paga por un enlace); con otro medio, la de por defecto.
+  const bank = formaPago === "tarjeta" ? null : pickBankAccount(bankDocs, formaPago);
   // Firmante: quien tenga firma cargada; si nadie, el primero (igual que el selector del formulario).
   const signer = adminDocs.find((a) => a.firmaBase64) ?? adminDocs[0];
 

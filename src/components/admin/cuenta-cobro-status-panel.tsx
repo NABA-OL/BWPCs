@@ -66,7 +66,7 @@ export function CuentaCobroStatusPanel({
 }) {
   const id = cuenta._id!.toString();
   const estado = estadoDe(cuenta);
-  const missing = sendMissing(cuenta);
+  const missing = sendMissing(cuenta, cardIsManual(cuenta.total, boldAvailable()));
   const canSend = (estado === "borrador" || estado === "correccion_solicitada") && missing.length === 0;
   const lastNote = cuenta.historial?.at(-1)?.nota;
 
@@ -150,14 +150,16 @@ export function CuentaCobroStatusPanel({
         </div>
       </div>
 
-      {cuenta.formaPago === "tarjeta" && cardIsManual(cuenta.total, boldAvailable()) && estado === "enviada" && (
+      {cuenta.formaPago === "tarjeta" &&
+        cardIsManual(cuenta.total, boldAvailable()) &&
+        estado === "enviada" && (
         <form action={saveCardLinkAction} className="mt-5 border-t border-hairline pt-4">
           <input type="hidden" name="id" value={id} />
           <h3 className="text-sm font-medium">Enlace de pago con tarjeta</h3>
           <p className="mt-1 text-xs text-component">
-            El cliente eligió tarjeta y este valor no se cobra solo. Crea el enlace en Bold por{" "}
-            <strong className="font-mono text-panda">{formatCOP(cuenta.total)}</strong>, pégalo aquí y le avisamos por
-            correo. Él paga allá y sube el comprobante.
+            Este valor no se cobra solo con tarjeta. Crea el enlace en Bold por{" "}
+            <strong className="font-mono text-panda">{formatCOP(cuenta.total)}</strong> y pégalo aquí.{" "}
+            Le avisamos por correo. Él paga allá y sube el comprobante.
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             <input

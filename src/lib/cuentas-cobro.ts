@@ -136,6 +136,9 @@ export async function setCuentaPaymentMethod(
     surchargePct(method, mediosPago),
     surchargeConcept(method),
   );
+  // Con tarjeta no se muestra cuenta bancaria; al pasar a otro medio sin datos bancarios se pone la de por defecto.
+  const needsBank = method !== "tarjeta" && !cuenta.cuentaBanco.numero && !cuenta.cuentaBanco.llave;
+  const defaultBank = needsBank ? await defaultBankFor(method) : null;
   const updated = await col.updateOne(
     { _id: cuenta._id, userId, estado: "enviada" },
     {
@@ -145,6 +148,7 @@ export async function setCuentaPaymentMethod(
         descuentoValor: next.descuentoValor,
         total: next.total,
         formaPago: method,
+        ...(defaultBank ? { cuentaBanco: defaultBank } : {}),
       },
       $push: {
         historial: {
@@ -159,4 +163,15 @@ export async function setCuentaPaymentMethod(
   return updated.modifiedCount === 1
     ? { ok: true, total: next.total, numero: cuenta.numero }
     : { ok: false, error: "Esta cuenta de cobro ya no admite cambiar el medio de pago." };
+}
+
+/** Datos bancarios por defecto para un medio de pago: llave para Bre-B, cuenta normal para transferencia, si no la primera. */
+export async function defaultBankFor(method: PaymentMethod): Promise<CuentaCobro["cuentaBanco"] | null> {
+  const banks = await (await collections.bankAccounts()).find({}).sort({ creado: 1 }).toArray();
+  const bank =
+    (method === "bre-b" ? banks.find((b) => b.llave) : method === "transferencia" ? banks.find((b) => b.numero) : undefined) ??
+    banks[0];
+  return bank
+    ? { banco: bank.banco, tipoCuenta: bank.tipoCuenta, numero: bank.numero, llave: bank.llave, titular: bank.titular }
+    : null;
 }
