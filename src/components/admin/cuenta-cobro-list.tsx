@@ -14,6 +14,8 @@ import { deleteCuentaCobroAction } from "@/app/admin/(panel)/cuentas-cobro/actio
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
 import { ESTADO_LABEL } from "@/lib/cuenta-cobro-estado";
 import type { CuentaCobroEstado } from "@/lib/db/types";
+import { TrashLabel } from "@/components/ui/trash-label";
+import { EditLabel, RowActions } from "@/components/admin/row-actions";
 
 export interface CuentaCobroRow {
   id: string;
@@ -131,7 +133,7 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                 <th className="px-4 py-3 font-medium">Cliente</th>
                 <th className="px-4 py-3 font-medium">Fecha</th>
                 <th className="px-4 py-3 font-medium">Total</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-center font-medium">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -158,7 +160,7 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                   <td className="px-4 py-3 text-component">{r.fecha}</td>
                   <td className="px-4 py-3 font-mono">{formatCOP(r.total)}</td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-3">
+                    <div className="flex items-center justify-center gap-3">
                       <a
                         href={`/admin/cuentas-cobro/${r.id}/pdf`}
                         target="_blank"
@@ -167,33 +169,35 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                       >
                         PDF
                       </a>
-                      <Link
-                        href={`/admin/cuentas-cobro/${r.id}`}
-                        className="text-component hover:text-panda"
-                      >
-                        Abrir
-                      </Link>
-                      {r.deletable && (
-                      <form
-                        action={deleteCuentaCobroAction}
-                        onSubmit={(e) => {
-                          if (
-                            !confirm(
-                              `¿Eliminar la cuenta de cobro ${r.numero}?`,
-                            )
-                          )
-                            e.preventDefault();
-                        }}
-                      >
-                        <input type="hidden" name="id" value={r.id} />
-                        <button
-                          type="submit"
-                          className="text-accent hover:underline"
+                      <RowActions>
+                        <Link
+                          href={`/admin/cuentas-cobro/${r.id}`}
+                          className="text-component hover:text-panda"
                         >
-                          Eliminar
-                        </button>
-                      </form>
-                      )}
+                          <EditLabel label="Abrir" />
+                        </Link>
+                        {r.deletable && (
+                        <form
+                          action={deleteCuentaCobroAction}
+                          onSubmit={(e) => {
+                            if (
+                              !confirm(
+                                `¿Eliminar la cuenta de cobro ${r.numero}?`,
+                              )
+                            )
+                              e.preventDefault();
+                          }}
+                        >
+                          <input type="hidden" name="id" value={r.id} />
+                          <button
+                            type="submit"
+                            className="text-accent hover:underline"
+                          >
+                            <TrashLabel />
+                          </button>
+                        </form>
+                        )}
+                                          </RowActions>
                     </div>
                   </td>
                 </tr>

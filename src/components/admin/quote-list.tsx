@@ -12,6 +12,8 @@ import Link from "next/link";
 import { formatCOP } from "@/lib/format";
 import { deleteQuoteAction } from "@/app/admin/(panel)/cotizaciones/actions";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
+import { TrashLabel } from "@/components/ui/trash-label";
+import { EditLabel, RowActions } from "@/components/admin/row-actions";
 
 export interface QuoteRow {
   id: string;
@@ -86,7 +88,7 @@ export function QuoteList({ rows }: { rows: QuoteRow[] }) {
                 <th className="px-4 py-3 font-medium">Cliente</th>
                 <th className="px-4 py-3 font-medium">Fecha</th>
                 <th className="px-4 py-3 font-medium">Total (op. 1)</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-center font-medium">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -114,7 +116,7 @@ export function QuoteList({ rows }: { rows: QuoteRow[] }) {
                   <td className="px-4 py-3 text-component">{r.fecha}</td>
                   <td className="px-4 py-3 font-mono">{formatCOP(r.total)}</td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-3">
+                    <div className="flex items-center justify-center gap-3">
                       <a
                         href={`/admin/cotizaciones/${r.id}/pdf`}
                         target="_blank"
@@ -123,21 +125,23 @@ export function QuoteList({ rows }: { rows: QuoteRow[] }) {
                       >
                         PDF
                       </a>
-                      <Link
-                        href={`/admin/cotizaciones/${r.id}`}
-                        className="text-component hover:text-panda"
-                      >
-                        Editar
-                      </Link>
-                      <form action={deleteQuoteAction}>
-                        <input type="hidden" name="id" value={r.id} />
-                        <button
-                          type="submit"
-                          className="text-accent hover:underline"
+                      <RowActions>
+                        <Link
+                          href={`/admin/cotizaciones/${r.id}`}
+                          className="text-component hover:text-panda"
                         >
-                          Eliminar
-                        </button>
-                      </form>
+                          <EditLabel />
+                        </Link>
+                        <form action={deleteQuoteAction}>
+                          <input type="hidden" name="id" value={r.id} />
+                          <button
+                            type="submit"
+                            className="text-accent hover:underline"
+                          >
+                            <TrashLabel />
+                          </button>
+                        </form>
+                                          </RowActions>
                     </div>
                   </td>
                 </tr>

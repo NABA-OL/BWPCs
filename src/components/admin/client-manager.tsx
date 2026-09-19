@@ -15,6 +15,8 @@ import {
   type ClientFormState,
 } from "@/app/admin/(panel)/clientes/actions";
 import { Button } from "@/components/ui/button";
+import { TrashLabel } from "@/components/ui/trash-label";
+import { EditLabel, RowActions } from "@/components/admin/row-actions";
 
 export interface ClientRow {
   id: string;
@@ -199,7 +201,7 @@ export function ClientManager({
                 <th className="px-4 py-3 font-medium">Identificación</th>
                 <th className="px-4 py-3 font-medium">Contacto</th>
                 <th className="px-4 py-3 font-medium">Cuenta</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-center font-medium">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -219,32 +221,34 @@ export function ClientManager({
                     {r.cuenta ?? "—"}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setForm({ ...r });
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="text-component hover:text-panda"
-                      >
-                        Editar
-                      </button>
-                      <form
-                        action={deleteClientAction}
-                        onSubmit={(e) => {
-                          if (!confirm(`¿Eliminar a ${r.nombre}?`))
-                            e.preventDefault();
-                        }}
-                      >
-                        <input type="hidden" name="id" value={r.id} />
+                    <div className="flex items-center justify-center gap-3">
+                      <RowActions>
                         <button
-                          type="submit"
-                          className="text-accent hover:underline"
+                          type="button"
+                          onClick={() => {
+                            setForm({ ...r });
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          className="text-component hover:text-panda"
                         >
-                          Eliminar
+                          <EditLabel />
                         </button>
-                      </form>
+                        <form
+                          action={deleteClientAction}
+                          onSubmit={(e) => {
+                            if (!confirm(`¿Eliminar a ${r.nombre}?`))
+                              e.preventDefault();
+                          }}
+                        >
+                          <input type="hidden" name="id" value={r.id} />
+                          <button
+                            type="submit"
+                            className="text-accent hover:underline"
+                          >
+                            <TrashLabel />
+                          </button>
+                        </form>
+                                          </RowActions>
                     </div>
                   </td>
                 </tr>

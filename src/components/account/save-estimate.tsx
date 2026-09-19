@@ -9,7 +9,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { saveEstimateAction } from "@/lib/leads/actions";
+import { requestEstimateAction, saveEstimateAction } from "@/lib/leads/actions";
 import { stashPendingEstimate, takePendingEstimate } from "@/lib/pending-estimate";
 import { authClient } from "@/lib/user-auth/client";
 
@@ -20,8 +20,9 @@ interface AccountContact {
 }
 
 /**
- * "Guardar en mi cuenta" del cotizador. Con sesión también entrega los datos
- * de contacto para prellenar el formulario. Solo se monta si las cuentas están
+ * Con sesión, "Solicitar cotización" del cotizador: envía la solicitud a B & W con los
+ * datos de la cuenta (sin pasar por WhatsApp) y queda en Mis cotizaciones. También
+ * entrega los datos de contacto para prellenar el formulario de WhatsApp. Solo se monta si las cuentas están
  * activas; la sesión se lee en el navegador para que /cotizador siga estático.
  */
 export function SaveEstimate({
@@ -92,12 +93,12 @@ export function SaveEstimate({
     );
   }
 
-  function save() {
+  function request() {
     setError(null);
     startTransition(async () => {
-      const result = await saveEstimateAction({ resumen });
+      const result = await requestEstimateAction({ resumen });
       if (result.ok) setSaved(true);
-      else setError(result.error ?? "No se pudo guardar.");
+      else setError(result.error ?? "No se pudo enviar la solicitud.");
     });
   }
 
@@ -116,14 +117,15 @@ export function SaveEstimate({
       )}
       <button
         type="button"
-        onClick={save}
+        onClick={request}
         disabled={disabled || pending || saved}
         className="w-full rounded-[2px] border border-vanilla/40 px-6 py-3 text-sm font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-vanilla hover:text-panda disabled:pointer-events-none disabled:opacity-50"
       >
-        {pending ? "Guardando…" : saved ? "Guardada en tu cuenta" : "Guardar en mi cuenta"}
+        {pending ? "Enviando…" : saved ? "Solicitud enviada" : "Solicitar cotización"}
       </button>
       {saved && (
         <p className="text-xs text-vanilla/60">
+          Recibimos tu solicitud y te respondemos por WhatsApp o correo.{" "}
           <Link href="/cuenta" className="underline hover:no-underline">
             Ver mis cotizaciones
           </Link>
