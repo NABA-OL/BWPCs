@@ -32,8 +32,9 @@ export function CompleteProfileForm({ next }: { next: string }) {
         acceptTerms: data.get("acceptTerms") === "on",
       });
       if (!result.ok) return setError(result.error);
-      router.push(next);
-      router.refresh();
+      // Recarga completa (no `router.push`): la sesión que el navegador tiene en memoria aún dice
+      // "sin celular ni términos" y el cotizador, que la lee ahí, seguiría pidiendo completar el perfil.
+      window.location.assign(next);
     });
   }
 
