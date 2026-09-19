@@ -218,6 +218,29 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Tu cuenta: explica para qué sirve la cuenta y el inicio de sesión con Google (requisito de verificación de Google) */}
+      {ACCOUNTS_ENABLED && (
+        <section className="border-t border-hairline/50 bg-vanilla/40">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+            <h2 className="text-balance text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
+              Tu cuenta en B &amp; W
+            </h2>
+            <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-panda">
+              B &amp; W ensambla computadores a la medida y vende componentes en Colombia.
+              Con una cuenta, que puedes crear con tu correo o con Google, guardas tus
+              cotizaciones, ves su estado, pides cambios, sigues tus cuentas de cobro y
+              dejas una reseña de tu compra. Si entras con Google solo usamos tu nombre y
+              tu correo para crear y abrir tu cuenta; no los compartimos ni los usamos para
+              publicidad. Más detalles en la{" "}
+              <Link href="/privacidad" className="text-accent hover:underline">
+                política de privacidad
+              </Link>
+              .
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Reseñas de clientes — solo aparece si hay aprobadas */}
       {reviews.length > 0 && (
         <ReviewsSection
