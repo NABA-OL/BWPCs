@@ -8,6 +8,7 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import { APIError } from "better-auth/api";
+import { PHONE_CO } from "@/lib/user-auth/profile";
 import { AVATAR_SEED_RE, isAvatarStyle } from "@/lib/avatar-styles";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
@@ -81,6 +82,8 @@ const HTTP_ALLOWED = new Set([
   "/sign-out",
   "/sign-up/email",
   "/sign-in/email",
+  "/sign-in/social",
+  "/callback/:id",
   "/email-otp/send-verification-otp",
   "/email-otp/verify-email",
   "/email-otp/request-password-reset",
@@ -94,7 +97,9 @@ const HTTP_ALLOWED = new Set([
 // se exige la contraseña antes de enviar el código al correo nuevo.
 const SERVER_ONLY_PATHS = new Set(["/email-otp/request-email-change"]);
 
-const PHONE_CO = /^3\d{9}$/; // celular colombiano, 10 dígitos
+// Rutas internas (misma regla que `safeNextPath`): una "/" seguida de algo que no sea otra "/" ni "\\".
+const SAFE_PATH = /^\/(?![/\\])[^\x00-\x1f\x7f\\]*$/;
+const SOCIAL_BODY_KEYS = new Set(["provider", "callbackURL", "errorCallbackURL"]);
 const TOO_MANY = "Demasiados intentos. Espera unos minutos e intenta de nuevo.";
 
 interface GuardContext {
@@ -170,7 +175,8 @@ export async function runGuards({
     throw new APIError("NOT_FOUND", { message: "No disponible." });
   }
 
-  if (viaHttp && !HTTP_ALLOWED.has(path)) {
+  // La devolución de Google llega como /callback/google (Better Auth la registra como /callback/:id).
+  if (viaHttp && !HTTP_ALLOWED.has(path) && !/^\/callback\/[a-z]+$/.test(path)) {
     throw new APIError("NOT_FOUND", { message: "No disponible." });
   }
 
@@ -178,9 +184,30 @@ export async function runGuards({
     throw new APIError("NOT_FOUND", { message: "No disponible." });
   }
 
+  // Inicio de sesión con Google: solo ese proveedor, solo rutas internas de retorno y nada más
+  // (sin `idToken`, `scopes` ni datos adicionales que alteren lo que se pide o se acepta).
+  if (path === "/sign-in/social") {
+    if (bodyField(body, "provider") !== "google") {
+      throw new APIError("NOT_FOUND", { message: "No disponible." });
+    }
+    const keys = typeof body === "object" && body !== null ? Object.keys(body) : [];
+    if (keys.some((k) => !SOCIAL_BODY_KEYS.has(k))) {
+      throw new APIError("BAD_REQUEST", { message: "Solicitud no válida." });
+    }
+    for (const key of ["callbackURL", "errorCallbackURL"]) {
+      const value = bodyField(body, key);
+      if (value !== undefined && (typeof value !== "string" || !SAFE_PATH.test(value))) {
+        throw new APIError("BAD_REQUEST", { message: "Dirección de retorno no válida." });
+      }
+    }
+    return;
+  }
+
   if (path === "/delete-user") {
+    // Por HTTP no se atiende (ver HTTP_ALLOWED); desde el servidor la acción decide: con contraseña,
+    // o sin ella si la cuenta es solo de Google (entonces Better Auth exige una sesión reciente).
     const password = bodyField(body, "password");
-    if (typeof password !== "string" || password.length === 0) {
+    if (viaHttp && (typeof password !== "string" || password.length === 0)) {
       throw new APIError("BAD_REQUEST", {
         message: "Escribe tu contraseña para eliminar la cuenta.",
       });

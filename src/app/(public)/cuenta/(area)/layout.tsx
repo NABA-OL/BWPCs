@@ -9,15 +9,18 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { AccountNav } from "@/components/account/account-nav";
 import { getAccountBanners } from "@/lib/account/banners";
-import { getUserSession } from "@/lib/user-auth/session";
+import { isProfileComplete } from "@/lib/user-auth/profile";
+import { getRawUserSession } from "@/lib/user-auth/session";
 
 // Área privada de la cuenta (cotizaciones, reseña, perfil, seguridad): exige
 // sesión y muestra el menú. Las páginas de registro/ingreso/recuperar quedan fuera.
 export default async function CuentaAreaLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await getUserSession();
+  const session = await getRawUserSession();
   if (!session) redirect("/cuenta/ingresar");
+  // Cuenta de Google sin celular ni aceptación de términos: primero se completa el perfil.
+  if (!isProfileComplete(session.user)) redirect("/cuenta/completar");
   const { user } = session;
   const banners = await getAccountBanners(user.id).catch(() => []); // un fallo aquí no debe tumbar la cuenta
 

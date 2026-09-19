@@ -15,6 +15,9 @@ export interface PublicUser {
   name: string;
   email: string;
   phone?: string;
+  acceptTerms?: boolean;
+  consentAt?: Date;
+  updatedAt?: Date;
   avatarStyle?: string;
   avatarSeed?: string;
   emailVerified?: boolean;
@@ -64,29 +67,93 @@ const escapeRegex = (v: string) => v.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
  * acumula basura.
  */
 export async function purgeUnverifiedUsers(email: string): Promise<void> {
-  const db = await getDb();
   const col = await users();
   const normalized = email.trim().toLowerCase();
-
   const stale = await col
     .find({
-      emailVerified: false,
       $or: [
-        { email: normalized },
-        { createdAt: { $lt: new Date(Date.now() - UNVERIFIED_TTL_MS) } },
+        {
+          emailVerified: false,
+          $or: [
+            { email: normalized },
+            { createdAt: { $lt: new Date(Date.now() - UNVERIFIED_TTL_MS) } },
+          ],
+        },
+        // Cuentas de Google que nunca completaron su perfil (sin celular ni aceptar los términos).
+        {
+          emailVerified: true,
+          acceptTerms: { $ne: true },
+          consentAt: { $exists: false },
+          createdAt: { $lt: new Date(Date.now() - UNVERIFIED_TTL_MS) },
+        },
       ],
     })
     .toArray();
-  if (stale.length === 0) return;
+  await deleteUsersCascade(stale);
+}
 
-  const ids = stale.flatMap((u) => [u._id, u._id.toString()]);
-  const emails = stale.map((u) => new RegExp(escapeRegex(u.email), "i"));
+/** Celular y aceptación de términos de una cuenta de Google (paso "completar perfil"). */
+export async function completeUserProfile(id: string, phone: string, consentVersion: string): Promise<boolean> {
+  if (!ObjectId.isValid(id)) return false;
+  const now = new Date();
+  const { matchedCount } = await (await users()).updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { phone, acceptTerms: true, consentAt: now, consentVersion, updatedAt: now } },
+  );
+  return matchedCount > 0;
+}
+
+/** Borra una cuenta que no completó su perfil (la persona canceló) con todo lo que la rodea. */
+export async function discardIncompleteUser(id: string): Promise<void> {
+  if (!ObjectId.isValid(id)) return;
+  const user = await (await users()).findOne({
+    _id: new ObjectId(id),
+    acceptTerms: { $ne: true },
+    consentAt: { $exists: false },
+  });
+  if (user) await deleteUsersCascade([user]);
+}
+
+/** Cuentas, sesiones, códigos y el usuario mismo. */
+async function deleteUsersCascade(list: PublicUser[]): Promise<void> {
+  if (list.length === 0) return;
+  const db = await getDb();
+  const ids = list.flatMap((u) => [u._id, u._id.toString()]);
+  const emails = list.map((u) => new RegExp(escapeRegex(u.email), "i"));
   await Promise.all([
     db.collection("user_accounts").deleteMany({ userId: { $in: ids } }),
     db.collection("user_sessions").deleteMany({ userId: { $in: ids } }),
     db.collection("user_verifications").deleteMany({ identifier: { $in: emails } }),
   ]);
-  await col.deleteMany({ _id: { $in: stale.map((u) => u._id) } });
+  await (await users()).deleteMany({ _id: { $in: list.map((u) => u._id) } });
+}
+
+/**
+ * ¿Tiene Google vinculado? Con el correo de esa cuenta de Google (puede ser distinto del principal),
+ * leído del `id_token` que Google entregó al vincular; sin él, solo se sabe que está vinculado.
+ */
+export async function getGoogleLink(userId: string): Promise<{ id: string; email: string | null } | null> {
+  const db = await getDb();
+  const ids = ObjectId.isValid(userId) ? [userId, new ObjectId(userId)] : [userId];
+  const account = await db
+    .collection("user_accounts")
+    .findOne({ userId: { $in: ids }, providerId: "google" }, { projection: { idToken: 1 } });
+  if (!account) return null;
+  let email: string | null = null;
+  try {
+    const payload = JSON.parse(Buffer.from(String(account.idToken).split(".")[1], "base64url").toString("utf8"));
+    if (typeof payload.email === "string") email = payload.email;
+  } catch {
+    // sin id_token legible: solo se muestra que está vinculado
+  }
+  return { id: account._id.toString(), email };
+}
+
+/** ¿Tiene contraseña propia? (las cuentas creadas solo con Google no la tienen). */
+export async function hasPasswordAccount(userId: string): Promise<boolean> {
+  const db = await getDb();
+  const ids = ObjectId.isValid(userId) ? [userId, new ObjectId(userId)] : [userId];
+  return (await db.collection("user_accounts").countDocuments({ userId: { $in: ids }, providerId: "credential" }, { limit: 1 })) > 0;
 }
 
 export async function isEmailVerified(email: string): Promise<boolean> {

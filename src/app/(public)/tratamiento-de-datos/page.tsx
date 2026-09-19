@@ -40,6 +40,7 @@ const secciones: readonly LegalSection[] = [
     lista: [
       "Cotizador: nombre, teléfono y correo, únicamente si decides enviar tu cotización por WhatsApp.",
       "Cuenta de usuario: nombre, correo, teléfono, contraseña (la guardamos cifrada con hash, nunca en texto legible) y el avatar que elijas.",
+      "Inicio de sesión con Google (opcional): tu nombre y tu correo verificado, que nos entrega Google cuando eliges entrar con esa cuenta. No pedimos acceso a nada más de tu cuenta de Google ni guardamos tu foto.",
       "Cotizaciones de tu cuenta: los componentes que cotizaste y las cotizaciones formales que preparamos para ti.",
       "Cuentas de cobro: tu nombre, identificación (si nos la diste), dirección, los conceptos y valores, y el estado del pago.",
       "Pagos con tarjeta: si eliges pagar con tarjeta, te llevamos a Bold, la pasarela de pagos. A Bold le enviamos tu correo, el valor y una referencia de la cuenta de cobro; los datos de tu tarjeta los escribes en Bold y nosotros nunca los vemos ni los guardamos. Bold nos informa si el pago fue aprobado o rechazado, y guardamos ese resultado y el identificador del pago.",
@@ -104,7 +105,7 @@ const secciones: readonly LegalSection[] = [
       "MongoDB Atlas: base de datos.",
       "Resend: envío de correos de verificación y avisos.",
       "Upstash: límite de intentos de inicio de sesión.",
-      "Google reCAPTCHA: verificación antiabuso en formularios.",
+      "Google: inicio de sesión (solo si eliges entrar con Google) y reCAPTCHA, la verificación antiabuso en formularios.",
       "Telegram: avisos internos al equipo cuando llega una solicitud.",
     ],
   },
