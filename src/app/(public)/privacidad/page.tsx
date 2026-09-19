@@ -110,6 +110,69 @@ export default function PrivacidadPage() {
             </div>
 
             <div>
+              <h2 className="text-xl font-bold">Inicio de sesión con Google</h2>
+              <p className="mt-2 leading-relaxed">
+                Puedes crear tu cuenta o entrar con Google en lugar de escribir
+                una contraseña. Es opcional: siempre puedes usar tu correo.
+              </p>
+              <ul className="mt-3 list-disc space-y-1.5 pl-6 leading-relaxed">
+                <li>
+                  <strong>Qué recibimos de Google:</strong> tu nombre y tu
+                  correo electrónico verificado (permisos <code>openid</code>,{" "}
+                  <code>email</code> y <code>profile</code>). No pedimos
+                  acceso a tu Gmail, tus contactos, tu calendario, tu Drive ni
+                  ninguna otra información de tu cuenta de Google, y no
+                  guardamos tu foto de Google.
+                </li>
+                <li>
+                  <strong>Para qué lo usamos:</strong> únicamente para crear tu
+                  cuenta de B &amp; W, reconocerte cuando vuelves a entrar y
+                  enviarte los avisos del servicio (por ejemplo, cuando una
+                  cotización tuya está lista). Además te pedimos tu celular y
+                  que aceptes los términos y la política de tratamiento de
+                  datos antes de usar la cuenta.
+                </li>
+                <li>
+                  <strong>Con quién lo compartimos:</strong> con nadie más. No
+                  vendemos ni cedemos esos datos, no los usamos para
+                  publicidad y no los transferimos a terceros, salvo a los
+                  proveedores que hacen funcionar el servicio (alojamiento,
+                  base de datos y envío de correos) y solo bajo nuestras
+                  instrucciones.
+                </li>
+                <li>
+                  <strong>Cómo se guardan y se borran:</strong> el acceso que
+                  Google nos da se guarda cifrado. Puedes desvincular Google en
+                  la sección Seguridad de tu cuenta, eliminar tu cuenta cuando
+                  quieras, o retirar el acceso de B &amp; W desde{" "}
+                  <a
+                    href="https://myaccount.google.com/permissions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:underline"
+                  >
+                    los permisos de tu cuenta de Google
+                  </a>
+                  .
+                </li>
+              </ul>
+              <p className="mt-3 leading-relaxed">
+                El uso que B &amp; W hace de la información recibida de las
+                APIs de Google cumple la{" "}
+                <a
+                  href="https://developers.google.com/terms/api-services-user-data-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:underline"
+                >
+                  Política de datos de usuario de los servicios de las API de
+                  Google
+                </a>
+                , incluidos los requisitos de Uso limitado.
+              </p>
+            </div>
+
+            <div>
               <h2 className="text-xl font-bold">Reseñas y fotos</h2>
               <p className="mt-2 leading-relaxed">
                 Si dejas una reseña, la revisamos antes de publicarla y

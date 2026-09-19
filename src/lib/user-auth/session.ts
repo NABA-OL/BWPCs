@@ -8,10 +8,21 @@
 import "server-only";
 import { headers } from "next/headers";
 import { auth } from "@/lib/user-auth/auth";
+import { isProfileComplete } from "@/lib/user-auth/profile";
 
-/** Sesión del usuario público (cookie bw_user), o null si no hay. */
-export async function getUserSession() {
+/** Sesión tal cual, aunque el perfil esté incompleto (solo para el paso "completar perfil" y las redirecciones). */
+export async function getRawUserSession() {
   return auth.api.getSession({ headers: await headers() });
+}
+
+/**
+ * Sesión del usuario público (cookie bw_user), o null si no hay O si el perfil está incompleto
+ * (cuenta de Google que aún no da su celular ni acepta los términos): así ninguna acción del
+ * servidor trata como válida una cuenta sin consentimiento.
+ */
+export async function getUserSession() {
+  const session = await getRawUserSession();
+  return session && isProfileComplete(session.user) ? session : null;
 }
 
 /**

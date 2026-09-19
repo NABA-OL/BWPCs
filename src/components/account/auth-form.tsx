@@ -30,7 +30,30 @@ type Step = "form" | "verify";
 
 const RESEND_COOLDOWN_S = 60;
 
-export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
+function GoogleMark() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+    </svg>
+  );
+}
+
+export function AuthForm({
+  mode,
+  next,
+  google = false,
+  googleFailed = false,
+}: {
+  mode: Mode;
+  next: string;
+  /** El servidor tiene configurado Google (si no, el botón no se muestra). */
+  google?: boolean;
+  /** Volvió de Google con un error (canceló o no se pudo entrar). */
+  googleFailed?: boolean;
+}) {
   const router = useRouter();
   const [step, setStep] = useState<Step>("form");
   const [email, setEmail] = useState("");
@@ -38,6 +61,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
   const [pending, setPending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [password, setPassword] = useState("");
+  const [googlePending, setGooglePending] = useState(false);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -110,6 +134,21 @@ export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
       setError(errorText(err));
     } finally {
       setPending(false);
+    }
+  }
+
+  async function onGoogle() {
+    setError(null);
+    setGooglePending(true);
+    // Sea cuenta nueva o existente, se pasa por "completar perfil": allí se decide si falta algo.
+    const { error: err } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: `/cuenta/completar?next=${encodeURIComponent(next)}`,
+      errorCallbackURL: `/cuenta/${mode === "registro" ? "registro" : "ingresar"}?google=error&next=${encodeURIComponent(next)}`,
+    });
+    if (err) {
+      setError(errorText(err));
+      setGooglePending(false);
     }
   }
 
@@ -212,6 +251,38 @@ export function AuthForm({ mode, next }: { mode: Mode; next: string }) {
   return (
     <form onSubmit={onSubmitForm} className="space-y-5">
       {recaptcha}
+
+      {google && (
+        <div>
+          <button
+            type="button"
+            onClick={onGoogle}
+            disabled={googlePending || pending}
+            className="flex w-full items-center justify-center gap-3 rounded-[2px] border border-panda px-6 py-3 text-sm font-medium text-panda transition-colors hover:bg-panda hover:text-vanilla disabled:pointer-events-none disabled:opacity-50"
+          >
+            <GoogleMark />
+            {googlePending ? "Abriendo Google…" : "Continuar con Google"}
+          </button>
+          {googleFailed && (
+            <p role="alert" className="mt-2 border border-accent/30 bg-accent/5 px-3 py-2 text-sm text-accent">
+              No pudimos entrar con Google. Intenta de nuevo o usa tu correo.
+            </p>
+          )}
+          {mode === "registro" ? (
+            <p className="mt-2 text-xs text-component">
+              Con Google te pediremos tu celular y aceptar los términos antes de usar la cuenta.
+            </p>
+          ) : (
+            <p className="mt-2 text-xs text-component">
+              ¿Ya tienes cuenta con otro correo? Entra con tu correo y vincula Google desde Seguridad, para no
+              duplicarla.
+            </p>
+          )}
+          <p className="mt-5 flex items-center gap-3 text-xs text-component">
+            <span className="h-px flex-1 bg-hairline" />o con tu correo<span className="h-px flex-1 bg-hairline" />
+          </p>
+        </div>
+      )}
 
       {mode === "registro" && (
         <>

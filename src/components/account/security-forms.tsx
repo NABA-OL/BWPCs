@@ -7,15 +7,20 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
+import Link from "next/link";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import Script from "next/script";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { OtpInput } from "@/components/account/otp-input";
 import { PasswordStrength } from "@/components/account/password-strength";
-import { INPUT, LABEL, errorText } from "@/components/account/shared";
+import { CAPTCHA_ERROR, INPUT, LABEL, captchaOptions, errorText } from "@/components/account/shared";
+import { RECAPTCHA_SITE_KEY } from "@/lib/user-auth/recaptcha-client";
 import {
   deleteAccountAction,
+  linkGoogleAction,
   requestEmailChangeAction,
+  unlinkGoogleAction,
 } from "@/app/(public)/cuenta/(area)/seguridad/actions";
 import { siteConfig } from "@/lib/site-config";
 import { authClient } from "@/lib/user-auth/client";
@@ -48,6 +53,207 @@ function Message({ error, ok }: { error?: string | null; ok?: string | null }) {
     );
   }
   return null;
+}
+
+/**
+ * Cuenta que entra solo con Google: puede crear una contraseña (código al correo de la cuenta +
+ * contraseña nueva). Como al restablecer se cierran todas las sesiones, termina en el ingreso.
+ */
+export function CreatePasswordForm({ email }: { email: string }) {
+  const [step, setStep] = useState<"idle" | "code" | "done">("idle");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  async function sendCode() {
+    setError(null);
+    setPending(true);
+    try {
+      const fetchOptions = await captchaOptions("user_reset");
+      if (!fetchOptions) return setError(CAPTCHA_ERROR);
+      const { error: err } = await authClient.emailOtp.requestPasswordReset({ email, fetchOptions });
+      if (err) return setError(errorText(err));
+      setStep("code");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    const data = new FormData(e.currentTarget);
+    setPending(true);
+    try {
+      const { error: err } = await authClient.emailOtp.resetPassword({
+        email,
+        otp: String(data.get("otp") ?? "").trim(),
+        password: String(data.get("password") ?? ""),
+      });
+      if (err) return setError(errorText(err));
+      setStep("done");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <Card title="Contraseña">
+      {RECAPTCHA_SITE_KEY && (
+        <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
+      )}
+      {step === "done" ? (
+        <div className="space-y-4">
+          <p className="text-sm text-component">
+            Listo, creamos tu contraseña y cerramos las sesiones abiertas. Ya puedes entrar con Google o con tu
+            correo y esa contraseña.
+          </p>
+          <ButtonLink href="/cuenta/ingresar" size="lg">
+            Ingresar
+          </ButtonLink>
+        </div>
+      ) : step === "code" ? (
+        <form onSubmit={onSubmit} className="space-y-4">
+          <p className="text-sm text-component">
+            Te enviamos un código de 6 dígitos a <strong className="font-medium text-panda">{email}</strong>.
+            Vence en 5 minutos.
+          </p>
+          <div>
+            <label htmlFor="create-otp" className={LABEL}>
+              Código
+            </label>
+            <OtpInput id="create-otp" />
+          </div>
+          <div>
+            <label htmlFor="create-password" className={LABEL}>
+              Contraseña nueva
+            </label>
+            <input
+              id="create-password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              minLength={8}
+              maxLength={128}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              className={`${INPUT} font-mono`}
+            />
+            <p className="mt-1 text-xs text-component">Mínimo 8 caracteres.</p>
+            <PasswordStrength password={password} />
+          </div>
+          <Message error={error} />
+          <Button type="submit" disabled={pending}>
+            {pending ? "Guardando…" : "Crear contraseña"}
+          </Button>
+        </form>
+      ) : (
+        <div className="space-y-4">
+          <p className="text-sm text-component">
+            Tu cuenta entra con Google y todavía no tiene contraseña. Si creas una, también podrás entrar con
+            tu correo y vincular o desvincular Google desde aquí. Te enviamos un código a{" "}
+            <strong className="font-medium text-panda">{email}</strong> para confirmarlo.
+          </p>
+          <Message error={error} />
+          <Button type="button" onClick={sendCode} disabled={pending}>
+            {pending ? "Enviando…" : "Crear contraseña"}
+          </Button>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+/** Vincular o desvincular Google (otro método de entrada a esta misma cuenta, aunque su correo sea distinto). */
+export function GoogleLinkCard({
+  linked,
+  googleEmail,
+  hasPassword,
+  primaryEmail,
+  status,
+}: {
+  linked: boolean;
+  googleEmail: string | null;
+  hasPassword: boolean;
+  primaryEmail: string;
+  /** Resultado del retorno de Google (`?google=`). */
+  status?: "vinculado" | "error";
+}) {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const password = String(new FormData(e.currentTarget).get("google-password") ?? "");
+    setError(null);
+    setPending(true);
+    try {
+      if (linked) {
+        const result = await unlinkGoogleAction({ password });
+        if (!result.ok) return setError(result.error);
+        router.refresh();
+        return;
+      }
+      const result = await linkGoogleAction({ password });
+      if (!result.ok) return setError(result.error);
+      window.location.href = result.url;
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <Card title="Iniciar sesión con Google">
+      <div className="space-y-4">
+        {status === "vinculado" && <Message ok="Listo, vinculamos tu cuenta de Google." />}
+        {status === "error" && (
+          <Message error="No pudimos vincular Google. Si esa cuenta de Google ya está en otra cuenta de B & W, entra a esa cuenta o elimínala primero." />
+        )}
+        <p className="text-sm text-component">
+          {linked ? (
+            <>
+              Google está vinculado{googleEmail ? <> ({googleEmail})</> : null}. Puedes entrar con un clic, sea
+              cual sea el correo de esa cuenta de Google. Tu correo principal sigue siendo{" "}
+              <strong className="font-medium text-panda">{primaryEmail}</strong> y ahí llegan tus avisos.
+            </>
+          ) : (
+            <>
+              Vincula una cuenta de Google para entrar con un clic. Puede ser de otro correo distinto al de
+              esta cuenta: tu correo principal seguirá siendo{" "}
+              <strong className="font-medium text-panda">{primaryEmail}</strong>.
+            </>
+          )}
+        </p>
+        {hasPassword ? (
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="google-password" className={LABEL}>
+                Tu contraseña
+              </label>
+              <input
+                id="google-password"
+                name="google-password"
+                type="password"
+                autoComplete="current-password"
+                maxLength={128}
+                required
+                className={`${INPUT} font-mono`}
+              />
+            </div>
+            <Message error={error} />
+            <Button type="submit" variant={linked ? "secondary" : "primary"} disabled={pending}>
+              {pending ? "Un momento…" : linked ? "Desvincular Google" : "Vincular con Google"}
+            </Button>
+          </form>
+        ) : (
+          <p className="text-xs text-component">
+            Para poder desvincularlo, primero crea una contraseña (arriba).
+          </p>
+        )}
+      </div>
+    </Card>
+  );
 }
 
 export function ChangePasswordForm() {
@@ -244,8 +450,11 @@ export function ChangeEmailForm({ currentEmail }: { currentEmail: string }) {
 
 export function DeleteAccountForm({
   hasApprovedReview,
+  hasPassword = true,
 }: {
   hasApprovedReview: boolean;
+  /** false: la cuenta entra solo con Google y no tiene contraseña que pedir. */
+  hasPassword?: boolean;
 }) {
   const router = useRouter();
   const [keep, setKeep] = useState<"keep" | "delete" | null>(null);
@@ -262,7 +471,7 @@ export function DeleteAccountForm({
     setPending(true);
     try {
       const result = await deleteAccountAction({
-        password,
+        password: hasPassword ? password : undefined,
         keepReview: hasApprovedReview && keep === "keep",
       });
       if (!result.ok) return setError(result.error);
@@ -320,20 +529,27 @@ export function DeleteAccountForm({
           </fieldset>
         )}
 
-        <div>
-          <label htmlFor="delete-password" className={LABEL}>
-            Tu contraseña
-          </label>
-          <input
-            id="delete-password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            maxLength={128}
-            required
-            className={`${INPUT} font-mono`}
-          />
-        </div>
+        {hasPassword ? (
+          <div>
+            <label htmlFor="delete-password" className={LABEL}>
+              Tu contraseña
+            </label>
+            <input
+              id="delete-password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              maxLength={128}
+              required
+              className={`${INPUT} font-mono`}
+            />
+          </div>
+        ) : (
+          <p className="text-sm text-component">
+            Tu cuenta entra con Google, así que no pedimos contraseña; por seguridad la sesión debe ser
+            reciente (si te lo pide, cierra sesión y vuelve a entrar con Google).
+          </p>
+        )}
         <label className="flex items-start gap-2 text-sm text-component">
           <input
             type="checkbox"
