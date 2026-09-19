@@ -16,7 +16,9 @@ import {
   approveReviewAction,
   deleteReviewAction,
   rejectReviewAction,
+  saveReviewDetailsAction,
 } from "./actions";
+import { ASSEMBLY_LINE_MAX, ASSEMBLY_MAX_LINES } from "@/lib/reviews/rules";
 import { TrashLabel } from "@/components/ui/trash-label";
 
 export const metadata: Metadata = {
@@ -164,19 +166,47 @@ export default async function ResenasPage({
                 <p className="mt-3 text-xs text-component">Motivo: {r.motivo}</p>
               )}
 
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                {r.estado !== "aprobada" && (
-                  <form action={approveReviewAction}>
-                    <input type="hidden" name="id" value={r.id} />
-                    <input type="hidden" name="version" value={r.version} />
+              <form action={approveReviewAction} className="mt-4">
+                <input type="hidden" name="id" value={r.id} />
+                <input type="hidden" name="version" value={r.version} />
+                <label
+                  htmlFor={`componentes-${r.id}`}
+                  className="text-xs font-medium text-component"
+                >
+                  Detalles del ensamble{" "}
+                  <span className="font-normal">
+                    (uno por línea, sin precios; se muestran con la reseña
+                    {r.componentes.length === 0 && r.sugeridos.length > 0
+                      ? "; sugeridos de su cuenta de cobro pagada, revísalos"
+                      : ""}
+                    )
+                  </span>
+                </label>
+                <textarea
+                  id={`componentes-${r.id}`}
+                  name="componentes"
+                  rows={5}
+                  maxLength={ASSEMBLY_MAX_LINES * (ASSEMBLY_LINE_MAX + 1)}
+                  defaultValue={(r.componentes.length > 0 ? r.componentes : r.sugeridos).join("\n")}
+                  placeholder={"Procesador: Ryzen 5 7600\nGráfica: RTX 4060"}
+                  className="mt-1.5 block w-full max-w-xl border border-hairline bg-vanilla px-2 py-1.5 text-sm outline-none focus:border-panda"
+                />
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  {r.estado !== "aprobada" && (
                     <button
                       type="submit"
                       className="bg-panda px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-accent"
                     >
                       Aprobar
                     </button>
-                  </form>
-                )}
+                  )}
+                  <button type="submit" formAction={saveReviewDetailsAction} className={BTN}>
+                    Guardar detalles
+                  </button>
+                </div>
+              </form>
+
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 {r.estado !== "rechazada" && (
                   <form action={rejectReviewAction} className="flex gap-2">
                     <input type="hidden" name="id" value={r.id} />

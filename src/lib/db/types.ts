@@ -96,6 +96,8 @@ export interface Review {
   fotoIds: string[]; // ids de `uploads` (máx. 3)
   /** La autora tenía una compra pagada al enviarla (se exige para reseñar). Ausente en reseñas anteriores a esa regla. */
   compraVerificada?: boolean;
+  /** "Detalles del ensamble": renglones que fija el admin al moderar (p. ej. "Procesador: Ryzen 5 7600"). Sin precios. */
+  componentes?: string[];
   estado: "pendiente" | "aprobada" | "rechazada";
   /** Motivo de un rechazo, visible solo para su autora. */
   motivo?: string | null;
