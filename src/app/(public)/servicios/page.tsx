@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
+import { SectionNav } from "@/components/section-nav";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
 import { FaqSection } from "@/components/faq-section";
@@ -169,6 +170,16 @@ const stepIcons: Record<(typeof pasos)[number]["icon"], React.ReactNode> = {
   ),
 };
 
+// Secciones del indicador lateral, en el orden de la página.
+const navItems = [
+  { id: "inicio", label: "Inicio" },
+  { id: "ensamblaje", label: "Ensamblaje" },
+  { id: "componentes", label: "Componentes" },
+  { id: "proceso", label: "Cómo trabajamos" },
+  { id: "preguntas", label: "Preguntas" },
+  { id: "cotizar", label: "Cotizar" },
+];
+
 export default function ServiciosPage() {
   return (
     <>
@@ -180,26 +191,29 @@ export default function ServiciosPage() {
       />
       <JsonLd data={assemblyServiceSchema()} />
       <PcBackdrop />
-      <PageHero
-        eyebrow="Lo que ofrecemos"
-        title="Ensamblaje de PC y venta de componentes"
-        summary={[
-          "Ensamblaje a la medida: armado, formateo y configuración incluidos.",
-          "Componentes sueltos, sin obligación de ensamble completo.",
-          "Envíos a todo Colombia desde Bogotá.",
-          "Precio afinado contigo por WhatsApp antes de confirmar.",
-        ]}
-        ctaLabel="Cotiza tu PC"
-        ctaHref="/cotizador"
-      >
-        <p>
-          Nuestro fuerte es el ensamblaje a la medida, pero si solo necesitas
-          una pieza, también te la conseguimos. Sin venderte de más.
-        </p>
-      </PageHero>
+      <SectionNav items={navItems} />
+      <div id="inicio">
+        <PageHero
+          eyebrow="Lo que ofrecemos"
+          title="Ensamblaje de PC y venta de componentes"
+          summary={[
+            "Ensamblaje a la medida: armado, formateo y configuración incluidos.",
+            "Componentes sueltos, sin obligación de ensamble completo.",
+            "Envíos a todo Colombia desde Bogotá.",
+            "Precio afinado contigo por WhatsApp antes de confirmar.",
+          ]}
+          ctaLabel="Cotiza tu PC"
+          ctaHref="/cotizador"
+        >
+          <p>
+            Nuestro fuerte es el ensamblaje a la medida, pero si solo necesitas
+            una pieza, también te la conseguimos. Sin venderte de más.
+          </p>
+        </PageHero>
+      </div>
 
       {/* Ensamblaje — servicio principal */}
-      <section className="border-b border-hairline/50 bg-vanilla/40">
+      <section id="ensamblaje" className="border-b border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <div className="grid gap-10 md:grid-cols-[1fr_1.2fr]">
             <div>
@@ -233,7 +247,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Componentes */}
-      <section className="border-b border-hairline/50 bg-vanilla/40">
+      <section id="componentes" className="border-b border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
             Componentes
@@ -257,7 +271,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Cómo trabajamos */}
-      <section className="border-b border-hairline bg-vanilla/40">
+      <section id="proceso" className="border-b border-hairline bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <span className="font-mono text-sm text-accent">Proceso</span>
           <h2 className="mt-3 text-[clamp(1.75rem,4vw,2.75rem)] font-bold tracking-[-0.02em]">
@@ -298,10 +312,12 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      <FaqSection items={faqs} />
+      <div id="preguntas">
+        <FaqSection items={faqs} />
+      </div>
 
       {/* CTA */}
-      <section className="bg-component/30">
+      <section id="cotizar" className="bg-component/30">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between">
           <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-[-0.02em]">
             Listo para armar tu equipo
