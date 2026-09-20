@@ -92,7 +92,7 @@ export function ShareReview({ version }: { version: string }) {
     <div className="mt-6 border border-hairline bg-vanilla p-6">
       <h2 className="text-lg font-semibold">Comparte tu reseña</h2>
       <p className="mt-1 text-sm text-component">
-        Tu reseña ya está publicada. Elige el fondo, genera la imagen y compártela como historia en Instagram o en tu estado de WhatsApp.
+        Tu reseña ya está publicada. Elige el fondo, genera la imagen y compártela como historia en Instagram o en tu estado de WhatsApp y etiquetanos :D, nos ayudaria mucho ♥️.
       </p>
 
       <div className="mt-5 flex flex-wrap items-start gap-6">
