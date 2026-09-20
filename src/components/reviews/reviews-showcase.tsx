@@ -14,7 +14,7 @@ import { Stars } from "@/components/reviews/stars";
 import type { PublicReview } from "@/lib/reviews/reviews";
 
 /** Cada reseña se queda a la vista este tiempo antes de pasar a la siguiente. */
-const AUTOPLAY_MS = 60_000;
+const AUTOPLAY_MS = 7_000;
 /** Tarjetas visibles en la pila: la activa y las que le siguen detrás. */
 const STACK_SIZE = 4;
 const SWIPE_PX = 45;
@@ -80,7 +80,7 @@ function AvatarFace({ review }: { review: PublicReview }) {
 /**
  * Reseñas de la home: la foto es la protagonista. Una pila de tarjetas muestra la
  * reseña activa al frente y, detrás, las tres que siguen; la activa cambia sola
- * cada minuto (se pausa al pasar el mouse, con el foco o con el visor abierto y no
+ * cada 7 segundos (se pausa al pasar el mouse, con el foco o con el visor abierto y no
  * corre con "reducir movimiento"). Las fotos de una reseña se cambian con flechas
  * o deslizando, con puntos indicadores; al pulsar una se abre el visor.
  */
