@@ -7,6 +7,7 @@
  */
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CookieConsent } from "@/components/cookie-consent";
 import { NodesBackground } from "@/components/nodes-background";
 
 export default function PublicLayout({
@@ -28,6 +29,7 @@ export default function PublicLayout({
         {children}
       </main>
       <SiteFooter />
+      <CookieConsent />
     </div>
   );
 }

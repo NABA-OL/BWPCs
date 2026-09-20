@@ -6,7 +6,7 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface SectionNavItem {
   /** id del elemento de la página al que apunta. */
@@ -21,11 +21,15 @@ const HEADER_PX = 64;
 /**
  * Indicador de sección de las páginas largas (inicio y servicios), en el margen izquierdo (solo pantallas anchas). Un cuadrado de
  * acento marca dónde estás y, al pasar a la siguiente sección, se desliza y gira 45°: cuadrado →
- * rombo → cuadrado… Con menos de 1536 px de ancho solo se ven las marcas (con la etiqueta como
- * tooltip); con menos de 1280 px no se muestra.
+ * rombo → cuadrado… Desde 1536 px se ven los nombres (el de la sección actual grande y los demás
+ * pequeños) y NO las barritas; entre 1280 y 1535 px cada sección es una barrita sobre la línea y los
+ * nombres aparecen al pasar el puntero; con menos de 1280 px no se muestra.
  */
 export function SectionNav({ items }: { items: SectionNavItem[] }) {
   const [active, setActive] = useState(0);
+  // Por renglón: ¿queda sobre el pie de página (negro)? Ahí la etiqueta y las marcas van en claro.
+  const [dark, setDark] = useState<boolean[]>([]);
+  const rows = useRef<(HTMLLIElement | null)[]>([]);
   const key = items.map((i) => i.id).join("|");
 
   useEffect(() => {
@@ -33,6 +37,9 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
     let raf = 0;
     const update = () => {
       raf = 0;
+      const footerTop = document.querySelector("footer")?.getBoundingClientRect().top ?? Infinity;
+      const next = rows.current.map((li) => (li ? li.getBoundingClientRect().top + li.offsetHeight / 2 >= footerTop : false));
+      setDark((prev) => (prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
       const doc = document.documentElement;
       // Al final de la página gana la última sección aunque sea corta.
       if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) {
@@ -71,9 +78,9 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
   return (
     <nav
       aria-label="Secciones de la página"
-      className="pointer-events-none fixed left-5 top-1/2 z-30 hidden -translate-y-1/2 xl:block"
+      className="group pointer-events-none fixed left-5 top-1/2 z-30 hidden -translate-y-1/2 xl:block"
     >
-      <ul className="pointer-events-auto relative pl-6">
+      <ul className="relative">
         {/* línea de tiempo */}
         <span aria-hidden="true" className="absolute bottom-3 left-[3.5px] top-3 w-px bg-hairline" />
         {/* marcador: cuadrado que se desliza y gira 45° por sección */}
@@ -87,24 +94,55 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
             rotate: `${active * 45}deg`,
           }}
         />
-        {items.map((item, i) => (
-          <li key={item.id} style={{ height: `${ROW_REM}rem` }}>
-            <a
-              href={`#${item.id}`}
-              title={item.label}
-              aria-current={i === active ? "true" : undefined}
-              onClick={(e) => {
-                e.preventDefault();
-                go(item.id);
+        {items.map((item, i) => {
+          const isActive = i === active;
+          const onDark = dark[i] === true;
+          return (
+            <li
+              key={item.id}
+              ref={(el) => {
+                rows.current[i] = el;
               }}
-              className={`flex h-full items-center text-sm transition-colors duration-200 hover:text-panda focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                i === active ? "font-medium text-panda" : "text-component"
-              }`}
+              style={{ height: `${ROW_REM}rem` }}
             >
-              <span className="sr-only 2xl:not-sr-only">{item.label}</span>
-            </a>
-          </li>
-        ))}
+              {/* Solo la franja de marcas recibe el puntero; el nombre va en absoluto para no ensancharla. */}
+              <a
+                href={`#${item.id}`}
+                aria-current={isActive ? "true" : undefined}
+                onClick={(e) => {
+                  e.preventDefault();
+                  go(item.id);
+                }}
+                className="group/item pointer-events-auto relative flex h-full w-8 items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {/* marca: barrita que cruza la línea (la de la sección activa queda bajo el cuadrado). Reemplaza al nombre, así que desde 1536 px, donde el nombre se ve siempre, no se muestra. */}
+                <span
+                  aria-hidden="true"
+                  className={`block h-0.5 w-2 transition-[width,background-color] duration-200 group-hover/item:w-3 2xl:hidden ${
+                    onDark ? "bg-vanilla/40 group-hover/item:bg-vanilla" : "bg-component/40 group-hover/item:bg-panda"
+                  }`}
+                />
+                {/*
+                  Nombre: siempre visible desde 1536 px (la sección actual grande y las demás pequeñas); entre
+                  1280 y 1535 px aparece al pasar el puntero (o al enfocar con teclado) sobre la franja.
+                */}
+                <span
+                  style={{
+                    // Sin caja: un halo del color del fondo mantiene legible el texto sobre lo que haya detrás.
+                    textShadow: onDark ? "0 0 6px #0A0A0A, 0 0 2px #0A0A0A" : "0 0 6px #FAF8F3, 0 0 2px #FAF8F3",
+                  }}
+                  className={`pointer-events-none absolute left-6 top-1/2 -translate-y-1/2 whitespace-nowrap px-1 py-0.5 opacity-0 transition-[opacity,font-size,color] duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:opacity-100 2xl:pointer-events-auto 2xl:opacity-100 ${
+                    isActive
+                      ? `text-base font-medium ${onDark ? "text-vanilla" : "text-panda"}`
+                      : `text-xs ${onDark ? "text-vanilla/60 group-hover/item:text-vanilla" : "text-component group-hover/item:text-panda"}`
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

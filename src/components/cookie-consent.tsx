@@ -15,8 +15,9 @@ const STORAGE_KEY = "bw-cookie-consent";
 /**
  * Aviso de cookies. El sitio usa cookies necesarias (sesión de la cuenta y del
  * panel, httpOnly) y Google reCAPTCHA como antiabuso en formularios; no hay
- * cookies de seguimiento ni publicidad. El banner informa y recuerda la
- * elección en localStorage (no en cookies).
+ * cookies de seguimiento ni publicidad. Como no hay nada que aceptar o
+ * rechazar, el banner solo informa: un botón "Entendido" y se recuerda en
+ * localStorage (no en cookies) para no volver a mostrarlo.
  */
 export function CookieConsent() {
   const [show, setShow] = useState(false);
@@ -29,9 +30,10 @@ export function CookieConsent() {
     }
   }, []);
 
-  function choose(value: "accepted" | "rejected") {
+  function dismiss() {
     try {
-      localStorage.setItem(STORAGE_KEY, value);
+      // Cualquier valor guardado oculta el aviso (los "accepted"/"rejected" de antes siguen valiendo).
+      localStorage.setItem(STORAGE_KEY, "seen");
     } catch {
       /* ignore */
     }
@@ -54,20 +56,13 @@ export function CookieConsent() {
           </Link>
           .
         </p>
-        <div className="flex shrink-0 gap-2">
+        <div className="flex shrink-0">
           <button
             type="button"
-            onClick={() => choose("rejected")}
-            className="rounded-[2px] border border-hairline px-4 py-2 text-sm font-medium text-component transition-colors hover:border-panda hover:text-panda"
-          >
-            Rechazar
-          </button>
-          <button
-            type="button"
-            onClick={() => choose("accepted")}
+            onClick={dismiss}
             className="rounded-[2px] bg-panda px-4 py-2 text-sm font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-accent"
           >
-            Aceptar
+            Entendido
           </button>
         </div>
       </div>
