@@ -132,7 +132,7 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
 
   return (
     <div
-      className="mt-10 grid gap-8 md:grid-cols-[minmax(0,26rem)_minmax(0,28rem)] md:items-center md:justify-center md:gap-14"
+      className="mt-10 grid gap-8 md:grid-cols-[minmax(0,28rem)_minmax(0,28rem)] md:items-center md:justify-center md:gap-14"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
@@ -142,7 +142,7 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
       aria-label="Reseñas de clientes"
     >
       {/* Pila de fotos */}
-      <div className="relative mx-auto w-full max-w-md pr-12 pt-12 md:mx-0">
+      <div className="relative mx-auto w-full max-w-md pr-10 pt-10 md:mx-0 md:-my-4">
         <div className="relative aspect-square">
           {positions.map((p) => {
             const review = reviews[mod(active + p, n)];
@@ -164,7 +164,7 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
                           key={photo.id}
                           src={photo.url}
                           srcSet={srcSet(photo)}
-                          sizes="(min-width: 768px) 416px, 90vw"
+                          sizes="(min-width: 768px) 408px, 90vw"
                           alt={`Foto ${i + 1} de la reseña de ${review.autor.nombre}`}
                           loading={i === 0 ? "eager" : "lazy"}
                           draggable={false}
@@ -196,7 +196,7 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
                             <Arrow dir="right" />
                           </button>
                           <div className="absolute inset-x-0 bottom-3 flex justify-center">
-                            <div className="flex items-center gap-2 bg-vanilla/90 px-3 py-2" role="group" aria-label="Fotos de la reseña">
+                            <div className="flex items-center bg-vanilla/90 px-1" role="group" aria-label="Fotos de la reseña">
                               {photos.map((photo, i) => (
                                 <button
                                   key={photo.id}
@@ -204,8 +204,14 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
                                   onClick={() => setPhoto(i)}
                                   aria-label={`Ver foto ${i + 1} de ${photos.length}`}
                                   aria-current={i === photoIndex ? "true" : undefined}
-                                  className={`block transition-all ${i === photoIndex ? "h-2.5 w-2.5 bg-panda" : "h-1.5 w-1.5 bg-panda/30 hover:bg-panda/60"}`}
-                                />
+                                  className="group/dot flex h-6 w-6 items-center justify-center"
+                                >
+                                  {/* El área táctil es de 24 px (WCAG 2.5.8); el punto visible sigue siendo pequeño. */}
+                                  <span
+                                    aria-hidden="true"
+                                    className={`block transition-all ${i === photoIndex ? "h-2.5 w-2.5 bg-panda" : "h-1.5 w-1.5 bg-panda/30 group-hover/dot:bg-panda/60"}`}
+                                  />
+                                </button>
                               ))}
                             </div>
                           </div>
