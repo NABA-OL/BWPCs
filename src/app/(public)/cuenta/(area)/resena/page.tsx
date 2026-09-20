@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReviewForm } from "@/components/account/review-form";
+import { ShareReview } from "@/components/account/share-review";
 import { hasPaidPurchase } from "@/lib/account/quotes";
 import { getMyReview } from "@/lib/reviews/reviews";
 import { getUserSession } from "@/lib/user-auth/session";
@@ -69,6 +70,10 @@ export default async function ResenaPage() {
           </p>
         )}
       </div>
+
+      {mine?.review.estado === "aprobada" && (
+        <ShareReview version={mine.review.actualizado.toISOString()} />
+      )}
     </section>
   );
 }

@@ -152,10 +152,7 @@ export interface StoryReview {
   compraVerificada: boolean;
 }
 
-/** Solo lo que ya se muestra en la home (nombre corto, avatar, texto): nunca correo ni teléfono. */
-export async function getReviewForStory(id: string): Promise<StoryReview | null> {
-  if (!ObjectId.isValid(id)) return null;
-  const r = await (await reviewsCol()).findOne({ _id: new ObjectId(id), estado: "aprobada" });
+function toStoryReview(r: Review | null): StoryReview | null {
   if (!r?.autor) return null;
   return {
     nombre: r.autor.nombre,
@@ -166,6 +163,17 @@ export async function getReviewForStory(id: string): Promise<StoryReview | null>
     componentes: r.componentes ?? [],
     compraVerificada: r.compraVerificada === true,
   };
+}
+
+/** Solo lo que ya se muestra en la home (nombre corto, avatar, texto): nunca correo ni teléfono. */
+export async function getReviewForStory(id: string): Promise<StoryReview | null> {
+  if (!ObjectId.isValid(id)) return null;
+  return toStoryReview(await (await reviewsCol()).findOne({ _id: new ObjectId(id), estado: "aprobada" }));
+}
+
+/** La reseña APROBADA de esta cuenta, para que la misma persona la comparta como historia. */
+export async function getMyReviewForStory(userId: string): Promise<StoryReview | null> {
+  return toStoryReview(await (await reviewsCol()).findOne({ userId, estado: "aprobada" }));
 }
 
 /** Cantidad y promedio de estrellas de las reseñas aprobadas. */
