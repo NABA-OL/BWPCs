@@ -8,8 +8,10 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import sharp from "sharp";
 import { AVATAR_CREDITS, isAvatarStyle } from "@/lib/avatar-styles";
 import { renderAvatarSvg } from "@/lib/avatar";
+import { siteUrl } from "@/lib/user-auth/site-url";
 import type { StoryReview } from "@/lib/reviews/reviews";
 
 /** Historia vertical 9:16 (1080×1920). Los ~260 px de arriba y abajo quedan libres: ahí la app pone sus botones. */
@@ -32,7 +34,7 @@ const font = (name: string) => readFile(join(process.cwd(), "src/assets/fonts", 
 
 const TEXT_W = WIDTH - SIDE * 2;
 /** Ancho medio de un carácter de Geist, en múltiplos del tamaño de letra (con margen de seguridad). */
-const CHAR_W = 0.56;
+const CHAR_W = 0.52;
 
 function linesFor(text: string, size: number, width: number): number {
   const perLine = Math.max(1, Math.floor(width / (size * CHAR_W)));
@@ -43,9 +45,9 @@ function linesFor(text: string, size: number, width: number): number {
  * Mayor tamaño de letra (px) con el que el comentario cabe en el alto disponible. Si ni con el
  * tamaño mínimo cabe, se recorta en un límite de palabra y termina en "…" (nunca se corta a media línea).
  */
-function fitComment(text: string, budgetPx: number): { size: number; text: string } {
+function fitComment(text: string, budgetPx: number, maxSize: number): { size: number; text: string } {
   const MIN = 28;
-  for (let size = 60; size >= MIN; size -= 2) {
+  for (let size = maxSize; size >= MIN; size -= 2) {
     if (linesFor(text, size, TEXT_W) * size * 1.32 <= budgetPx) return { size, text };
   }
   const maxChars = Math.floor(TEXT_W / (MIN * CHAR_W)) * Math.max(1, Math.floor(budgetPx / (MIN * 1.32)) - 1);
@@ -54,9 +56,11 @@ function fitComment(text: string, budgetPx: number): { size: number; text: strin
 }
 
 /** Detalles del ensamble: una columna hasta 5 renglones y dos columnas desde 6; devuelve el alto que ocupan. */
-function layoutComponents(lines: string[]) {
-  const cols = lines.length > 5 ? 2 : 1;
-  const size = lines.length > 8 ? 28 : 32;
+function layoutComponents(lines: string[], roomy: boolean, compact: boolean) {
+  // Con fotos falta alto: la lista pasa a dos columnas desde el cuarto renglón.
+  const cols = lines.length > (compact ? 3 : 5) ? 2 : 1;
+  // Sin fotos hay espacio de sobra: la lista se ve más grande.
+  const size = compact ? 28 : lines.length > 8 ? 28 : lines.length > 5 ? (roomy ? 34 : 32) : roomy ? 40 : 32;
   const colWidth = cols === 2 ? (TEXT_W - 40) / 2 - 28 : TEXT_W - 28;
   const perCol = Math.ceil(lines.length / cols);
   const groups = Array.from({ length: cols }, (_, c) => lines.slice(c * perCol, (c + 1) * perCol));
@@ -86,15 +90,125 @@ function Stars({ value, color, empty }: { value: number; color: string; empty: s
   );
 }
 
-function Story({ review, theme, network }: { review: StoryReview; theme: ThemeId; network: string | null }) {
+const FAN_H = 400;
+const FRAME = { claro: "#FFFFFF", oscuro: "#1C1C1C" } as const;
+
+interface FanCard {
+  w: number;
+  h: number;
+  left: number;
+  top: number;
+  rotate: number;
+}
+
+/** Posiciones del abanico según cuántas fotos hay: 1 sola, 2 encimadas o 3 abiertas (la del centro al frente). */
+function fanCards(n: number): FanCard[] {
+  if (n === 1) return [{ w: 600, h: 360, left: (TEXT_W - 600) / 2, top: 20, rotate: -2 }];
+  if (n === 2) {
+    return [
+      { w: 470, h: 360, left: 40, top: 34, rotate: -6 },
+      { w: 470, h: 360, left: TEXT_W - 470 - 40, top: 10, rotate: 5 },
+    ];
+  }
+  return [
+    { w: 380, h: 340, left: 8, top: 46, rotate: -9 },
+    { w: 380, h: 340, left: TEXT_W - 380 - 8, top: 46, rotate: 9 },
+    { w: 410, h: 380, left: (TEXT_W - 410) / 2, top: 8, rotate: 0 },
+  ];
+}
+
+/** Las fotos de la reseña como un abanico de fotos impresas, unas detrás de otras (ya vienen en orden de dibujo). */
+function Fan({ photos, theme }: { photos: string[]; theme: ThemeId }) {
+  const c = THEMES[theme];
+  const cards = fanCards(photos.length);
+  return (
+    <div style={{ display: "flex", position: "relative", width: TEXT_W, height: FAN_H }}>
+      {photos.map((src, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            display: "flex",
+            left: cards[i].left,
+            top: cards[i].top,
+            width: cards[i].w,
+            height: cards[i].h,
+            padding: 12,
+            backgroundColor: FRAME[theme],
+            border: `2px solid ${c.line}`,
+            transform: `rotate(${cards[i].rotate}deg)`,
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} width={cards[i].w - 28} height={cards[i].h - 28} alt="" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Descarga las fotos y las deja recortadas EXACTAMENTE al tamaño de su marco (JPEG en data URI, al
+ * doble de resolución), en orden de dibujo: con 3 fotos las laterales van detrás y la central al
+ * frente. Una foto que falle simplemente no sale.
+ */
+async function loadPhotos(urls: string[]): Promise<string[]> {
+  const fetched = await Promise.all(
+    urls.slice(0, 3).map(async (url) => {
+      try {
+        const res = await fetch(url.startsWith("http") ? url : `${siteUrl}${url}`, {
+          signal: AbortSignal.timeout(8000),
+        });
+        return res.ok ? Buffer.from(await res.arrayBuffer()) : null;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  const buffers = fetched.flatMap((b) => (b ? [b] : []));
+
+  const ordered = buffers.length === 3 ? [buffers[0], buffers[2], buffers[1]] : buffers;
+  const cards = fanCards(ordered.length);
+  const rendered = await Promise.all(
+    ordered.map(async (buffer, i) => {
+      try {
+        const jpeg = await sharp(buffer)
+          .rotate()
+          .resize((cards[i].w - 28) * 2, (cards[i].h - 28) * 2, { fit: "cover" })
+          .jpeg({ quality: 82 })
+          .toBuffer();
+        return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  return rendered.flatMap((p) => (p ? [p] : []));
+}
+
+function Story({
+  review,
+  theme,
+  network,
+  photos,
+}: {
+  review: StoryReview;
+  theme: ThemeId;
+  network: string | null;
+  photos: string[];
+}) {
   const c = THEMES[theme];
   const lines = review.componentes;
-  const comp = layoutComponents(lines);
+  const hasPhotos = photos.length > 0;
+  const comp = layoutComponents(lines, !hasPhotos, hasPhotos);
   const compBlock = lines.length > 0 ? 32 + 42 + comp.height + 40 : 0; // filete + título + lista + separación
-  const headerH = 60 + 56 + 190; // marca + separación + autor (con estrellas y sello)
+  const avatarSize = hasPhotos ? 124 : 160;
+  const headerH = 60 + 56 + (hasPhotos ? 156 : 190); // marca + separación + autor (con estrellas y sello)
   const footerH = 120; // llamado + crédito
-  const commentBudget = CONTENT_H - headerH - footerH - compBlock - 52 - 30;
-  const fitted = fitComment(`“${review.comentario}”`, commentBudget);
+  const fanBlock = hasPhotos ? FAN_H + 30 : 0;
+  const commentBudget = CONTENT_H - headerH - footerH - compBlock - fanBlock - 52 - 30;
+  // Sin fotos el texto puede crecer más para aprovechar el espacio.
+  const fitted = fitComment(`“${review.comentario}”`, commentBudget, hasPhotos ? 60 : 84);
   const adventurer = review.avatarStyle === "adventurer-neutral";
 
   let avatar: string | null = null;
@@ -133,8 +247,8 @@ function Story({ review, theme, network }: { review: StoryReview; theme: ThemeId
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={avatar}
-              width={160}
-              height={160}
+              width={avatarSize}
+              height={avatarSize}
               alt=""
               style={{ border: `2px solid ${c.line}`, marginRight: 34 }}
             />
@@ -163,6 +277,8 @@ function Story({ review, theme, network }: { review: StoryReview; theme: ThemeId
           {fitted.text}
         </div>
       </div>
+
+      {hasPhotos && <Fan photos={photos} theme={theme} />}
 
       <div style={{ display: "flex", flexDirection: "column" }}>
         {lines.length > 0 && (
@@ -237,8 +353,9 @@ export async function storyImageResponse(
     theme === "claro" ? readFile(join(process.cwd(), "public/brand/email-fondo.png")).catch(() => null) : null,
   ]);
   const network = networkFile ? `data:image/png;base64,${networkFile.toString("base64")}` : null;
+  const photos = await loadPhotos(review.fotos);
 
-  return new ImageResponse(<Story review={review} theme={theme} network={network} />, {
+  return new ImageResponse(<Story review={review} theme={theme} network={network} photos={photos} />, {
     width: WIDTH,
     height: HEIGHT,
     fonts: [

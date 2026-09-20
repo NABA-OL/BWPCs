@@ -20,9 +20,10 @@ const FILE_NAME = "mi-resena-bw.png";
 
 /**
  * "Compartir mi reseña": la imagen 9:16 de la reseña ya publicada, para subirla a las historias de
- * Instagram o al estado de WhatsApp. En el celular abre el menú de compartir del sistema (ahí sale
- * Instagram); donde no se puede compartir un archivo, la descarga. La imagen se pide de antemano
- * para que el clic llegue al menú de compartir sin esperas (los navegadores exigen que sea inmediato).
+ * Instagram o al estado de WhatsApp. La imagen se dibuja en el servidor (cuesta procesador), así que
+ * SOLO se pide al pulsar "Generar imagen", no al entrar a la página. Ya generada, "Compartir" abre el
+ * menú del sistema en el celular (ahí sale Instagram) y, donde no se puede compartir un archivo, la
+ * descarga; se pide antes para que ese clic llegue al menú sin esperas (los navegadores lo exigen).
  */
 export function ShareReview({ version }: { version: string }) {
   const [tema, setTema] = useState<Tema>("claro");
@@ -30,33 +31,39 @@ export function ShareReview({ version }: { version: string }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const url = `/cuenta/resena/historia?tema=${tema}&v=${encodeURIComponent(version)}`;
+  const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    let cancelled = false;
-    let previewUrl: string | null = null;
+  // Cambiar el fondo descarta la imagen: hay que generar otra.
+  function chooseTema(next: Tema) {
+    if (next === tema) return;
+    setTema(next);
     setFile(null);
     setPreview(null);
     setError(null);
-    fetch(url)
-      .then(async (res) => {
-        if (!res.ok) throw new Error(await res.text());
-        return res.blob();
-      })
-      .then((blob) => {
-        if (cancelled) return;
-        previewUrl = URL.createObjectURL(blob);
-        setPreview(previewUrl);
-        setFile(new File([blob], FILE_NAME, { type: "image/png" }));
-      })
-      .catch(() => {
-        if (!cancelled) setError("No pudimos preparar la imagen. Intenta de nuevo en un momento.");
-      });
+  }
+
+  // Libera la vista previa anterior al reemplazarla o al salir.
+  useEffect(() => {
     return () => {
-      cancelled = true;
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (preview) URL.revokeObjectURL(preview);
     };
-  }, [url]);
+  }, [preview]);
+
+  async function generate() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`/cuenta/resena/historia?tema=${tema}&v=${encodeURIComponent(version)}`);
+      if (!res.ok) throw new Error(await res.text());
+      const blob = await res.blob();
+      setPreview(URL.createObjectURL(blob));
+      setFile(new File([blob], FILE_NAME, { type: "image/png" }));
+    } catch {
+      setError("No pudimos generar la imagen. Intenta de nuevo en un momento.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   function download(f: File) {
     const href = URL.createObjectURL(f);
@@ -85,7 +92,7 @@ export function ShareReview({ version }: { version: string }) {
     <div className="mt-6 border border-hairline bg-vanilla p-6">
       <h2 className="text-lg font-semibold">Comparte tu reseña</h2>
       <p className="mt-1 text-sm text-component">
-        Tu reseña ya está publicada. Compártela como historia en Instagram o en tu estado de WhatsApp.
+        Tu reseña ya está publicada. Elige el fondo, genera la imagen y compártela como historia en Instagram o en tu estado de WhatsApp.
       </p>
 
       <div className="mt-5 flex flex-wrap items-start gap-6">
@@ -95,7 +102,7 @@ export function ShareReview({ version }: { version: string }) {
             <img src={preview} alt="Vista previa de tu reseña como historia" className="h-full w-full" />
           ) : (
             <div className="flex h-full items-center justify-center px-3 text-center text-xs text-component">
-              {error ? "—" : "Preparando…"}
+              {busy ? "Generando…" : "Aún no generada"}
             </div>
           )}
         </div>
@@ -108,7 +115,7 @@ export function ShareReview({ version }: { version: string }) {
                 <button
                   key={t.id}
                   type="button"
-                  onClick={() => setTema(t.id)}
+                  onClick={() => chooseTema(t.id)}
                   aria-pressed={tema === t.id}
                   className={`border px-4 py-2 text-sm font-medium transition-colors ${
                     tema === t.id
@@ -123,12 +130,20 @@ export function ShareReview({ version }: { version: string }) {
           </fieldset>
 
           <div className="flex flex-wrap gap-3">
-            <Button type="button" onClick={share} disabled={!file}>
-              Compartir
-            </Button>
-            <Button type="button" variant="secondary" onClick={() => file && download(file)} disabled={!file}>
-              Descargar imagen
-            </Button>
+            {file ? (
+              <>
+                <Button type="button" onClick={share}>
+                  Compartir
+                </Button>
+                <Button type="button" variant="secondary" onClick={() => download(file)}>
+                  Descargar imagen
+                </Button>
+              </>
+            ) : (
+              <Button type="button" onClick={generate} disabled={busy}>
+                {busy ? "Generando…" : "Generar imagen"}
+              </Button>
+            )}
           </div>
           {error && (
             <p role="alert" className="text-sm text-accent">
