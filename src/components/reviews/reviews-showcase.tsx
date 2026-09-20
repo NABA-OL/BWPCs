@@ -238,7 +238,25 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
               <h3 className="text-2xl font-bold leading-tight">{current.autor.nombre}</h3>
               <Stars value={current.estrellas} size={18} className="mt-1" />
               {current.compraVerificada && (
-                <p className="mt-1 text-xs font-medium text-component">Compra verificada</p>
+                <p className="mt-1 flex items-center gap-1.5 text-xs font-medium text-component">
+                  {/* Icono badge-check de Lucide */}
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    className="shrink-0 text-accent"
+                  >
+                    <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                  Compra verificada
+                </p>
               )}
             </div>
           </div>
