@@ -7,7 +7,8 @@
  */
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
-import { ProofRejectedError, reportPaymentWithProof } from "@/lib/comprobantes";
+import { ProofRejectedError } from "@/lib/comprobantes";
+import { reportPaymentWithProof } from "@/lib/comprobantes-report";
 import { formatCOP } from "@/lib/format";
 import { ImageError } from "@/lib/images/process";
 import { shortName } from "@/lib/reviews/rules";
