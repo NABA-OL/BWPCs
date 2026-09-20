@@ -221,6 +221,24 @@ export default async function ResenasPage({
                     </button>
                   </form>
                 )}
+                {r.estado === "aprobada" && (
+                  <>
+                    <a
+                      href={`/admin/resenas/${r.id}/historia?tema=claro`}
+                      download={`resena-${r.id}-blanca.png`}
+                      className={BTN}
+                    >
+                      Historia blanca
+                    </a>
+                    <a
+                      href={`/admin/resenas/${r.id}/historia?tema=oscuro`}
+                      download={`resena-${r.id}-negra.png`}
+                      className={BTN}
+                    >
+                      Historia negra
+                    </a>
+                  </>
+                )}
                 <form action={deleteReviewAction}>
                   <input type="hidden" name="id" value={r.id} />
                   <button type="submit" className={`${BTN} text-accent`}>

@@ -141,6 +141,33 @@ export async function getApprovedReviews(limit = 6): Promise<PublicReview[]> {
   );
 }
 
+/** Datos públicos de una reseña aprobada para dibujarla como imagen de historia. */
+export interface StoryReview {
+  nombre: string;
+  avatarStyle: string;
+  avatarSeed: string;
+  estrellas: number;
+  comentario: string;
+  componentes: string[];
+  compraVerificada: boolean;
+}
+
+/** Solo lo que ya se muestra en la home (nombre corto, avatar, texto): nunca correo ni teléfono. */
+export async function getReviewForStory(id: string): Promise<StoryReview | null> {
+  if (!ObjectId.isValid(id)) return null;
+  const r = await (await reviewsCol()).findOne({ _id: new ObjectId(id), estado: "aprobada" });
+  if (!r?.autor) return null;
+  return {
+    nombre: r.autor.nombre,
+    avatarStyle: r.autor.avatarStyle,
+    avatarSeed: r.autor.avatarSeed,
+    estrellas: r.estrellas,
+    comentario: r.comentario,
+    componentes: r.componentes ?? [],
+    compraVerificada: r.compraVerificada === true,
+  };
+}
+
 /** Cantidad y promedio de estrellas de las reseñas aprobadas. */
 export async function getReviewStats(): Promise<{ count: number; average: number }> {
   const [row] = await (await reviewsCol())
