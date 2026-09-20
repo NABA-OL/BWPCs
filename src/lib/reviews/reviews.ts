@@ -150,10 +150,13 @@ export interface StoryReview {
   comentario: string;
   componentes: string[];
   compraVerificada: boolean;
+  /** Direcciones de hasta 3 fotos de la reseña (las que ya se ven en la home). */
+  fotos: string[];
 }
 
-function toStoryReview(r: Review | null): StoryReview | null {
+async function toStoryReview(r: Review | null): Promise<StoryReview | null> {
   if (!r?.autor) return null;
+  const photos = await getPhotos(r.fotoIds);
   return {
     nombre: r.autor.nombre,
     avatarStyle: r.autor.avatarStyle,
@@ -162,6 +165,7 @@ function toStoryReview(r: Review | null): StoryReview | null {
     comentario: r.comentario,
     componentes: r.componentes ?? [],
     compraVerificada: r.compraVerificada === true,
+    fotos: photos.slice(0, 3).map((p) => p.url),
   };
 }
 
