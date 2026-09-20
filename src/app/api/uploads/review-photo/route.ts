@@ -11,11 +11,8 @@ import { StorageNotConfiguredError } from "@/lib/storage";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
 import { getUserSession } from "@/lib/user-auth/session";
-import {
-  UploadLimitError,
-  deletePendingPhoto,
-  saveReviewPhoto,
-} from "@/lib/uploads/review-photos";
+import { saveReviewPhoto } from "@/lib/uploads/review-photo-upload";
+import { UploadLimitError, deletePendingPhoto } from "@/lib/uploads/review-photos";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
