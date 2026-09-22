@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
+import { SectionNav } from "@/components/section-nav";
 import { FaqSection } from "@/components/faq-section";
 import { ButtonLink } from "@/components/ui/button";
 import { PcBackdrop } from "@/components/assembly-hero";
@@ -43,6 +44,14 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 3600;
+
+// Secciones del indicador lateral, en el orden de la página.
+const navItems = [
+  { id: "inicio", label: "Inicio" },
+  { id: "cotizador", label: "Cotizador" },
+  { id: "presupuestos", label: "Por presupuesto" },
+  { id: "preguntas", label: "Preguntas" },
+];
 
 const faqs = [
   {
@@ -130,23 +139,26 @@ export default async function CotizadorPage() {
         ]}
       />
       <PcBackdrop />
-      <PageHero
-        eyebrow="Estimado aproximado"
-        title="Cotiza tu PC a la medida"
-        summary={[
-          "Elige la gama de cada componente: procesador, gráfica, RAM y más.",
-          "Ve el total aproximado en pesos colombianos al instante.",
-          SHOW_PSE ? "Compara el precio con tarjeta, PSE o Bre-B." : "Compara el precio con tarjeta o Bre-B.",
-          "Sin registro. Confirmas y afinas detalles por WhatsApp.",
-        ]}
-      >
-        <p>
-          Elige la gama de cada componente y te damos un valor aproximado al
-          instante. Sin registrarte. Luego lo afinamos contigo por WhatsApp.
-        </p>
-      </PageHero>
+      <SectionNav items={navItems} />
+      <div id="inicio">
+        <PageHero
+          eyebrow="Qué buscas?"
+          title="Cotiza tu PC a la medida"
+          summary={[
+            "Elige la gama de cada componente: procesador, gráfica, RAM y más.",
+            "Ve el total aproximado en pesos colombianos al instante.",
+            SHOW_PSE ? "Compara el precio con tarjeta, PSE o Bre-B." : "Compara el precio con tarjeta o Bre-B.",
+            "Sin registro. Confirmas y afinas detalles por WhatsApp.",
+          ]}
+        >
+          <p>
+            Elige la gama de cada componente y te damos un valor aproximado al
+            instante. Sin registrarte. Luego lo afinamos contigo por WhatsApp.
+          </p>
+        </PageHero>
+      </div>
 
-      <section>
+      <section id="cotizador">
         <div className="bg-vanilla/40 mx-auto max-w-6xl px-4 py-12 sm:px-6">
           {ready ? (
             <CotizadorEstimator
@@ -180,7 +192,7 @@ export default async function CotizadorPage() {
       </section>
 
       {/* Configuraciones por presupuesto — enlazado interno + intención comercial */}
-      <section className="border-y border-hairline/50 bg-vanilla/40">
+      <section id="presupuestos" className="border-y border-hairline/50 bg-vanilla/40">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="text-balance text-[clamp(1.5rem,3.5vw,2.25rem)] font-bold tracking-[-0.02em]">
             ¿Prefieres partir de un presupuesto?
@@ -210,7 +222,9 @@ export default async function CotizadorPage() {
         </div>
       </section>
 
-      <FaqSection items={faqs} />
+      <div id="preguntas">
+        <FaqSection items={faqs} />
+      </div>
     </>
   );
 }
