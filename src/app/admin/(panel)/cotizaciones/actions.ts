@@ -14,6 +14,7 @@ import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
 import { getSession } from "@/lib/auth/session";
 import { optionTotals, type QuoteInput } from "@/lib/quote";
+import { nextQuoteCodigo } from "@/lib/quotes";
 import { COMPONENT_CATEGORIES, type Quote, type QuoteVersionEntry } from "@/lib/db/types";
 import { consumeNoticeMail } from "@/lib/email/budget";
 import { sendQuoteReadyEmail } from "@/lib/email/quote-ready";
@@ -80,7 +81,6 @@ export async function saveQuoteAction(
 
   const input = sanitize(parsed);
   if (!input) return { error: "Datos inválidos." };
-  if (!input.codigo) return { error: "El código es obligatorio." };
   if (input.opciones.length === 0)
     return { error: "Agrega al menos una opción con ítems." };
 
@@ -116,7 +116,7 @@ export async function saveQuoteAction(
         { _id: new ObjectId(id) },
         {
           $set: {
-            codigo: input.codigo,
+            // El código no se toca al editar: se asigna una sola vez, al crear.
             cliente: input.cliente || null,
             userId: input.userId || null,
             fecha,
@@ -129,7 +129,7 @@ export async function saveQuoteAction(
       );
     } else {
       const { insertedId } = await col.insertOne({
-        codigo: input.codigo,
+        codigo: await nextQuoteCodigo(),
         cliente: input.cliente || null,
         userId: input.userId || null,
         estado: "borrador",

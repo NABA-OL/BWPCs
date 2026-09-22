@@ -131,7 +131,7 @@ export default async function CotizadorPage() {
       />
       <PcBackdrop />
       <PageHero
-        eyebrow="Estimado aproximado"
+        eyebrow="Qué buscas?"
         title="Cotiza tu PC a la medida"
         summary={[
           "Elige la gama de cada componente: procesador, gráfica, RAM y más.",
