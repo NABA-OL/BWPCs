@@ -199,12 +199,10 @@ export function QuoteBuilder({
 
       {/* Encabezado */}
       <section className="grid gap-4 border border-hairline p-6 sm:grid-cols-3">
-        <Field
-          label="Código"
-          value={data.codigo}
-          onChange={(v) => setData({ ...data, codigo: v })}
-          placeholder="2025-31"
-        />
+        <div>
+          <Field label="Código" value={data.codigo} onChange={() => {}} disabled />
+          {!id && <span className="mt-1 block text-xs text-component">Automático: se confirma al guardar.</span>}
+        </div>
         <div>
           <Field
             label="Cliente (opcional)"

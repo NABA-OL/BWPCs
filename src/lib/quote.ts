@@ -37,7 +37,19 @@ export function optionTotals(option: QuoteOptionInput, settings: Settings) {
   return paymentTotals(sub + (option.servicio || 0), settings);
 }
 
-/** Genera un código sugerido tipo "AAAA-NN". */
-export function suggestCode(year: number, sequence: number): string {
-  return `${year}-${String(sequence).padStart(2, "0")}`;
+/** Códigos posibles por año con el formato actual (ver `quoteCodigo`). */
+export const QUOTE_CODIGOS_POR_ANIO = 1000;
+
+/**
+ * Código de una cotización: "AAAA-COT-NNN" = año, "COT" fijo (para no confundirlo a
+ * simple vista con el número de una cuenta de cobro, que también empieza en "AAAA-")
+ * y tres dígitos incrementales. `sequence` parte de 0: 0 → 2026-COT-000, 999 → 2026-COT-999.
+ * ponytail: 1000 cotizaciones/año alcanza de sobra (hoy son ~30/año); si algún año se
+ * agotan, ampliar a letras rotativas como en `cuentaNumero` (mismo patrón en `cuenta-cobro.ts`).
+ */
+export function quoteCodigo(year: number, sequence: number): string {
+  if (!Number.isInteger(sequence) || sequence < 0 || sequence >= QUOTE_CODIGOS_POR_ANIO) {
+    throw new RangeError("Se agotaron los códigos de cotización del año.");
+  }
+  return `${year}-COT-${String(sequence).padStart(3, "0")}`;
 }
