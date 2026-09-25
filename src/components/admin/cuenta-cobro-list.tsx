@@ -26,6 +26,8 @@ export interface CuentaCobroRow {
   estado: CuentaCobroEstado;
   /** Cuenta anterior a los estados: no sabemos si ya se pagó. */
   sinEstado: boolean;
+  /** "Por pagar" con el precio ya vencido (pasaron las 72 h): el cliente debe pedir revisión. */
+  vencida: boolean;
   /** Solo los borradores (y las cuentas antiguas sin estado) se pueden borrar. */
   deletable: boolean;
 }
@@ -146,12 +148,12 @@ export function CuentaCobroList({ rows }: { rows: CuentaCobroRow[] }) {
                     {r.numero}
                     <span
                       className={`ml-2 border px-1.5 py-0.5 font-sans text-[10px] font-normal uppercase tracking-wide ${
-                        r.estado === "pago_reportado" || r.estado === "correccion_solicitada"
+                        r.estado === "pago_reportado" || r.estado === "correccion_solicitada" || r.vencida
                           ? "border-accent/40 text-accent"
                           : "border-hairline text-component"
                       }`}
                     >
-                      {r.sinEstado ? "Sin estado" : ESTADO_LABEL[r.estado]}
+                      {r.sinEstado ? "Sin estado" : r.vencida ? "Vencida" : ESTADO_LABEL[r.estado]}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-component">

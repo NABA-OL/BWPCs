@@ -10,6 +10,7 @@ import { MongoServerError, ObjectId } from "mongodb";
 import { after } from "next/server";
 import { boldReference } from "@/lib/bold-signature";
 import { boldConfig, getPaymentLink, createPaymentLink, BoldError, type BoldConfig } from "@/lib/bold";
+import { VENCIDA_ERROR, estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import { cuentasCol, moveCuentaCobro } from "@/lib/cuentas-cobro";
 import { collections } from "@/lib/db/collections";
 import type { CuentaCobro, PagoBold } from "@/lib/db/types";
@@ -62,6 +63,7 @@ export async function getOrCreateBoldLink(
   const col = await cuentasCol();
   const cuenta = await col.findOne({ _id: new ObjectId(cuentaId), userId: user.id, estado: "enviada" });
   if (!cuenta) return { ok: false, error: "Esta cuenta de cobro ya no admite pagos." };
+  if (estaVencida(cuenta)) return { ok: false, error: VENCIDA_ERROR };
   if (cuenta.formaPago !== "tarjeta") return { ok: false, error: "Elige la tarjeta como medio de pago." };
   if (cuenta.total > CARD_MAX_COP || cuenta.total < CARD_MIN_COP) {
     return { ok: false, error: "El valor no está dentro de lo que se puede pagar con tarjeta. Elige Bre-B o transferencia." };
@@ -107,7 +109,13 @@ export async function getOrCreateBoldLink(
   };
   // Solo si la cuenta sigue "por pagar" y con el mismo total (nadie cambió el medio mientras tanto).
   const saved = await col.updateOne(
-    { _id: cuenta._id, userId: user.id, estado: "enviada", total: cuenta.total },
+    {
+      _id: cuenta._id,
+      userId: user.id,
+      estado: "enviada",
+      total: cuenta.total,
+      $or: [{ venceEn: null }, { venceEn: { $exists: false } }, { venceEn: { $gt: new Date() } }],
+    },
     { $set: { pagoBold } },
   );
   if (saved.modifiedCount !== 1) return { ok: false, error: "La cuenta cambió mientras preparábamos el pago. Inténtalo de nuevo." };
@@ -133,7 +141,8 @@ export async function applyBoldApproval(
     por: "sistema",
     nota:
       `Pago con tarjeta confirmado por Bold (${info.paymentId})` +
-      (mismatch ? ` · pagó ${formatCOP(info.paidCop)} y la cuenta era de ${formatCOP(cuenta.total)}: revisar` : ""),
+      (mismatch ? ` · pagó ${formatCOP(info.paidCop)} y la cuenta era de ${formatCOP(cuenta.total)}: revisar` : "") +
+      (estaVencida(cuenta) ? " · la cuenta ya había vencido: verifica que los precios no hayan cambiado" : ""),
     set: {
       pagadaEn: now,
       formaPago: "tarjeta",
@@ -149,7 +158,9 @@ function announceApproval(cuenta: CuentaCobro, outcome: ApprovalOutcome, paidCop
   if (outcome === "applied") {
     notify(
       `💳 <b>Pago con tarjeta aprobado</b>\n<b>De:</b> ${who(cuenta)}\n` +
-        `<b>Cuenta de cobro:</b> ${escapeHtml(cuenta.numero)} · ${formatCOP(paidCop)}\n\n${adminLink(cuenta)}`,
+        `<b>Cuenta de cobro:</b> ${escapeHtml(cuenta.numero)} · ${formatCOP(paidCop)}\n` +
+        (estaVencida(cuenta) ? `⚠️ Pagó con la cuenta vencida: verifica que los precios no hayan cambiado.\n` : "") +
+        `\n${adminLink(cuenta)}`,
     );
   } else if (outcome === "blocked") {
     notify(

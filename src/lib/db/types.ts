@@ -50,6 +50,10 @@ export interface Settings {
   };
   // Frases que el wordmark "B & W" revela y rota (B…& W…). Editables en el admin.
   wordmarkPhrases: { left: string; right: string }[];
+  /** Admin que firma las cuentas de cobro automáticas (ausente = el primero con firma cargada). */
+  firmanteDefaultId?: string | null;
+  /** Cuenta bancaria por defecto de las cuentas de cobro automáticas (ausente = la que calce con el medio de pago). */
+  bancoDefaultId?: string | null;
   actualizado: Date;
 }
 
@@ -348,6 +352,12 @@ export interface CuentaCobro {
   historial?: CuentaCobroEvento[];
   /** Solicitud de compra de la que salió este borrador (cotización y pedido). */
   origen?: { quoteId: string; requestId: string } | null;
+  /**
+   * Hasta cuándo vale el precio (solo las nacidas de una solicitud de compra; ver `cuenta-cobro-vigencia.ts`).
+   * Pasada esta hora, mientras siga "por pagar", el cliente no ve cómo pagar y debe pedir que se revisen los precios.
+   * Ausente = sin vencimiento (cuentas manuales y anteriores).
+   */
+  venceEn?: Date | null;
   /**
    * Enlace de cobro con tarjeta que crea el admin en Bold cuando la tarjeta no se cobra sola
    * (sobre el tope de Bold o sin Bold configurado). El cliente paga allí y sube el comprobante.

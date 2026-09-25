@@ -7,6 +7,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
+import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { collections } from "@/lib/db/collections";
 import { getSession } from "@/lib/auth/session";
@@ -57,6 +58,17 @@ export async function refreshTrmAction(): Promise<TrmState> {
   }
 }
 
+/** Id de un documento elegido en un selector: vacío ("Automático") = null; un id que no existe se descarta. */
+async function pickedId(
+  form: FormData,
+  key: string,
+  exists: (id: ObjectId) => Promise<boolean>,
+): Promise<string | null> {
+  const raw = String(form.get(key) ?? "").trim();
+  if (!raw || !ObjectId.isValid(raw)) return null;
+  return (await exists(new ObjectId(raw))) ? raw : null;
+}
+
 function num(form: FormData, key: string): number {
   const raw = String(form.get(key) ?? "").replace(/[^\d.-]/g, "");
   const n = Number(raw);
@@ -100,11 +112,17 @@ export async function saveSettingsAction(
   }
 
   try {
+    const [firmanteDefaultId, bancoDefaultId] = await Promise.all([
+      pickedId(form, "firmanteDefaultId", async (_id) => !!(await (await collections.admins()).findOne({ _id }, { projection: { _id: 1 } }))),
+      pickedId(form, "bancoDefaultId", async (_id) => !!(await (await collections.bankAccounts()).findOne({ _id }, { projection: { _id: 1 } }))),
+    ]);
     const col = await collections.settings();
     await col.updateOne(
       {},
       {
         $set: {
+          firmanteDefaultId,
+          bancoDefaultId,
           trmManual,
           trmRecargo: num(form, "trmRecargo"),
           envioCPU: num(form, "envioCPU"),

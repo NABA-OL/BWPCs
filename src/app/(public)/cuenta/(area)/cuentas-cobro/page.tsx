@@ -10,6 +10,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMyCuentasCobro } from "@/lib/account/cuentas-cobro";
 import { ESTADO_LABEL, estadoDe } from "@/lib/cuenta-cobro-estado";
+import { estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import { formatCOP } from "@/lib/format";
 import { getUserSession } from "@/lib/user-auth/session";
 
@@ -60,7 +61,7 @@ export default async function CuentasCobroPage() {
                         estado === "enviada" ? "border-accent/40 text-accent" : "border-hairline text-component"
                       }`}
                     >
-                      {ESTADO_LABEL[estado]}
+                      {estaVencida(c) ? "Vencida" : ESTADO_LABEL[estado]}
                     </span>
                     <span className="font-mono">{formatCOP(c.total)}</span>
                   </div>

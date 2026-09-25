@@ -11,12 +11,13 @@ import { notFound, redirect } from "next/navigation";
 import { CardPayButton, RefreshWhilePending } from "@/components/account/card-payment";
 import { QrZoom } from "@/components/account/qr-zoom";
 import { ProofLink } from "@/components/proof-viewer";
-import { CuentaCobroActions } from "@/components/account/cuenta-cobro-actions";
+import { CuentaCobroActions, ExpiredNotice } from "@/components/account/cuenta-cobro-actions";
 import { PaymentMethodPicker, type MethodChoice } from "@/components/account/payment-method-picker";
 import { getMyCuentaCobro } from "@/lib/account/cuentas-cobro";
 import { boldAvailable, reconcileBoldLink } from "@/lib/bold-payments";
 import { rateLimitStorage } from "@/lib/user-auth/rate-limit";
 import { ESTADO_LABEL, estadoDe } from "@/lib/cuenta-cobro-estado";
+import { estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import { formatCOP } from "@/lib/format";
 import { withPaymentMethod } from "@/lib/cuenta-cobro";
 import { getSettings } from "@/lib/admin/settings";
@@ -74,6 +75,9 @@ export default async function CuentaCobroPage({
   }
 
   const estado = estadoDe(cuenta);
+  // Vencida: pasaron las 72 h y sigue "por pagar"; no se muestra cómo pagar hasta que B & W revise los precios.
+  const vencida = estaVencida(cuenta);
+  const payable = estado === "enviada" && !vencida;
   const { cuentaBanco: banco } = cuenta;
   const method = cuenta.formaPago ?? DEFAULT_PAYMENT_METHOD;
   const isCash = method === "efectivo";
@@ -99,6 +103,8 @@ export default async function CuentaCobroPage({
     estado === "correccion_solicitada"
       ? cuenta.historial?.findLast((h) => h.estado === "correccion_solicitada")?.nota
       : null;
+  // La nota interna de "pidió revisar precios" no se le muestra al cliente como si la hubiera escrito él.
+  const askedReprice = lastCorrection?.startsWith("Cuenta vencida") ?? false;
 
   return (
     <section className="max-w-3xl">
@@ -112,7 +118,8 @@ export default async function CuentaCobroPage({
             Cuenta de cobro <span className="font-mono">{cuenta.numero}</span>
           </h1>
           <p className="mt-1 text-sm text-component">
-            <span className="font-medium text-panda">{ESTADO_LABEL[estado]}</span>
+            <span className="font-medium text-panda">{vencida ? "Vencida" : ESTADO_LABEL[estado]}</span>
+            {payable && cuenta.venceEn && <> · válida hasta el {fmtMoment.format(new Date(cuenta.venceEn))}</>}
           </p>
         </div>
         <a
@@ -153,13 +160,27 @@ export default async function CuentaCobroPage({
         </dl>
       </div>
 
-      {estado === "enviada" && (
+      {payable && cuenta.venceEn && (
+        <p className="mt-6 border border-hairline bg-hairline/30 px-4 py-3 text-sm">
+          <strong className="font-medium">Vigencia de 72 horas.</strong> Los precios pueden cambiar por ofertas o por
+          subidas y bajadas de precio en Estados Unidos y el dólar. Si pagas después del {fmtMoment.format(new Date(cuenta.venceEn))},
+          tendrás que enviar la cuenta a revisión para que confirmemos los precios.
+        </p>
+      )}
+
+      {vencida && cuenta.venceEn && (
+        <div className="mt-6">
+          <ExpiredNotice id={id} venceEn={fmtMoment.format(new Date(cuenta.venceEn))} />
+        </div>
+      )}
+
+      {payable && (
         <div className="mt-6">
           <PaymentMethodPicker id={id} current={method} choices={choices} hasChoice={cuenta.formaPago !== undefined} />
         </div>
       )}
 
-      {(estado === "enviada" || estado === "pago_reportado") && (
+      {(payable || estado === "pago_reportado") && (
         <div className="mt-6 border border-hairline p-5 text-sm">
           <h2 className="font-semibold">Cómo pagar con {PAYMENT_LABEL[method]}</h2>
 
@@ -264,7 +285,7 @@ export default async function CuentaCobroPage({
       )}
 
       <div className="mt-8">
-        {estado === "enviada" && <CuentaCobroActions id={id} canReportPayment={canReportPayment} />}
+        {payable && <CuentaCobroActions id={id} canReportPayment={canReportPayment} />}
         {estado === "pago_reportado" && (
           <p className="border border-hairline p-5 text-sm">
             Avisaste tu pago
@@ -274,8 +295,12 @@ export default async function CuentaCobroPage({
         )}
         {estado === "correccion_solicitada" && (
           <div className="space-y-2 border border-hairline p-5 text-sm">
-            <p className="font-medium">Pediste una corrección. Te enviamos la cuenta corregida por correo.</p>
-            {lastCorrection && (
+            <p className="font-medium">
+              {askedReprice
+                ? "Enviaste la cuenta a revisión de precios. Confirmamos que sigan iguales (o los actualizamos) y te avisamos por correo con la cuenta y una vigencia nueva."
+                : "Pediste una corrección. Te enviamos la cuenta corregida por correo."}
+            </p>
+            {lastCorrection && !askedReprice && (
               <p className="whitespace-pre-line border-l-2 border-hairline pl-3 text-component">
                 {lastCorrection}
               </p>

@@ -11,6 +11,7 @@ import { CATEGORY_LABELS } from "@/lib/categories";
 import { withPaymentMethod } from "@/lib/cuenta-cobro";
 import { getSettings } from "@/lib/admin/settings";
 import { cuentasCol, nextCuentaNumero } from "@/lib/cuentas-cobro";
+import { sendCuentaCobro, type SentCuenta } from "@/lib/cuenta-cobro-send";
 import { collections } from "@/lib/db/collections";
 import type { BankAccount, CuentaCobro, CuentaCobroItem, PaymentMethod, Quote } from "@/lib/db/types";
 import { surchargeConcept, surchargePct } from "@/lib/payment-methods";
@@ -23,11 +24,18 @@ interface DraftInput {
   formaPago: PaymentMethod;
 }
 
-/** Cuenta bancaria que mejor calza con el medio de pago: llave para Bre-B, cuenta normal para transferencia. */
-function pickBankAccount(banks: BankAccount[], method: PaymentMethod): BankAccount | null {
-  const wanted =
-    method === "bre-b" ? banks.find((b) => b.llave) : method === "transferencia" ? banks.find((b) => b.numero) : undefined;
-  return wanted ?? banks[0] ?? null;
+/** ¿La cuenta bancaria sirve para este medio? (Bre-B necesita llave; transferencia, número de cuenta.) */
+const bankFits = (bank: BankAccount, method: PaymentMethod) =>
+  method === "bre-b" ? !!bank.llave : method === "transferencia" ? !!bank.numero : true;
+
+/**
+ * Cuenta bancaria de la cuenta de cobro: la predeterminada de Configuración si sirve para el medio de pago;
+ * si no, la que mejor calza (llave para Bre-B, cuenta normal para transferencia) o la primera.
+ */
+function pickBankAccount(banks: BankAccount[], method: PaymentMethod, defaultId: string | null | undefined): BankAccount | null {
+  const preferred = defaultId ? banks.find((b) => b._id?.toString() === defaultId) : undefined;
+  if (preferred && bankFits(preferred, method)) return preferred;
+  return banks.find((b) => bankFits(b, method)) ?? banks[0] ?? null;
 }
 
 /** Fecha de hoy en Bogotá como medianoche UTC (misma convención que el formulario). */
@@ -38,8 +46,8 @@ function todayBogota(): Date {
 /**
  * Crea la cuenta de cobro en BORRADOR a partir de la opción que eligió el cliente:
  * un renglón por ítem, el ensamblaje y, si paga con tarjeta, el recargo (el cliente puede
- * cambiar de medio después y el total se ajusta). El admin la revisa, completa lo que falte
- * (p. ej. la cédula) y la envía. Es idempotente por solicitud. Devuelve el id o null.
+ * cambiar de medio después y el total se ajusta). Es idempotente por solicitud. Devuelve el id o null.
+ * Quien la emite (el sistema al momento, o el admin después de revisarla) es asunto de `issueCuentaFromPurchase`.
  */
 export async function createDraftFromPurchase(input: DraftInput): Promise<string | null> {
   const { quote, userId, requestId, opcion, formaPago } = input;
@@ -51,16 +59,20 @@ export async function createDraftFromPurchase(input: DraftInput): Promise<string
     collections.bankAccounts(),
     collections.admins(),
   ]);
-  const [client, bankDocs, adminDocs] = await Promise.all([
+  const [client, bankDocs, adminDocs, settings] = await Promise.all([
     clients.findOne({ userId }),
     banks.find({}).sort({ creado: 1 }).toArray(),
     admins.find({}).sort({ usuario: 1 }).toArray(),
+    getSettings(),
   ]);
   if (!client) return null;
-  // Con tarjeta no hay cuenta bancaria (se paga por un enlace); con otro medio, la de por defecto.
-  const bank = formaPago === "tarjeta" ? null : pickBankAccount(bankDocs, formaPago);
-  // Firmante: quien tenga firma cargada; si nadie, el primero (igual que el selector del formulario).
-  const signer = adminDocs.find((a) => a.firmaBase64) ?? adminDocs[0];
+  // Con tarjeta no hay cuenta bancaria (se paga por un enlace); con otro medio, la predeterminada o la que calce.
+  const bank = formaPago === "tarjeta" ? null : pickBankAccount(bankDocs, formaPago, settings.bancoDefaultId);
+  // Firmante: el predeterminado de Configuración; si no hay, quien tenga firma cargada y, si nadie, el primero.
+  const signer =
+    adminDocs.find((a) => settings.firmanteDefaultId && a._id?.toString() === settings.firmanteDefaultId) ??
+    adminDocs.find((a) => a.firmaBase64) ??
+    adminDocs[0];
 
   const baseItems: CuentaCobroItem[] = chosen.items.map((i) => ({
     descripcion: `${CATEGORY_LABELS[i.categoria] ?? i.categoria}: ${i.modelo}`,
@@ -74,7 +86,7 @@ export async function createDraftFromPurchase(input: DraftInput): Promise<string
   const { items, ...totals } = withPaymentMethod(
     baseItems,
     0,
-    surchargePct(formaPago, (await getSettings()).mediosPago),
+    surchargePct(formaPago, settings.mediosPago),
     surchargeConcept(formaPago),
   );
 
@@ -112,7 +124,7 @@ export async function createDraftFromPurchase(input: DraftInput): Promise<string
       {
         estado: "borrador",
         en: new Date(),
-        por: "admin",
+        por: "sistema",
         nota: `Generada desde la solicitud de compra de la cotización ${quote.codigo}`,
       },
     ],
@@ -126,4 +138,17 @@ export async function createDraftFromPurchase(input: DraftInput): Promise<string
     if (error instanceof MongoServerError && error.code === 11000 && /origen/.test(error.message)) return null;
     throw error;
   }
+}
+
+/**
+ * Deja lista la cuenta de cobro de una solicitud de compra: la crea y, si tiene todo lo necesario (cédula,
+ * banco o llave, firmante, total; y la tarjeta no necesita enlace manual), la emite sola en nombre del sistema.
+ * Si falta algo se queda en borrador para que el admin la complete. Devuelve el id y si ya salió al cliente.
+ */
+export async function issueCuentaFromPurchase(
+  input: DraftInput & { autoEmit: boolean },
+): Promise<{ id: string; sent: SentCuenta | null } | null> {
+  const id = await createDraftFromPurchase(input);
+  if (!id) return null;
+  return { id, sent: input.autoEmit ? await sendCuentaCobro(id, "sistema") : null };
 }
