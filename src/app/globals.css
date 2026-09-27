@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
 /*
+ * Redefine `dark:` para que siga nuestro `[data-theme="dark"]` manual (ver
+ * `lib/theme.ts`) en vez del `prefers-color-scheme` del sistema, que es el
+ * comportamiento por defecto de Tailwind. La mayoría de componentes cambian
+ * solos al redefinir los 7 tokens de marca abajo; `dark:` es solo para las
+ * pocas excepciones que no usan esos tokens (p. ej. la paleta roja/ámbar/verde
+ * de `PasswordStrength`).
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
   B & W — Sistema de diseño (ver docs/DESIGN.md)
   Fundamento monocromo + un solo acento (azul eléctrico) usado en ≤10% de pantalla.
 */
@@ -15,6 +25,15 @@
   --color-accent-deep: #9e2e1f; /* hover del acento */
   --color-accent-ink: #faf8f3; /* texto sobre el acento */
 
+  /*
+   * Fijos: NO cambian con el tema. Mismo valor que `panda`/`vanilla` en claro,
+   * a propósito, para lo que debe quedar siempre oscuro/siempre claro incluso en
+   * modo oscuro (pie de página, visor de fotos, fondo de modales). Ver
+   * `[data-theme="dark"]` más abajo: esos dos NO se redefinen ahí.
+   */
+  --color-panda-static: #0a0a0a;
+  --color-vanilla-static: #faf8f3;
+
   /* Tipografía */
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, Menlo, monospace;
@@ -26,6 +45,47 @@
 :root {
   --background: var(--color-vanilla);
   --foreground: var(--color-panda);
+}
+
+/*
+ * Modo oscuro del sitio PÚBLICO — claro por defecto siempre; se activa a mano con
+ * `data-theme="dark"` en `<html>` (ver `src/lib/theme.ts` y `ThemeToggle`), no con
+ * `prefers-color-scheme`. Solo se redefinen los 7 tokens de marca: todo lo que use
+ * `bg-vanilla`/`text-panda`/etc. cambia solo, sin tocar cada componente. Lo que debe
+ * quedar siempre igual usa `panda-static`/`vanilla-static` (no se redefinen aquí).
+ * Admin, `/style-guide`, PDF, correos e imágenes de historias quedan fuera a
+ * propósito (bloqueado por ruta o porque su color es hex fijo en JS, no Tailwind).
+ */
+[data-theme="dark"] {
+  color-scheme: dark; /* controles nativos, autocompletado y scrollbars en oscuro */
+  --color-vanilla: #141311; /* superficie — carbón con un leve tinte cálido, no negro puro */
+  --color-panda: #f2efe8; /* tinta — vainilla atenuado, no encandila */
+  --color-component: #9a9893;
+  --color-hairline: #2a2926;
+  --color-accent: #e0533f; /* mismo tono que en claro, más claro: el original no pasa AA sobre negro */
+  --color-accent-deep: #ec6b56; /* en oscuro el hover ACLARA, no oscurece */
+  --color-accent-ink: #141311;
+}
+
+/* Al cambiar de tema, todo lo que tenga transición cambia de golpe (no se
+   ve el fondo animando mientras el texto ya cambió). Ver `ThemeToggle`. */
+[data-theme-switching] * {
+  transition: none !important;
+}
+
+/* Imprimir siempre en claro, sin importar el tema de la pantalla: texto claro
+   sobre papel blanco sería ilegible. */
+@media print {
+  [data-theme="dark"] {
+    color-scheme: light;
+    --color-vanilla: #faf8f3;
+    --color-panda: #0a0a0a;
+    --color-component: #6b6b6b;
+    --color-hairline: #e5e5e5;
+    --color-accent: #c83c2a;
+    --color-accent-deep: #9e2e1f;
+    --color-accent-ink: #faf8f3;
+  }
 }
 
 body {

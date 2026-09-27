@@ -36,7 +36,7 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
 }
 
 const BTN =
-  "flex h-11 w-11 items-center justify-center border border-vanilla/30 bg-panda/60 text-vanilla transition-colors hover:bg-vanilla hover:text-panda focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "flex h-11 w-11 items-center justify-center border border-vanilla-static/30 bg-panda-static/60 text-vanilla-static transition-colors hover:bg-vanilla-static hover:text-panda-static focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 /**
  * Visor de fotos a pantalla completa: flechas, teclado (← → Esc), deslizar en
@@ -110,7 +110,7 @@ export function PhotoLightbox({ photos, index, onIndexChange, onClose, label }: 
       role="dialog"
       aria-modal="true"
       aria-label={label}
-      className="fixed inset-0 z-[80] flex items-center justify-center bg-panda/92 p-4 sm:p-8"
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-panda-static/92 p-4 sm:p-8"
       onClick={onClose}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
@@ -124,7 +124,7 @@ export function PhotoLightbox({ photos, index, onIndexChange, onClose, label }: 
         height={photo.height}
         draggable={false}
         onClick={(e) => e.stopPropagation()}
-        className="bw-review-in max-h-[85vh] max-w-full select-none border border-vanilla/20 object-contain"
+        className="bw-review-in max-h-[85vh] max-w-full select-none border border-vanilla-static/20 object-contain"
       />
 
       <button
@@ -167,7 +167,7 @@ export function PhotoLightbox({ photos, index, onIndexChange, onClose, label }: 
             <Arrow dir="right" />
           </button>
           <p
-            className="absolute bottom-5 left-1/2 -translate-x-1/2 font-mono text-xs text-vanilla/80"
+            className="absolute bottom-5 left-1/2 -translate-x-1/2 font-mono text-xs text-vanilla-static/80"
             aria-live="polite"
           >
             {index + 1} / {count}

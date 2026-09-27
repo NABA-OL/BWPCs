@@ -15,9 +15,7 @@ import { formatCOP } from "@/lib/format";
 import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { submitLead } from "@/lib/leads/actions";
 import { RECAPTCHA_ACTION } from "@/lib/leads/constants";
-import { RegisterPrompt } from "@/components/account/register-prompt";
 import { SaveEstimate } from "@/components/account/save-estimate";
-import { stashPendingEstimate } from "@/lib/pending-estimate";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -145,25 +143,14 @@ export function CotizadorEstimator({
     [],
   );
 
-  // Sin cuenta: antes de abrir WhatsApp se ofrece registrarse (o seguir solo por WhatsApp).
-  const [guest, setGuest] = useState(false);
-  const [promptOpen, setPromptOpen] = useState(false);
-  const markGuest = useCallback(() => setGuest(true), []);
-
+  // El botón principal del panel (arriba, con acento) ya ofrece crear cuenta o solicitar
+  // desde ella; WhatsApp queda como vía secundaria, sin escalón intermedio.
   function handleContinue() {
     setFormError(null);
     if (!nombre.trim() || !telefono.trim() || !correo.trim()) {
       setFormError("Completa los tres campos para continuar.");
       return;
     }
-    if (ACCOUNTS_ENABLED && guest) {
-      setPromptOpen(true);
-      return;
-    }
-    sendLead();
-  }
-
-  function sendLead() {
     startTransition(async () => {
       const recaptchaToken = await getRecaptchaToken();
       const result = await submitLead({
@@ -174,7 +161,6 @@ export function CotizadorEstimator({
         pagina: "cotizador",
         recaptchaToken,
       });
-      setPromptOpen(false);
       if (!result.ok) {
         setFormError(result.error ?? "Algo salió mal. Intenta de nuevo.");
         return;
@@ -189,15 +175,6 @@ export function CotizadorEstimator({
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
           strategy="afterInteractive"
-        />
-      )}
-
-      {promptOpen && (
-        <RegisterPrompt
-          pending={pending}
-          onRegister={() => stashPendingEstimate(resumen)}
-          onContinue={sendLead}
-          onClose={() => setPromptOpen(false)}
         />
       )}
 
@@ -337,15 +314,25 @@ export function CotizadorEstimator({
             </div>
           </dl>
 
+          {/* Acción principal: cotizar desde la web (crear cuenta o, con sesión, solicitar directo). */}
+          {ACCOUNTS_ENABLED && (
+            <SaveEstimate resumen={resumen} disabled={!hasSelection} onUser={prefill} />
+          )}
+
+          {/* WhatsApp: vía secundaria, para dudas o para quien prefiere no crear cuenta. */}
           {!contactOpen ? (
             <Button
               type="button"
               disabled={!hasSelection}
               onClick={() => setContactOpen(true)}
               size="lg"
-              className="mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep"
+              className={
+                ACCOUNTS_ENABLED
+                  ? "mt-3 w-full border border-vanilla/40 bg-transparent text-vanilla hover:bg-vanilla hover:text-panda"
+                  : "mt-6 w-full bg-accent text-accent-ink hover:bg-accent-deep"
+              }
             >
-              Contáctanos por WhatsApp
+              Cotizar por WhatsApp
             </Button>
           ) : (
             <div className="mt-6 space-y-3 border-t border-vanilla/15 pt-5">
@@ -392,14 +379,6 @@ export function CotizadorEstimator({
                 <RecaptchaNotice className="text-center text-[11px] leading-relaxed text-vanilla/40" />
               )}
             </div>
-          )}
-          {ACCOUNTS_ENABLED && (
-            <SaveEstimate
-              resumen={resumen}
-              disabled={!hasSelection}
-              onUser={prefill}
-              onGuest={markGuest}
-            />
           )}
           {!hasSelection && (
             <p className="mt-2 px-1 text-center text-xs text-component">

@@ -13,16 +13,17 @@ const LEVELS: Record<Exclude<PasswordLevel, 0>, { label: string; bar: string; te
   1: {
     label: "Débil",
     bar: "bg-red-600",
-    text: "text-red-700",
+    // -700 no pasa AA sobre el fondo oscuro: en oscuro se aclara a -400.
+    text: "text-red-700 dark:text-red-400",
     hint: "Usa al menos 8 caracteres mezclando letras y números.",
   },
   2: {
     label: "Media",
     bar: "bg-amber-500",
-    text: "text-amber-700",
+    text: "text-amber-700 dark:text-amber-400",
     hint: "Mejórala con 12 o más caracteres, mayúsculas y símbolos.",
   },
-  3: { label: "Fuerte", bar: "bg-green-600", text: "text-green-700", hint: null },
+  3: { label: "Fuerte", bar: "bg-green-600", text: "text-green-700 dark:text-green-400", hint: null },
 };
 
 /** Indicador rojo / amarillo / verde de la fortaleza de la contraseña. */
