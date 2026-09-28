@@ -12,6 +12,9 @@ import { PurchaseForm } from "@/components/account/purchase-form";
 import { MarkQuoteSeen } from "@/components/account/mark-quote-seen";
 import { RevisionForm } from "@/components/account/revision-form";
 import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
+import { collections } from "@/lib/db/collections";
+import { cotizacionVigente, estaVencida, VIGENCIA_HORAS } from "@/lib/cuenta-cobro-vigencia";
+import { getCuentaForQuote } from "@/lib/cuentas-cobro";
 import { listQuoteRequests } from "@/lib/quote-requests";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
@@ -51,7 +54,17 @@ export default async function CotizacionPage({
   const quote = await getMyQuote(session.user.id, id);
   if (!quote) notFound();
 
-  const [requests, purchased] = await Promise.all([listQuoteRequests(id), isQuotePurchased(id)]);
+  const [requests, purchased, cuenta, client] = await Promise.all([
+    listQuoteRequests(id),
+    isQuotePurchased(id),
+    getCuentaForQuote(quote._id.toString()),
+    collections.clients().then((c) => c.findOne({ userId: session.user.id }, { projection: { identificacion: 1 } })),
+  ]);
+  // Cuenta de cobro viva de esta cotización (la que salió al pedir la compra): en vez del formulario se muestra ella.
+  const liveCuenta =
+    cuenta?.estado && ["enviada", "correccion_solicitada", "pago_reportado"].includes(cuenta.estado) ? cuenta : null;
+  const cuentaVencida = liveCuenta ? estaVencida(liveCuenta) : false;
+  const priceFresh = cotizacionVigente(quote);
   const pendingRequest = requests.find((r) => r.estado === "pendiente");
   const pastRequests = requests.filter((r) => r.estado === "atendida");
   const version = quote.version ?? 1;
@@ -172,11 +185,36 @@ export default async function CotizacionPage({
           ¿Y ahora?
         </h2>
 
-        {pendingRequest?.tipo === "compra" ? (
+        {liveCuenta ? (
+          <div className="space-y-3 border border-hairline p-6 text-sm">
+            <p className="font-medium">
+              {liveCuenta.estado === "pago_reportado"
+                ? `Avisaste tu pago de la cuenta de cobro ${liveCuenta.numero}. Lo confirmamos contra el banco.`
+                : liveCuenta.estado === "correccion_solicitada"
+                  ? `Tu cuenta de cobro ${liveCuenta.numero} está en revisión. Te avisamos por correo cuando esté lista.`
+                  : cuentaVencida
+                    ? `Tu cuenta de cobro ${liveCuenta.numero} venció y los precios pueden haber cambiado.`
+                    : `Tu cuenta de cobro ${liveCuenta.numero} está lista.`}
+            </p>
+            {liveCuenta.estado === "enviada" && liveCuenta.venceEn && (
+              <p className="text-component">
+                {cuentaVencida
+                  ? "Envíala a revisión de precios desde su página para que la confirmemos antes de pagar."
+                  : `Válida hasta el ${fmtMoment.format(new Date(liveCuenta.venceEn))} (${VIGENCIA_HORAS} horas). Los precios pueden cambiar por ofertas o por subidas y bajadas de precio en Estados Unidos y el dólar.`}
+              </p>
+            )}
+            <Link
+              href={`/cuenta/cuentas-cobro/${liveCuenta.id}`}
+              className="inline-block bg-panda px-6 py-3 text-sm font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-accent"
+            >
+              {liveCuenta.estado === "enviada" && !cuentaVencida ? "Ir a pagar" : "Ver mi cuenta de cobro"}
+            </Link>
+          </div>
+        ) : pendingRequest?.tipo === "compra" ? (
           <div className="space-y-2 border border-hairline p-6 text-sm">
             <p className="font-medium">
-              Pediste comprar el {fmtMoment.format(new Date(pendingRequest.creado))}. Te
-              contactamos para coordinar el pago y la entrega.
+              Pediste comprar el {fmtMoment.format(new Date(pendingRequest.creado))}. Estamos revisando los
+              precios y preparando tu cuenta de cobro; te avisamos por correo cuando esté lista.
             </p>
             <p className="text-component">
               <strong className="font-medium text-panda">Opción:</strong>{" "}
@@ -215,11 +253,13 @@ export default async function CotizacionPage({
             <div className="border border-hairline p-6">
               <h3 className="font-semibold">Quiero comprar</h3>
               <p className="mb-4 mt-1 text-sm text-component">
-                Elige la opción y cómo pagarías. No se cobra nada: te contactamos para acordar
-                todo.
+                {priceFresh
+                  ? `Elige la opción y cómo pagarías. Generamos tu cuenta de cobro al momento y vale ${VIGENCIA_HORAS} horas: los precios pueden cambiar por ofertas o por subidas y bajadas de precio en Estados Unidos y el dólar.`
+                  : `Esta cotización tiene más de ${VIGENCIA_HORAS} horas y los precios pueden haber cambiado. Elige la opción y cómo pagarías: los revisamos y te avisamos por correo cuando tu cuenta de cobro esté lista.`}
               </p>
               <PurchaseForm
                 quoteId={id}
+                idKnown={!!client?.identificacion?.trim()}
                 options={quote.opciones.map((o) => ({ titulo: o.titulo, totales: o.totales }))}
               />
             </div>

@@ -14,6 +14,7 @@ import { ESTADOS_VISIBLES, esEditable, estadoDe, sendMissing } from "../src/lib/
 import { env } from "../src/lib/env.ts";
 import { boldReference, boldSignature, expirationNanos, parseBoldCheckoutUrl, verifyBoldSignature } from "../src/lib/bold-signature.ts";
 import { CUENTA_NUMEROS_POR_ANIO, computeCuentaCobro, cuentaNumero, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
+import { VIGENCIA_HORAS, cotizacionVigente, estaVencida, ultimoEnvioCotizacion, vencimientoDesde } from "../src/lib/cuenta-cobro-vigencia.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 
 // --- Estados de la cuenta de cobro ---
@@ -49,6 +50,29 @@ assert.equal(parseBoldCheckoutUrl("http://checkout.bold.co/x"), null, "solo http
 assert.equal(parseBoldCheckoutUrl("https://evil.example.com/x"), null, "solo dominios de Bold");
 assert.equal(parseBoldCheckoutUrl("https://checkout.bold.co.evil.com/x"), null, "el host debe ser exacto");
 assert.equal(parseBoldCheckoutUrl("javascript:alert(1)"), null);
+
+// --- Vigencia de la cuenta de cobro (72 h) ---
+const t0 = new Date("2026-09-25T15:00:00Z");
+const hora = 3_600_000;
+assert.equal(VIGENCIA_HORAS, 72);
+assert.equal(vencimientoDesde(t0).getTime() - t0.getTime(), 72 * hora, "vence 72 horas después del envío");
+const conVigencia = { estado: "enviada", venceEn: vencimientoDesde(t0) };
+assert.ok(!estaVencida(conVigencia, new Date(t0.getTime() + 71 * hora)), "a las 71 h sigue vigente");
+assert.ok(estaVencida(conVigencia, new Date(t0.getTime() + 72 * hora)), "a las 72 h ya venció");
+assert.ok(!estaVencida({ estado: "enviada" }, new Date(t0.getTime() + 999 * hora)), "sin venceEn (manual o anterior) nunca vence");
+assert.ok(!estaVencida({ estado: "enviada", venceEn: null }, new Date(t0.getTime() + 999 * hora)), "venceEn null tampoco");
+for (const estado of ["borrador", "correccion_solicitada", "pago_reportado", "pagada", "anulada"]) {
+  assert.ok(!estaVencida({ estado, venceEn: new Date(0) }, t0), `${estado}: solo "por pagar" puede figurar vencida`);
+}
+assert.ok(estaVencida({ venceEn: new Date(0) }, t0), "sin estado cuenta como enviada");
+// Cotización: cuenta desde el último envío al cliente (versión nueva o publicación).
+const publicada = { publicadaEn: new Date(t0.getTime() - 10 * hora), historial: [] };
+assert.ok(cotizacionVigente(publicada, t0), "publicada hace 10 h: vigente");
+assert.ok(!cotizacionVigente({ publicadaEn: new Date(t0.getTime() - 73 * hora), historial: [] }, t0), "publicada hace 73 h: hay que revisar precios");
+const reenviada = { publicadaEn: new Date(t0.getTime() - 500 * hora), historial: [{ enviadaEn: new Date(t0.getTime() - hora) }] };
+assert.equal(ultimoEnvioCotizacion(reenviada)?.getTime(), t0.getTime() - hora, "manda el último envío del historial");
+assert.ok(cotizacionVigente(reenviada, t0), "una versión enviada hace 1 h renueva la vigencia");
+assert.ok(!cotizacionVigente({ publicadaEn: null, historial: [] }, t0), "sin fecha de envío no se emite sola");
 
 // --- Total según el medio de pago ---
 const totales = { base: 100, conTarjeta: 110, conPse: 105 };

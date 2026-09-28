@@ -7,6 +7,7 @@
  */
 import type { Metadata } from "next";
 import { getSettings } from "@/lib/admin/settings";
+import { collections } from "@/lib/db/collections";
 import { SettingsForm } from "@/components/admin/settings-form";
 import { TrmRefreshButton } from "@/components/admin/trm-refresh-button";
 
@@ -21,7 +22,11 @@ export default async function ConfiguracionPage() {
   let trmActualizado: Date | null = null;
 
   try {
-    const s = await getSettings();
+    const [s, admins, banks] = await Promise.all([
+      getSettings(),
+      collections.admins().then((c) => c.find({}).sort({ usuario: 1 }).toArray()),
+      collections.bankAccounts().then((c) => c.find({}).sort({ creado: 1 }).toArray()),
+    ]);
     trmActualizado = s.trmActualizado;
     initial = {
       trmScrapeado: s.trmScrapeado,
@@ -36,6 +41,16 @@ export default async function ConfiguracionPage() {
       whatsapp: s.contacto.whatsapp,
       email: s.contacto.email,
       wordmarkPhrases: s.wordmarkPhrases ?? [],
+      firmanteDefaultId: s.firmanteDefaultId ?? "",
+      bancoDefaultId: s.bancoDefaultId ?? "",
+      firmantes: admins.map((a) => ({
+        id: a._id!.toString(),
+        label: `${a.nombreCompleto?.trim() || a.usuario}${a.firmaBase64 ? "" : " (sin firma cargada)"}`,
+      })),
+      bancos: banks.map((b) => ({
+        id: b._id!.toString(),
+        label: `${b.banco}${b.llave ? " · llave Bre-B" : ""}${b.numero ? ` · ${b.tipoCuenta} ${b.numero}` : ""}`,
+      })),
     };
   } catch (e) {
     error =

@@ -29,13 +29,10 @@ export function SaveEstimate({
   resumen,
   disabled,
   onUser,
-  onGuest,
 }: {
   resumen: string;
   disabled: boolean;
   onUser: (contact: AccountContact) => void;
-  /** La sesión ya cargó y no hay usuario (permite ofrecer crear una cuenta). */
-  onGuest: () => void;
 }) {
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
@@ -51,12 +48,6 @@ export function SaveEstimate({
     // Solo al aparecer la sesión, no en cada render del padre.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
-
-  useEffect(() => {
-    if (!isPending && !user) onGuest();
-    // Solo cuando la sesión termina de cargar.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending, userId]);
 
   // Vuelve de crear una cuenta o iniciar sesión con una selección pendiente: se guarda en la cuenta.
   const [restored, setRestored] = useState<"saved" | "error" | null>(null);
@@ -84,25 +75,43 @@ export function SaveEstimate({
   }
 
   if (!user) {
+    // Botón principal del panel: crear cuenta ya deja la cotización guardada (stashPendingEstimate
+    // + SaveEstimate la recupera sola al volver, ver el efecto de "restored" más abajo). El avisito
+    // de siempre queda debajo, para quien ya tiene cuenta.
     return (
-      <p className="mt-4 text-center text-xs text-vanilla/60">
+      <div className="mt-6 space-y-3">
         <Link
           href="/cuenta/registro?next=/cotizador"
           onClick={() => !disabled && stashPendingEstimate(resumen)}
-          className="underline hover:no-underline"
+          aria-disabled={disabled}
+          tabIndex={disabled ? -1 : undefined}
+          className={`flex w-full items-center justify-center rounded-[2px] px-8 py-4 text-sm font-medium uppercase tracking-wide transition-colors ${
+            disabled
+              ? "pointer-events-none bg-accent/40 text-accent-ink/70"
+              : "bg-accent text-accent-ink hover:bg-accent-deep"
+          }`}
         >
-          Crea una cuenta
-        </Link>{" "}
-        o{" "}
-        <Link
-          href="/cuenta/ingresar?next=/cotizador"
-          onClick={() => !disabled && stashPendingEstimate(resumen)}
-          className="underline hover:no-underline"
-        >
-          inicia sesión
-        </Link>{" "}
-        para guardar tu cotización.
-      </p>
+          Crear cuenta y guardar
+        </Link>
+        <p className="text-center text-xs text-vanilla/60">
+          <Link
+            href="/cuenta/registro?next=/cotizador"
+            onClick={() => !disabled && stashPendingEstimate(resumen)}
+            className="underline hover:no-underline"
+          >
+            Crea una cuenta
+          </Link>{" "}
+          o{" "}
+          <Link
+            href="/cuenta/ingresar?next=/cotizador"
+            onClick={() => !disabled && stashPendingEstimate(resumen)}
+            className="underline hover:no-underline"
+          >
+            inicia sesión
+          </Link>{" "}
+          para guardar tu cotización.
+        </p>
+      </div>
     );
   }
 
@@ -116,7 +125,7 @@ export function SaveEstimate({
   }
 
   return (
-    <div className="mt-4 space-y-2 text-center">
+    <div className="mt-6 space-y-2 text-center">
       {restored === "saved" && (
         <p className="border border-vanilla/20 px-3 py-2 text-xs text-vanilla/80">
           Guardamos en tu cuenta la cotización que estabas armando.{" "}
@@ -132,7 +141,7 @@ export function SaveEstimate({
         type="button"
         onClick={request}
         disabled={disabled || pending || saved}
-        className="w-full rounded-[2px] border border-vanilla/40 px-6 py-3 text-sm font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-vanilla hover:text-panda disabled:pointer-events-none disabled:opacity-50"
+        className="w-full rounded-[2px] bg-accent px-8 py-4 text-sm font-medium uppercase tracking-wide text-accent-ink transition-colors hover:bg-accent-deep disabled:pointer-events-none disabled:opacity-50"
       >
         {pending ? "Enviando…" : saved ? "Solicitud enviada" : "Solicitar cotización"}
       </button>

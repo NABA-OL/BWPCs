@@ -20,11 +20,12 @@ import { useEffect, useRef } from "react";
  * Respeta prefers-reduced-motion (red estática) y pausa con la pestaña oculta.
  */
 
-// Paleta de marca en componentes RGB (para componer rgba con alpha variable).
-const NODE_RGB = "10,10,10"; // panda black
-const LINE_RGB = "107,107,107"; // component gray
-// El acento se lee del token CSS --color-accent en runtime (carmesí #c83c2a).
-const ACCENT_FALLBACK = "200,60,42";
+// Paleta de marca: se lee de los tokens CSS en runtime (no hardcodeada), para que
+// la red cambie sola con el modo oscuro. Los literales son solo el respaldo si el
+// navegador no da la variable computada.
+const NODE_FALLBACK = "10,10,10"; // panda black
+const LINE_FALLBACK = "107,107,107"; // component gray
+const ACCENT_FALLBACK = "200,60,42"; // carmesí #c83c2a
 
 /** Convierte un hex (#rgb o #rrggbb) a "r,g,b"; null si no es válido. */
 function hexToRgb(hex: string): string | null {
@@ -68,13 +69,18 @@ export function NodesBackground() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    // Acento real de la marca, leído del token CSS (carmesí #c83c2a).
-    const accentRgb =
-      hexToRgb(
-        getComputedStyle(document.documentElement).getPropertyValue(
-          "--color-accent",
-        ),
-      ) ?? ACCENT_FALLBACK;
+    // Colores reales de la marca, leídos de los tokens CSS: cambian solos al
+    // alternar el modo oscuro (los tokens se redefinen en globals.css).
+    let nodeRgb = NODE_FALLBACK;
+    let lineRgb = LINE_FALLBACK;
+    let accentRgb = ACCENT_FALLBACK;
+    function refreshPalette() {
+      const style = getComputedStyle(document.documentElement);
+      nodeRgb = hexToRgb(style.getPropertyValue("--color-panda")) ?? NODE_FALLBACK;
+      lineRgb = hexToRgb(style.getPropertyValue("--color-component")) ?? LINE_FALLBACK;
+      accentRgb = hexToRgb(style.getPropertyValue("--color-accent")) ?? ACCENT_FALLBACK;
+    }
+    refreshPalette();
 
     let width = 0;
     let height = 0;
@@ -163,7 +169,7 @@ export function NodesBackground() {
           const d2 = dx * dx + dy * dy;
           if (d2 < LINK_DIST * LINK_DIST) {
             const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.18;
-            ctx!.strokeStyle = `rgba(${LINE_RGB},${alpha})`;
+            ctx!.strokeStyle = `rgba(${lineRgb},${alpha})`;
             ctx!.lineWidth = 1;
             ctx!.beginPath();
             ctx!.moveTo(a.x, a.y);
@@ -198,13 +204,21 @@ export function NodesBackground() {
           Math.hypot(pointer.x - n.x, pointer.y - n.y) < POINTER_DIST;
         ctx!.fillStyle = near
           ? `rgba(${accentRgb},0.85)`
-          : `rgba(${NODE_RGB},0.45)`;
+          : `rgba(${nodeRgb},0.45)`;
         const s = 2.4;
         ctx!.fillRect(n.x - s / 2, n.y - s / 2, s, s);
       }
     }
 
     resize();
+
+    // El tema (claro/oscuro) puede cambiar sin recargar la página: al notarlo,
+    // se refresca la paleta y se redibuja (el bucle animado ya toma el valor nuevo solo).
+    const themeObserver = new MutationObserver(() => {
+      refreshPalette();
+      if (reduce) draw();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
     // Movimiento reducido: una sola pasada estática, sin bucle ni cursor.
     if (reduce) {
@@ -214,7 +228,10 @@ export function NodesBackground() {
         draw();
       };
       window.addEventListener("resize", onResizeStatic);
-      return () => window.removeEventListener("resize", onResizeStatic);
+      return () => {
+        window.removeEventListener("resize", onResizeStatic);
+        themeObserver.disconnect();
+      };
     }
 
     let raf = 0;
@@ -270,6 +287,7 @@ export function NodesBackground() {
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", onResize);
+      themeObserver.disconnect();
     };
   }, []);
 

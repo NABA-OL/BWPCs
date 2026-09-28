@@ -83,9 +83,9 @@ export default function PrivacidadPage() {
               <p className="mt-3 leading-relaxed">
                 Medimos las visitas con Vercel Web Analytics y la velocidad de la
                 página con Vercel Speed Insights, que no usan cookies ni
-                identifican personas. Que ya viste el aviso de cookies se
-                guarda en el almacenamiento local del navegador, no en una
-                cookie.
+                identifican personas. Que ya viste el aviso de cookies y si
+                elegiste el modo oscuro se guardan en el almacenamiento local
+                del navegador, no en una cookie.
               </p>
             </div>
 

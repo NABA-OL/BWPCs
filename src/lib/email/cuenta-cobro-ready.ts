@@ -20,11 +20,22 @@ interface CuentaCobroReadyInput {
   corrected?: boolean;
   /** Aviso de que ya está el enlace de pago con tarjeta de una cuenta ya enviada. */
   cardLinkReady?: boolean;
+  /** Hasta cuándo vale el precio (cuentas que nacen de una solicitud de compra). */
+  venceEn?: Date | null;
 }
+
+const fmtVence = new Intl.DateTimeFormat("es-CO", {
+  timeZone: "America/Bogota",
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  hour: "numeric",
+  minute: "2-digit",
+});
 
 /** Correo "tienes una cuenta de cobro" (o "la corregimos"), con la marca de B & W. */
 export async function sendCuentaCobroEmail(input: CuentaCobroReadyInput) {
-  const { to, name, numero, totalCop, cuentaId, corrected, cardLinkReady } = input;
+  const { to, name, numero, totalCop, cuentaId, corrected, cardLinkReady, venceEn } = input;
   const first = name.trim().split(/\s+/)[0] || "";
 
   const { html, text } = renderEmail({
@@ -46,9 +57,15 @@ export async function sendCuentaCobroEmail(input: CuentaCobroReadyInput) {
           ? `Ajustamos la cuenta de cobro ${numero} según lo que nos pediste. Revísala y, cuando hagas el pago, avísanos desde tu cuenta.`
           : `Ya puedes ver la cuenta de cobro ${numero} en tu cuenta, con los datos para hacer el pago. Cuando lo hagas, avísanos desde ahí.`,
     ],
-    facts: [{ label: "Total a pagar", value: formatCOP(totalCop) }],
+    facts: [
+      { label: "Total a pagar", value: formatCOP(totalCop) },
+      ...(venceEn && !cardLinkReady ? [{ label: "Válida hasta", value: fmtVence.format(venceEn) }] : []),
+    ],
     button: { label: "Ver mi cuenta de cobro", url: `${siteUrl}/cuenta/cuentas-cobro/${cuentaId}` },
     footnote:
+      (venceEn && !cardLinkReady
+        ? "Los precios pueden cambiar por ofertas o por subidas y bajadas de precio en Estados Unidos y el dólar: por eso esta cuenta vale 72 horas. Si vence, la envías a revisión desde tu cuenta y confirmamos los precios. "
+        : "") +
       "Nunca te pediremos claves ni datos de tarjetas por correo. Si algo no te cuadra, escríbenos por WhatsApp antes de pagar.",
   });
 

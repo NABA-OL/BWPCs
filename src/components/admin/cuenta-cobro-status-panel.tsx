@@ -16,6 +16,7 @@ import {
   sendCuentaCobroAction,
 } from "@/app/admin/(panel)/cuentas-cobro/actions";
 import { ESTADO_LABEL, estadoDe, sendMissing } from "@/lib/cuenta-cobro-estado";
+import { estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import type { CuentaCobro } from "@/lib/db/types";
 import { boldAvailable } from "@/lib/bold-payments";
 import { formatCOP } from "@/lib/format";
@@ -70,6 +71,9 @@ export function CuentaCobroStatusPanel({
   const missing = sendMissing(cuenta, cardIsManual(cuenta.total, boldAvailable()));
   const canSend = (estado === "borrador" || estado === "correccion_solicitada") && missing.length === 0;
   const lastNote = cuenta.historial?.at(-1)?.nota;
+  const vencida = estaVencida(cuenta);
+  // El cliente pidió revisar los precios porque la cuenta venció (no una corrección escrita por él).
+  const repriceAsked = estado === "correccion_solicitada" && (lastNote?.startsWith("Cuenta vencida") ?? false);
 
   return (
     <section className="mt-8 border border-hairline p-6">
@@ -77,10 +81,17 @@ export function CuentaCobroStatusPanel({
         <div>
           <h2 className="text-lg font-semibold">
             Estado:{" "}
-            <span className={estado === "pago_reportado" || estado === "correccion_solicitada" ? "text-accent" : ""}>
-              {ESTADO_LABEL[estado]}
+            <span className={estado === "pago_reportado" || estado === "correccion_solicitada" || vencida ? "text-accent" : ""}>
+              {vencida ? "Vencida (por pagar)" : ESTADO_LABEL[estado]}
             </span>
           </h2>
+          {cuenta.venceEn && (estado === "enviada" || repriceAsked) && (
+            <p className="mt-1 text-sm text-component">
+              {vencida ? "Venció el " : repriceAsked ? "Venció el " : "Válida hasta el "}
+              <strong className="font-medium text-panda">{fmt(cuenta.venceEn)}</strong>
+              {vencida && ". El cliente no ve cómo pagar hasta que la envíe a revisión."}
+            </p>
+          )}
           {cuenta.formaPago && (
             <p className="mt-1 text-sm text-component">
               Medio de pago: <strong className="font-medium text-panda">{PAYMENT_LABEL[cuenta.formaPago]}</strong>
@@ -107,7 +118,13 @@ export function CuentaCobroStatusPanel({
               "Sin cuenta de cliente en la web: solo registro tuyo."
             )}
           </p>
-          {estado === "correccion_solicitada" && lastNote && (
+          {repriceAsked && (
+            <p className="mt-3 border border-accent/30 bg-accent/5 p-3 text-sm">
+              <strong className="font-medium text-accent">Cuenta vencida: el cliente pide revisar los precios.</strong>{" "}
+              Confirma que sigan iguales (o ajústalos aquí) y reenvíala: la vigencia se renueva 72 horas.
+            </p>
+          )}
+          {estado === "correccion_solicitada" && lastNote && !repriceAsked && (
             <p className="mt-3 border border-accent/30 bg-accent/5 p-3 text-sm">
               <strong className="font-medium text-accent">El cliente pide corregir:</strong> {lastNote}
             </p>
@@ -124,7 +141,7 @@ export function CuentaCobroStatusPanel({
             <form action={sendCuentaCobroAction}>
               <input type="hidden" name="id" value={id} />
               <button type="submit" disabled={!canSend} className={`${PRIMARY} disabled:cursor-not-allowed disabled:opacity-40`}>
-                {estado === "borrador" ? "Enviar al cliente y avisar" : "Reenviar corregida"}
+                {estado === "borrador" ? "Enviar al cliente y avisar" : repriceAsked ? "Precios revisados: reenviar" : "Reenviar corregida"}
               </button>
             </form>
           )}

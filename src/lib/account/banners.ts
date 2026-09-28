@@ -7,6 +7,7 @@
  */
 import "server-only";
 import { purchasedQuoteIds } from "@/lib/account/quotes";
+import { estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import { collections } from "@/lib/db/collections";
 
 export interface AccountBanner {
@@ -32,7 +33,7 @@ export async function getAccountBanners(userId: string): Promise<AccountBanner[]
       )
       .limit(20)
       .toArray(),
-    cuentasCol.find({ userId, estado: "enviada" }, { projection: { numero: 1 } }).limit(20).toArray(),
+    cuentasCol.find({ userId, estado: "enviada" }, { projection: { numero: 1, estado: 1, venceEn: 1 } }).limit(20).toArray(),
   ]);
 
   const bought = await purchasedQuoteIds(quotes.map((q) => q._id!.toString()));
@@ -48,13 +49,24 @@ export async function getAccountBanners(userId: string): Promise<AccountBanner[]
   } else if (unseen.length > 1) {
     banners.push({ text: `Tienes ${unseen.length} cotizaciones nuevas o actualizadas`, href: "/cuenta" });
   }
-  if (cuentas.length === 1) {
+  // Las vencidas no se pagan: piden revisión de precios, así que su aviso es otro.
+  const expired = cuentas.filter((c) => estaVencida(c));
+  const payable = cuentas.filter((c) => !estaVencida(c));
+  if (payable.length === 1) {
     banners.push({
-      text: `Tienes una cuenta de cobro por pagar (${cuentas[0].numero})`,
-      href: `/cuenta/cuentas-cobro/${cuentas[0]._id!.toString()}`,
+      text: `Tienes una cuenta de cobro por pagar (${payable[0].numero})`,
+      href: `/cuenta/cuentas-cobro/${payable[0]._id!.toString()}`,
     });
-  } else if (cuentas.length > 1) {
-    banners.push({ text: `Tienes ${cuentas.length} cuentas de cobro por pagar`, href: "/cuenta/cuentas-cobro" });
+  } else if (payable.length > 1) {
+    banners.push({ text: `Tienes ${payable.length} cuentas de cobro por pagar`, href: "/cuenta/cuentas-cobro" });
+  }
+  if (expired.length === 1) {
+    banners.push({
+      text: `Tu cuenta de cobro ${expired[0].numero} venció: envíala a revisión de precios`,
+      href: `/cuenta/cuentas-cobro/${expired[0]._id!.toString()}`,
+    });
+  } else if (expired.length > 1) {
+    banners.push({ text: `Tienes ${expired.length} cuentas de cobro vencidas: envíalas a revisión de precios`, href: "/cuenta/cuentas-cobro" });
   }
   return banners;
 }

@@ -27,8 +27,9 @@ const HEADER_PX = 64;
  */
 export function SectionNav({ items }: { items: SectionNavItem[] }) {
   const [active, setActive] = useState(0);
-  // Por renglón: ¿queda sobre el pie de página (negro)? Ahí la etiqueta y las marcas van en claro.
-  const [dark, setDark] = useState<boolean[]>([]);
+  // Por renglón: ¿queda sobre el pie de página (siempre oscuro)? Ahí la etiqueta y las marcas van en claro fijo,
+  // sin importar el tema del sitio — no confundir con el modo oscuro del sitio (`data-theme`, ver `lib/theme.ts`).
+  const [overFooter, setOverFooter] = useState<boolean[]>([]);
   const rows = useRef<(HTMLLIElement | null)[]>([]);
   const key = items.map((i) => i.id).join("|");
 
@@ -39,7 +40,7 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
       raf = 0;
       const footerTop = document.querySelector("footer")?.getBoundingClientRect().top ?? Infinity;
       const next = rows.current.map((li) => (li ? li.getBoundingClientRect().top + li.offsetHeight / 2 >= footerTop : false));
-      setDark((prev) => (prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
+      setOverFooter((prev) => (prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
       const doc = document.documentElement;
       // Al final de la página gana la última sección aunque sea corta.
       if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) {
@@ -96,7 +97,7 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
         />
         {items.map((item, i) => {
           const isActive = i === active;
-          const onDark = dark[i] === true;
+          const isOverFooter = overFooter[i] === true;
           return (
             <li
               key={item.id}
@@ -119,7 +120,9 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
                 <span
                   aria-hidden="true"
                   className={`block h-0.5 w-2 transition-[width,background-color] duration-200 group-hover/item:w-3 2xl:hidden ${
-                    onDark ? "bg-vanilla/40 group-hover/item:bg-vanilla" : "bg-component/40 group-hover/item:bg-panda"
+                    isOverFooter
+                      ? "bg-vanilla-static/40 group-hover/item:bg-vanilla-static"
+                      : "bg-component/40 group-hover/item:bg-panda"
                   }`}
                 />
                 {/*
@@ -129,12 +132,14 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
                 <span
                   style={{
                     // Sin caja: un halo del color del fondo mantiene legible el texto sobre lo que haya detrás.
-                    textShadow: onDark ? "0 0 6px #0A0A0A, 0 0 2px #0A0A0A" : "0 0 6px #FAF8F3, 0 0 2px #FAF8F3",
+                    textShadow: isOverFooter
+                      ? "0 0 6px var(--color-panda-static), 0 0 2px var(--color-panda-static)"
+                      : "0 0 6px var(--color-vanilla), 0 0 2px var(--color-vanilla)",
                   }}
                   className={`pointer-events-none absolute left-6 top-1/2 -translate-y-1/2 whitespace-nowrap px-1 py-0.5 opacity-0 transition-[opacity,font-size,color] duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:opacity-100 2xl:pointer-events-auto 2xl:opacity-100 ${
                     isActive
-                      ? `text-base font-medium ${onDark ? "text-vanilla" : "text-panda"}`
-                      : `text-xs ${onDark ? "text-vanilla/60 group-hover/item:text-vanilla" : "text-component group-hover/item:text-panda"}`
+                      ? `text-base font-medium ${isOverFooter ? "text-vanilla-static" : "text-panda"}`
+                      : `text-xs ${isOverFooter ? "text-vanilla-static/60 group-hover/item:text-vanilla-static" : "text-component group-hover/item:text-panda"}`
                   }`}
                 >
                   {item.label}

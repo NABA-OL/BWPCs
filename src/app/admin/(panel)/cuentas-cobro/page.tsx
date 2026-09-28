@@ -11,6 +11,7 @@ import { collections } from "@/lib/db/collections";
 import { ButtonLink } from "@/components/ui/button";
 import { CuentaCobroList } from "@/components/admin/cuenta-cobro-list";
 import { estadoDe } from "@/lib/cuenta-cobro-estado";
+import { estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import type { CuentaCobroEstado } from "@/lib/db/types";
 
 const NEEDS_ACTION = new Set<CuentaCobroEstado>(["pago_reportado", "correccion_solicitada"]);
@@ -31,6 +32,7 @@ export default async function CuentasCobroPage() {
     total: number;
     estado: CuentaCobroEstado;
     sinEstado: boolean;
+    vencida: boolean;
     deletable: boolean;
   }[] = [];
   let error: string | null = null;
@@ -46,6 +48,7 @@ export default async function CuentasCobroPage() {
       total: c.total,
       estado: estadoDe(c),
       sinEstado: c.estado === undefined,
+      vencida: estaVencida(c),
       deletable: c.estado === undefined || c.estado === "borrador",
     }));
     // Lo que espera acción del admin va primero (sort estable: el resto conserva su orden).

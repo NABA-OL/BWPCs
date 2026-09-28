@@ -26,9 +26,12 @@ interface PurchaseOption {
 export function PurchaseForm({
   quoteId,
   options,
+  idKnown,
 }: {
   quoteId: string;
   options: PurchaseOption[];
+  /** Ya tenemos su cédula o NIT guardada: no hace falta pedirla de nuevo. */
+  idKnown: boolean;
 }) {
   const router = useRouter();
   const [option, setOption] = useState<number | null>(options.length === 1 ? 0 : null);
@@ -106,18 +109,20 @@ export function PurchaseForm({
           );
         })}
         <p className="text-xs text-component">
-          {CARD_AND_PSE_TEXT.charAt(0).toUpperCase() + CARD_AND_PSE_TEXT.slice(1)} lleva{CARD_AND_PSE_TEXT.includes(" y ") ? "n" : ""} un recargo. El pago se acuerda contigo antes de cobrar nada.
+          {CARD_AND_PSE_TEXT.charAt(0).toUpperCase() + CARD_AND_PSE_TEXT.slice(1)} lleva{CARD_AND_PSE_TEXT.includes(" y ") ? "n" : ""} un recargo. Al enviar se genera tu cuenta de cobro; el pago lo haces tú desde tu cuenta.
         </p>
       </fieldset>
 
       <div className="grid items-end gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="purchase-id" className={LABEL}>
-            Cédula o NIT <span className="font-normal">(opcional)</span>
+            Cédula o NIT{" "}
+            <span className="font-normal">{idKnown ? "(ya la tenemos; solo si quieres cambiarla)" : "(obligatoria)"}</span>
           </label>
           <input
             id="purchase-id"
             name="identificacion"
+            required={!idKnown}
             maxLength={20}
             autoComplete="off"
             className={`${INPUT} font-mono`}
@@ -137,8 +142,8 @@ export function PurchaseForm({
         </div>
       </div>
       <p className="-mt-2 text-xs text-component">
-        Son opcionales: solo los usamos para preparar tu cuenta de cobro y puedes dárnoslos
-        después. Más en la{" "}
+        La cédula o NIT es necesaria para tu cuenta de cobro; la dirección es opcional. Solo las usamos para
+        eso. Más en la{" "}
         <Link href="/tratamiento-de-datos" className="text-accent hover:underline">
           política de tratamiento de datos
         </Link>

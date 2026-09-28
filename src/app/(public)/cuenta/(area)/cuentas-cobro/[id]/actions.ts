@@ -93,6 +93,40 @@ export async function requestCorrectionAction(input: unknown): Promise<CuentaCob
   return { ok: true };
 }
 
+/**
+ * La cuenta venció (pasaron 72 h): el cliente la envía a revisión para que B & W confirme que los precios
+ * no cambiaron. Pasa a "corrección pedida" (mismo flujo que ya existe: el admin la revisa, ajusta si hace
+ * falta y la reenvía con una vigencia nueva). Solo si de verdad venció.
+ */
+export async function requestRepriceAction(id: unknown): Promise<CuentaCobroResult> {
+  const checked = await guard(id);
+  if (!checked.ok) return checked;
+  const { user } = checked;
+
+  const updated = await moveCuentaCobro(id as string, {
+    from: ["enviada"],
+    to: "correccion_solicitada",
+    por: "cliente",
+    userId: user.id,
+    vigencia: "vencida",
+    nota: "Cuenta vencida: el cliente pide revisar los precios antes de pagar.",
+  });
+  if (!updated) return { ok: false, error: "Esta cuenta de cobro todavía está vigente o ya no admite esta acción." };
+
+  after(() =>
+    sendTelegramMessage(
+      `⏰ <b>Cuenta de cobro por revisar (venció)</b>\n` +
+        `<b>De:</b> ${escapeHtml(shortName(user.name))}\n` +
+        `<b>Cuenta de cobro:</b> ${escapeHtml(updated.numero)}\n` +
+        `Revisa que los precios sigan iguales, ajusta si hace falta y reenvíala.\n\n` +
+        `${siteUrl}/admin/cuentas-cobro/${id as string}`,
+      "pagos",
+    ),
+  );
+  revalidate(id as string);
+  return { ok: true };
+}
+
 const methodSchema = z.object({
   id: z.string().max(40),
   method: z.enum(OFFERED_PAYMENT_METHODS.map((m) => m.id) as [string, ...string[]]),
