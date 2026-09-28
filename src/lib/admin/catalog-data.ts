@@ -16,6 +16,7 @@ export interface CatalogOption {
   id: string;
   label: string;
   categoria: ComponentCategory;
+  marca: string;
   modelo: string;
   precioCop: number;
   descripcion: string;
@@ -43,6 +44,7 @@ export async function getCatalogOptions(settings: Settings): Promise<CatalogOpti
     catalog.push({
       id: `p_${p._id!.toString()}`,
       categoria: "Procesador",
+      marca: p.marca,
       modelo: p.modelo,
       precioCop: precio,
       descripcion: "",
@@ -54,6 +56,7 @@ export async function getCatalogOptions(settings: Settings): Promise<CatalogOpti
     catalog.push({
       id: `g_${g._id!.toString()}`,
       categoria: "Grafica",
+      marca: g.marca,
       modelo: g.modelo,
       precioCop: precio,
       descripcion: g.ensambladora,
@@ -65,6 +68,7 @@ export async function getCatalogOptions(settings: Settings): Promise<CatalogOpti
     catalog.push({
       id: `c_${c._id!.toString()}`,
       categoria: c.categoria,
+      marca: c.marca,
       modelo: c.modelo,
       precioCop: precio,
       descripcion: c.descripcion,

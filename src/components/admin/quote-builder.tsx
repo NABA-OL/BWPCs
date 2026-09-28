@@ -591,19 +591,21 @@ function CatalogPicker({
     <Combobox
       groups={grupos}
       getId={(c) => c.id}
-      searchText={(c) => `${c.modelo} ${c.descripcion}`}
+      searchText={(c) => `${c.marca} ${c.modelo} ${c.descripcion}`}
       placeholder="+ Desde catálogo…"
       onPick={(c) =>
         onPick({
           categoria: c.categoria,
-          modelo: c.modelo,
+          // La cotización queda como texto suelto (no referencia el catálogo): "Marca · Modelo"
+          // de una vez, para no tener que ir a buscar la marca en /admin/componentes después.
+          modelo: c.marca ? `${c.marca} · ${c.modelo}` : c.modelo,
           precioCop: c.precioCop,
           descripcion: c.descripcion,
         })
       }
       renderItem={(c) => (
         <>
-          {c.modelo}
+          {c.marca ? `${c.marca} · ${c.modelo}` : c.modelo}
           {c.descripcion ? ` (${c.descripcion})` : ""} ·{" "}
           {formatCOP(c.precioCop)}
         </>
