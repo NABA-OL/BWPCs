@@ -740,18 +740,19 @@ function CatalogPicker({
     <Combobox
       groups={grupos}
       getId={(c) => c.id}
-      searchText={(c) => `${c.modelo} ${c.descripcion}`}
+      searchText={(c) => `${c.marca} ${c.modelo} ${c.descripcion}`}
       placeholder="+ Desde catálogo…"
-      onPick={(c) =>
+      onPick={(c) => {
+        const nombre = c.marca ? `${c.marca} · ${c.modelo}` : c.modelo;
         onPick({
-          descripcion: c.descripcion ? `${c.modelo} — ${c.descripcion}` : c.modelo,
+          descripcion: c.descripcion ? `${nombre} — ${c.descripcion}` : nombre,
           cantidad: 1,
           valorUnitario: c.precioCop,
-        })
-      }
+        });
+      }}
       renderItem={(c) => (
         <>
-          {c.modelo}
+          {c.marca ? `${c.marca} · ${c.modelo}` : c.modelo}
           {c.descripcion ? ` (${c.descripcion})` : ""} ·{" "}
           {formatCOP(c.precioCop)}
         </>

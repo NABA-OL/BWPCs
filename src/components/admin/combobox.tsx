@@ -31,8 +31,18 @@ export function Combobox<T>({
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set());
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  function toggleGroup(label: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -92,23 +102,35 @@ export function Combobox<T>({
             {filtered.length === 0 ? (
               <p className="px-3 py-4 text-sm text-component">Sin resultados.</p>
             ) : (
-              filtered.map((g) => (
-                <div key={g.label}>
-                  <p className="sticky top-0 bg-hairline/40 px-3 py-1.5 text-xs font-medium text-component">
-                    {g.label}
-                  </p>
-                  {g.items.map((it) => (
+              filtered.map((g) => {
+                // Buscando, mostrar los grupos con resultado siempre abiertos.
+                const isOpen = query.trim() !== "" || expanded.has(g.label);
+                return (
+                  <div key={g.label}>
                     <button
-                      key={getId(it)}
                       type="button"
-                      onClick={() => pick(it)}
-                      className="block w-full px-3 py-2 text-left text-sm outline-none transition-colors hover:bg-panda hover:text-vanilla focus:bg-panda focus:text-vanilla"
+                      onClick={() => toggleGroup(g.label)}
+                      className="sticky top-0 flex w-full items-center justify-between gap-2 bg-hairline/40 px-3 py-1.5 text-left text-xs font-medium text-component outline-none hover:bg-hairline/70"
                     >
-                      {renderItem(it)}
+                      <span>{g.label}</span>
+                      <span aria-hidden className="text-component/70">
+                        {isOpen ? "▾" : "▸"}
+                      </span>
                     </button>
-                  ))}
-                </div>
-              ))
+                    {isOpen &&
+                      g.items.map((it) => (
+                        <button
+                          key={getId(it)}
+                          type="button"
+                          onClick={() => pick(it)}
+                          className="block w-full px-3 py-2 text-left text-sm outline-none transition-colors hover:bg-panda hover:text-vanilla focus:bg-panda focus:text-vanilla"
+                        >
+                          {renderItem(it)}
+                        </button>
+                      ))}
+                  </div>
+                );
+              })
             )}
           </div>
         </div>

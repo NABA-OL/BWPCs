@@ -342,6 +342,7 @@ export function ComponentManager({
             <thead className="border-b border-hairline bg-hairline/30 text-left">
               <tr>
                 <th className="px-4 py-3 font-medium">Categoría</th>
+                <th className="px-4 py-3 font-medium">Marca</th>
                 <th className="px-4 py-3 font-medium">Modelo</th>
                 <th className="px-4 py-3 font-medium">Precio</th>
                 <th className="px-4 py-3 font-medium">Estado</th>
@@ -357,11 +358,9 @@ export function ComponentManager({
                   <td className="px-4 py-3 text-component">
                     {CATEGORY_LABELS[r.categoria]}
                   </td>
+                  <td className="px-4 py-3 text-component">{r.marca || "—"}</td>
                   <td className="px-4 py-3">
                     <span className="font-medium">{r.modelo}</span>
-                    {r.marca && (
-                      <span className="text-component"> · {r.marca}</span>
-                    )}
                     {r.descripcion && (
                       <span className="block text-xs text-component">
                         {r.descripcion}
