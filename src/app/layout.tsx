@@ -9,6 +9,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeSync } from "@/components/theme/theme-sync";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const geist = Geist({
@@ -84,9 +86,18 @@ export default function RootLayout({
   return (
     <html
       lang="es-CO"
+      // El script de abajo pone `data-theme` antes de que React hidrate: sin esto,
+      // React compararía el `<html>` del servidor (sin el atributo) con el del
+      // navegador (con él) y avisaría de un desajuste de hidratación.
+      suppressHydrationWarning
       className={`${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-vanilla text-panda">
+        {/* Antes de la primera pintura: si el usuario había elegido oscuro, lo aplica
+            ya mismo (evita el parpadeo de claro a oscuro al cargar). Sin datos del
+            usuario: solo arma constantes de src/lib/theme.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <ThemeSync />
         {children}
         <Analytics />
         <SpeedInsights />

@@ -28,6 +28,44 @@ interface InitialSettings {
   whatsapp: string;
   email: string;
   wordmarkPhrases: { left: string; right: string }[];
+  firmanteDefaultId: string;
+  bancoDefaultId: string;
+  /** Admins y cuentas bancarias entre las que elegir los predeterminados de las cuentas de cobro automáticas. */
+  firmantes: { id: string; label: string }[];
+  bancos: { id: string; label: string }[];
+}
+
+function SelectField({
+  label,
+  name,
+  defaultValue,
+  options,
+  hint,
+}: {
+  label: string;
+  name: string;
+  defaultValue: string;
+  options: { id: string; label: string }[];
+  hint: string;
+}) {
+  return (
+    <label className="block">
+      <span className="text-sm font-medium text-component">{label}</span>
+      <select
+        name={name}
+        defaultValue={defaultValue}
+        className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 text-panda outline-none focus:border-panda"
+      >
+        <option value="">Automático</option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <span className="mt-1 block text-xs text-component">{hint}</span>
+    </label>
+  );
 }
 
 function Field({
@@ -166,6 +204,23 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           name="breBPct"
           defaultValue={initial.breBPct}
           hint="Bre-B no cobra comisión → 0 (también Daviplata)."
+        />
+      </Section>
+
+      <Section title="Cuentas de cobro automáticas">
+        <SelectField
+          label="Firmante predeterminado"
+          name="firmanteDefaultId"
+          defaultValue={initial.firmanteDefaultId}
+          options={initial.firmantes}
+          hint="Firma las cuentas de cobro que se generan solas al pedir el cliente la compra. Automático = el primero con firma cargada."
+        />
+        <SelectField
+          label="Cuenta bancaria predeterminada"
+          name="bancoDefaultId"
+          defaultValue={initial.bancoDefaultId}
+          options={initial.bancos}
+          hint="Se usa si sirve para el medio de pago (Bre-B necesita llave). Automático = la que calce con el medio."
         />
       </Section>
 

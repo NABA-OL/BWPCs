@@ -19,8 +19,8 @@ import { boldAvailable, reconcileBoldLink } from "@/lib/bold-payments";
 import { parseBoldCheckoutUrl } from "@/lib/bold-signature";
 import { PAYMENT_METHODS, cardIsManual, surchargeConcept, surchargePct } from "@/lib/payment-methods";
 import { getSettings } from "@/lib/admin/settings";
-import { closePurchaseRequest } from "@/lib/quote-requests";
 import { moveCuentaCobro, nextCuentaNumero } from "@/lib/cuentas-cobro";
+import { notifyCuentaSent, sendCuentaCobro } from "@/lib/cuenta-cobro-send";
 import { consumeNoticeMail } from "@/lib/email/budget";
 import { sendCuentaCobroEmail } from "@/lib/email/cuenta-cobro-ready";
 import { clientsCol } from "@/lib/clients";
@@ -235,37 +235,9 @@ async function formId(form: FormData): Promise<string | null> {
 export async function sendCuentaCobroAction(form: FormData): Promise<void> {
   const id = await formId(form);
   if (!id) return;
-  const col = await collections.cuentasCobro();
-  const current = await col.findOne({ _id: new ObjectId(id) });
-  // Para emitirla hace falta destinatario, identificación (C.C. o NIT), datos de pago y firmante.
-  if (!current || sendMissing(current, cardIsManual(current.total, boldAvailable())).length > 0) return;
-
-  const corrected = current.estado === "correccion_solicitada";
-  const updated = await moveCuentaCobro(id, {
-    from: ["borrador", "correccion_solicitada"],
-    to: "enviada",
-    por: "admin",
-    nota: corrected ? "Corregida y reenviada" : null,
-  });
-  if (!updated) return;
-  // Si venía de una solicitud de compra, esa solicitud ya está atendida.
-  if (current.origen) await closePurchaseRequest(current.origen.requestId);
-
-  const user = await getPublicUser(current.userId!);
-  if (user && (await consumeNoticeMail())) {
-    try {
-      await sendCuentaCobroEmail({
-        to: user.email,
-        name: user.name,
-        numero: updated.numero,
-        totalCop: updated.total,
-        cuentaId: id,
-        corrected,
-      });
-    } catch (error) {
-      console.error("[cuentas-cobro] fallo al enviar el aviso", error);
-    }
-  }
+  const sent = await sendCuentaCobro(id, "admin");
+  if (!sent) return;
+  await notifyCuentaSent(sent);
   revalidateCuenta(id);
 }
 

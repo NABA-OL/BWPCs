@@ -10,6 +10,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { MongoServerError, ObjectId } from "mongodb";
 import { boldAvailable } from "@/lib/bold-payments";
 import { KEY_PREFIX, ProofRejectedError, proofsCol } from "@/lib/comprobantes";
+import { VENCIDA_ERROR, estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import { moveCuentaCobro } from "@/lib/cuentas-cobro";
 import type { Comprobante, CuentaCobro } from "@/lib/db/types";
 import { processProofImage } from "@/lib/images/process";
@@ -43,6 +44,8 @@ export async function reportPaymentWithProof(
 
   const current = await col.findOne({ _id: new ObjectId(cuentaId), userId });
   if (!current) throw new ProofRejectedError("Esta cuenta de cobro ya no admite ese aviso.");
+  // Con el precio vencido no se avisa el pago: primero se revisan los precios (ver `cuenta-cobro-vigencia.ts`).
+  if (estaVencida(current)) throw new ProofRejectedError(`${VENCIDA_ERROR} Si ya pagaste, escríbenos por WhatsApp.`);
   // Con tarjeta cobrada por Bold (enlace automático) el pago se confirma solo; en efectivo lo confirmamos
   // nosotros. Con Bre-B, transferencia o tarjeta por enlace manual del admin se avisa con comprobante.
   const method = current.formaPago ?? DEFAULT_PAYMENT_METHOD;
@@ -67,6 +70,7 @@ export async function reportPaymentWithProof(
       to: "pago_reportado",
       por: "cliente",
       userId,
+      vigencia: "vigente",
       set: { comprobantes: [...(current.comprobantes ?? []), proof], pagoReportadoEn: new Date() },
     });
     if (!updated) {

@@ -45,7 +45,7 @@ const secciones: readonly LegalSection[] = [
       "Cuentas de cobro: tu nombre, identificación (si nos la diste), dirección, los conceptos y valores, y el estado del pago.",
       "Pagos con tarjeta: si eliges pagar con tarjeta, te llevamos a Bold, la pasarela de pagos. A Bold le enviamos tu correo, el valor y una referencia de la cuenta de cobro; los datos de tu tarjeta los escribes en Bold y nosotros nunca los vemos ni los guardamos. Bold nos informa si el pago fue aprobado o rechazado, y guardamos ese resultado y el identificador del pago.",
       "Comprobantes de pago: la imagen que subas al avisar un pago. La guardamos en un almacenamiento privado, sin metadatos (como la ubicación) y sin enlace público; solo la vemos nosotros y tú, y la conservamos junto con la cuenta de cobro a la que respalda.",
-      "Solicitudes sobre una cotización: los cambios que nos pidas o la opción y forma de pago con las que quieras comprar. Si quieres, también tu cédula o NIT y tu dirección; son opcionales y solo se usan para preparar tu cuenta de cobro.",
+      "Solicitudes sobre una cotización: los cambios que nos pidas o la opción y forma de pago con las que quieras comprar. Para comprar, tu cédula o NIT (necesaria para emitir tu cuenta de cobro) y, si quieres, tu dirección; solo se usan para preparar esa cuenta de cobro, que se genera automáticamente y tiene una vigencia de 72 horas.",
       "Reseñas: la calificación, el comentario y las fotos que decidas publicar.",
       "Datos de seguridad: dirección IP y navegador al registrarte y al aceptar esta política, para poder demostrar tu autorización, y al iniciar sesión, para limitar intentos abusivos.",
     ],

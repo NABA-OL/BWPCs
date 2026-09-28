@@ -9,12 +9,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig, whatsappLink } from "@/lib/site-config";
 import { SecretAdminTrigger } from "@/components/secret-admin-trigger";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-hairline bg-panda text-vanilla">
+    <footer className="border-t border-hairline bg-panda-static text-vanilla-static">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-4">
         {/* Marca */}
         <div>
@@ -30,7 +31,7 @@ export function SiteFooter() {
               B&nbsp;&amp;&nbsp;W
             </span>
           </div>
-          <p className="mt-3 max-w-xs text-sm text-vanilla/70">
+          <p className="mt-3 max-w-xs text-sm text-vanilla-static/70">
             {siteConfig.tagline}. Ensamble de computadores y venta de
             componentes en Colombia.
           </p>
@@ -42,7 +43,7 @@ export function SiteFooter() {
             <Link
               key={l.href}
               href={l.href}
-              className="w-fit text-vanilla/70 transition-colors hover:text-vanilla"
+              className="w-fit text-vanilla-static/70 transition-colors hover:text-vanilla-static"
             >
               {l.label}
             </Link>
@@ -55,7 +56,7 @@ export function SiteFooter() {
             <Link
               key={l.href}
               href={l.href}
-              className="w-fit text-vanilla/70 transition-colors hover:text-vanilla"
+              className="w-fit text-vanilla-static/70 transition-colors hover:text-vanilla-static"
             >
               {l.label}
             </Link>
@@ -69,13 +70,13 @@ export function SiteFooter() {
             href={whatsappLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 block font-mono text-vanilla/70 transition-colors hover:text-vanilla"
+            className="mt-2 block font-mono text-vanilla-static/70 transition-colors hover:text-vanilla-static"
           >
             WhatsApp {siteConfig.contact.whatsappDisplay}
           </a>
           <a
             href={`mailto:${siteConfig.contact.email}`}
-            className="mt-1 block text-vanilla/70 transition-colors hover:text-vanilla"
+            className="mt-1 block text-vanilla-static/70 transition-colors hover:text-vanilla-static"
           >
             {siteConfig.contact.email}
           </a>
@@ -84,7 +85,7 @@ export function SiteFooter() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram de B & W (@bw_mountpc)"
-            className="mt-3 inline-flex text-vanilla/70 transition-colors hover:text-vanilla focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            className="mt-3 inline-flex text-vanilla-static/70 transition-colors hover:text-vanilla-static focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
           >
             <svg
               width="22"
@@ -105,26 +106,27 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-vanilla/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-5 text-xs text-vanilla/50 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="border-t border-vanilla-static/10">
+        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-5 text-xs text-vanilla-static/50 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <SecretAdminTrigger>
             © {year}&nbsp;B &amp; W · All rights reserved.
           </SecretAdminTrigger>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Link href="/privacidad" className="hover:text-vanilla">
+            <ThemeToggle />
+            <Link href="/privacidad" className="hover:text-vanilla-static">
               Privacidad
             </Link>
-            <Link href="/terminos" className="hover:text-vanilla">
+            <Link href="/terminos" className="hover:text-vanilla-static">
               Términos
             </Link>
-            <Link href="/tratamiento-de-datos" className="hover:text-vanilla">
+            <Link href="/tratamiento-de-datos" className="hover:text-vanilla-static">
               Tratamiento de datos
             </Link>
             <a
               href="https://blackraken.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-vanilla"
+              className="transition-colors hover:text-vanilla-static"
             >
               Developed by BlacKraken Solutions.
             </a>

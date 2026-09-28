@@ -12,7 +12,10 @@ import { z } from "zod";
 import { getMyQuote, isQuotePurchased } from "@/lib/account/quotes";
 import { collections } from "@/lib/db/collections";
 import { ensureClientForUser } from "@/lib/clients";
-import { createDraftFromPurchase } from "@/lib/cuenta-cobro-draft";
+import { issueCuentaFromPurchase } from "@/lib/cuenta-cobro-draft";
+import { notifyCuentaSent } from "@/lib/cuenta-cobro-send";
+import { cotizacionVigente, VIGENCIA_HORAS } from "@/lib/cuenta-cobro-vigencia";
+import { getCuentaForQuote } from "@/lib/cuentas-cobro";
 import { formatCOP } from "@/lib/format";
 import { CARD_MAX_COP, OFFERED_PAYMENT_METHODS, PAYMENT_LABEL, totalFor } from "@/lib/payment-methods";
 import {
@@ -30,6 +33,17 @@ import { getUserSession } from "@/lib/user-auth/session";
 import { siteUrl } from "@/lib/user-auth/site-url";
 
 export type RequestResult = { ok: true } | { ok: false; error: string };
+
+const LIVE_CUENTA_ESTADOS = ["enviada", "correccion_solicitada", "pago_reportado"];
+
+const fmtVence = new Intl.DateTimeFormat("es-CO", {
+  timeZone: "America/Bogota",
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  hour: "numeric",
+  minute: "2-digit",
+});
 
 const revisionSchema = z.object({
   quoteId: z.string().max(40),
@@ -153,6 +167,17 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
   const chosen = quote.opciones[opcion];
   if (!chosen) return { ok: false, error: "Elige una de las opciones de la lista." };
 
+  // Ya tiene una cuenta de cobro viva de esta cotización: se paga esa, no se pide otra.
+  const live = await getCuentaForQuote(quoteId);
+  if (live?.estado && LIVE_CUENTA_ESTADOS.includes(live.estado)) {
+    return { ok: false, error: "Ya tienes una cuenta de cobro de esta cotización. Págala desde Cuentas de cobro." };
+  }
+  // La cuenta de cobro necesita la identificación del cliente: se pide al comprar, salvo que ya la tengamos.
+  const known = await (await collections.clients()).findOne({ userId: user.id }, { projection: { identificacion: 1 } });
+  if (!parsed.data.identificacion && !known?.identificacion?.trim()) {
+    return { ok: false, error: "Escribe tu cédula o NIT: la necesitamos para tu cuenta de cobro." };
+  }
+
   const { allowed } = await rateLimitStorage.consume(`compra:${user.id}`, {
     window: 86400,
     max: 3,
@@ -186,21 +211,32 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
     console.error("[compra] no se pudo crear el cliente", error);
   }
 
-  // En segundo plano: deja lista una cuenta de cobro en borrador para que el admin solo la revise.
-  after(async () => {
-    try {
-      await createDraftFromPurchase({
-        quote,
-        userId: user.id,
-        requestId: result.requestId,
-        opcion,
-        formaPago,
-      });
-      revalidatePath("/admin/cuentas-cobro");
-    } catch (error) {
-      console.error("[compra] no se pudo generar el borrador de la cuenta de cobro", error);
-    }
-  });
+  // La cuenta de cobro sale sola si el precio de la cotización sigue vigente y no falta ningún dato; si no,
+  // queda en borrador para que el admin revise los precios o complete lo que falte.
+  const fresh = cotizacionVigente(quote);
+  let issued: Awaited<ReturnType<typeof issueCuentaFromPurchase>> = null;
+  try {
+    issued = await issueCuentaFromPurchase({
+      quote,
+      userId: user.id,
+      requestId: result.requestId,
+      opcion,
+      formaPago,
+      autoEmit: fresh,
+    });
+  } catch (error) {
+    console.error("[compra] no se pudo generar la cuenta de cobro", error);
+  }
+  const sent = issued?.sent ?? null;
+  if (sent) after(() => notifyCuentaSent(sent));
+  revalidatePath("/admin/cuentas-cobro");
+
+  const outcome = sent
+    ? `✅ Cuenta de cobro ${escapeHtml(sent.cuenta.numero)} enviada automáticamente` +
+      (sent.cuenta.venceEn ? ` (vence ${fmtVence.format(sent.cuenta.venceEn)}).\n` : ".\n")
+    : !fresh
+      ? `⏰ La cotización tiene más de ${VIGENCIA_HORAS} h: revisa los precios y envía la cuenta de cobro (quedó en borrador).\n`
+      : `📝 La cuenta de cobro quedó en borrador: falta algún dato (o es tarjeta con enlace manual).\n`;
 
   after(() =>
     sendTelegramMessage(
@@ -210,6 +246,7 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
         `<b>Opción:</b> ${escapeHtml(chosen.titulo)}\n` +
         `<b>Pago:</b> ${PAYMENT_LABEL[formaPago]} · ${formatCOP(totalCop)}\n` +
         (formaPago === "tarjeta" && totalCop > CARD_MAX_COP ? `⚠️ Sobre el tope de Bold: genera tú el enlace de pago.\n` : "") +
+        outcome +
         `\n` +
         `${siteUrl}/admin/cotizaciones/${quoteId}`,
       "compras",
@@ -222,6 +259,8 @@ export async function requestPurchaseAction(input: unknown): Promise<RequestResu
 }
 
 function revalidateAfterRequest(quoteId: string) {
+  revalidatePath("/cuenta", "layout"); // avisos de la cuenta (cuenta de cobro por pagar)
+  revalidatePath("/cuenta/cuentas-cobro");
   revalidatePath(`/cuenta/cotizaciones/${quoteId}`);
   revalidatePath("/admin/cotizaciones");
   revalidatePath("/admin");

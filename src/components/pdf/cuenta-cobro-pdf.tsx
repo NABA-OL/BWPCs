@@ -175,6 +175,11 @@ export function CuentaCobroPDF({
   const fecha = new Intl.DateTimeFormat("es-CO", { dateStyle: "short" }).format(
     new Date(cuenta.fecha),
   );
+  const venceEn = cuenta.venceEn
+    ? new Intl.DateTimeFormat("es-CO", { timeZone: "America/Bogota", dateStyle: "short", timeStyle: "short" }).format(
+        new Date(cuenta.venceEn),
+      )
+    : "";
 
   return (
     <Document
@@ -190,6 +195,11 @@ export function CuentaCobroPDF({
             <Text style={[styles.date, { marginTop: 2 }]}>
               Cuenta de cobro {cuenta.numero}
             </Text>
+            {cuenta.estado === "enviada" && cuenta.venceEn && (
+              <Text style={[styles.date, { marginTop: 2 }]}>
+                Válida hasta {venceEn} (los precios pueden cambiar)
+              </Text>
+            )}
           </View>
           <View style={styles.brandBlock}>
             <Text style={styles.wordmark}>B &amp; W</Text>

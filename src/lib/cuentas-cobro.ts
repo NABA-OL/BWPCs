@@ -10,6 +10,7 @@ import { MongoServerError, ObjectId, type Filter } from "mongodb";
 import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
 import { cuentaNumero, withPaymentMethod } from "@/lib/cuenta-cobro";
+import { VENCIDA_ERROR, estaVencida } from "@/lib/cuenta-cobro-vigencia";
 import type { CuentaCobro, CuentaCobroEstado, PaymentMethod } from "@/lib/db/types";
 import { PAYMENT_LABEL, surchargeConcept, surchargePct } from "@/lib/payment-methods";
 
@@ -80,6 +81,11 @@ interface MoveOptions {
   nota?: string | null;
   /** Solo la cuenta de este usuario (el cliente nunca toca las de otros). */
   userId?: string;
+  /**
+   * Exige, dentro de la misma escritura, que el precio siga vigente (`vigente`: sin `venceEn` o aún por vencer)
+   * o que ya haya vencido (`vencida`). Sin esto la vigencia no aplica.
+   */
+  vigencia?: "vigente" | "vencida";
   set?: Partial<CuentaCobro>;
 }
 
@@ -90,11 +96,23 @@ interface MoveOptions {
  */
 export async function moveCuentaCobro(id: string, opts: MoveOptions): Promise<CuentaCobro | null> {
   if (!ObjectId.isValid(id)) return null;
+  const now = new Date();
+  const vigencia: Filter<CuentaCobro>[] =
+    opts.vigencia === "vigente"
+      ? [{ $or: [{ venceEn: null }, { venceEn: { $exists: false } }, { venceEn: { $gt: now } }] }]
+      : opts.vigencia === "vencida"
+        ? [{ venceEn: { $lte: now } }]
+        : [];
   const filter: Filter<CuentaCobro> = {
     _id: new ObjectId(id),
-    $or: [
-      { estado: { $in: opts.from } },
-      ...(opts.from.includes("enviada") ? [{ estado: { $exists: false } }] : []),
+    $and: [
+      {
+        $or: [
+          { estado: { $in: opts.from } },
+          ...(opts.from.includes("enviada") ? [{ estado: { $exists: false } }] : []),
+        ],
+      },
+      ...vigencia,
     ],
     ...(opts.userId ? { userId: opts.userId } : {}),
   };
@@ -116,9 +134,11 @@ export async function getCuentaForQuote(quoteId: string) {
   const col = await cuentasCol();
   const cuenta = await col.findOne(
     { "origen.quoteId": quoteId },
-    { sort: { creado: -1 }, projection: { numero: 1, estado: 1 } },
+    { sort: { creado: -1 }, projection: { numero: 1, estado: 1, venceEn: 1 } },
   );
-  return cuenta ? { id: cuenta._id!.toString(), numero: cuenta.numero, estado: cuenta.estado } : null;
+  return cuenta
+    ? { id: cuenta._id!.toString(), numero: cuenta.numero, estado: cuenta.estado, venceEn: cuenta.venceEn ?? null }
+    : null;
 }
 
 export type SetMethodResult = { ok: true; total: number; numero: string } | { ok: false; error: string };
@@ -138,6 +158,7 @@ export async function setCuentaPaymentMethod(
   const col = await cuentasCol();
   const cuenta = await col.findOne({ _id: new ObjectId(id), userId, estado: "enviada" });
   if (!cuenta) return { ok: false, error: "Esta cuenta de cobro ya no admite cambiar el medio de pago." };
+  if (estaVencida(cuenta)) return { ok: false, error: VENCIDA_ERROR };
   if (cuenta.formaPago === method) return { ok: true, total: cuenta.total, numero: cuenta.numero }; // ya estaba elegido
 
   const { mediosPago } = await getSettings();
@@ -151,7 +172,7 @@ export async function setCuentaPaymentMethod(
   const needsBank = method !== "tarjeta" && !cuenta.cuentaBanco.numero && !cuenta.cuentaBanco.llave;
   const defaultBank = needsBank ? await defaultBankFor(method) : null;
   const updated = await col.updateOne(
-    { _id: cuenta._id, userId, estado: "enviada" },
+    { _id: cuenta._id, userId, estado: "enviada", $or: [{ venceEn: null }, { venceEn: { $exists: false } }, { venceEn: { $gt: new Date() } }] },
     {
       $set: {
         items: next.items,

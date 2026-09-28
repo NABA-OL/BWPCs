@@ -20,6 +20,7 @@ import { COMPONENT_CATEGORIES, type ComponentCategory } from "@/lib/db/types";
 import type { QuoteInput, QuoteItemInput } from "@/lib/quote";
 import type { CatalogOption } from "@/lib/admin/catalog-data";
 import { Combobox } from "@/components/admin/combobox";
+import { MoneyInput } from "@/components/admin/money-input";
 import {
   QuoteUserPicker,
   type PickerUser,
@@ -500,17 +501,9 @@ function OptionEditor({
               placeholder="Modelo"
               className="border border-hairline bg-vanilla px-2 py-2 text-sm outline-none focus:border-panda"
             />
-            <input
-              value={item.precioCop || ""}
-              onChange={(e) =>
-                onItem(ii, {
-                  precioCop: Math.max(
-                    0,
-                    Math.round(Number(e.target.value.replace(/\D/g, "")) || 0),
-                  ),
-                })
-              }
-              inputMode="numeric"
+            <MoneyInput
+              value={item.precioCop}
+              onChange={(v) => onItem(ii, { precioCop: v })}
               placeholder="Precio"
               className="border border-hairline bg-vanilla px-2 py-2 font-mono text-sm outline-none focus:border-panda"
             />
@@ -549,18 +542,10 @@ function OptionEditor({
             <span className="text-sm font-medium text-component">
               Servicio (COP)
             </span>
-            <input
-              value={option.servicio || ""}
-              onChange={(e) =>
-                onServicio(
-                  Math.max(
-                    0,
-                    Math.round(Number(e.target.value.replace(/\D/g, "")) || 0),
-                  ),
-                )
-              }
-              inputMode="numeric"
-              placeholder="200000"
+            <MoneyInput
+              value={option.servicio}
+              onChange={onServicio}
+              placeholder="200.000"
               className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2 font-mono outline-none focus:border-panda"
             />
           </label>

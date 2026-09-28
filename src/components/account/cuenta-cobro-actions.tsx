@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { INPUT, LABEL } from "@/components/account/shared";
 import {
   requestCorrectionAction,
+  requestRepriceAction,
   type CuentaCobroResult,
 } from "@/app/(public)/cuenta/(area)/cuentas-cobro/[id]/actions";
 
@@ -114,6 +115,47 @@ export function CuentaCobroActions({ id, canReportPayment }: { id: string; canRe
 
       {error && (
         <p role="alert" className="border border-accent/30 bg-accent/5 px-3 py-2 text-sm text-accent lg:col-span-2">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** Cuenta vencida: en vez de los datos de pago, el aviso y el botón para enviarla a revisión de precios. */
+export function ExpiredNotice({ id, venceEn }: { id: string; venceEn: string }) {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  async function onReprice() {
+    setError(null);
+    setPending(true);
+    try {
+      const result = await requestRepriceAction(id);
+      if (!result.ok) return setError(result.error);
+      router.refresh();
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <div className="space-y-3 border border-accent/30 bg-accent/5 p-5 text-sm">
+      <h2 className="font-semibold">Esta cuenta de cobro venció</h2>
+      <p>
+        Pasaron más de 72 horas desde que la enviamos (venció el {venceEn}). Los precios pudieron cambiar por ofertas,
+        por subidas o bajadas de precio en Estados Unidos o por el dólar, así que por ahora no la pagues.
+      </p>
+      <p>
+        Envíala a revisión: confirmamos que los precios sigan iguales (o te los actualizamos) y te mandamos la cuenta con
+        una vigencia nueva.
+      </p>
+      <Button type="button" onClick={onReprice} disabled={pending}>
+        {pending ? "Enviando…" : "Enviar la cuenta a revisión de precios"}
+      </Button>
+      {error && (
+        <p role="alert" className="border border-accent/30 bg-vanilla px-3 py-2 text-accent">
           {error}
         </p>
       )}

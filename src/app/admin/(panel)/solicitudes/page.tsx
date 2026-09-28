@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LinkPagination } from "@/components/admin/link-pagination";
 import { collections } from "@/lib/db/collections";
-import { setLeadRevisadoAction } from "./actions";
+import { reviewLeadAndQuoteAction, setLeadRevisadoAction } from "./actions";
 
 export const metadata: Metadata = {
   title: "Solicitudes",
@@ -153,20 +153,40 @@ export default async function SolicitudesPage({
                   </p>
                 </div>
 
-                <form action={setLeadRevisadoAction}>
-                  <input type="hidden" name="id" value={l.id} />
-                  <input
-                    type="hidden"
-                    name="revisado"
-                    value={String(!l.revisado)}
-                  />
-                  <button
-                    type="submit"
-                    className="border border-hairline px-3 py-1.5 text-xs font-medium text-component transition-colors hover:border-panda hover:text-panda"
-                  >
-                    {l.revisado ? "Marcar sin revisar" : "Marcar revisada"}
-                  </button>
-                </form>
+                <div className="flex flex-wrap items-center gap-2">
+                  {l.revisado ? (
+                    <Link
+                      href={`/admin/cotizaciones/nueva?solicitud=${l.id}`}
+                      className="border border-hairline px-3 py-1.5 text-xs font-medium text-component transition-colors hover:border-panda hover:text-panda"
+                    >
+                      Crear cotización
+                    </Link>
+                  ) : (
+                    <form action={reviewLeadAndQuoteAction}>
+                      <input type="hidden" name="id" value={l.id} />
+                      <button
+                        type="submit"
+                        className="bg-panda px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-vanilla transition-colors hover:bg-accent"
+                      >
+                        Revisada · Crear cotización
+                      </button>
+                    </form>
+                  )}
+                  <form action={setLeadRevisadoAction}>
+                    <input type="hidden" name="id" value={l.id} />
+                    <input
+                      type="hidden"
+                      name="revisado"
+                      value={String(!l.revisado)}
+                    />
+                    <button
+                      type="submit"
+                      className="border border-hairline px-3 py-1.5 text-xs font-medium text-component transition-colors hover:border-panda hover:text-panda"
+                    >
+                      {l.revisado ? "Marcar sin revisar" : "Solo marcar revisada"}
+                    </button>
+                  </form>
+                </div>
               </div>
 
               <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-panda">
