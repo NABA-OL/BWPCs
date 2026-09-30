@@ -8,7 +8,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { collections } from "@/lib/db/collections";
 import { getSettings } from "@/lib/admin/settings";
@@ -141,7 +141,7 @@ export default async function ComponentesPage() {
           { name: "Componentes", url: `${SITE_URL}/componentes` },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
 
       <PageHero
         eyebrow="Catálogo"

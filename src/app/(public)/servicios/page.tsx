@@ -10,7 +10,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { SectionNav } from "@/components/section-nav";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { JsonLd } from "@/components/json-ld";
@@ -190,7 +190,7 @@ export default function ServiciosPage() {
         ]}
       />
       <JsonLd data={assemblyServiceSchema()} />
-      <PcBackdrop />
+      <TowerBackdrop />
       <SectionNav items={navItems} />
       <div id="inicio">
         <PageHero

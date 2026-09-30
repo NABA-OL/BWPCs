@@ -8,7 +8,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { FaqSection } from "@/components/faq-section";
 import { getEstimatorContext } from "@/lib/quote-estimator";
@@ -149,7 +149,7 @@ export default async function PcGamerPresupuestoPage({
           },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
 
       <PageHero
         eyebrow={`Presupuesto · ${preset.etiqueta}`}

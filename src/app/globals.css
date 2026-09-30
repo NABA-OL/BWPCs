@@ -201,6 +201,45 @@ html[data-intro="burst"] .bw-nodes {
   }
 }
 
+/*
+  Torre del hero (components/tower-hero.tsx): la línea sigue el tema (se invierte en oscuro), las aspas giran con el
+  scroll mediante el atributo SVG transform (lo pone el componente, no CSS) y una luz del frente parpadea de vez en cuando.
+*/
+html[data-theme="dark"] .tower-ink {
+  filter: invert(1);
+  opacity: 0.14; /* la línea clara se nota más sobre fondo oscuro: menos opacidad que en claro (0.2) */
+}
+.tower-ram {
+  opacity: 0.45;
+  animation: tower-ram 6s ease-in-out infinite alternate;
+}
+@keyframes tower-ram {
+  from {
+    opacity: 0.22;
+  }
+  to {
+    opacity: 0.62;
+  }
+}
+.tower-led {
+  opacity: 0;
+  animation: tower-led 11s ease-in-out infinite;
+}
+@keyframes tower-led {
+  0%,
+  89%,
+  100% {
+    opacity: 0;
+  }
+  91%,
+  95% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.25;
+  }
+}
+
 /* Selección coherente con la marca */
 ::selection {
   background: var(--color-panda);
