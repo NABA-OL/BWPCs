@@ -8,6 +8,15 @@
  */
 
 import { useEffect, useRef } from "react";
+import {
+  INTRO_ATTR,
+  INTRO_BURST_MS,
+  INTRO_HOLD_MS,
+  easeOutExpo,
+  introPhase,
+  lineBoost,
+  setIntroPhase,
+} from "@/lib/intro";
 
 /*
  * Fondo de "red de nodos" tipo circuito impreso (PCB) / red de datos.
@@ -56,6 +65,19 @@ interface Node {
   vy: number;
 }
 
+/** Datos de la explosión de intro: posición final (tx, ty; deriva como el nodo), origen (sx, sy), curvatura y retraso. */
+interface IntroNode {
+  tx: number;
+  ty: number;
+  sx: number;
+  sy: number;
+  curl: number;
+  delay: number;
+}
+
+const INTRO_ALPHA_RAMP_MS = 120; // la red entra de 0 a 1 en este tiempo, para no pintar un borrón oscuro en el primer cuadro
+const INTRO_MAX_DELAY_MS = 90;
+
 export function NodesBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -87,6 +109,15 @@ export function NodesBackground() {
     let nodes: Node[] = [];
     const pointer = { x: -9999, y: -9999, active: false };
 
+    // Intro de la home (src/lib/intro.ts): los nodos salen del wordmark central hacia su posición.
+    const introRoot = document.documentElement;
+    const startPhase = introPhase();
+    let introOn = !reduce && (startPhase === "play" || startPhase === "burst");
+    let introNodes: IntroNode[] = [];
+    let burstAt: number | null = introRoot.dataset.introAt ? Number(introRoot.dataset.introAt) : null;
+    let introBursting = false;
+    let lastIntroNow = 0;
+
     function buildNodes() {
       const isSmall = width < 640;
       const density = isSmall ? 22000 : 15000; // px² por nodo
@@ -100,6 +131,97 @@ export function NodesBackground() {
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
       }));
+      introBursting = false;
+      introNodes = introOn
+        ? nodes.map((n) => ({
+            tx: n.x,
+            ty: n.y,
+            sx: width / 2,
+            sy: height / 2,
+            curl: (Math.random() - 0.5) * 0.24,
+            delay: Math.random() * INTRO_MAX_DELAY_MS,
+          }))
+        : [];
+    }
+
+    /** Origen de cada nodo: un punto al azar dentro de la elipse del wordmark de la cubierta. */
+    function startBurst(now: number) {
+      const mark = document.querySelector<HTMLElement>("[data-intro-mark]")?.getBoundingClientRect();
+      const cx = mark ? mark.left + mark.width / 2 : width / 2;
+      const cy = mark ? mark.top + mark.height / 2 : height / 2;
+      const rx = mark ? mark.width / 2 : 120;
+      const ry = mark ? mark.height / 2 : 40;
+      for (const it of introNodes) {
+        const a = Math.random() * Math.PI * 2;
+        const r = Math.sqrt(Math.random());
+        it.sx = cx + Math.cos(a) * rx * r;
+        it.sy = cy + Math.sin(a) * ry * r;
+      }
+      burstAt = now;
+      lastIntroNow = now;
+      introBursting = true;
+    }
+
+    /** Entrega los nodos al bucle normal, ya en su posición final. */
+    function finishIntro() {
+      if (!introOn) return;
+      introOn = false;
+      nodes.forEach((n, i) => {
+        const it = introNodes[i];
+        if (it) {
+          n.x = Math.min(width, Math.max(0, it.tx));
+          n.y = Math.min(height, Math.max(0, it.ty));
+        }
+      });
+      introNodes = [];
+      delete introRoot.dataset.introAt;
+      if (introPhase() !== "done") setIntroPhase("done");
+      performance.mark("bw-intro:done");
+    }
+
+    function introFrame(now: number) {
+      const phase = introPhase();
+      if (phase !== "play" && phase !== "burst") {
+        finishIntro();
+        return;
+      }
+      if (!introBursting) {
+        if (phase === "play") {
+          const t0 = (window as unknown as { __bwIntroT0?: number }).__bwIntroT0 ?? now;
+          ctx!.clearRect(0, 0, width, height);
+          if (now < t0 + INTRO_HOLD_MS) return;
+          introRoot.dataset.introAt = String(now);
+          setIntroPhase("burst");
+          performance.mark("bw-intro:burst");
+          startBurst(now);
+        } else {
+          // Segundo montaje (StrictMode) con la explosión ya en curso: continúa desde su inicio.
+          startBurst(burstAt ?? now);
+        }
+      }
+      const t = now - (burstAt ?? now);
+      const frames = Math.min(4, Math.max(0, (now - lastIntroNow) / 16.67));
+      lastIntroNow = now;
+      let done = true;
+      nodes.forEach((n, i) => {
+        const it = introNodes[i];
+        if (!it) return;
+        it.tx += n.vx * frames;
+        it.ty += n.vy * frames;
+        const u = (t - it.delay) / INTRO_BURST_MS;
+        if (u < 1) done = false;
+        const e = easeOutExpo(u);
+        const dx = it.tx - it.sx;
+        const dy = it.ty - it.sy;
+        const dist = Math.hypot(dx, dy) || 1;
+        const bend = it.curl * Math.sin(Math.PI * e) * dist;
+        n.x = it.sx + dx * e + (-dy / dist) * bend;
+        n.y = it.sy + dy * e + (dx / dist) * bend;
+      });
+      const eGlobal = easeOutExpo(t / INTRO_BURST_MS);
+      const ramp = Math.min(1, Math.max(0, t / INTRO_ALPHA_RAMP_MS));
+      draw(ramp, lineBoost(eGlobal), 1 + 0.5 * (1 - eGlobal), false);
+      if (done) finishIntro();
     }
 
     function resize() {
@@ -156,7 +278,7 @@ export function NodesBackground() {
       }
     }
 
-    function draw() {
+    function draw(alphaMul = 1, lineMul = 1, nodeMul = 1, withPointer = true) {
       ctx!.clearRect(0, 0, width, height);
 
       // Líneas entre nodos cercanos (O(n²), n acotado).
@@ -168,7 +290,7 @@ export function NodesBackground() {
           const dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
           if (d2 < LINK_DIST * LINK_DIST) {
-            const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.18;
+            const alpha = Math.min(0.45, (1 - Math.sqrt(d2) / LINK_DIST) * 0.18 * lineMul) * alphaMul;
             ctx!.strokeStyle = `rgba(${lineRgb},${alpha})`;
             ctx!.lineWidth = 1;
             ctx!.beginPath();
@@ -180,7 +302,7 @@ export function NodesBackground() {
       }
 
       // Conexiones al cursor en azul acento.
-      if (pointer.active) {
+      if (pointer.active && withPointer) {
         for (const n of nodes) {
           const dx = pointer.x - n.x;
           const dy = pointer.y - n.y;
@@ -201,10 +323,11 @@ export function NodesBackground() {
       for (const n of nodes) {
         const near =
           pointer.active &&
+          withPointer &&
           Math.hypot(pointer.x - n.x, pointer.y - n.y) < POINTER_DIST;
         ctx!.fillStyle = near
           ? `rgba(${accentRgb},0.85)`
-          : `rgba(${nodeRgb},0.45)`;
+          : `rgba(${nodeRgb},${0.45 * nodeMul * alphaMul})`;
         const s = 2.4;
         ctx!.fillRect(n.x - s / 2, n.y - s / 2, s, s);
       }
@@ -217,8 +340,16 @@ export function NodesBackground() {
     const themeObserver = new MutationObserver(() => {
       refreshPalette();
       if (reduce) draw();
+      // La intro terminó por fuera (salto del usuario o respaldo): los nodos pasan a su lugar.
+      if (introOn) {
+        const p = introPhase();
+        if (p !== "play" && p !== "burst") finishIntro();
+      }
     });
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme", INTRO_ATTR],
+    });
 
     // Movimiento reducido: una sola pasada estática, sin bucle ni cursor.
     if (reduce) {
@@ -236,10 +367,14 @@ export function NodesBackground() {
 
     let raf = 0;
     let running = true;
-    const loop = () => {
+    const loop = (now: number = performance.now()) => {
       if (!running) return;
-      step();
-      draw();
+      if (introOn) {
+        introFrame(now);
+      } else {
+        step();
+        draw();
+      }
       raf = requestAnimationFrame(loop);
     };
 
@@ -295,7 +430,7 @@ export function NodesBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-20"
+      className="bw-nodes pointer-events-none fixed inset-0 -z-20"
     />
   );
 }

@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { whenIntroDone } from "@/lib/intro";
 
 export interface WordmarkPhrase {
   left: string; // empieza con B (ej. "Build", "Bits")
@@ -62,10 +63,15 @@ export function BrandWordmark({ className = "" }: { className?: string }) {
       }, 3500);
     };
 
-    const start = setTimeout(run, 900); // al cargar
+    // Al cargar; si la intro de la home está en curso, espera a que termine para no pisarla.
+    let start: ReturnType<typeof setTimeout> | undefined;
+    const stopWaiting = whenIntroDone(() => {
+      start = setTimeout(run, 900);
+    });
     const interval = setInterval(run, 60000); // cada minuto
 
     return () => {
+      stopWaiting();
       clearTimeout(start);
       clearTimeout(collapse);
       clearTimeout(advance);

@@ -11,6 +11,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeSync } from "@/components/theme/theme-sync";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
+import { INTRO_INIT_SCRIPT } from "@/lib/intro";
 import "./globals.css";
 
 const geist = Geist({
@@ -97,6 +98,8 @@ export default function RootLayout({
             ya mismo (evita el parpadeo de claro a oscuro al cargar). Sin datos del
             usuario: solo arma constantes de src/lib/theme.ts. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        {/* Intro de la home: decide antes de pintar si hay intro (solo `/`, una vez por 24 h). Ver src/lib/intro.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_INIT_SCRIPT }} />
         <ThemeSync />
         {children}
         <Analytics />
