@@ -109,6 +109,97 @@ body {
   }
 }
 
+/*
+  Intro de la home (ver src/lib/intro.ts): cubierta vainilla con "B & W" mientras
+  <html data-intro> vale play/burst. Sin el atributo no se muestra (display:none).
+  El contenido de la página queda pintado debajo (no se oculta con opacidad: el h1
+  debe seguir siendo el candidato de LCP). Respaldo solo con CSS: si nada termina
+  la intro, la cubierta se funde sola a los 3,5 s.
+*/
+.bw-intro {
+  display: none;
+}
+html[data-intro="play"] .bw-intro,
+html[data-intro="burst"] .bw-intro {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-vanilla);
+}
+.bw-intro-mark {
+  position: relative;
+  font-size: clamp(3.5rem, 16vw, 9rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--color-panda);
+  white-space: nowrap;
+  animation: bw-intro-in 500ms ease-out both;
+}
+.bw-intro-dot {
+  position: absolute;
+  top: 0.04em;
+  right: -0.16em;
+  width: 0.2em;
+  height: 0.2em;
+  background: var(--color-accent);
+}
+html[data-intro="play"] .bw-intro {
+  animation: bw-intro-out 300ms ease 3500ms forwards;
+}
+html[data-intro="burst"] .bw-intro {
+  pointer-events: none;
+  animation: bw-intro-fade 600ms ease 700ms forwards;
+}
+html[data-intro="burst"] .bw-intro-mark {
+  animation: bw-intro-pop 350ms ease-in forwards;
+}
+/* Durante la explosión el canvas de nodos sube sobre la cubierta; si `done` no llega, vuelve solo a su capa. */
+html[data-intro="burst"] .bw-nodes {
+  z-index: 61;
+  animation: bw-nodes-drop 0s 2600ms forwards;
+}
+@keyframes bw-intro-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bw-intro-pop {
+  to {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+@keyframes bw-intro-fade {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes bw-intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes bw-nodes-drop {
+  to {
+    z-index: -20;
+  }
+}
+@media print {
+  .bw-intro {
+    display: none !important;
+  }
+}
+
 /* Selección coherente con la marca */
 ::selection {
   background: var(--color-panda);

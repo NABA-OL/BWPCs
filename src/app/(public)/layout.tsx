@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CookieConsent } from "@/components/cookie-consent";
 import { NodesBackground } from "@/components/nodes-background";
+import { IntroOverlay } from "@/components/intro-overlay";
 
 export default function PublicLayout({
   children,
@@ -17,6 +18,7 @@ export default function PublicLayout({
 }>) {
   return (
     <div className="flex min-h-dvh flex-col">
+      <IntroOverlay />
       <NodesBackground />
       <a
         href="#main-content"
