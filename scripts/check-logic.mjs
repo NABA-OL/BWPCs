@@ -10,11 +10,13 @@
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import vm from "node:vm";
 import { ESTADOS_VISIBLES, esEditable, estadoDe, sendMissing } from "../src/lib/cuenta-cobro-estado.ts";
 import { env } from "../src/lib/env.ts";
 import { boldReference, boldSignature, expirationNanos, parseBoldCheckoutUrl, verifyBoldSignature } from "../src/lib/bold-signature.ts";
 import { CUENTA_NUMEROS_POR_ANIO, computeCuentaCobro, cuentaNumero, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
 import { VIGENCIA_HORAS, cotizacionVigente, estaVencida, ultimoEnvioCotizacion, vencimientoDesde } from "../src/lib/cuenta-cobro-vigencia.ts";
+import { INTRO_FAILSAFE_MS, INTRO_INIT_SCRIPT, INTRO_TTL_MS, easeOutExpo, lineBoost } from "../src/lib/intro.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 
 // --- Estados de la cuenta de cobro ---
@@ -180,5 +182,63 @@ const applyCallers = files.filter((f) => f !== BOLD_PAYMENTS && /applyBoldApprov
 assert.deepEqual(applyCallers, [], "applyBoldApproval solo se usa dentro de bold-payments.ts (webhook firmado y consulta a Bold)");
 const boldSource = readFileSync(BOLD_PAYMENTS, "utf8");
 assert.equal((boldSource.match(/to:\s*["']pagada["']/g) ?? []).length, 1, "un único punto de aprobación");
+
+// --- Intro de la home: cuándo se muestra (script en línea previo a la pintura) ---
+function runIntro({ path = "/", search = "", hash = "", referrer = "", hidden = false, reduce = false, saveData = false, stored = null, storageThrows = false } = {}) {
+  const attrs = {};
+  const store = stored === null ? {} : { "bw-intro": String(stored) };
+  const timers = [];
+  const storage = storageThrows
+    ? { getItem() { throw new Error("bloqueado"); }, setItem() { throw new Error("bloqueado"); } }
+    : { getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; } };
+  const doc = {
+    documentElement: { setAttribute: (k, v) => { attrs[k] = v; }, getAttribute: (k) => attrs[k] ?? null },
+    visibilityState: hidden ? "hidden" : "visible",
+    referrer,
+    addEventListener() {},
+    removeEventListener() {},
+  };
+  const nav = { connection: saveData ? { saveData: true } : undefined };
+  const win = {
+    location: { pathname: path, search, hash },
+    matchMedia: () => ({ matches: reduce }),
+    localStorage: storage,
+    addEventListener() {},
+    removeEventListener() {},
+  };
+  vm.runInNewContext(INTRO_INIT_SCRIPT, {
+    window: win, document: doc, navigator: nav, performance: { now: () => 100 },
+    Date, URL, RegExp, setTimeout: (_fn, ms) => { timers.push(ms); return 1; },
+  });
+  return { phase: attrs["data-intro"] ?? null, marked: store["bw-intro"] !== undefined, timers };
+}
+assert.equal(runIntro().phase, "play", "primera visita a la home: hay intro");
+assert.ok(runIntro().marked, "al mostrarla guarda la marca de las 24 h");
+assert.deepEqual(runIntro().timers, [INTRO_FAILSAFE_MS + 100], "programa el respaldo de fin");
+assert.equal(runIntro({ path: "/servicios" }).phase, null, "solo la home");
+assert.equal(runIntro({ path: "/cotizador", search: "?intro=1" }).phase, null, "?intro=1 no la fuerza fuera de la home");
+assert.equal(runIntro({ hash: "#cotizar" }).phase, null, "con ancla no hay intro");
+assert.equal(runIntro({ hidden: true }).phase, null, "pestaña oculta o prerender: sin intro");
+assert.equal(runIntro({ reduce: true }).phase, null, "movimiento reducido: sin intro");
+assert.equal(runIntro({ reduce: true, search: "?intro=1" }).phase, null, "?intro=1 nunca salta el movimiento reducido");
+assert.equal(runIntro({ saveData: true }).phase, null, "ahorro de datos: sin intro");
+assert.equal(runIntro({ referrer: "https://www.google.com/" }).phase, null, "viniendo de Google: sin intro");
+assert.equal(runIntro({ referrer: "https://duckduckgo.com/?q=pc" }).phase, null, "viniendo de un buscador: sin intro");
+assert.equal(runIntro({ referrer: "https://www.googleapis.evil.example/" }).phase, "play", "solo dominios de buscadores reales");
+assert.equal(runIntro({ stored: Date.now() - 1000 }).phase, null, "vista hace poco: no se repite");
+assert.equal(runIntro({ stored: Date.now() - INTRO_TTL_MS - 1000 }).phase, "play", "pasadas 24 h vuelve");
+assert.equal(runIntro({ stored: Date.now() - 1000, search: "?intro=1" }).phase, "play", "?intro=1 salta la marca de 24 h");
+assert.equal(runIntro({ referrer: "https://www.google.com/", search: "?intro=1" }).phase, "play", "?intro=1 salta el filtro de buscador");
+assert.equal(runIntro({ storageThrows: true }).phase, "play", "localStorage bloqueado: igual hay intro (sin recordar)");
+assert.equal(easeOutExpo(0), 0);
+assert.equal(easeOutExpo(1), 1);
+let prev = -1;
+for (let u = 0; u <= 1.0001; u += 0.05) {
+  const e = easeOutExpo(u);
+  assert.ok(e >= prev, "easeOutExpo es monótona");
+  prev = e;
+}
+assert.equal(lineBoost(1), 1, "las líneas vuelven a su intensidad normal al terminar");
+assert.ok(lineBoost(0) > lineBoost(0.5), "el realce decrece durante la explosión");
 
 console.log("check:logic OK");

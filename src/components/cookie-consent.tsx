@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { whenIntroDone } from "@/lib/intro";
 import Link from "next/link";
 
 const STORAGE_KEY = "bw-cookie-consent";
@@ -23,11 +24,21 @@ export function CookieConsent() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    try {
-      if (!localStorage.getItem(STORAGE_KEY)) setShow(true);
-    } catch {
-      // localStorage no disponible → no mostramos para no molestar.
-    }
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    // Con la intro de la home en curso, el aviso aparece cuando termina (más 600 ms).
+    const stopWaiting = whenIntroDone(() => {
+      try {
+        if (!localStorage.getItem(STORAGE_KEY)) {
+          timer = setTimeout(() => setShow(true), document.documentElement.hasAttribute("data-intro") ? 600 : 0);
+        }
+      } catch {
+        // localStorage no disponible → no mostramos para no molestar.
+      }
+    });
+    return () => {
+      stopWaiting();
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   function dismiss() {
