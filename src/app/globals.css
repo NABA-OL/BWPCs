@@ -121,7 +121,7 @@ body {
 }
 html[data-intro="play"] .bw-intro,
 html[data-intro="burst"] .bw-intro {
-  display: flex;
+  display: flex !important; /* gana al display:none en línea del marcado */
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -195,7 +195,8 @@ html[data-intro="burst"] .bw-nodes {
   }
 }
 @media print {
-  .bw-intro {
+  html .bw-intro,
+  html[data-intro] .bw-intro {
     display: none !important;
   }
 }
