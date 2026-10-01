@@ -7,7 +7,7 @@
  */
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
-import { AssemblyHero } from "@/components/assembly-hero";
+import { TowerHero } from "@/components/tower-hero";
 import { ShareButton } from "@/components/share-button";
 import { collections } from "@/lib/db/collections";
 import { isInstagramUrl } from "@/lib/instagram";
@@ -117,7 +117,7 @@ export default async function HomePage() {
 
       {/* Hero — PC line-art que se ensambla y queda fijo en el centro al hacer scroll */}
       <div id="inicio">
-        <AssemblyHero>
+        <TowerHero>
           <p className="font-mono text-sm text-component">
             Ensamble &amp; componentes · Colombia
           </p>
@@ -147,7 +147,7 @@ export default async function HomePage() {
             </div>
             <ShareButton title="B & W — Tu PC Master Race a buen precio" />
           </div>
-        </AssemblyHero>
+        </TowerHero>
       </div>
 
       {/* Confianza: lo que respalda la compra (todo lo que dice ya es política del negocio) */}

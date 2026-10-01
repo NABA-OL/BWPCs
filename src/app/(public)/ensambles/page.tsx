@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { collections } from "@/lib/db/collections";
 import { whatsappLink } from "@/lib/site-config";
 import { BuildsGrid } from "@/components/builds-grid";
@@ -68,7 +68,7 @@ export default async function EnsamblesPage() {
           { name: "Ensambles", url: "https://bw-pcs.com/ensambles" },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
       <PageHero
         eyebrow="Trabajo real"
         title="PCs gamer que hemos armado"

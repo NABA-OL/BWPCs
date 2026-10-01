@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { LegalSections, type LegalSection } from "@/components/legal-sections";
 import { siteConfig } from "@/lib/site-config";
@@ -129,7 +129,7 @@ export default function TerminosPage() {
           { name: "Términos", url: "https://bw-pcs.com/terminos" },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
       <PageHero eyebrow="Legal" title="Términos y condiciones">
         <p>
           Vigentes desde {legal.vigenteDesde}. Aplican al sitio, al cotizador y

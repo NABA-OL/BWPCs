@@ -6,7 +6,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { siteConfig } from "@/lib/site-config";
 
@@ -27,7 +27,7 @@ export default function PrivacidadPage() {
           { name: "Privacidad", url: "https://bw-pcs.com/privacidad" },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
       <PageHero eyebrow="Legal" title="Privacidad">
         <p>
           B &amp; W recopila solo lo necesario para operar. El cotizador se usa

@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ export default function NosotrosPage() {
           { name: "Nosotros", url: "https://bw-pcs.com/nosotros" },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
       <PageHero
         eyebrow="Sobre B & W"
         title="Armamos PCs, no plantillas."
