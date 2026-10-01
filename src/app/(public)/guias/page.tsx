@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { getPublishedGuides } from "@/lib/guides";
 import { SITE_URL } from "@/lib/schema";
@@ -49,7 +49,7 @@ export default async function GuiasPage() {
           { name: "Guías", url: `${SITE_URL}/guias` },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
 
       <PageHero
         eyebrow="Guías"

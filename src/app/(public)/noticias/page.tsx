@@ -6,7 +6,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { collections } from "@/lib/db/collections";
 import { SITE_URL } from "@/lib/schema";
@@ -93,7 +93,7 @@ export default async function NoticiasPage({
           { name: "Noticias", url: `${SITE_URL}/noticias` },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
 
       <PageHero
         eyebrow="Actualidad"

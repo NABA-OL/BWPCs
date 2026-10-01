@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { siteConfig, whatsappLink, SHOW_PSE } from "@/lib/site-config";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export const metadata: Metadata = {
@@ -42,7 +42,7 @@ export default function ContactoPage() {
           { name: "Contacto", url: "https://bw-pcs.com/contacto" },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
       <PageHero
         eyebrow="Hablemos"
         title="Cotiza tu PC por WhatsApp"

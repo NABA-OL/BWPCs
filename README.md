@@ -84,7 +84,7 @@ src/
 │   ├── admin/             # Componentes del panel (managers, forms)
 │   ├── ui/                # Botones, inputs reutilizables
 │   ├── pdf/               # Plantilla de cotización en PDF
-│   ├── assembly-hero.tsx  # SVG line-art animado (home) y estático (resto)
+│   ├── tower-hero.tsx     # torre de fondo con ventiladores que giran con el scroll (home y resto)
 │   ├── builds-grid.tsx    # Grilla paginada de ensambles (público)
 │   └── instagram-embed.tsx# Embed nativo de publicaciones de Instagram
 ├── lib/

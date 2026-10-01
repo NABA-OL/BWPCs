@@ -8,7 +8,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { FaqSection } from "@/components/faq-section";
 import { whatsappLink } from "@/lib/site-config";
@@ -210,7 +210,7 @@ export default async function PcParaUsoPage({
           { name: caso.h1, url: `${SITE_URL}/pc-para/${caso.slug}` },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
 
       <PageHero
         eyebrow="Por caso de uso"

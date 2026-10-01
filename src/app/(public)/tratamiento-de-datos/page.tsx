@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { PcBackdrop } from "@/components/assembly-hero";
+import { TowerBackdrop } from "@/components/tower-hero";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { LegalSections, type LegalSection } from "@/components/legal-sections";
 import { siteConfig } from "@/lib/site-config";
@@ -143,7 +143,7 @@ export default function TratamientoDeDatosPage() {
           },
         ]}
       />
-      <PcBackdrop />
+      <TowerBackdrop />
       <PageHero eyebrow="Legal" title="Política de tratamiento de datos personales">
         <p>
           Versión {legal.versionPolitica}, vigente desde {legal.vigenteDesde}.

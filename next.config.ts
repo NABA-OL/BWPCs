@@ -25,6 +25,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Solo desarrollo: permite abrir el servidor de desarrollo desde otro dispositivo de la red local (p. ej. el celular
+  // por http://192.168.x.x:3001) sin que Next bloquee el HMR. No afecta al despliegue en Vercel.
+  allowedDevOrigins: ["192.168.*.*"],
   // Fija la raíz del workspace a este proyecto (hay otro lockfile en el home).
   turbopack: {
     root: __dirname,
