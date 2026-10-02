@@ -11,6 +11,7 @@ import { PageHero } from "@/components/page-hero";
 import { SectionNav } from "@/components/section-nav";
 import { ButtonLink } from "@/components/ui/button";
 import { TowerBackdrop } from "@/components/tower-hero";
+import { ComponentShowcase, type ShowcaseItem } from "@/components/component-showcase";
 import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { JsonLd } from "@/components/json-ld";
@@ -38,15 +39,32 @@ export const metadata: Metadata = {
   },
 };
 
-const componentes = [
-  { t: "Procesadores", d: "AMD e Intel, según tu uso y presupuesto." },
-  { t: "Tarjetas gráficas", d: "Desde gama media hasta entusiasta." },
-  { t: "Memorias RAM", d: "DDR4 y DDR5, en las frecuencias que rinden." },
-  { t: "Boards", d: "La base correcta para tu procesador." },
-  { t: "Fuentes de poder", d: "80+ certificadas, el vatiaje justo." },
-  { t: "Chasis", d: "Flujo de aire y espacio para crecer." },
-  { t: "Refrigeración", d: "Aire o líquida, y ventiladores de chasis." },
-  { t: "Almacenamiento", d: "SSD NVMe veloces para arrancar al instante." },
+const componentes: ShowcaseItem[] = [
+  { id: "procesador", t: "Procesadores", d: "AMD e Intel, según tu uso y presupuesto." },
+  { id: "graficas", t: "Tarjetas gráficas", d: "Desde gama media hasta entusiasta." },
+  { id: "ram", t: "Memorias RAM", d: "DDR4 y DDR5, en las frecuencias que rinden." },
+  { id: "boards", t: "Boards", d: "La base correcta para tu procesador." },
+  { id: "fuentes", t: "Fuentes de poder", d: "80+ certificadas, el vatiaje justo." },
+  { id: "chasis", t: "Chasis", d: "Flujo de aire y espacio para crecer." },
+  {
+    id: "refrigeracion",
+    t: "Refrigeración",
+    d: "Por aire o líquida: elige la que mejor te funcione.",
+    variants: [
+      { id: "aire", label: "Aire", d: "Disipador de torre con heatpipes y ventilador." },
+      { id: "liquida", label: "Líquida", d: "Bomba sobre el procesador y radiador con ventiladores, unidos por dos tubos." },
+    ],
+  },
+  {
+    id: "almacenamiento",
+    t: "Almacenamiento",
+    d: "M.2 NVMe, SSD SATA o disco duro, según velocidad y capacidad.",
+    variants: [
+      { id: "m2", label: "M.2 NVMe", d: "El más rápido: ideal para el sistema operativo y los juegos." },
+      { id: "sata", label: "SSD SATA", d: "Rápido y económico: una buena opción para programas y juegos extra." },
+      { id: "hdd", label: "HDD 3,5″", d: "Mucho espacio al menor precio: para archivos, fotos y copias de seguridad." },
+    ],
+  },
 ];
 
 const faqs = [
@@ -256,18 +274,31 @@ export default function ServiciosPage() {
             ¿Solo necesitas una pieza? Compra el componente que te falta, sin
             obligación de ensamble.
           </p>
-          <dl className="mt-8 divide-y divide-hairline border-y border-hairline">
+          <dl className="cs-list mt-8 divide-y divide-hairline border-y border-hairline">
             {componentes.map((c) => (
               <div
                 key={c.t}
                 className="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-baseline sm:gap-10"
               >
                 <dt className="w-48 shrink-0 font-medium">{c.t}</dt>
-                <dd className="text-sm text-component">{c.d}</dd>
+                <dd className="text-sm text-component">
+                  {c.d}
+                  {c.variants && (
+                    <ul className="mt-1.5 space-y-1 text-sm">
+                      {c.variants.map((v) => (
+                        <li key={v.id}>
+                          <span className="font-medium">{v.label}:</span> {v.d}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </dd>
               </div>
             ))}
           </dl>
         </div>
+        {/* Con JS y sin movimiento reducido el escenario reemplaza a la lista (ver .cs-track / .cs-list en globals.css) */}
+        <ComponentShowcase items={componentes} />
       </section>
 
       {/* Cómo trabajamos */}
