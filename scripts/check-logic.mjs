@@ -17,6 +17,8 @@ import { boldReference, boldSignature, expirationNanos, parseBoldCheckoutUrl, ve
 import { CUENTA_NUMEROS_POR_ANIO, computeCuentaCobro, cuentaNumero, withPaymentMethod } from "../src/lib/cuenta-cobro.ts";
 import { VIGENCIA_HORAS, cotizacionVigente, estaVencida, ultimoEnvioCotizacion, vencimientoDesde } from "../src/lib/cuenta-cobro-vigencia.ts";
 import { INTRO_FAILSAFE_MS, INTRO_INIT_SCRIPT, INTRO_TTL_MS, easeOutExpo, lineBoost } from "../src/lib/intro.ts";
+import { ANIM_END, ANIM_START, ENTER_END, EXIT_START, HEADER_PX, SHIFT_PX, VARIANT_WEIGHT, easeOutCubic, frameAt, frameFor, scrollProgress, span, stageLayout, trackHeight } from "../src/lib/component-showcase.ts";
+import { STAGE_ORDER, STAGE_PIECES } from "../src/lib/component-stage.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 
 // --- Estados de la cuenta de cobro ---
@@ -240,5 +242,141 @@ for (let u = 0; u <= 1.0001; u += 0.05) {
 }
 assert.equal(lineBoost(1), 1, "las líneas vuelven a su intensidad normal al terminar");
 assert.ok(lineBoost(0) > lineBoost(0.5), "el realce decrece durante la explosión");
+
+// --- Componentes en escena (/servicios): una pieza a la vez, sin solapes ---
+{
+  const N = 8;
+  const f0 = frameFor(0, N);
+  assert.deepEqual([f0.index, f0.t, f0.opacity], [0, 0, 0], "p=0: primera pieza, aún sin verse");
+  const f1 = frameFor(1, N);
+  assert.deepEqual([f1.index, f1.t, f1.opacity], [N - 1, 1, 0], "p=1: última pieza ya salió, el escenario queda vacío");
+  assert.deepEqual(frameFor(-5, N), frameFor(0, N), "p negativo se recorta a 0");
+  assert.deepEqual(frameFor(7, N), frameFor(1, N), "p mayor que 1 se recorta a 1");
+  assert.deepEqual(frameFor(Number.NaN, N), frameFor(0, N), "NaN se trata como 0");
+  assert.ok(ENTER_END <= EXIT_START && ANIM_START >= 0 && ANIM_END <= 1, "los tramos caben en 0..1");
+  assert.ok(ANIM_START < ANIM_END && ANIM_END <= EXIT_START, "la animación propia termina antes de que empiece la salida");
+  assert.ok(Math.abs(ENTER_END + (EXIT_START - ENTER_END) + (1 - EXIT_START) - 1) < 1e-12, "entrada + sostén + salida = 1");
+  let lastIndex = 0;
+  for (let k = 0; k <= 4000; k++) {
+    const fr = frameFor(k / 4000, N);
+    assert.ok(fr.index >= lastIndex && fr.index - lastIndex <= 1, "el índice avanza de a uno y nunca retrocede");
+    assert.ok(fr.opacity >= 0 && fr.opacity <= 1 && fr.t >= 0 && fr.t <= 1, "opacidad y t dentro de 0..1");
+    assert.ok(Math.abs(fr.shift) <= SHIFT_PX + 1e-9, "el desplazamiento no pasa de 24 px");
+    lastIndex = fr.index;
+  }
+  for (let i = 0; i < N; i++) {
+    const mid = frameFor((i + 0.5) / N, N);
+    assert.deepEqual([mid.index, mid.opacity, mid.shift], [i, 1, 0], `pieza ${i}: a mitad de su tramo se ve completa y quieta`);
+  }
+  for (let k = 1; k < N; k++) {
+    const before = frameFor(k / N - 1e-9, N);
+    const at = frameFor(k / N, N);
+    assert.ok(before.index === k - 1 && before.opacity < 1e-6, `límite ${k}: la que sale ya está invisible`);
+    assert.ok(at.index === k && at.opacity === 0, `límite ${k}: la que entra parte invisible (sin solape)`);
+  }
+  // Entrada creciente y salida decreciente (sin saltos).
+  let prevOp = -1;
+  for (let u = 0; u <= ENTER_END; u += ENTER_END / 50) {
+    const op = frameFor(u / N, N).opacity;
+    assert.ok(op >= prevOp - 1e-12, "la opacidad de entrada solo sube");
+    prevOp = op;
+  }
+  prevOp = 2;
+  for (let u = EXIT_START; u <= 1; u += (1 - EXIT_START) / 50) {
+    const op = frameFor(u / N, N).opacity;
+    assert.ok(op <= prevOp + 1e-12, "la opacidad de salida solo baja");
+    prevOp = op;
+  }
+  assert.ok(frameFor(0.05 / N, N).shift > 0 && frameFor(0.05 / N, N).shift < SHIFT_PX, "al entrar sube desde abajo");
+  assert.ok(frameFor(0.95 / N, N).shift < 0, "al salir sigue subiendo (negativo)");
+  // Progreso del recorrido a partir de la posición en la ventana.
+  assert.equal(scrollProgress(HEADER_PX + 500, 1000), 0, "antes de pegarse: 0");
+  assert.equal(scrollProgress(HEADER_PX, 1000), 0, "justo al pegarse: 0");
+  assert.equal(scrollProgress(HEADER_PX - 500, 1000), 0.5);
+  assert.equal(scrollProgress(HEADER_PX - 1000, 1000), 1, "al despegarse: 1");
+  assert.equal(scrollProgress(-99999, 1000), 1, "después: se queda en 1");
+  assert.equal(scrollProgress(0, 0), 0, "recorrido sin largo: 0, sin dividir entre cero");
+  assert.equal(trackHeight(8), "calc(960svh + 100dvh - 4rem)");
+  assert.equal(trackHeight(10.25), "calc(1230svh + 100dvh - 4rem)", "8 piezas + 3 variantes extra = 10,25 unidades");
+  assert.equal(span(0.1, 0.1, 0.55), 0);
+  assert.equal(span(0.55, 0.1, 0.55), 1);
+  assert.equal(span(2, 0.1, 0.55), 1);
+  assert.equal(easeOutCubic(0) + easeOutCubic(1), 1);
+
+  // Variantes dentro de un paso: tramos con peso, una imagen a la vez, contador estable.
+  const counts = [1, 1, 1, 1, 1, 1, 2, 3];
+  const lay = stageLayout(counts);
+  assert.equal(VARIANT_WEIGHT, 0.75);
+  assert.ok(Math.abs(lay.units - 10.25) < 1e-12, "8 + 3 x 0,75 = 10,25 unidades");
+  assert.equal(lay.slots.length, 11, "un tramo por variante (máx. 11)");
+  assert.equal(lay.slots[0].a, 0);
+  assert.ok(Math.abs(lay.slots[10].b - 1) < 1e-12, "el último tramo termina en 1");
+  for (let j = 1; j < lay.slots.length; j++) assert.equal(lay.slots[j].a, lay.slots[j - 1].b, "tramos contiguos");
+  assert.ok(Math.abs(lay.slots.reduce((acc, sl) => acc + (sl.b - sl.a), 0) - 1) < 1e-12, "los tramos suman 1");
+  const picks = lay.slots.map((sl) => [sl.piece, sl.variant].join("."));
+  assert.deepEqual(picks, ["0.0", "1.0", "2.0", "3.0", "4.0", "5.0", "6.0", "6.1", "7.0", "7.1", "7.2"]);
+  const first = (pc) => lay.slots.find((sl) => sl.piece === pc);
+  assert.ok(Math.abs(first(7).b - first(7).a - 1 / lay.units) < 1e-12, "el primer tramo pesa 1");
+  assert.ok(Math.abs(lay.slots[7].b - lay.slots[7].a - VARIANT_WEIGHT / lay.units) < 1e-12, "cada variante extra pesa 0,75");
+  {
+    let slot = 0;
+    let piece = 0;
+    let variant = -1;
+    for (let k = 0; k <= 8000; k++) {
+      const fr = frameAt(k / 8000, lay);
+      assert.ok(fr.slot >= slot && fr.slot - slot <= 1, "el tramo avanza de a uno y nunca retrocede");
+      assert.ok(fr.piece >= piece && fr.piece - piece <= 1, "la pieza es monótona");
+      assert.equal(fr.index, fr.piece);
+      assert.equal(fr.piece, lay.slots[fr.slot].piece);
+      assert.equal(fr.variant, lay.slots[fr.slot].variant);
+      assert.ok(fr.opacity >= 0 && fr.opacity <= 1 && fr.pieceOpacity >= 0 && fr.pieceOpacity <= 1 && fr.t >= 0 && fr.t <= 1);
+      assert.ok(fr.pieceOpacity >= fr.opacity - 1e-12, "el contador nunca se ve menos que el tramo");
+      assert.ok(Math.abs(fr.shift) <= SHIFT_PX + 1e-9);
+      slot = fr.slot;
+      piece = fr.piece;
+      variant = fr.variant;
+    }
+    assert.equal(slot, 10, "el recorrido llega al último tramo");
+    void variant;
+  }
+  lay.slots.forEach((sl, j) => {
+    const mid = frameAt((sl.a + sl.b) / 2, lay);
+    assert.deepEqual([mid.slot, mid.opacity, mid.shift, mid.pieceOpacity], [j, 1, 0, 1], `tramo ${j}: a mitad se ve completo y quieto`);
+  });
+  for (let j = 1; j < lay.slots.length; j++) {
+    const before = frameAt(lay.slots[j].a - 1e-9, lay);
+    const at = frameAt(lay.slots[j].a + 1e-9, lay);
+    assert.ok(before.slot === j - 1 && before.opacity < 1e-6, `frontera ${j}: el que sale ya está invisible`);
+    assert.ok(at.slot === j && at.opacity < 1e-6, `frontera ${j}: el que entra parte invisible (nunca dos imágenes a la vez)`);
+    if (lay.slots[j].piece === lay.slots[j - 1].piece) {
+      assert.equal(before.pieceOpacity, 1, `frontera interna ${j}: el contador no parpadea (antes)`);
+      assert.equal(at.pieceOpacity, 1, `frontera interna ${j}: el contador no parpadea (después)`);
+    } else {
+      assert.ok(before.pieceOpacity < 1e-6 && at.pieceOpacity < 1e-6, `frontera ${j} entre piezas: el contador también baja a 0`);
+    }
+  }
+  assert.deepEqual([frameAt(0, lay).opacity, frameAt(0, lay).pieceOpacity], [0, 0], "p=0: vacío");
+  assert.deepEqual([frameAt(1, lay).opacity, frameAt(1, lay).pieceOpacity], [0, 0], "p=1: vacío");
+  assert.deepEqual(frameAt(Number.NaN, lay), frameAt(0, lay), "NaN se trata como 0");
+  // Con pesos 1 coincide exactamente con frameFor.
+  const ones = stageLayout(Array(N).fill(1));
+  assert.equal(ones.units, N);
+  for (let k = 0; k <= 4000; k++) {
+    const a = frameAt(k / 4000, ones);
+    const b = frameFor(k / 4000, N);
+    assert.deepEqual({ index: a.index, t: a.t, opacity: a.opacity, shift: a.shift }, b, "frameAt con pesos 1 = frameFor");
+    assert.equal(a.pieceOpacity, a.opacity, "una sola variante: pieceOpacity = opacidad del tramo");
+  }
+  // Contrato de las piezas generadas (BWReel): al menos una variante, ids únicos y las variantes esperadas.
+  assert.equal(STAGE_ORDER.length, N);
+  for (const id of STAGE_ORDER) {
+    const vs = STAGE_PIECES[id].variants;
+    assert.ok(vs.length >= 1, `${id}: al menos una variante`);
+    assert.equal(new Set(vs.map((v) => v.id)).size, vs.length, `${id}: ids de variante únicos`);
+    for (const v of vs) assert.ok(v.w > 0 && v.h > 0 && v.parts.length > 0, `${id}/${v.id}: vista con tamaño y partes`);
+  }
+  assert.deepEqual(STAGE_PIECES.refrigeracion.variants.map((v) => v.id), ["aire", "liquida"]);
+  assert.deepEqual(STAGE_PIECES.almacenamiento.variants.map((v) => v.id), ["m2", "sata", "hdd"]);
+}
 
 console.log("check:logic OK");
