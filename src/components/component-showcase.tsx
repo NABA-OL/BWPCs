@@ -257,7 +257,7 @@ export function ComponentShowcase({ items }: { items: ShowcaseItem[] }) {
   }, [items, layout, views, reduce]);
 
   return (
-    <div ref={trackRef} className="cs-track" style={{ height: trackHeight(layout.units) }}>
+    <div ref={trackRef} className="cs-track" style={{ display: "none", height: trackHeight(layout.units) }}>
       <div
         ref={stageRef}
         aria-hidden="true"

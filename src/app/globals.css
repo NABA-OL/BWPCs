@@ -255,8 +255,9 @@ html[data-tower-hidden] .tower-backdrop {
   display: none;
 }
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  /* !important porque el recorrido nace con display:none en línea: si este CSS no llega (caché de compilación vieja), se ve la lista */
   .cs-track {
-    display: block;
+    display: block !important;
   }
   .cs-list {
     position: absolute;
