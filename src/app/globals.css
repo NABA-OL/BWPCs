@@ -240,6 +240,67 @@ html[data-theme="dark"] .tower-ink {
   }
 }
 
+/*
+  Componentes en escena (components/component-showcase.tsx, /servicios): la lista de siempre es el respaldo. Solo con JS y sin
+  movimiento reducido el recorrido con el escenario reemplaza a la lista, que queda solo para lectores de pantalla.
+  Mientras el escenario está pegado, el componente pone data-tower-hidden en <html> y la torre del fondo se desvanece.
+*/
+.tower-backdrop {
+  transition: opacity 0.35s ease;
+}
+html[data-tower-hidden] .tower-backdrop {
+  opacity: 0;
+}
+.cs-track {
+  display: none;
+}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .cs-track {
+    display: block;
+  }
+  .cs-list {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+@media print {
+  .cs-track {
+    display: none !important;
+  }
+  .cs-list {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 2rem 0 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    clip-path: none !important;
+    white-space: normal !important;
+  }
+}
+html[data-theme="dark"] .piece-ink {
+  filter: invert(1) contrast(0.93);
+}
+.piece-glow {
+  animation: piece-glow 6s ease-in-out infinite alternate;
+}
+@keyframes piece-glow {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Selección coherente con la marca */
 ::selection {
   background: var(--color-panda);

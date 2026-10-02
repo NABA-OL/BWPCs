@@ -55,6 +55,8 @@ export function TowerBackdrop() {
     let last = -1;
     const half = TOWER_SPRITE_PX / 2;
     const update = () => {
+      // La sección "Componentes en escena" (/servicios) oculta la torre mientras dura: quieta, sin trabajo de más.
+      if (document.documentElement.hasAttribute("data-tower-hidden")) return;
       const y = window.scrollY;
       if (y === last) return;
       last = y;
@@ -78,7 +80,7 @@ export function TowerBackdrop() {
   }, []);
 
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div aria-hidden="true" className="tower-backdrop pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <div className="flex h-full w-full items-center justify-center translate-x-[18%] sm:translate-x-[16%]">
         <svg
           ref={svgRef}
