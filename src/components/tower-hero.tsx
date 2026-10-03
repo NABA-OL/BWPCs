@@ -33,6 +33,7 @@ const SPRITES: Record<FanSprite, string> = {
   front120: "/hero/fan-front120.webp",
   gpuA: "/hero/fan-gpuA.webp",
   gpuB: "/hero/fan-gpuB.webp",
+  psu: "/hero/fan-psu.webp",
 };
 
 /** Fondo fijo con la torre y sus ventiladores que giran con el scroll. Va en cualquier página pública. */
@@ -90,18 +91,31 @@ export function TowerBackdrop() {
           <image href={large ? BASE_LARGE : BASE_SMALL} width={TOWER_W} height={TOWER_H} className="tower-ink" opacity={INK_OPACITY} />
           {/* Brillo de las memorias RAM (color de acento, solo lo visible de ellas): respira muy despacio */}
           <image href={RAM_GLOW} width={TOWER_W} height={TOWER_H} className="tower-ram" />
+          {/* Máscaras de visibilidad: lo que tapa algo que está delante del ventilador (disipador, chasis, otro ventilador) */}
+          <defs>
+            {TOWER_FANS.map(({ mask }, i) =>
+              mask ? (
+                <mask key={i} id={`tower-mask-${i}`} maskUnits="userSpaceOnUse" x={mask.x} y={mask.y} width={mask.w} height={mask.h}>
+                  <image href={mask.href} x={mask.x} y={mask.y} width={mask.w} height={mask.h} />
+                </mask>
+              ) : null,
+            )}
+          </defs>
           {TOWER_FANS.map((fan, i) => (
-            <g key={i} transform={`matrix(${fan.m.join(" ")})`}>
-              <image
-                ref={(el) => {
-                  fanRefs.current[i] = el;
-                }}
-                href={SPRITES[fan.sprite]}
-                width={TOWER_SPRITE_PX}
-                height={TOWER_SPRITE_PX}
-                className="tower-ink"
-                opacity={INK_OPACITY}
-              />
+            // Grupo exterior sin transform: la máscara queda en coordenadas de la imagen de la torre
+            <g key={i} mask={fan.mask ? `url(#tower-mask-${i})` : undefined}>
+              <g transform={`matrix(${fan.m.join(" ")})`}>
+                <image
+                  ref={(el) => {
+                    fanRefs.current[i] = el;
+                  }}
+                  href={SPRITES[fan.sprite]}
+                  width={TOWER_SPRITE_PX}
+                  height={TOWER_SPRITE_PX}
+                  className="tower-ink"
+                  opacity={INK_OPACITY}
+                />
+              </g>
             </g>
           ))}
           <rect className="tower-led" x={TOWER_LED.x - 5} y={TOWER_LED.y - 5} width={10} height={10} fill="var(--color-accent)" />
