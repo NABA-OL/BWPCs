@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:check": "NEXT_DIST_DIR=.next-check next build; code=$?; rm -rf .next-check; exit $code",
     "start": "next start",
     "lint": "eslint",
     "seed": "node --env-file=.env.local scripts/seed.mjs",
@@ -12,7 +13,7 @@
     "check:storage": "node --env-file=.env.local --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-storage.mjs"
   },
   "dependencies": {
-    "@ai-sdk/google": "^4.0.69",
+    "@ai-sdk/google": "^4.0.93",
     "@dicebear/core": "^10.7.0",
     "@dicebear/styles": "^10.6.0",
     "@modelcontextprotocol/server": "^2.0.0",
@@ -20,18 +21,18 @@
     "@upstash/redis": "^1.38.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "ai": "^7.0.92",
+    "ai": "^7.0.137",
     "aws4fetch": "^1.0.20",
     "bcryptjs": "^3.0.3",
     "better-auth": "^1.7.5",
     "jose": "^6.2.3",
     "mcp-handler": "^2.1.1",
     "mongodb": "^7.2.0",
-    "next": "16.3.5",
+    "next": "16.3.8",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "resend": "^6.28.1",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "zod": "^4.4.3"
   },
   "devDependencies": {
