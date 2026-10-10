@@ -25,6 +25,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // `pnpm build:check` compila en una carpeta aparte (y la borra) para no pisar la caché de `next dev`.
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
   // Solo desarrollo: permite abrir el servidor de desarrollo desde otro dispositivo de la red local (p. ej. el celular
   // por http://192.168.x.x:3001) sin que Next bloquee el HMR. No afecta al despliegue en Vercel.
   allowedDevOrigins: ["192.168.*.*"],

@@ -3,6 +3,7 @@
  * Desarrollado por: NABAOL
  * Fecha de creación: 2026-08-27
  */
+import { jsonLdString } from "@/components/json-ld";
 
 /** Emite BreadcrumbList JSON-LD para una página pública (Inicio > ... > actual). */
 export function BreadcrumbJsonLd({
@@ -24,7 +25,7 @@ export function BreadcrumbJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
     />
   );
 }

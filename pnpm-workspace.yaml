@@ -1,3 +1,9 @@
 allowBuilds:
   sharp: true
   unrs-resolver: true
+# Avisos de seguridad en dependencias transitivas con versión fijada por sus padres (mismo major).
+overrides:
+  undici: ">=7.29.1 <8"
+  browserslist: ">=4.28.7 <5"
+  source-map-js: ">=1.2.2 <2"
+  baseline-browser-mapping: ">=2.11.0 <3"
