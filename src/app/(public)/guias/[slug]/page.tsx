@@ -13,6 +13,8 @@ import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { FaqSection } from "@/components/faq-section";
 import { JsonLd } from "@/components/json-ld";
 import { findGuide, getPublishedGuides, type Guide } from "@/lib/guides";
+import { entornoActual } from "@/lib/piezas/entorno";
+import { piezasVisibles } from "@/lib/piezas/registro";
 import { SITE_URL } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 import { getEstimatorContext } from "@/lib/quote-estimator";
@@ -119,6 +121,9 @@ export default async function GuiaPage({
   } catch {
     otras = [];
   }
+
+  // Piezas a fondo visibles en este entorno (en producción, solo las publicadas); sin ninguna no se muestra el bloque.
+  const piezas = piezasVisibles(entornoActual());
 
   return (
     <>
@@ -243,6 +248,33 @@ export default async function GuiaPage({
                   </h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-component">
                     {g.descripcion}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Piezas a fondo */}
+      {piezas.length > 0 && (
+        <section className="border-b border-hairline/50 bg-vanilla/40">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+            <h2 className="text-balance text-[clamp(1.5rem,3.5vw,2.25rem)] font-bold tracking-[-0.02em]">
+              Piezas a fondo
+            </h2>
+            <div className="mt-8 grid gap-px border border-hairline bg-hairline sm:grid-cols-2">
+              {piezas.map(({ contenido }) => (
+                <Link
+                  key={contenido.slug}
+                  href={`/piezas/${contenido.slug}`}
+                  className="group bg-vanilla p-6 transition-colors hover:bg-component/20"
+                >
+                  <h3 className="text-lg font-semibold group-hover:text-accent">
+                    {contenido.h1} →
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-component">
+                    {contenido.descripcion}
                   </p>
                 </Link>
               ))}

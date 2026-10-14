@@ -20,6 +20,7 @@ import { INTRO_FAILSAFE_MS, INTRO_INIT_SCRIPT, INTRO_TTL_MS, easeOutExpo, lineBo
 import { ANIM_END, ANIM_START, ENTER_END, EXIT_START, HEADER_PX, SHIFT_PX, VARIANT_WEIGHT, easeOutCubic, frameAt, frameFor, scrollProgress, span, stageLayout, trackHeight } from "../src/lib/component-showcase.ts";
 import { STAGE_ORDER, STAGE_PIECES } from "../src/lib/component-stage.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
+import "./check-piezas.mjs";
 
 // --- Estados de la cuenta de cobro ---
 assert.equal(estadoDe({}), "enviada", "sin estado = cuenta anterior, ya emitida");

@@ -34,6 +34,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // Sinónimos de la pieza "tarjeta madre": una sola URL canónica (docs/piezas-plan.md §2.1).
+  async redirects() {
+    return ["placa-base", "board", "motherboard"].map((sinonimo) => ({
+      source: `/piezas/${sinonimo}`,
+      destination: "/piezas/tarjeta-madre",
+      permanent: true,
+    }));
+  },
   async headers() {
     const markdownNegotiablePaths = [
       "/",

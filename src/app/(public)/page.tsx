@@ -17,8 +17,13 @@ import { SectionNav } from "@/components/section-nav";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { getApprovedReviews, getReviewStats } from "@/lib/reviews/reviews";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
+import { entornoActual } from "@/lib/piezas/entorno";
+import { hrefPiezaServicios } from "@/lib/piezas/registro";
 
 export const revalidate = 3600;
+
+/** Página "a fondo" de la tarjeta madre; null mientras no sea visible (producción con borrador): entonces el texto queda como siempre. */
+const hrefBoard = hrefPiezaServicios("boards", entornoActual());
 
 const trust = [
   {
@@ -190,7 +195,17 @@ export default async function HomePage() {
                 Entrega con todo funcionando.
               </p>
               <p className="mt-5 font-mono text-sm text-component">
-                GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración
+                {hrefBoard ? (
+                  <>
+                    GPU · CPU · RAM ·{" "}
+                    <Link href={hrefBoard} className="underline underline-offset-4 hover:text-panda">
+                      Board
+                    </Link>{" "}
+                    · Fuente · Chasis · Refrigeración
+                  </>
+                ) : (
+                  "GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración"
+                )}
               </p>
             </div>
             <div className="mt-10 border-t border-hairline/50 pt-10 md:mt-0 md:border-l md:border-t-0 md:pl-12 md:pt-0">

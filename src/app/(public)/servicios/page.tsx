@@ -15,6 +15,8 @@ import { ComponentShowcase, type ShowcaseItem } from "@/components/component-sho
 import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { JsonLd } from "@/components/json-ld";
+import { entornoActual } from "@/lib/piezas/entorno";
+import { hrefPiezaServicios } from "@/lib/piezas/registro";
 import { assemblyServiceSchema } from "@/lib/schema";
 import { PAYMENT_MEDIA_TEXT } from "@/lib/site-config";
 
@@ -39,11 +41,14 @@ export const metadata: Metadata = {
   },
 };
 
+/** Página "a fondo" del paso Boards; null mientras la pieza no sea visible (producción con borrador): entonces nada cambia en el HTML. */
+const hrefBoards = hrefPiezaServicios("boards", entornoActual());
+
 const componentes: ShowcaseItem[] = [
   { id: "procesador", t: "Procesadores", d: "AMD e Intel, según tu uso y presupuesto." },
   { id: "graficas", t: "Tarjetas gráficas", d: "Desde gama media hasta entusiasta." },
   { id: "ram", t: "Memorias RAM", d: "DDR4 y DDR5, en las frecuencias que rinden." },
-  { id: "boards", t: "Boards", d: "La base correcta para tu procesador." },
+  { id: "boards", t: "Boards", d: "La base correcta para tu procesador.", ...(hrefBoards ? { href: hrefBoards } : {}) },
   { id: "fuentes", t: "Fuentes de poder", d: "80+ certificadas, el vatiaje justo." },
   { id: "chasis", t: "Chasis", d: "Flujo de aire y espacio para crecer." },
   {
@@ -274,6 +279,13 @@ export default function ServiciosPage() {
             ¿Solo necesitas una pieza? Compra el componente que te falta, sin
             obligación de ensamble.
           </p>
+          {hrefBoards && (
+            <p className="mt-3 max-w-2xl text-sm">
+              <Link href={hrefBoards} className="font-medium underline underline-offset-4">
+                Ver a fondo las partes de la tarjeta madre →
+              </Link>
+            </p>
+          )}
           <dl className="cs-list mt-8 divide-y divide-hairline border-y border-hairline">
             {componentes.map((c) => (
               <div

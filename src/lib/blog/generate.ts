@@ -9,6 +9,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { z } from "zod";
 import { collections } from "@/lib/db/collections";
 import { sendTelegramMessage } from "@/lib/telegram";
+import { piezasVisibles } from "@/lib/piezas/registro";
 import { slugify } from "@/lib/slug";
 import { GuideSectionSchema, GuideFaqSchema } from "@/lib/blog/schema";
 
@@ -49,9 +50,13 @@ export async function generateBlogDraft(): Promise<GenerateBlogDraftResult> {
     .find({}, { projection: { titulo: 1, descripcion: 1, _id: 0 } })
     .toArray();
 
+  // Las piezas "a fondo" publicadas también cuentan como contenido existente (para no redactar una guía duplicada).
+  const piezas = piezasVisibles("produccion").map((p) => ({ titulo: p.contenido.titulo, descripcion: p.contenido.descripcion }));
+  const temas: { titulo: string; descripcion: string }[] = [...existentes, ...piezas];
+
   const temario =
-    existentes.length > 0
-      ? existentes.map((g) => `- ${g.titulo}: ${g.descripcion}`).join("\n")
+    temas.length > 0
+      ? temas.map((g) => `- ${g.titulo}: ${g.descripcion}`).join("\n")
       : "(todavía no hay ninguna guía)";
 
   try {
