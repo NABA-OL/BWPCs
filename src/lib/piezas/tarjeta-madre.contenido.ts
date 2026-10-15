@@ -5,283 +5,75 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-// Contenido de /piezas/tarjeta-madre (docs/piezas-plan.md §6). ESTADO: BORRADOR. Ningún hecho está verificado: la puerta de publicación debe fallar.
+// Contenido de /piezas/tarjeta-madre (docs/piezas-plan.md §6, migrado al contrato multivista: docs/piezas-plan-2.md §2.1). ESTADO: BORRADOR.
+// Los hechos verificados por el dueño (hojas A y B, 2026-10-13) conservan su verificadoEn/verificadoPor; los demás siguen en null.
+// Los hechos que comparte con otras piezas viven en comun.hechos.ts (mismos ids) y se importan aquí; las fuentes, en fuentes.ts.
 // Reglas: prosa sin cifras (salvo nombres de estándar en `terminos`); toda cifra vive en un `Hecho` con fuente.
-// `consultadoEn: ""` = URL candidata que NO se pudo consultar desde esta sesión (la verifica una persona). Con fecha = se abrió ese día.
-import type { FactorForma, Fuente, Hecho, ParteContenido, PiezaContenido, SeccionTexto, TarjetaMadreParteId } from "./types.ts";
-
-const HOY = "2026-10-11";
-
-/** Hecho pendiente de verificación humana (verificadoEn y verificadoPor quedan en null). */
-function hecho(id: string, texto: string, fuentes: readonly Fuente[], nota?: string): Hecho {
-  return { id, texto, fuentes, verificadoEn: null, verificadoPor: null, ...(nota === undefined ? {} : { nota }) };
-}
-
-/** Datos aprobados por el dueño tras la hoja de verificación A (docs/verificacion/tarjeta-madre-a.md). */
-const FECHA_VERIFICACION = "2026-10-13";
-const VERIFICADOR = "NB";
-const NOTA_APROBADO = `Verificado por hoja A (${FECHA_VERIFICACION}) y aprobado por ${VERIFICADOR}.`;
-
-/** Hecho verificado y aprobado por el dueño: fija verificadoEn/verificadoPor y agrega la nota de aprobación. */
-function hechoVerificado(id: string, texto: string, fuentes: readonly Fuente[], nota?: string): Hecho {
-  return {
-    id,
-    texto,
-    fuentes,
-    verificadoEn: FECHA_VERIFICACION,
-    verificadoPor: VERIFICADOR,
-    nota: nota === undefined ? NOTA_APROBADO : `${nota} ${NOTA_APROBADO}`,
-  };
-}
-
-/** Misma fuente, abierta de nuevo en la verificación (fecha de consulta actualizada). */
-function consultadaEnVerificacion(fuente: Fuente): Fuente {
-  return { ...fuente, consultadoEn: FECHA_VERIFICACION };
-}
-
-/* ---------- Fuentes candidatas ---------- */
-const AMD_CHIPSETS_AM5: Fuente = {
-  titulo: "AMD Socket AM5 Chipsets",
-  editor: "AMD",
-  url: "https://www.amd.com/en/products/processors/chipsets/am5.html",
-  consultadoEn: HOY,
-};
-const AMD_CHIPSETS_AM4: Fuente = {
-  titulo: "AMD Socket AM4 Chipsets: especificaciones y compatibilidad de procesadores",
-  editor: "AMD",
-  url: "https://www.amd.com/en/products/processors/chipsets/am4.html",
-  consultadoEn: HOY,
-};
-const AMD_RYZEN_7700X: Fuente = {
-  titulo: "AMD Ryzen 7 7700X: especificaciones",
-  editor: "AMD",
-  url: "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7700x.html",
-  consultadoEn: HOY,
-};
-const AMD_RYZEN_5600X: Fuente = {
-  titulo: "AMD Ryzen 5 5600X: especificaciones",
-  editor: "AMD",
-  url: "https://www.amd.com/en/products/processors/desktops/ryzen/5000-series/amd-ryzen-5-5600x.html",
-  consultadoEn: HOY,
-};
-const AMD_INSTALAR_DISIPADOR: Fuente = {
-  titulo: "How to Install or Remove an AMD CPU Cooler",
-  editor: "AMD",
-  url: "https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html",
-  consultadoEn: HOY,
-};
-const AMD_DISIPADORES: Fuente = {
-  titulo: "AMD Ryzen Processor Cooling Solutions",
-  editor: "AMD",
-  url: "https://www.amd.com/en/products/processors/ecosystem/cpu-cooler-solutions.html",
-  consultadoEn: "",
-};
-const INTEL_ARK_12700: Fuente = {
-  titulo: "Procesador Intel Core i7-12700: especificaciones (ARK)",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/products/sku/134591/intel-core-i712700-processor-25m-cache-up-to-4-90-ghz/specifications.html",
-  consultadoEn: HOY,
-};
-const INTEL_ARK: Fuente = {
-  titulo: "Intel Product Specifications (ARK)",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/ark.html",
-  consultadoEn: "",
-};
-const INTEL_CORE_ULTRA: Fuente = {
-  titulo: "Procesadores Intel Core Ultra",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/products/details/processors/core-ultra.html",
-  consultadoEn: "",
-};
-const INTEL_FRONT_PANEL: Fuente = {
-  titulo: "Conector USB frontal: asignación de pines (soporte de Intel)",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/support/articles/000060175/server-products/server-boards.html",
-  consultadoEn: "",
-};
-const PWM_FAN_SPEC: Fuente = {
-  titulo: "Noctua PWM specifications white paper (cita la especificación de Intel de ventiladores PWM de cuatro hilos)",
-  editor: "Noctua",
-  url: "https://noctua.at/pub/media/wysiwyg/Noctua_PWM_specifications_white_paper.pdf",
-  consultadoEn: "",
-};
-const PCI_SIG: Fuente = {
-  titulo: "Especificaciones de PCI Express",
-  editor: "PCI-SIG",
-  url: "https://pcisig.com/specifications",
-  consultadoEn: "",
-};
-const JEDEC_DDR5: Fuente = {
-  titulo: "JESD79-5: DDR5 SDRAM",
-  editor: "JEDEC",
-  url: "https://www.jedec.org/standards-documents/docs/jesd79-5d",
-  consultadoEn: "",
-};
-const JEDEC_DDR4: Fuente = {
-  titulo: "Main Memory: DDR4 y DDR5 SDRAM (JESD79-4)",
-  editor: "JEDEC",
-  url: "https://www.jedec.org/category/technology-focus-area/main-memory-ddr3-ddr4-sdram",
-  consultadoEn: "",
-};
-const NVME: Fuente = {
-  titulo: "Especificaciones NVM Express",
-  editor: "NVM Express",
-  url: "https://nvmexpress.org/specifications/",
-  consultadoEn: HOY,
-};
-const SATA_IO: Fuente = {
-  titulo: "SATA-IO",
-  editor: "SATA-IO",
-  url: "https://sata-io.org/",
-  consultadoEn: HOY,
-};
-const ATX_22: Fuente = {
-  titulo: "ATX Specification, Version 2.2",
-  editor: "Intel (formfactors.org)",
-  url: "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
-  consultadoEn: HOY,
-};
-const VIA_MINI_ITX: Fuente = {
-  titulo: "Formato Mini-ITX",
-  editor: "VIA Technologies",
-  url: "https://www.viatech.com/en/",
-  consultadoEn: "",
-};
-const USB_IF: Fuente = {
-  titulo: "USB-IF Document Library",
-  editor: "USB-IF",
-  url: "https://www.usb.org/documents",
-  consultadoEn: HOY,
-};
-const UEFI_FORUM: Fuente = {
-  titulo: "UEFI Specifications",
-  editor: "UEFI Forum",
-  url: "https://uefi.org/specifications",
-  consultadoEn: "",
-};
-const MS_WINDOWS_11: Fuente = {
-  titulo: "Windows 11 requirements",
-  editor: "Microsoft",
-  url: "https://learn.microsoft.com/windows/whats-new/windows-11-requirements",
-  consultadoEn: HOY,
-};
-const MANUAL_ASUS: Fuente = {
-  titulo: "Soporte y manuales de placas ASUS (falta fijar el manual de un modelo concreto)",
-  editor: "Manual <modelo> (ASUS)",
-  url: "https://www.asus.com/support/",
-  consultadoEn: "",
-};
-const MANUAL_ASROCK: Fuente = {
-  titulo: "Soporte y manuales de placas ASRock (falta fijar el manual de un modelo concreto)",
-  editor: "Manual <modelo> (ASRock)",
-  url: "https://www.asrock.com/support/index.asp",
-  consultadoEn: "",
-};
-const NOTA_MANUAL = "No hay un manual público estable que citar: quien verifica debe fijar un modelo de ejemplo y enlazar su PDF (ASUS, MSI, Gigabyte o ASRock) antes de publicar.";
-
-/* ---------- Fuentes primarias abiertas en la verificación A (2026-10-13) ---------- */
-const V_AMD_AM5 = consultadaEnVerificacion(AMD_CHIPSETS_AM5);
-const V_AMD_AM4 = consultadaEnVerificacion(AMD_CHIPSETS_AM4);
-const V_AMD_7700X = consultadaEnVerificacion(AMD_RYZEN_7700X);
-const V_AMD_5600X = consultadaEnVerificacion(AMD_RYZEN_5600X);
-const V_INTEL_ARK_12700 = consultadaEnVerificacion(INTEL_ARK_12700);
-const V_INTEL_ARK_14700KF: Fuente = {
-  titulo: "Intel® Core™ i7-14700KF (ARK)",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/products/sku/236789/intel-core-i7-processor-14700kf-33m-cache-up-to-5-60-ghz/specifications.html",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_INTEL_BOXED_ULTRA_S2: Fuente = {
-  titulo: "Information About Intel® Core™ Ultra Boxed Desktop Processors (Series 2)",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/support/articles/000099656/processors.html",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_INTEL_Z690_BIOS: Fuente = {
-  titulo: "Intel® Core™ i5-13500 Processor Does Not Boot on a Motherboard with Intel® Z690 Chipset",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/support/articles/000095894/processors/intel-core-processors.html",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_INTEL_LGA1700: Fuente = {
-  titulo: "Socket LGA1700 with Comparison to Socket LGA1200",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/support/articles/000088168/processors/intel-core-processors.html",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_AMD_CPU_100: Fuente = {
-  titulo: "Processor Handling Guidance",
-  editor: "AMD",
-  url: "https://www.amd.com/en/resources/support-articles/faqs/CPU-100.html",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_MANUAL_GIGABYTE_B650: Fuente = {
-  titulo: "B650 AORUS ELITE AX: manual de usuario (Rev. 1204)",
-  editor: "Gigabyte",
-  url: "https://download.gigabyte.com/FileList/Manual/mb_manual_b650-aorus-elite-ax_1204_e.pdf",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_MANUAL_GIGABYTE_Z790: Fuente = {
-  titulo: "Z790 AORUS ELITE AX / AX DDR4: manual de usuario (Rev. 1105)",
-  editor: "Gigabyte",
-  url: "https://download.gigabyte.com/FileList/Manual/mb_manual_z790-ae-series_1105_e.pdf",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_ASUS_B850F: Fuente = {
-  titulo: "ROG STRIX B850-F GAMING WIFI7 NEO",
-  editor: "ASUS",
-  url: "https://rog.asus.com/motherboards/rog-strix/rog-strix-b850-f-gaming-wifi7-neo/",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_ASROCK_CATALOGO_AMD: Fuente = {
-  titulo: "AMD Platform Solutions: catálogo de placas",
-  editor: "ASRock",
-  url: "https://download.asrock.com/Download/e-catalog/AMDPlatformSolutionsCatalog.pdf",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_SSI_EPS12V: Fuente = {
-  titulo: "EPS12V Power Supply Design Guide, v2.91 (copia alojada en xDevs.com)",
-  editor: "SSI",
-  url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/eps_designguide_2.91.pdf",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_CORSAIR_CABLES: Fuente = {
-  titulo: "Which PSU cables go where?",
-  editor: "Corsair",
-  url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_CORSAIR_EPS_VS_PCIE: Fuente = {
-  titulo: "Can I use a PCI-e cable in the 8-pin motherboard plug?",
-  editor: "Corsair",
-  url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/can-i-use-a-pci-e-cable-in-the-8-pin-motherboard-plug/",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_KINGSTON_DDR5: Fuente = {
-  titulo: "Ficha de Kingston FURY DDR5, KF560C30BBEK2-32",
-  editor: "Kingston",
-  url: "https://www.kingston.com/datasheets/KF560C30BBEK2-32.pdf",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_KINGSTON_DDR4: Fuente = {
-  titulo: "Ficha de Kingston FURY DDR4, KF432C16BBK2/16",
-  editor: "Kingston",
-  url: "https://www.kingston.com/dataSheets/KF432C16BBK2_16.pdf",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_CORSAIR_DDR5_COMPAT: Fuente = {
-  titulo: "Is DDR5 backwards compatible with DDR4?",
-  editor: "Corsair",
-  url: "https://www.corsair.com/us/en/explorer/diy-builder/memory/is-ddr5-backwards-compatible/",
-  consultadoEn: FECHA_VERIFICACION,
-};
-const V_MS_UEFI: Fuente = {
-  titulo: "UEFI firmware requirements",
-  editor: "Microsoft",
-  url: "https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-uefi",
-  consultadoEn: FECHA_VERIFICACION,
-};
+import {
+  socketDisipadoresAm4Am5,
+  socketDisipadoresLga1700Lga1851,
+  socketMarcaPinUno,
+  am4PgaRyzen,
+  am5Lga,
+  am5MemoriaDdr5,
+  lga1700GeneracionesMemoria,
+  lga1851ProcesadoresMemoria,
+  ramDdr4Ddr5Muesca,
+  ramUnaGeneracionPorPlaca,
+  ramDobleCanal,
+  pcieTamanosFisicos,
+  pcieAnchoBandaGeneraciones,
+  pcieCompatibilidadAtras,
+  pcieX16DesdeProcesador,
+  m2Llaves,
+  m2Largos,
+  m2Protocolos,
+  m2ComparteLineasSata,
+  nvmeLineasPcie,
+  sataIiiVelocidad,
+  sataDatosYEnergia,
+  atx24Pines,
+  epsOchoPines,
+  epsVsPcieGrafica,
+  videoRequiereGraficosIntegrados,
+  ventiladorNombresCabezales,
+} from "./comun.hechos.ts";
+import { hecho, hechoVerificado, hechoVerificadoB } from "./constructores.ts";
+import {
+  AMD_CHIPSETS_AM5,
+  INTEL_ARK,
+  INTEL_FRONT_PANEL,
+  PWM_FAN_SPEC,
+  ATX_22,
+  VIA_MINI_ITX,
+  USB_IF,
+  MS_WINDOWS_11,
+  MANUAL_ASUS,
+  MANUAL_ASROCK,
+  NOTA_MANUAL,
+  V_AMD_AM5,
+  V_AMD_AM4,
+  V_AMD_7700X,
+  V_INTEL_Z690_BIOS,
+  V_MANUAL_GIGABYTE_B650,
+  V_MANUAL_GIGABYTE_Z790,
+  V_ASUS_B850F,
+  V_MS_UEFI,
+  V_ATX_22,
+  V_MANUAL_ASROCK_B760M,
+  V_MANUAL_MSI_B760,
+  V_MANUAL_ASUS_B850_PLUS,
+  V_MANUAL_ASUS_Z890M,
+  V_MANUAL_ASUS_B850I,
+  V_ASUS_B650M_A,
+  V_ASUS_FAQ_BIOS_FLASHBACK,
+  V_ASROCK_FLASHBACK,
+  V_ASUS_FAQ_CLEAR_CMOS,
+  V_ASUS_FAQ_BATERIA,
+  V_INTEL_FRONT_PANEL_GUIA,
+  V_VIA_MINI_ITX_WHITE_PAPER,
+} from "./fuentes.ts";
+import type { Caso, FactorForma, ParteContenido, PiezaContenido, SeccionTexto, TarjetaMadreParteId, TarjetaMadreVistaId } from "./types.ts";
 
 /* ---------- Partes (en el orden de TARJETA_MADRE_PARTES) ---------- */
 const socket: ParteContenido = {
@@ -299,30 +91,15 @@ const socket: ParteContenido = {
     "Mira qué sockets admite tu disipador: algunos sirven para varios y otros solo para uno.",
   ],
   hechos: [
-    hecho(
-      "socket-disipadores-am4-am5",
-      "Muchos disipadores diseñados para AM4 se pueden montar en AM5 sin cambiar el soporte, porque se mantuvo la distancia entre los orificios de montaje. Confirma el soporte con el fabricante de tu disipador.",
-      [AMD_DISIPADORES],
-      "NO confirmado en las páginas de AMD consultadas (partner/socket-am5-change-game no lo dice). Una búsqueda sugiere que AMD indicó que los disipadores de AM4 siguen soportados en AM5: ubicar el comunicado primario o la lista de compatibilidad de un fabricante de disipadores.",
-    ),
-    hechoVerificado(
-      "socket-disipadores-lga1700-lga1851",
-      "Los disipadores diseñados para LGA 1700 suelen servir también en LGA 1851, según lo que indique el fabricante de cada disipador.",
-      [V_INTEL_BOXED_ULTRA_S2],
-      "Intel indica que los disipadores con ventilador pueden usarse entre LGA 1700 y LGA 1851 por ser mecánicamente parecidos para la solución térmica, y recuerda que el disipador debe cubrir la potencia del procesador.",
-    ),
+    socketDisipadoresAm4Am5,
+    socketDisipadoresLga1700Lga1851,
     hechoVerificado(
       "socket-mismo-no-garantiza",
       "Compartir socket no garantiza compatibilidad: AMD indica que una placa de la serie 600 puede necesitar una actualización de BIOS para procesadores Ryzen 8000 y 9000, y en AM4 la compatibilidad depende del chipset y de la versión de BIOS.",
       [V_AMD_AM5, V_AMD_AM4, V_INTEL_Z690_BIOS],
       "AM5 (BIOS puede ser necesaria para Ryzen 8000 y 9000 en placas serie 600) y AM4 (tabla chipset por procesador con BIOS beta) confirmados. Intel también pide BIOS nueva para 13.ª generación en Z690; el texto publicado no menciona el caso de Intel (opcional).",
     ),
-    hechoVerificado(
-      "socket-marca-pin-uno",
-      "El procesador y el socket traen una marca de alineación, normalmente un triángulo en una esquina, que indica dónde está el pin 1 y evita instalar el procesador girado.",
-      [V_MANUAL_GIGABYTE_B650, V_AMD_CPU_100],
-      "El manual de la placa AM5 pide alinear la marca de pin uno (un triángulo) con la esquina del socket; las guías de AMD hablan del patrón de pines y de no forzar el procesador, sin nombrar el triángulo.",
-    ),
+    socketMarcaPinUno,
   ],
   opciones: {
     titulo: "Sockets de escritorio más comunes hoy",
@@ -334,12 +111,7 @@ const socket: ParteContenido = {
         resumen: "Plataforma anterior de AMD con memoria DDR4. El procesador lleva los pines y la placa tiene los orificios donde entran.",
         vigente: false,
         hechos: [
-          hechoVerificado(
-            "am4-pga-ryzen",
-            "AM4 es un socket de tipo PGA: los pines están en el procesador y la placa tiene orificios. AMD lo usa con procesadores Ryzen de la serie 5000 y anteriores, con memoria DDR4.",
-            [V_AMD_AM4, V_AMD_5600X, V_ASROCK_CATALOGO_AMD],
-            "AMD confirma AM4 con DDR4 (ficha del 5600X incluida). El tipo PGA sale del catálogo de ASRock (\"Socket AM4 (PGA1331)\" para Ryzen 5000, 4000G, 3000G y 3000), no de las páginas de AMD.",
-          ),
+          am4PgaRyzen,
         ],
       },
       {
@@ -349,18 +121,8 @@ const socket: ParteContenido = {
         resumen: "Plataforma actual de AMD con memoria DDR5. Los contactos están en la placa y el procesador queda apoyado sobre ellos.",
         vigente: true,
         hechos: [
-          hecho(
-            "am5-lga",
-            "AM5 es un socket de tipo LGA: los contactos están en la placa y el procesador no lleva pines. Tiene 1718 contactos.",
-            [AMD_CHIPSETS_AM5],
-            "NO confirmado en las páginas de AMD consultadas: ni el tipo LGA ni la cifra de contactos (1718 es la cifra comúnmente citada). Si no aparece en una fuente primaria, publicar el hecho sin la cifra.",
-          ),
-          hechoVerificado(
-            "am5-memoria-ddr5",
-            "Los procesadores Ryzen para AM5 usan memoria DDR5; AMD no lista DDR4 para esta plataforma.",
-            [V_AMD_7700X, V_AMD_AM5],
-            "La ficha del Ryzen 7 7700X indica socket AM5, memoria DDR5 y dos canales; la página de chipsets AM5 habla solo de DDR5.",
-          ),
+          am5Lga,
+          am5MemoriaDdr5,
         ],
       },
       {
@@ -370,12 +132,7 @@ const socket: ParteContenido = {
         resumen: "Plataforma anterior de Intel. Según el procesador y la placa, se usa memoria DDR4 o DDR5, y cada placa admite solo una de las dos.",
         vigente: false,
         hechos: [
-          hechoVerificado(
-            "lga1700-generaciones-memoria",
-            "Intel usa el socket LGA 1700 (FCLGA1700 en ARK) en procesadores Core de las generaciones 12, 13 y 14. El procesador admite DDR4 o DDR5, pero cada placa soporta solo una de las dos.",
-            [V_INTEL_LGA1700, V_INTEL_ARK_12700, V_INTEL_ARK_14700KF, V_MANUAL_GIGABYTE_Z790],
-            "Intel confirma LGA1700 para 12.ª, 13.ª y 14.ª generación; ARK da FCLGA1700 y DDR5/DDR4 para el 12700 y el 14700KF; el manual de Gigabyte describe dos versiones de la misma placa (4 ranuras DDR5 o 4 DDR4).",
-          ),
+          lga1700GeneracionesMemoria,
         ],
       },
       {
@@ -385,18 +142,13 @@ const socket: ParteContenido = {
         resumen: "Plataforma más reciente de Intel para sus procesadores Core Ultra. Las placas usan memoria DDR5.",
         vigente: true,
         hechos: [
-          hecho(
-            "lga1851-procesadores-memoria",
-            "LGA 1851 (FCLGA1851 en ARK) es el socket de los procesadores Intel Core Ultra de la serie 200S, y esos procesadores usan memoria DDR5.",
-            [INTEL_CORE_ULTRA, INTEL_ARK],
-            "NO se pudo abrir ARK. Fichas de tiendas (no primarias) indican FCLGA1851 y solo DDR5 para el Core Ultra 7 265K; hay que confirmarlo en ARK y revisar si existen otras series en este socket.",
-          ),
+          lga1851ProcesadoresMemoria,
         ],
       },
     ],
   },
   relacionadas: ["chipset", "ranuras-ram", "vrm"],
-  enlaces: [{ etiqueta: "Cotiza un equipo con un procesador compatible", href: "/cotizador" }],
+  enlaces: [{ etiqueta: "Cotiza un equipo con un procesador compatible", href: "/cotizador" }, { etiqueta: "El procesador a fondo", pieza: "procesador" }, { etiqueta: "La base del disipador sobre el procesador", pieza: "refrigeracion", parte: "base" }],
 };
 
 const chipset: ParteContenido = {
@@ -472,6 +224,7 @@ const vrm: ParteContenido = {
     ),
   ],
   relacionadas: ["conector-cpu", "socket"],
+  enlaces: [{ etiqueta: "El procesador a fondo", pieza: "procesador" }],
 };
 
 const conectorCpu: ParteContenido = {
@@ -489,21 +242,11 @@ const conectorCpu: ParteContenido = {
     "Deja espacio para el cable: queda cerca del disipador del procesador.",
   ],
   hechos: [
-    hechoVerificado(
-      "eps-ocho-pines",
-      "El conector de energía del procesador sigue el estándar EPS12V de 8 pines (4+4). Algunas placas traen dos conectores (8+4 u 8+8).",
-      [V_SSI_EPS12V, V_CORSAIR_CABLES, V_MANUAL_GIGABYTE_B650, V_MANUAL_GIGABYTE_Z790],
-      "La guía EPS12V define el conector de procesador de 8 pines; Corsair explica entradas de 4, 4+4, 8 u 8+8; la B650 AORUS trae 8+4 y la Z790 AORUS trae 8+8. El (4+4) es la forma del cable, no del conector de la placa.",
-    ),
-    hechoVerificado(
-      "eps-vs-pcie-grafica",
-      "El cable EPS 4+4 del procesador y el cable PCIe 6+2 de la tarjeta gráfica no son intercambiables: sus conectores tienen codificación distinta.",
-      [V_CORSAIR_EPS_VS_PCIE, V_CORSAIR_CABLES],
-      "Corsair dice que no son intercambiables, que se parecen pero son físicamente distintos y están cableados distinto. PENDIENTE (decisión del dueño): la hoja propone reformular el texto de «codificación» a «cableado»; aquí NO se reformuló.",
-    ),
+    epsOchoPines,
+    epsVsPcieGrafica,
   ],
   relacionadas: ["vrm", "conector-24-pines"],
-  enlaces: [{ etiqueta: "Guías sobre fuentes de poder", href: "/guias" }],
+  enlaces: [{ etiqueta: "Guías sobre fuentes de poder", href: "/guias" }, { etiqueta: "Conector EPS en la fuente de poder", pieza: "fuente-de-poder", parte: "eps-cpu" }],
 };
 
 const ranurasRam: ParteContenido = {
@@ -521,24 +264,9 @@ const ranurasRam: ParteContenido = {
     "Antes de decidir cuánta memoria comprar, mira la guía de cuánta RAM necesitas.",
   ],
   hechos: [
-    hechoVerificado(
-      "ram-ddr4-ddr5-muesca",
-      "Los módulos DIMM de DDR4 y de DDR5 tienen 288 contactos, pero la muesca está en otra posición, por lo que no son intercambiables.",
-      [V_KINGSTON_DDR5, V_KINGSTON_DDR4, V_CORSAIR_DDR5_COMPAT],
-      "Las fichas de Kingston rotulan ambos kits como DIMM de 288 pines; Corsair explica la distinta posición de la muesca. No se abrió el estándar de JEDEC (el PDF exige cuenta). Los SO-DIMM de portátiles tienen otra cantidad de contactos; el texto habla de DIMM.",
-    ),
-    hechoVerificado(
-      "ram-una-generacion-por-placa",
-      "Cada placa admite una sola generación de memoria. En AM5 es DDR5; en LGA 1700 depende del modelo de placa, que puede ser DDR4 o DDR5.",
-      [V_AMD_7700X, V_INTEL_ARK_12700, V_MANUAL_GIGABYTE_Z790],
-      "AMD da DDR5 para AM5; Intel da DDR5 y DDR4 para el 12700; el manual de Gigabyte cubre dos versiones de una misma placa LGA1700 (4 ranuras DDR5 o 4 DDR4).",
-    ),
-    hechoVerificado(
-      "ram-doble-canal",
-      "En escritorio los procesadores usan dos canales de memoria. Con cuatro ranuras, hay dos por canal; con dos módulos, el manual indica en qué ranuras ponerlos para usar el doble canal (a menudo A2 y B2).",
-      [V_AMD_7700X, V_INTEL_ARK_12700, V_MANUAL_GIGABYTE_B650],
-      "El 7700X y el i7-12700 indican dos canales; el manual de Gigabyte recomienda A2 y B2 para dos módulos (indicación de ese fabricante, por eso el texto dice «a menudo»).",
-    ),
+    ramDdr4Ddr5Muesca,
+    ramUnaGeneracionPorPlaca,
+    ramDobleCanal,
   ],
   opciones: {
     titulo: "Generaciones de memoria",
@@ -560,7 +288,7 @@ const ranurasRam: ParteContenido = {
     ],
   },
   relacionadas: ["socket", "chipset"],
-  enlaces: [{ etiqueta: "Guía: cuánta RAM necesito", href: "/guias" }],
+  enlaces: [{ etiqueta: "Guía: cuánta RAM necesito", href: "/guias" }, { etiqueta: "La memoria RAM a fondo", pieza: "memoria-ram", parte: "ranura" }],
 };
 
 const pcie1: ParteContenido = {
@@ -578,33 +306,13 @@ const pcie1: ParteContenido = {
     "Si tu procesador no trae gráficos integrados, necesitas una tarjeta gráfica para ver imagen.",
   ],
   hechos: [
-    hecho(
-      "pcie-tamanos-fisicos",
-      "Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas.",
-      [PCI_SIG],
-      "NO confirmado: PCI-SIG bloquea la consulta automática (403); verificar en la especificación o en un resumen público de PCI-SIG.",
-    ),
-    hecho(
-      "pcie-ancho-banda-generaciones",
-      "Cada generación de PCIe duplica el ancho de banda de la anterior: 8 GT/s por línea en PCIe 3.0, 16 GT/s en PCIe 4.0 y 32 GT/s en PCIe 5.0 (unos 1, 2 y 4 GB/s por línea y por sentido, de forma aproximada).",
-      [PCI_SIG],
-      "NO confirmado en fuente consultada. Verificar GT/s y la conversión aproximada a GB/s.",
-    ),
-    hecho(
-      "pcie-compatibilidad-atras",
-      "Las tarjetas y ranuras PCIe de generaciones distintas son compatibles hacia atrás: el conjunto funciona a la velocidad de la generación menor de las dos.",
-      [PCI_SIG],
-      "NO confirmado en fuente consultada.",
-    ),
-    hechoVerificado(
-      "pcie-x16-desde-procesador",
-      "La ranura x16 principal suele salir directamente del procesador, mientras que las demás ranuras suelen depender del chipset; la asignación exacta cambia según el modelo.",
-      [V_MANUAL_GIGABYTE_B650, V_MANUAL_GIGABYTE_Z790, V_ASUS_B850F, V_AMD_AM5],
-      "En tres placas concretas (B650, Z790 y B850) la x16 principal va al procesador y las demás al chipset; el texto ya está redactado con «suele».",
-    ),
+    pcieTamanosFisicos,
+    pcieAnchoBandaGeneraciones,
+    pcieCompatibilidadAtras,
+    pcieX16DesdeProcesador,
   ],
   relacionadas: ["pcie-secundarias", "puertos-traseros", "m2"],
-  enlaces: [{ etiqueta: "Ver las piezas del recorrido", href: "/servicios#componentes" }],
+  enlaces: [{ etiqueta: "Ver las piezas del recorrido", href: "/servicios#componentes" }, { etiqueta: "La tarjeta gráfica a fondo", pieza: "tarjeta-grafica", parte: "conector-pcie" }],
 };
 
 const pcieSec: ParteContenido = {
@@ -647,30 +355,10 @@ const m2: ParteContenido = {
     "Lee en el manual si ocupar una M.2 apaga puertos SATA o resta líneas a una ranura PCIe.",
   ],
   hechos: [
-    hecho(
-      "m2-llaves",
-      "M.2 define varias llaves; los SSD usan la llave M (o B y M) y las tarjetas inalámbricas suelen usar la llave E. Cada llave indica qué tipo de dispositivo admite la ranura.",
-      [PCI_SIG],
-      "NO confirmado en fuente consultada. La especificación M.2 es de PCI-SIG y su acceso puede requerir membresía.",
-    ),
-    hecho(
-      "m2-largos",
-      "Los SSD M.2 se nombran por su tamaño: 2230, 2242, 2260, 2280 y 22110 (22 mm de ancho y 30, 42, 60, 80 o 110 mm de largo). El 2280 es el más habitual.",
-      [PCI_SIG],
-      "NO confirmado en fuente consultada. Verificar la afirmación 'el más habitual' o quitarla.",
-    ),
-    hecho(
-      "m2-protocolos",
-      "Una ranura M.2 puede admitir solo SSD NVMe, solo SSD SATA o ambos, según el modelo de placa.",
-      [PCI_SIG, MANUAL_ASUS],
-      `NO confirmado en fuente consultada. ${NOTA_MANUAL}`,
-    ),
-    hecho(
-      "m2-comparte-lineas-sata",
-      "En algunas placas, ocupar ciertas ranuras M.2 reduce las líneas de una ranura PCIe o desactiva puertos SATA; el manual de cada modelo indica cuáles.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `NO confirmado con un manual concreto. Una búsqueda mostró que depende del modelo (por ejemplo, en una placa ASUS B650E-MAX son los puertos SATA los que se apagan al usar ciertas ranuras PCIe). ${NOTA_MANUAL}`,
-    ),
+    m2Llaves,
+    m2Largos,
+    m2Protocolos,
+    m2ComparteLineasSata,
   ],
   opciones: {
     titulo: "Tipos de SSD que usan M.2",
@@ -681,12 +369,7 @@ const m2: ParteContenido = {
         resumen: "Usa líneas PCIe para hablar directo con el procesador o el chipset; es el tipo más habitual en los SSD M.2 actuales.",
         vigente: true,
         hechos: [
-          hecho(
-            "nvme-lineas-pcie",
-            "Los SSD NVMe usan líneas PCIe, normalmente cuatro (x4).",
-            [NVME, PCI_SIG],
-            "Parcial: nvmexpress.org confirma que NVMe define la comunicación con memoria no volátil sobre PCI Express y que se usa en M.2. No confirmado: 'normalmente x4'.",
-          ),
+          nvmeLineasPcie,
         ],
       },
       {
@@ -699,6 +382,7 @@ const m2: ParteContenido = {
     ],
   },
   relacionadas: ["sata", "pcie-secundarias", "chipset"],
+  enlaces: [{ etiqueta: "El almacenamiento M.2 a fondo", pieza: "almacenamiento", parte: "llave-m2" }],
 };
 
 const sata: ParteContenido = {
@@ -716,20 +400,11 @@ const sata: ParteContenido = {
     "Confirma que tu fuente trae suficientes conectores de energía SATA para tus unidades.",
   ],
   hechos: [
-    hecho(
-      "sata-iii-velocidad",
-      "SATA III funciona a 6 Gb/s, lo que equivale a unos 600 MB/s de velocidad útil.",
-      [SATA_IO],
-      "NO confirmado: la portada de sata-io.org consultada no muestra la cifra. Buscar la página de revisión 3.x en SATA-IO.",
-    ),
-    hecho(
-      "sata-datos-y-energia",
-      "Cada unidad SATA necesita un cable de datos hacia la placa y un cable de energía SATA desde la fuente.",
-      [SATA_IO, ATX_22],
-      "NO confirmado en fuente consultada (la especificación SATA completa puede requerir registro).",
-    ),
+    sataIiiVelocidad,
+    sataDatosYEnergia,
   ],
   relacionadas: ["m2", "conector-24-pines"],
+  enlaces: [{ etiqueta: "Almacenamiento SATA a fondo", pieza: "almacenamiento", parte: "conector-sata-datos" }, { etiqueta: "El conector de energía SATA en la fuente de poder", pieza: "fuente-de-poder", parte: "sata-poder" }],
 };
 
 const conector24: ParteContenido = {
@@ -747,15 +422,10 @@ const conector24: ParteContenido = {
     "Mira la guía de vatios para elegir una fuente que cubra tu equipo.",
   ],
   hechos: [
-    hecho(
-      "atx-24-pines",
-      "El conector principal de energía de la placa es de 24 pines (20+4) en el estándar ATX.",
-      [ATX_22],
-      "Confirmado en la especificación ATX 2.2 consultada: 'Main Power Connector changed from 20 pin to 24 pin to support PCI-Express requirements'.",
-    ),
+    atx24Pines,
   ],
   relacionadas: ["conector-cpu", "sata"],
-  enlaces: [{ etiqueta: "Guías sobre fuentes de poder", href: "/guias" }],
+  enlaces: [{ etiqueta: "Guías sobre fuentes de poder", href: "/guias" }, { etiqueta: "Conector de 24 pines en la fuente de poder", pieza: "fuente-de-poder", parte: "atx-24" }],
 };
 
 const puertos: ParteContenido = {
@@ -773,26 +443,22 @@ const puertos: ParteContenido = {
     "Busca si trae botones para actualizar la BIOS sin procesador o para restablecer la configuración.",
   ],
   hechos: [
-    hecho(
-      "video-requiere-graficos-integrados",
-      "Las salidas de video de la placa solo funcionan con procesadores que incluyen gráficos integrados; los modelos de Intel con sufijo F no los traen.",
-      [AMD_RYZEN_7700X, INTEL_ARK_12700],
-      "Parcial: las fichas de AMD (7700X, 'AMD Radeon Graphics') y de Intel (i7-12700, 'Intel UHD Graphics 770') consultadas muestran procesadores con gráficos integrados. NO confirmado: el comportamiento de los modelos F de Intel y de los Ryzen sin gráficos (ficha del 5600X dice 'Discrete Graphics Card Required').",
-    ),
-    hecho(
+    videoRequiereGraficosIntegrados,
+    hechoVerificadoB(
       "escudo-es-integrado-o-suelto",
       "Algunas placas traen el escudo de E/S ya integrado y otras lo entregan suelto para instalarlo en el chasis.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `Dato blando, depende del modelo. ${NOTA_MANUAL}`,
+      [V_MANUAL_ASUS_B850_PLUS, V_MANUAL_MSI_B760, V_MANUAL_ASROCK_B760M],
+      "La ASUS B850-PLUS declara escudo premontado; la MSI B760 y la ASRock B760M-H/M.2 lo incluyen suelto en la caja.",
     ),
-    hecho(
+    hechoVerificadoB(
       "botones-bios-flashback-clear-cmos",
       "Algunas placas tienen botones de actualización de BIOS sin procesador (llamados Flashback o equivalentes) y de restablecimiento de la configuración (Clear CMOS); el nombre cambia por fabricante.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `NO confirmado con manuales concretos. ${NOTA_MANUAL}`,
+      [V_ASUS_FAQ_BIOS_FLASHBACK, V_ASROCK_FLASHBACK, V_ASUS_FAQ_CLEAR_CMOS, V_MANUAL_ASUS_Z890M],
+      "ASUS (USB BIOS FlashBack; Clear CMOS por botón o puente) y ASRock (BIOS Flashback) confirmados. MSI (Flash BIOS Button) y Gigabyte (Q-Flash Plus) no se pudieron abrir (403): no se citan como confirmados.",
     ),
   ],
   relacionadas: ["pcie-principal", "bateria-cmos"],
+  enlaces: [{ etiqueta: "Las salidas de video en el bracket de la tarjeta gráfica", pieza: "tarjeta-grafica", parte: "bracket" }],
 };
 
 const ventiladores: ParteContenido = {
@@ -816,14 +482,10 @@ const ventiladores: ParteContenido = {
       [PWM_FAN_SPEC],
       "NO se encontró la especificación primaria de Intel (4-Wire PWM Controlled Fans, revisión 1.3) en una URL pública estable; el white paper de Noctua la cita. Buscar copia oficial.",
     ),
-    hecho(
-      "ventilador-nombres-cabezales",
-      "Los cabezales suelen llamarse CPU_FAN, CPU_OPT, SYS_FAN o CHA_FAN y AIO_PUMP, según el fabricante. Muchas placas avisan al arrancar si no detectan un ventilador en CPU_FAN.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `NO confirmado con manuales concretos. ${NOTA_MANUAL}`,
-    ),
+    ventiladorNombresCabezales,
   ],
   relacionadas: ["vrm", "conector-cpu"],
+  enlaces: [{ etiqueta: "El ventilador del disipador a fondo", pieza: "refrigeracion", parte: "ventilador" }, { etiqueta: "La bomba de la refrigeración líquida", pieza: "refrigeracion", parte: "bloque-bomba" }],
 };
 
 const conectoresFrontales: ParteContenido = {
@@ -841,11 +503,11 @@ const conectoresFrontales: ParteContenido = {
     "Planifica el recorrido de los cables antes de cerrar el chasis.",
   ],
   hechos: [
-    hecho(
+    hechoVerificadoB(
       "panel-frontal-conexiones",
       "El panel frontal reúne cuatro conexiones: encendido, reinicio, luz de encendido y luz de actividad del disco.",
-      [INTEL_FRONT_PANEL],
-      "NO confirmado: la Intel Front Panel I/O Connectivity Design Guide no se pudo abrir (la copia pública hallada es antigua). Verificar con el manual de un modelo.",
+      [V_INTEL_FRONT_PANEL_GUIA, V_MANUAL_MSI_B760, V_MANUAL_ASUS_B850_PLUS],
+      "La guía de Intel es copia de terceros (hackaday.io) del documento de Intel. Los manuales de ASUS y MSI listan las mismas cuatro conexiones.",
     ),
     hecho(
       "usb-frontal-tipos",
@@ -878,17 +540,17 @@ const bateria: ParteContenido = {
     "Apaga y desconecta el equipo antes de tocar la placa.",
   ],
   hechos: [
-    hecho(
+    hechoVerificadoB(
       "bateria-cr2032",
       "La batería de la placa es una pila de botón CR2032.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `NO confirmado con un manual concreto. ${NOTA_MANUAL}`,
+      [V_ASUS_FAQ_BATERIA, V_MANUAL_ASUS_B850_PLUS, V_MANUAL_MSI_B760],
+      "Manuales de ASUS y MSI y FAQ de ASUS indican CR2032 de 3 V. Propuesta opcional pendiente del dueño: «La batería de la placa suele ser una pila de botón CR2032.»",
     ),
-    hecho(
+    hechoVerificadoB(
       "bateria-que-conserva",
       "La batería conserva el reloj y la configuración de la BIOS mientras la placa está sin energía; lo que se guarda depende de la plataforma.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `NO confirmado con un manual concreto. ${NOTA_MANUAL}`,
+      [V_ASUS_FAQ_CLEAR_CMOS, V_MANUAL_ASUS_B850_PLUS],
+      "Borrar el CMOS reinicia la memoria del reloj de tiempo real (fecha, hora, contraseña de la BIOS y parámetros).",
     ),
   ],
   relacionadas: ["puertos-traseros", "conectores-frontales"],
@@ -940,18 +602,6 @@ const seccionErrores: SeccionTexto = {
     "Estos son los tropiezos más frecuentes al combinar piezas. Casi todos se evitan revisando el manual y la lista de compatibilidad del fabricante antes de comprar.",
     "Los que empiezan con «Nos ha pasado» los hemos visto en el taller; los que empiezan con «Puede pasar» son riesgos conocidos que prevenimos al armar.",
   ],
-  vinetas: [
-    "Nos ha pasado: armar el equipo con un procesador compatible con la placa, pero con una BIOS que aún no lo reconocía. Al encender, los ventiladores giraban y el equipo se apagaba. Se resolvió actualizando la BIOS por USB con la función que traen algunas placas (según el fabricante se llama Flashback, Q-Flash u otro nombre). Antes de comprar, confirma en la lista de compatibilidad qué versión de BIOS necesita tu procesador.",
-    "Nos ha pasado: un cliente que trajo sus componentes con memoria DDR5 y la placa era DDR4. Los módulos tienen la muesca en otro lugar y una generación no entra en la otra.",
-    "Nos ha pasado: ventiladores o luces RGB que no eran compatibles con la placa. Hay conectores de cuatro pines (RGB) y de tres pines (ARGB direccionable) que se ven parecidos, pero no son intercambiables. Revisa en el manual cuáles trae tu placa antes de comprar las luces.",
-    "Nos ha pasado: clientes que conectan el cable del monitor a la salida de video de la placa teniendo gráfica dedicada, y entonces no ven el rendimiento que esperan porque la gráfica no se está usando. Y al revés, si el procesador no tiene gráficos integrados, la salida de la placa no da imagen. Conecta el monitor a la gráfica.",
-    "Puede pasar: instalar el procesador mal y doblar los pines del socket, una reparación difícil. Alinea el procesador con la marca del pin uno y nunca lo fuerces.",
-    "Puede pasar: conectar el cable de un ventilador o de una luz en un cabezal que no corresponde, con riesgo de dañar la pieza o la placa. Cada cabezal tiene un uso y una forma: confirma en el manual cuál es cuál.",
-    "Puede pasar: instalar una unidad M.2 en una ranura que no admite ese tipo (algunas son solo NVMe, otras aceptan SATA), o llenar todas las ranuras M.2 y quedarte sin puertos SATA porque el manual indica que se comparten.",
-    "Puede pasar: elegir un formato de placa que no cabe en el chasis, o un chasis que no admite ese tamaño.",
-    "Puede pasar: que un módulo de memoria quede a medio insertar. Debe asentar por completo hasta que las trabas laterales cierren.",
-    "Puede pasar: olvidar el cable EPS del procesador. El equipo no enciende o se apaga al poco tiempo.",
-  ],
   hechos: [
     hecho(
       "errores-rgb-vs-argb",
@@ -959,11 +609,11 @@ const seccionErrores: SeccionTexto = {
       [MANUAL_ASUS],
       `PENDIENTE de verificar con un manual concreto de placa. Dato dado de memoria por el dueño (no estaba seguro de cuál voltaje era cada uno); coincide con lo habitual, pero NO afirmar sin fuente. ${NOTA_MANUAL}`,
     ),
-    hecho(
+    hechoVerificadoB(
       "errores-bios-flash-usb",
       "Algunas placas permiten actualizar la BIOS desde una memoria USB con un botón o una función dedicada, incluso sin procesador instalado o compatible; el nombre cambia según el fabricante.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `Caso real del taller (Gigabyte, función Q-Flash). PENDIENTE: confirmar con un manual concreto qué modelos la traen y si funciona sin procesador. ${NOTA_MANUAL}`,
+      [V_ASUS_FAQ_BIOS_FLASHBACK, V_ASROCK_FLASHBACK, V_MANUAL_ASUS_B850_PLUS],
+      "ASUS y ASRock confirman la actualización sin procesador y con el sistema apagado (solo en modelos que la traen). La viñeta «Nos ha pasado» de la BIOS por USB nombra Q-Flash; en Gigabyte la función que actualiza sin procesador se llama Q-Flash Plus: el dueño debe confirmar cuál usó.",
     ),
   ],
 };
@@ -1029,6 +679,86 @@ const seccionTamanos: SeccionTexto = {
   ],
 };
 
+/* ---------- Casos del taller (antes eran las viñetas de la sección de errores; el texto es el mismo) ----------
+ * `texto` continúa el rótulo que pone la interfaz («Nos ha pasado: armar el equipo…»), por eso empieza en minúscula.
+ * Los cuatro vividos los contó el dueño (docs/piezas-errores-taller.md); aprobadoEn/aprobadoPor quedan en null hasta que apruebe su redacción. */
+const casos: readonly Caso[] = [
+  {
+    id: "bios-sin-reconocer-procesador",
+    tipo: "vivido",
+    texto: "armar el equipo con un procesador compatible con la placa, pero con una BIOS que aún no lo reconocía. Al encender, los ventiladores giraban y el equipo se apagaba. Se resolvió actualizando la BIOS por USB con la función que traen algunas placas (según el fabricante se llama Flashback, Q-Flash u otro nombre). Antes de comprar, confirma en la lista de compatibilidad qué versión de BIOS necesita tu procesador.",
+    confirmadoPorDueno: true,
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "ddr5-en-placa-ddr4",
+    tipo: "vivido",
+    texto: "un cliente que trajo sus componentes con memoria DDR5 y la placa era DDR4. Los módulos tienen la muesca en otro lugar y una generación no entra en la otra.",
+    confirmadoPorDueno: true,
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "rgb-argb-no-compatibles",
+    tipo: "vivido",
+    texto: "ventiladores o luces RGB que no eran compatibles con la placa. Hay conectores de cuatro pines (RGB) y de tres pines (ARGB direccionable) que se ven parecidos, pero no son intercambiables. Revisa en el manual cuáles trae tu placa antes de comprar las luces.",
+    confirmadoPorDueno: true,
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "monitor-en-la-placa",
+    tipo: "vivido",
+    texto: "clientes que conectan el cable del monitor a la salida de video de la placa teniendo gráfica dedicada, y entonces no ven el rendimiento que esperan porque la gráfica no se está usando. Y al revés, si el procesador no tiene gráficos integrados, la salida de la placa no da imagen. Conecta el monitor a la gráfica.",
+    confirmadoPorDueno: true,
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "pines-del-socket-doblados",
+    tipo: "puede-pasar",
+    texto: "instalar el procesador mal y doblar los pines del socket, una reparación difícil. Alinea el procesador con la marca del pin uno y nunca lo fuerces.",
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "cabezal-equivocado",
+    tipo: "puede-pasar",
+    texto: "conectar el cable de un ventilador o de una luz en un cabezal que no corresponde, con riesgo de dañar la pieza o la placa. Cada cabezal tiene un uso y una forma: confirma en el manual cuál es cuál.",
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "m2-ranura-incompatible",
+    tipo: "puede-pasar",
+    texto: "instalar una unidad M.2 en una ranura que no admite ese tipo (algunas son solo NVMe, otras aceptan SATA), o llenar todas las ranuras M.2 y quedarte sin puertos SATA porque el manual indica que se comparten.",
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "placa-no-cabe-en-el-chasis",
+    tipo: "puede-pasar",
+    texto: "elegir un formato de placa que no cabe en el chasis, o un chasis que no admite ese tamaño.",
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "ram-a-medio-insertar",
+    tipo: "puede-pasar",
+    texto: "que un módulo de memoria quede a medio insertar. Debe asentar por completo hasta que las trabas laterales cierren.",
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+  {
+    id: "olvido-del-cable-eps",
+    tipo: "puede-pasar",
+    texto: "olvidar el cable EPS del procesador. El equipo no enciende o se apaga al poco tiempo.",
+    aprobadoEn: null,
+    aprobadoPor: null,
+  },
+];
+
 /* ---------- Tamaños a escala (medidas provisionales: hechos por verificar) ---------- */
 const factoresForma: readonly FactorForma[] = [
   {
@@ -1038,11 +768,11 @@ const factoresForma: readonly FactorForma[] = [
     altoMm: 244,
     resumen: "El formato más habitual en torres de tamaño medio y grande. Deja espacio para más ranuras, puertos y conectores.",
     paraQuien: "A quien quiere margen para ampliar el equipo con el tiempo y tiene un chasis que admite este formato.",
-    hecho: hecho(
+    hecho: hechoVerificadoB(
       "forma-atx-medidas",
       "Una placa ATX completa mide 305 mm de ancho por 244 mm de alto (12 por 9,6 pulgadas).",
-      [ATX_22],
-      "Confirmado en la copia de la especificación ATX 2.2 consultada: 'A full size ATX board is 12\" wide by 9.6\" deep (305mm x 244mm)'. El sitio formfactors.org (fuente original) ya no responde; ubicar una copia oficial de Intel.",
+      [V_ATX_22, V_MANUAL_ASUS_B850_PLUS],
+      "La ATX 2.2 es copia de terceros (xDevs.com) del documento de Intel: 12\" por 9,6\" (305 mm por 244 mm). La especificación dice «profundidad»; el texto, «alto»: misma dimensión vista en planta.",
     ),
   },
   {
@@ -1052,11 +782,11 @@ const factoresForma: readonly FactorForma[] = [
     altoMm: 244,
     resumen: "Una placa cuadrada, más corta que la ATX y con menos ranuras de expansión. Entra en muchos chasis ATX y en chasis compactos pensados para ella.",
     paraQuien: "A quien arma un equipo de tamaño contenido y no necesita muchas tarjetas de expansión.",
-    hecho: hecho(
+    hecho: hechoVerificadoB(
       "forma-micro-atx-medidas",
       "Una placa Micro-ATX mide hasta 244 mm por 244 mm (9,6 por 9,6 pulgadas).",
-      [ATX_22],
-      "Parcial: el esquema de la especificación ATX 2.2 consultada muestra el contorno microATX con 9.6\" en ambos lados. Verificar con la especificación microATX propia.",
+      [V_VIA_MINI_ITX_WHITE_PAPER, V_ATX_22, V_MANUAL_ASUS_Z890M, V_ASUS_B650M_A],
+      "Copias de terceros de los documentos de VIA e Intel. La especificación microATX propia no se pudo abrir, pero cuatro documentos primarios dan 244 mm; «hasta» es correcto porque es un máximo.",
     ),
   },
   {
@@ -1066,20 +796,21 @@ const factoresForma: readonly FactorForma[] = [
     altoMm: 170,
     resumen: "La placa más pequeña de las tres, pensada para chasis compactos. Reúne lo esencial en poco espacio.",
     paraQuien: "A quien busca un equipo pequeño y acepta menos ranuras de expansión. Pide más cuidado con el espacio y con la ventilación.",
-    hecho: hecho(
+    hecho: hechoVerificadoB(
       "forma-mini-itx-medidas",
       "Una placa Mini-ITX mide 170 mm por 170 mm (6,7 por 6,7 pulgadas).",
-      [VIA_MINI_ITX],
-      "Cifra ampliamente citada (Wikipedia y reseñas), pero no se encontró la especificación primaria de VIA; ubicar el documento original antes de publicar.",
+      [V_VIA_MINI_ITX_WHITE_PAPER, V_MANUAL_ASUS_B850I],
+      "El white paper de VIA (copia de terceros) da 170 mm por 170 mm como máximo; el manual de la ASUS B850-I dice 6,7 x 6,7 pulgadas. Propuesta opcional pendiente del dueño: «mide hasta 170 mm por 170 mm» por simetría con Micro-ATX.",
     ),
   },
 ];
 
 /* ---------- Contenido ---------- */
-export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId> = {
+export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId, TarjetaMadreVistaId> = {
   slug: "tarjeta-madre",
   estado: "borrador",
   piezaServicios: "boards",
+  nombreCorto: "Tarjeta madre",
   titulo: "Partes de la tarjeta madre (board) y para qué sirven",
   descripcion: "Toca cada parte de una tarjeta madre y mira qué hace: socket, chipset, RAM, PCIe, M.2, SATA, VRM y conectores. Qué revisar antes de elegir la tuya.",
   h1: "Las partes de la tarjeta madre",
@@ -1121,8 +852,18 @@ export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId> = {
     "CMOS",
     "24 pines",
   ],
+  sinonimos: ["placa base", "motherboard", "board"],
   publicadoEn: null,
   actualizadoEn: "2026-10-11",
+  bloques: ["partes", "lista", "tamanos", "elegir", "errores", "preguntas"],
+  vistas: [
+    {
+      id: "unica",
+      etiqueta: "ATX",
+      resumen: "Una tarjeta madre ATX típica vista en perspectiva, con sus partes numeradas.",
+      etiquetaFigura: "Dibujo de una tarjeta madre ATX típica. La ubicación de cada parte cambia según el modelo.",
+    },
+  ],
   partes: {
     socket,
     chipset,
@@ -1140,6 +881,7 @@ export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId> = {
     "bateria-cmos": bateria,
   },
   secciones: [seccionElegir, seccionErrores, seccionTamanos],
+  casos,
   factoresForma,
   faq: [
     {

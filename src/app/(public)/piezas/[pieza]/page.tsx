@@ -5,35 +5,44 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-// Página de una pieza a fondo (docs/piezas-plan.md §5.1). 100 % estática: contenido y geometría viven en git (`lib/piezas`).
-// El orden del DOM es el orden de lectura. Sin BD, sin sharp, sin sesión.
+// Página de una pieza a fondo (docs/piezas-plan.md §5.1 y docs/piezas-plan-2.md §2.3). Sirve a las 7 piezas: recorre `contenido.bloques` en el
+// orden declarado. 100 % estática: contenido y geometría viven en git (`lib/piezas`). Sin BD, sin sharp, sin sesión.
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { FaqSection } from "@/components/faq-section";
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
-import { SectionNav, type SectionNavItem } from "@/components/section-nav";
+import { SectionNav } from "@/components/section-nav";
 import { FactoresForma } from "@/components/piezas/factores-forma";
+import { PiezaCasos } from "@/components/piezas/pieza-casos";
+import { PiezaComparacion } from "@/components/piezas/pieza-comparacion";
+import { PiezaCriterios } from "@/components/piezas/pieza-criterios";
 import { PiezaExplorador } from "@/components/piezas/pieza-explorador";
+import { PiezaNombres } from "@/components/piezas/pieza-nombres";
 import { PiezaPartes } from "@/components/piezas/pieza-partes";
+import { PiezaVistas } from "@/components/piezas/pieza-vistas";
 import { TowerBackdrop } from "@/components/tower-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { entornoActual } from "@/lib/piezas/entorno";
-import { piezaPorSlug, piezasVisibles } from "@/lib/piezas/registro";
-import type { Fuente, Hecho, ParteResumen, PiezaContenido, SeccionTexto } from "@/lib/piezas/types";
+import { bloquesVisibles, fechaRevision, fuentesGenerales, navDePieza } from "@/lib/piezas/pagina";
+import { hayIndice, piezaPorSlug, piezasVisibles } from "@/lib/piezas/registro";
+import type { BloqueId, Fuente, Hecho, ParteResumen, PiezaContenido, PiezaGeo, SeccionTexto, VistaExplorador } from "@/lib/piezas/types";
 import { SITE_URL } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 
 export const dynamicParams = false;
 
-const ETIQUETA_FIGURA = "Dibujo de una tarjeta madre ATX típica. La ubicación de cada parte cambia según el modelo.";
 const SCROLL_BAJO_ENCABEZADO = { scrollMarginTop: "5rem" } as const; // el encabezado fijo mide 64 px
 const FOCO = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panda";
 const ENLACE = `${FOCO} font-medium text-panda underline underline-offset-4`;
 const CONTENEDOR = "mx-auto max-w-6xl px-4 py-16 sm:px-6";
 const TITULO_SECCION = "text-balance text-[clamp(1.5rem,3.5vw,2.25rem)] font-bold tracking-[-0.02em]";
+
+type Contenido = PiezaContenido<string, string>;
+type Geo = PiezaGeo<string, string>;
 
 interface PiezaPageProps {
   params: Promise<{ pieza: string }>;
@@ -47,8 +56,7 @@ export async function generateMetadata({ params }: PiezaPageProps): Promise<Meta
   const { pieza: slug } = await params;
   const pieza = piezaPorSlug(slug, entornoActual());
   if (!pieza) return {};
-  const { contenido } = pieza;
-  const imagen = `${SITE_URL}/piezas/${contenido.slug}-og.jpg`;
+  const { contenido, geo } = pieza;
 
   return {
     title: contenido.titulo,
@@ -60,7 +68,8 @@ export async function generateMetadata({ params }: PiezaPageProps): Promise<Meta
       description: contenido.descripcion,
       url: `${SITE_URL}/piezas/${contenido.slug}`,
       type: "article",
-      images: [{ url: imagen, width: 1200, height: 630 }],
+      // La imagen OG sale de BWReel junto con el dibujo: sin geometría todavía no existe y se usa la del sitio.
+      ...(geo ? { images: [{ url: imagenOg(contenido), width: 1200, height: 630 }] } : {}),
     },
     ...(contenido.estado !== "publicado" ? { robots: { index: false, follow: false } } : {}),
   };
@@ -68,23 +77,9 @@ export async function generateMetadata({ params }: PiezaPageProps): Promise<Meta
 
 /* ---------- Datos derivados del contenido ---------- */
 
-/** Todos los hechos de la pieza: partes, opciones, secciones y tamaños. */
-function todosLosHechos(contenido: PiezaContenido<string>): readonly Hecho[] {
-  const deLasPartes = Object.values(contenido.partes).flatMap((p) => [...p.hechos, ...(p.opciones?.items.flatMap((o) => o.hechos) ?? [])]);
-  const deLasSecciones = contenido.secciones.flatMap((s) => s.hechos ?? []);
-  const deLosTamanos = (contenido.factoresForma ?? []).map((f) => f.hecho);
-  return [...deLasPartes, ...deLasSecciones, ...deLosTamanos];
-}
+const imagenOg = (contenido: Contenido): string => `${SITE_URL}/piezas/${contenido.slug}-og.jpg`;
 
-/** Fecha (AAAA-MM-DD) de la verificación más reciente; si ningún hecho está verificado, la de la última actualización. */
-function fechaRevision(contenido: PiezaContenido<string>): string {
-  const fechas = todosLosHechos(contenido)
-    .map((h) => h.verificadoEn)
-    .filter((f): f is string => f !== null);
-  return fechas.length > 0 ? fechas.reduce((a, b) => (a > b ? a : b)) : contenido.actualizadoEn;
-}
-
-function aResumenes(contenido: PiezaContenido<string>): readonly ParteResumen[] {
+function aResumenes(contenido: Contenido): readonly ParteResumen[] {
   return Object.entries(contenido.partes)
     .sort(([, a], [, b]) => a.orden - b.orden)
     .map(([id, p]) => ({
@@ -93,26 +88,12 @@ function aResumenes(contenido: PiezaContenido<string>): readonly ParteResumen[] 
       nombre: p.nombre,
       nombreCorto: p.nombreCorto,
       resumen: p.resumen,
+      ...(p.vistas ? { vistas: p.vistas } : {}),
       ...(p.opciones && p.opciones.items.length > 0 ? { chips: p.opciones.items.map((o) => o.etiqueta) } : {}),
     }));
 }
 
-/** Fuentes únicas (por URL) de los hechos de las secciones generales y de los tamaños; las de cada parte ya van en su sección. */
-function fuentesGenerales(contenido: PiezaContenido<string>): readonly Fuente[] {
-  const hechos = [...contenido.secciones.flatMap((s) => s.hechos ?? []), ...(contenido.factoresForma ?? []).map((f) => f.hecho)];
-  const vistas = new Set<string>();
-  const unicas: Fuente[] = [];
-  for (const hecho of hechos) {
-    for (const f of hecho.fuentes) {
-      if (vistas.has(f.url)) continue;
-      vistas.add(f.url);
-      unicas.push(f);
-    }
-  }
-  return unicas;
-}
-
-function articleSchema(contenido: PiezaContenido<string>) {
+function articleSchema(contenido: Contenido, conDibujo: boolean) {
   const url = `${SITE_URL}/piezas/${contenido.slug}`;
   return {
     "@context": "https://schema.org",
@@ -123,7 +104,7 @@ function articleSchema(contenido: PiezaContenido<string>) {
     keywords: contenido.palabrasClave.join(", "),
     datePublished: contenido.publicadoEn ?? contenido.actualizadoEn,
     dateModified: fechaRevision(contenido),
-    image: `${SITE_URL}/piezas/${contenido.slug}-og.jpg`,
+    ...(conDibujo ? { image: imagenOg(contenido) } : {}),
     author: { "@type": "Organization", name: siteConfig.name, url: SITE_URL },
     publisher: {
       "@type": "Organization",
@@ -172,7 +153,8 @@ function CuerpoSeccion({ parrafos, vinetas, hechos }: Pick<SeccionTexto, "parraf
   );
 }
 
-function SeccionTextual({ seccion }: { seccion: SeccionTexto }) {
+/** Sección de texto (elegir, errores…). `extra` va después del cuerpo: los casos del taller o los criterios de B & W. */
+function SeccionTextual({ seccion, extra }: { seccion: SeccionTexto; extra?: ReactNode }) {
   const tituloId = `${seccion.id}-titulo`;
   return (
     <section id={seccion.id} aria-labelledby={tituloId} className="border-b border-hairline/50" style={SCROLL_BAJO_ENCABEZADO}>
@@ -181,13 +163,14 @@ function SeccionTextual({ seccion }: { seccion: SeccionTexto }) {
           {seccion.titulo}
         </h2>
         <CuerpoSeccion parrafos={seccion.parrafos} vinetas={seccion.vinetas} hechos={seccion.hechos} />
+        {extra}
       </div>
     </section>
   );
 }
 
 /** Tamaños: el primer párrafo es el aviso destacado (el tamaño no define la calidad) y va junto al dibujo a escala. */
-function SeccionTamanos({ seccion, contenido }: { seccion: SeccionTexto; contenido: PiezaContenido<string> }) {
+function SeccionTamanos({ seccion, contenido }: { seccion: SeccionTexto; contenido: Contenido }) {
   const factores = contenido.factoresForma ?? [];
   const [mensaje, ...resto] = seccion.parrafos;
   return (
@@ -207,13 +190,75 @@ function SeccionTamanos({ seccion, contenido }: { seccion: SeccionTexto; conteni
   );
 }
 
+/** Vistas del contenido que tienen dibujo, listas para el explorador (las que BWReel aún no generó se omiten). */
+function aVistasExplorador(contenido: Contenido, geo: Geo): readonly VistaExplorador[] {
+  return contenido.vistas.flatMap((v) =>
+    Object.prototype.hasOwnProperty.call(geo.vistas, v.id)
+      ? [{ id: v.id, etiqueta: v.etiqueta, geo: geo.vistas[v.id], etiquetaFigura: v.etiquetaFigura, notas: Object.fromEntries(Object.entries(v.notasPorParte ?? {}).filter((par): par is [string, string] => typeof par[1] === "string")) }]
+      : [],
+  );
+}
+
+/** Explorador de partes. Solo se monta con dibujo (`geo`); sin él, `bloquesVisibles` no incluye este bloque y queda la lista de partes. */
+function SeccionExplorador({ contenido, geo }: { contenido: Contenido; geo: Geo }) {
+  const vistas = aVistasExplorador(contenido, geo);
+  return (
+    <section id="partes" aria-labelledby="partes-titulo" className="border-b border-hairline/50" style={SCROLL_BAJO_ENCABEZADO}>
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
+        <h2 id="partes-titulo" className="sr-only">
+          Explora las partes
+        </h2>
+        <div className="border border-hairline bg-vanilla p-3 sm:p-6">
+          {vistas.length > 0 ? (
+            <PiezaExplorador slug={contenido.slug} vistas={vistas} partes={aResumenes(contenido)} selectorTitulo={contenido.selectorVistas} />
+          ) : (
+            <p className="font-mono text-sm text-component">El dibujo de esta pieza está en preparación.</p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Vistas: cada una con su figura, su resumen y sus criterios. Es el respaldo sin JS del selector del explorador. */
+function SeccionVistas({ contenido, geo }: { contenido: Contenido; geo: Geo | null }) {
+  return (
+    <section id="vistas" aria-labelledby="vistas-titulo" className="border-b border-hairline/50" style={SCROLL_BAJO_ENCABEZADO}>
+      <div className={CONTENEDOR}>
+        <h2 id="vistas-titulo" className={TITULO_SECCION}>
+          Las vistas, una por una
+        </h2>
+        <PiezaVistas contenido={contenido} geo={geo} />
+      </div>
+    </section>
+  );
+}
+
+function SeccionComparar({ contenido }: { contenido: Contenido }) {
+  const etiquetas = Object.fromEntries(contenido.vistas.map((v) => [v.id, v.etiqueta]));
+  return (
+    <section id="comparar" aria-labelledby="comparar-titulo" className="border-b border-hairline/50" style={SCROLL_BAJO_ENCABEZADO}>
+      <div className={CONTENEDOR}>
+        <h2 id="comparar-titulo" className={TITULO_SECCION}>
+          Compara lado a lado
+        </h2>
+        <div className="mt-6 space-y-8">
+          {(contenido.comparaciones ?? []).map((comparacion) => (
+            <PiezaComparacion key={comparacion.id} comparacion={comparacion} etiquetas={etiquetas} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FuentesGenerales({ fuentes }: { fuentes: readonly Fuente[] }) {
   if (fuentes.length === 0) return null;
   return (
     <section id="fuentes" className="border-b border-hairline/50" style={SCROLL_BAJO_ENCABEZADO}>
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <details className="border border-hairline px-3 py-2">
-          <summary className={`${FOCO} cursor-pointer text-sm font-medium text-panda`}>Fuentes de los tamaños y de los criterios para elegir</summary>
+          <summary className={`${FOCO} cursor-pointer text-sm font-medium text-panda`}>Fuentes de esta página</summary>
           <ul className="mt-2 space-y-2 text-sm text-component">
             {fuentes.map((f) => (
               <li key={f.url}>
@@ -237,41 +282,71 @@ function FuentesGenerales({ fuentes }: { fuentes: readonly Fuente[] }) {
   );
 }
 
+/** Pinta un bloque de la pieza. Los ids de sección salen de `NAV_POR_BLOQUE` (lib/piezas/pagina.ts): cámbialos en los dos lados. */
+function Bloque({ bloque, contenido, geo }: { bloque: BloqueId; contenido: Contenido; geo: Geo | null }) {
+  const seccion = (id: string): SeccionTexto | undefined => contenido.secciones.find((s) => s.id === id);
+  switch (bloque) {
+    case "nombres":
+      return contenido.decodificador ? <PiezaNombres datos={contenido.decodificador} seccion={seccion("nombres")} /> : null;
+    case "partes":
+      return geo ? <SeccionExplorador contenido={contenido} geo={geo} /> : null;
+    case "lista":
+      return (
+        <div className="border-b border-hairline/50">
+          <div className={CONTENEDOR}>
+            <PiezaPartes contenido={contenido} />
+          </div>
+        </div>
+      );
+    case "vistas":
+      return <SeccionVistas contenido={contenido} geo={geo} />;
+    case "comparar":
+      return <SeccionComparar contenido={contenido} />;
+    case "tamanos": {
+      const tamanos = seccion("tamanos");
+      return tamanos ? <SeccionTamanos seccion={tamanos} contenido={contenido} /> : null;
+    }
+    case "elegir": {
+      const elegir = seccion("elegir");
+      return elegir ? <SeccionTextual seccion={elegir} extra={<PiezaCriterios sueltos={contenido.criterios} nivel={3} />} /> : null;
+    }
+    case "errores": {
+      const errores = seccion("errores");
+      return errores ? <SeccionTextual seccion={errores} extra={<PiezaCasos casos={contenido.casos ?? []} />} /> : null;
+    }
+    case "preguntas":
+      return contenido.faq && contenido.faq.length > 0 ? (
+        <div id="preguntas" style={SCROLL_BAJO_ENCABEZADO}>
+          <FaqSection items={[...contenido.faq]} />
+        </div>
+      ) : null;
+  }
+}
+
 export default async function PiezaPage({ params }: PiezaPageProps) {
   const { pieza: slug } = await params;
-  const pieza = piezaPorSlug(slug, entornoActual());
+  const entorno = entornoActual();
+  const pieza = piezaPorSlug(slug, entorno);
   if (!pieza) notFound();
 
   const { contenido, geo } = pieza;
   const publicado = contenido.estado === "publicado";
-  const seccion = (id: string): SeccionTexto | undefined => contenido.secciones.find((s) => s.id === id);
-  const tamanos = seccion("tamanos");
-  const elegir = seccion("elegir");
-  const errores = seccion("errores");
+  const conDibujo = geo !== null;
+  const bloques = bloquesVisibles(contenido, conDibujo);
+  const navItems = [...navDePieza(contenido, conDibujo)];
   const fuentes = fuentesGenerales(contenido);
-  const hayPreguntas = (contenido.faq?.length ?? 0) > 0;
-
-  // Indicador lateral: solo las secciones que esta pieza realmente tiene, en el orden de la página.
-  const navItems: SectionNavItem[] = [
-    { id: "inicio", label: "Inicio" },
-    { id: "partes", label: "Explorar" },
-    { id: "lista", label: "Las partes" },
-    ...(tamanos ? [{ id: "tamanos", label: "Tamaños" }] : []),
-    ...(elegir ? [{ id: elegir.id, label: "Al elegir" }] : []),
-    ...(errores ? [{ id: errores.id, label: "Errores" }] : []),
-    ...(hayPreguntas ? [{ id: "preguntas", label: "Preguntas" }] : []),
-    { id: "cotizar", label: "Cotizar" },
-  ];
 
   return (
     <>
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: `${SITE_URL}/` },
-          { name: "Tarjeta madre", url: `${SITE_URL}/piezas/${contenido.slug}` },
+          // El paso intermedio solo existe cuando hay índice /piezas (2 o más piezas visibles).
+          ...(hayIndice(entorno) ? [{ name: "Piezas del PC", url: `${SITE_URL}/piezas` }] : []),
+          { name: contenido.nombreCorto, url: `${SITE_URL}/piezas/${contenido.slug}` },
         ]}
       />
-      <JsonLd data={articleSchema(contenido)} />
+      <JsonLd data={articleSchema(contenido, conDibujo)} />
       <TowerBackdrop />
       <SectionNav items={navItems} />
 
@@ -298,32 +373,9 @@ export default async function PiezaPage({ params }: PiezaPageProps) {
         </div>
       )}
 
-      <section id="partes" aria-labelledby="partes-titulo" className="border-b border-hairline/50" style={SCROLL_BAJO_ENCABEZADO}>
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
-          <h2 id="partes-titulo" className="sr-only">
-            Explora las partes
-          </h2>
-          <div className="border border-hairline bg-vanilla p-3 sm:p-6">
-            <PiezaExplorador slug={contenido.slug} vista={geo.vistas.unica} partes={aResumenes(contenido)} etiquetaFigura={ETIQUETA_FIGURA} />
-          </div>
-        </div>
-      </section>
-
-      <div className="border-b border-hairline/50">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <PiezaPartes contenido={contenido} />
-        </div>
-      </div>
-
-      {tamanos ? <SeccionTamanos seccion={tamanos} contenido={contenido} /> : null}
-      {elegir ? <SeccionTextual seccion={elegir} /> : null}
-      {errores ? <SeccionTextual seccion={errores} /> : null}
-
-      {contenido.faq && contenido.faq.length > 0 ? (
-        <div id="preguntas" style={SCROLL_BAJO_ENCABEZADO}>
-          <FaqSection items={[...contenido.faq]} />
-        </div>
-      ) : null}
+      {bloques.map((bloque) => (
+        <Bloque key={bloque} bloque={bloque} contenido={contenido} geo={geo} />
+      ))}
 
       <FuentesGenerales fuentes={fuentes} />
 

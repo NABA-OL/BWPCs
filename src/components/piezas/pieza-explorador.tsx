@@ -6,57 +6,129 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-// Explorador de una pieza (docs/piezas-plan.md §5.2 a §5.6): dibujo con marcadores numerados + panel. Único estado: la parte elegida.
-// Sin JS todo sigue siendo navegable: los marcadores, anterior/siguiente y los chips son enlaces a las secciones de la lista.
+// Explorador de una pieza (docs/piezas-plan.md §5.2 a §5.6 y docs/piezas-plan-2.md §2.3): dibujo con marcadores numerados + panel, con una o varias vistas.
+// Estado: la selección (vista + parte). La parte elegida se conserva al cambiar de vista; si no existe en la nueva, se anuncia y se limpia.
+// Sin JS todo sigue siendo navegable: marcadores, anterior/siguiente y chips son enlaces (a las secciones de la lista y a las figuras de `#vistas`).
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { MouseEvent } from "react";
-import { anchorPct, nearestPart, partFromHash, stepPart } from "@/lib/piezas/hotspots";
-import type { ParteGeo, ParteResumen, PiezaExploradorProps, Pt } from "@/lib/piezas/types";
+import {
+  anchorPct,
+  cambiarVista,
+  elegirParte,
+  focusTransform,
+  hrefDeVista,
+  indicePartesPorVista,
+  nearestPart,
+  seleccionDesdeHash,
+  seleccionInicial,
+  stepPart,
+} from "@/lib/piezas/hotspots";
+import type { SeleccionExplorador } from "@/lib/piezas/hotspots";
+import type { ParteGeo, ParteResumen, PiezaExploradorProps, Pt, VistaExplorador } from "@/lib/piezas/types";
 
 const MARCADOR_PX = 24;
 const OBJETIVO_BOTON_PX = 44;
 /** Radio de captura del toque sobre el dibujo, en px CSS (se convierte a px del viewBox según el ancho real de la figura). */
 const RADIO_TOQUE_PX = 44;
+/** Espera antes de precargar las demás vistas, para no competir con la primera imagen. */
+const ESPERA_PRECARGA_MS = 1200;
+const ANCHO_MOVIL_PX = 767;
 
 const FOCO = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panda";
 const TRANSICION = "transition-[transform,background-color,color] duration-150 motion-reduce:transition-none";
 
+const SIN_ZOOM = { scale: 1, tx: 0, ty: 0 };
+const TRANSICION_ZOOM = "transition-transform duration-300 ease-out motion-reduce:transition-none";
+
 const dosCifras = (n: number): string => String(n).padStart(2, "0");
 const puntos = (contorno: readonly Pt[]): string => contorno.map(([x, y]) => `${x},${y}`).join(" ");
+const tieneClave = (objeto: object, clave: string): boolean => Object.prototype.hasOwnProperty.call(objeto, clave);
 
 /** Clic normal (sin teclas modificadoras): solo ahí se intercepta el enlace; con Ctrl/Cmd/Mayús se deja al navegador. */
 function esClicSimple(e: MouseEvent<HTMLElement>): boolean {
   return !e.defaultPrevented && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
 }
 
-export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaExploradorProps) {
-  const [elegida, setElegida] = useState<string | null>(null);
+function reemplazarHash(hash: string): void {
+  try {
+    window.history.replaceState(null, "", hash);
+  } catch {
+    // replaceState puede lanzar en contextos restringidos (iframes en sandbox); la selección ya cambió, solo no se actualiza la URL.
+  }
+}
 
-  const ordenadas = useMemo<readonly ParteResumen[]>(() => [...partes].sort((a, b) => a.orden - b.orden), [partes]);
-  const ids = useMemo(() => ordenadas.map((p) => p.id), [ordenadas]);
-  const total = ordenadas.length;
-  const indice = elegida === null ? -1 : ids.indexOf(elegida);
-  const parte = indice >= 0 ? ordenadas[indice] : null;
-
-  const elegir = useCallback((id: string) => {
-    setElegida(id);
-    try {
-      window.history.replaceState(null, "", `#${id}`);
-    } catch {
-      // replaceState puede lanzar en contextos restringidos (iframes en sandbox); la parte ya quedó elegida, solo no se actualiza la URL.
+/** Baja a la caché las imágenes de las otras vistas (la versión que usaría este dispositivo) para que el cambio sea instantáneo. */
+function precargarOtrasVistas(vistas: readonly VistaExplorador[], activa: string): () => void {
+  const esMovil = typeof window.matchMedia === "function" && window.matchMedia(`(max-width: ${ANCHO_MOVIL_PX}px)`).matches;
+  const temporizador = window.setTimeout(() => {
+    for (const v of vistas) {
+      if (v.id === activa) continue;
+      const img = new Image();
+      img.src = esMovil ? v.geo.imagen.hrefSm : v.geo.imagen.href;
     }
-  }, []);
+  }, ESPERA_PRECARGA_MS);
+  return () => window.clearTimeout(temporizador);
+}
 
-  // Enlace profundo: al montar y en hashchange. Un hash que no es una parte (#lista, #fuentes…) no borra la elección.
+export function PiezaExplorador({ slug, vistas, partes, selectorTitulo }: PiezaExploradorProps) {
+  const [sel, setSel] = useState<SeleccionExplorador>(() => seleccionInicial(vistas[0]?.id ?? ""));
+  const [vistaCambiada, setVistaCambiada] = useState(false);
+  // La parte elegida se amplía hacia su `foco`; el botón "Ver todo el dibujo" lo apaga hasta la próxima selección.
+  const [ampliado, setAmpliado] = useState(true);
+
+  const porId = useMemo(() => new Map<string, ParteResumen>(partes.map((p) => [p.id, p])), [partes]);
+  const indice = useMemo(() => indicePartesPorVista(vistas, partes), [vistas, partes]);
+  const todosIds = useMemo(() => [...partes].sort((a, b) => a.orden - b.orden).map((p) => p.id), [partes]);
+
+  const vista: VistaExplorador | undefined = vistas.find((v) => v.id === sel.vista) ?? vistas[0];
+  const ids = useMemo<readonly string[]>(() => (vista ? (indice.get(vista.id) ?? []) : []), [indice, vista]);
+  const ordenadas = useMemo(() => ids.flatMap((id) => porId.get(id) ?? []), [ids, porId]);
+  const total = ordenadas.length;
+  const indiceParte = sel.parte === null ? -1 : ids.indexOf(sel.parte);
+  const parte = indiceParte >= 0 ? ordenadas[indiceParte] : null;
+  const parteAusente = sel.ausente === null ? null : (porId.get(sel.ausente) ?? null);
+
+  const irAVista = useCallback(
+    (id: string) => {
+      setSel((prev) => cambiarVista(prev, id, indice));
+      setVistaCambiada(true);
+      setAmpliado(true);
+      reemplazarHash(hrefDeVista(id));
+    },
+    [indice],
+  );
+
+  const elegir = useCallback(
+    (id: string) => {
+      setSel((prev) => elegirParte(prev, id, indice));
+      setVistaCambiada(false);
+      setAmpliado(true);
+      reemplazarHash(`#${id}`);
+    },
+    [indice],
+  );
+
+  // Enlace profundo (#parte y #vista-<id>): al montar y en hashchange. Un hash que no es ninguno (#lista, #fuentes…) no borra la elección.
   useEffect(() => {
-    const leer = () => {
-      const id = partFromHash(window.location.hash, ids);
-      if (id) setElegida(id);
+    const leer = (anunciar: boolean) => {
+      const hash = window.location.hash;
+      setSel((prev) => seleccionDesdeHash(hash, prev, indice, todosIds) ?? prev);
+      if (anunciar) setVistaCambiada(hash.startsWith(hrefDeVista("")));
     };
-    leer();
-    window.addEventListener("hashchange", leer);
-    return () => window.removeEventListener("hashchange", leer);
-  }, [ids]);
+    leer(false);
+    const alCambiarHash = () => leer(true);
+    window.addEventListener("hashchange", alCambiarHash);
+    return () => window.removeEventListener("hashchange", alCambiarHash);
+  }, [indice, todosIds]);
+
+  const idVistaActiva = vista?.id ?? "";
+  useEffect(() => (vistas.length > 1 ? precargarOtrasVistas(vistas, idVistaActiva) : undefined), [vistas, idVistaActiva]);
+
+  if (!vista) return null;
+
+  const multi = vistas.length > 1;
+  const geo = vista.geo;
+  const imagen = geo.imagen;
 
   const alClicEnlace = (id: string) => (e: MouseEvent<HTMLAnchorElement>) => {
     if (!esClicSimple(e)) return;
@@ -64,21 +136,39 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
     elegir(id);
   };
 
+  const alClicVista = (id: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!esClicSimple(e)) return;
+    e.preventDefault();
+    irAVista(id);
+  };
+
   const alTocarDibujo = (e: MouseEvent<HTMLDivElement>) => {
     const caja = e.currentTarget.getBoundingClientRect();
     if (caja.width <= 0 || caja.height <= 0) return;
-    const x = ((e.clientX - caja.left) / caja.width) * vista.w;
-    const y = ((e.clientY - caja.top) / caja.height) * vista.h;
-    const maxDist = RADIO_TOQUE_PX * (vista.w / caja.width);
-    const id = nearestPart(vista, ids, x, y, maxDist);
+    // Con ampliación, el punto tocado se devuelve a coordenadas del dibujo completo.
+    const x = (((e.clientX - caja.left) / caja.width) * geo.w - zoom.tx) / zoom.scale;
+    const y = (((e.clientY - caja.top) / caja.height) * geo.h - zoom.ty) / zoom.scale;
+    const maxDist = (RADIO_TOQUE_PX * (geo.w / caja.width)) / zoom.scale;
+    const id = nearestPart(geo, ids, x, y, maxDist);
     if (id) elegir(id);
   };
 
-  const anterior = stepPart(ids, elegida, -1);
-  const siguiente = stepPart(ids, elegida, 1);
-  const geoElegida: ParteGeo | null = elegida !== null && Object.prototype.hasOwnProperty.call(vista.partes, elegida) ? (vista.partes[elegida] ?? null) : null;
+  const anterior = stepPart(ids, sel.parte, -1);
+  const siguiente = stepPart(ids, sel.parte, 1);
+  const geoElegida: ParteGeo | null = parte !== null && tieneClave(geo.partes, parte.id) ? (geo.partes[parte.id] ?? null) : null;
+  const zoom = ampliado && geoElegida ? focusTransform(geoElegida.foco, geo.w, geo.h) : SIN_ZOOM;
+  const hayZoom = zoom.scale > 1;
   const etiquetaPanel = `pieza-${slug}-panel`;
-  const imagen = vista.imagen;
+  const nota = (id: string): string | undefined => (tieneClave(vista.notas, id) ? vista.notas[id] : undefined);
+  const notaParte = parte ? nota(parte.id) : undefined;
+
+  const anuncio = parteAusente
+    ? `${vistaCambiada ? `Vista ${vista.etiqueta}. ` : ""}${parteAusente.nombre}: esa parte no existe en esta vista.`
+    : parte
+      ? `${vistaCambiada ? `Vista ${vista.etiqueta}. ` : ""}${parte.nombre}, parte ${indiceParte + 1} de ${total}`
+      : vistaCambiada
+        ? `Vista ${vista.etiqueta}`
+        : "";
 
   return (
     <div>
@@ -89,9 +179,41 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
         Saltar a la lista de partes
       </a>
 
+      {multi ? (
+        <div role="group" aria-label={selectorTitulo ?? "Elige la versión"} className="mb-4 flex flex-wrap gap-2 print:hidden">
+          {vistas.map((v) => {
+            const activa = v.id === vista.id;
+            return (
+              <a
+                key={v.id}
+                href={hrefDeVista(v.id)}
+                onClick={alClicVista(v.id)}
+                aria-current={activa ? "true" : undefined}
+                className={`${TRANSICION} ${FOCO} inline-flex items-center justify-center border px-3 font-mono text-xs no-underline ${
+                  activa ? "border-accent bg-accent text-accent-ink" : "border-panda bg-vanilla text-panda hover:border-accent"
+                }`}
+                style={{ minHeight: OBJETIVO_BOTON_PX, minWidth: OBJETIVO_BOTON_PX }}
+              >
+                {v.etiqueta}
+              </a>
+            );
+          })}
+        </div>
+      ) : null}
+
       <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
-        <figure className="m-0 lg:col-span-7">
-          <div className="relative bg-vanilla" style={{ aspectRatio: `${vista.w} / ${vista.h}` }}>
+        <figure className={`m-0 lg:col-span-7${multi ? " print:hidden" : ""}`}>
+          <div className="relative bg-vanilla" style={{ aspectRatio: `${geo.w} / ${geo.h}` }}>
+            <div className="absolute inset-0 overflow-hidden">
+            <div
+              className={TRANSICION_ZOOM}
+              style={{
+                position: "absolute",
+                inset: 0,
+                transformOrigin: "0 0",
+                transform: hayZoom ? `translate(${(zoom.tx / geo.w) * 100}%, ${(zoom.ty / geo.h) * 100}%) scale(${zoom.scale})` : "none",
+              }}
+            >
             <picture>
               <source media="(max-width: 767px)" srcSet={imagen.hrefSm} width={imagen.anchoSm} height={imagen.altoSm} />
               {/* eslint-disable-next-line @next/next/no-img-element -- WebP ya optimizado por BWReel; <picture> sirve la versión móvil sin JS */}
@@ -99,15 +221,15 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
                 src={imagen.href}
                 width={imagen.ancho}
                 height={imagen.alto}
-                alt={etiquetaFigura}
+                alt={vista.etiquetaFigura}
                 fetchPriority="high"
-                decoding="async"
+                decoding={vistaCambiada ? "sync" : "async"}
                 className="piece-ink block h-auto w-full"
               />
             </picture>
 
             <svg
-              viewBox={`0 0 ${vista.w} ${vista.h}`}
+              viewBox={`0 0 ${geo.w} ${geo.h}`}
               preserveAspectRatio="none"
               aria-hidden="true"
               focusable="false"
@@ -128,19 +250,19 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
                 ) : null,
               )}
             </svg>
+            </div>
+            </div>
 
             {/* Zona táctil: todo el dibujo elige la parte más cercana. Es solo comodidad para puntero/toque (aria-hidden): el teclado usa los marcadores. */}
-            <div
-              aria-hidden="true"
-              onClick={alTocarDibujo}
-              className="cursor-pointer print:hidden"
-              style={{ position: "absolute", inset: 0 }}
-            />
+            <div aria-hidden="true" onClick={alTocarDibujo} className="cursor-pointer print:hidden" style={{ position: "absolute", inset: 0 }} />
 
             {ordenadas.map((p) => {
-              const pos = anchorPct(vista, p.id);
-              if (!pos) return null;
-              const activa = p.id === elegida;
+              const base = anchorPct(geo, p.id);
+              if (!base) return null;
+              // Con ampliación el marcador va por fuera de la capa ampliada (conserva su tamaño) y se oculta si queda fuera del cuadro.
+              const pos = hayZoom ? { left: base.left * zoom.scale + (zoom.tx / geo.w) * 100, top: base.top * zoom.scale + (zoom.ty / geo.h) * 100 } : base;
+              if (pos.left < -2 || pos.left > 102 || pos.top < -2 || pos.top > 102) return null;
+              const activa = p.id === sel.parte;
               return (
                 <a
                   key={p.id}
@@ -175,7 +297,17 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
               );
             })}
           </div>
-          <figcaption className="mt-2 text-xs text-component">{etiquetaFigura}</figcaption>
+          {hayZoom ? (
+            <button
+              type="button"
+              onClick={() => setAmpliado(false)}
+              className={`${FOCO} mt-2 inline-flex items-center border border-panda bg-vanilla px-3 font-mono text-xs text-panda print:hidden`}
+              style={{ minHeight: OBJETIVO_BOTON_PX }}
+            >
+              Ver todo el dibujo
+            </button>
+          ) : null}
+          <figcaption className="mt-2 text-xs text-component">{vista.etiquetaFigura}</figcaption>
         </figure>
 
         <section
@@ -193,7 +325,7 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
               <span aria-hidden="true">←&nbsp;</span>Anterior
             </a>
             <span className="font-mono text-sm text-component" aria-hidden="true">
-              {indice >= 0 ? dosCifras(indice + 1) : "--"} / {dosCifras(total)}
+              {indiceParte >= 0 ? dosCifras(indiceParte + 1) : "--"} / {dosCifras(total)}
             </span>
             <a
               href={`#${siguiente}`}
@@ -211,6 +343,7 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
                 {parte.nombre}
               </p>
               <p className="mt-2 text-base text-panda">{parte.resumen}</p>
+              {notaParte ? <p className="mt-2 text-sm text-component">{notaParte}</p> : null}
               {parte.chips && parte.chips.length > 0 ? (
                 <ul className="mt-3 flex flex-wrap gap-2 font-mono text-xs text-panda">
                   {parte.chips.map((chip) => (
@@ -223,6 +356,18 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
               <p className="mt-4">
                 <a href={`#${parte.id}`} className={`${FOCO} text-sm font-medium text-panda underline underline-offset-4`}>
                   Leer todo sobre {parte.nombreCorto} <span aria-hidden="true">↓</span>
+                </a>
+              </p>
+            </>
+          ) : parteAusente ? (
+            <>
+              <p id={etiquetaPanel} className="mt-3 text-lg font-semibold leading-snug text-panda">
+                {parteAusente.nombre}: no está en esta versión
+              </p>
+              <p className="mt-2 text-base text-panda">{nota(parteAusente.id) ?? `Esta parte no existe en la vista ${vista.etiqueta}.`}</p>
+              <p className="mt-4">
+                <a href={`#${parteAusente.id}`} className={`${FOCO} text-sm font-medium text-panda underline underline-offset-4`}>
+                  Leer todo sobre {parteAusente.nombreCorto} <span aria-hidden="true">↓</span>
                 </a>
               </p>
             </>
@@ -249,7 +394,7 @@ export function PiezaExplorador({ slug, vista, partes, etiquetaFigura }: PiezaEx
           )}
 
           <p className="sr-only" aria-live="polite">
-            {parte ? `${parte.nombre}, parte ${indice + 1} de ${total}` : ""}
+            {anuncio}
           </p>
         </section>
       </div>

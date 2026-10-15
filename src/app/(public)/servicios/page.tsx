@@ -16,7 +16,8 @@ import { FaqSection } from "@/components/faq-section";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { JsonLd } from "@/components/json-ld";
 import { entornoActual } from "@/lib/piezas/entorno";
-import { hrefPiezaServicios } from "@/lib/piezas/registro";
+import { enlacesServicios } from "@/lib/piezas/indice";
+import { hayIndice } from "@/lib/piezas/registro";
 import { assemblyServiceSchema } from "@/lib/schema";
 import { PAYMENT_MEDIA_TEXT } from "@/lib/site-config";
 
@@ -41,14 +42,13 @@ export const metadata: Metadata = {
   },
 };
 
-/** Página "a fondo" del paso Boards; null mientras la pieza no sea visible (producción con borrador): entonces nada cambia en el HTML. */
-const hrefBoards = hrefPiezaServicios("boards", entornoActual());
+const entorno = entornoActual();
 
-const componentes: ShowcaseItem[] = [
+const pasosComponentes: ShowcaseItem[] = [
   { id: "procesador", t: "Procesadores", d: "AMD e Intel, según tu uso y presupuesto." },
   { id: "graficas", t: "Tarjetas gráficas", d: "Desde gama media hasta entusiasta." },
   { id: "ram", t: "Memorias RAM", d: "DDR4 y DDR5, en las frecuencias que rinden." },
-  { id: "boards", t: "Boards", d: "La base correcta para tu procesador.", ...(hrefBoards ? { href: hrefBoards } : {}) },
+  { id: "boards", t: "Boards", d: "La base correcta para tu procesador." },
   { id: "fuentes", t: "Fuentes de poder", d: "80+ certificadas, el vatiaje justo." },
   { id: "chasis", t: "Chasis", d: "Flujo de aire y espacio para crecer." },
   {
@@ -71,6 +71,14 @@ const componentes: ShowcaseItem[] = [
     ],
   },
 ];
+
+/** Páginas "a fondo" por paso; un paso solo lleva `href` si su pieza es visible (producción con borrador: nada cambia en el HTML). */
+const enlacesPiezas = enlacesServicios(pasosComponentes.map((p) => p.id), entorno);
+const hrefPorPaso = new Map(enlacesPiezas.map((e) => [e.paso, e.href]));
+const componentes: ShowcaseItem[] = pasosComponentes.map((c) => {
+  const href = hrefPorPaso.get(c.id);
+  return href ? { ...c, href } : c;
+});
 
 const faqs = [
   {
@@ -279,13 +287,27 @@ export default function ServiciosPage() {
             ¿Solo necesitas una pieza? Compra el componente que te falta, sin
             obligación de ensamble.
           </p>
-          {hrefBoards && (
+          {enlacesPiezas.length > 0 ? (
             <p className="mt-3 max-w-2xl text-sm">
-              <Link href={hrefBoards} className="font-medium underline underline-offset-4">
-                Ver a fondo las partes de la tarjeta madre →
-              </Link>
+              <span className="text-component">Ver a fondo: </span>
+              {enlacesPiezas.map((e, i) => (
+                <span key={e.paso}>
+                  {i > 0 && " · "}
+                  <Link href={e.href} className="font-medium underline underline-offset-4">
+                    {e.etiqueta}
+                  </Link>
+                </span>
+              ))}
+              {hayIndice(entorno) ? (
+                <>
+                  {" · "}
+                  <Link href="/piezas" className="font-medium underline underline-offset-4">
+                    Todas las piezas →
+                  </Link>
+                </>
+              ) : null}
             </p>
-          )}
+          ) : null}
           <dl className="cs-list mt-8 divide-y divide-hairline border-y border-hairline">
             {componentes.map((c) => (
               <div

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { SINONIMOS_SLUG } from "./src/lib/piezas/types";
 
 /**
  * Headers de seguridad aplicados a todas las respuestas.
@@ -34,13 +35,16 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  // Sinónimos de la pieza "tarjeta madre": una sola URL canónica (docs/piezas-plan.md §2.1).
+  // Sinónimos de cada pieza a fondo (`/piezas/cpu` → `/piezas/procesador`): una sola URL canónica por pieza. La lista vive en
+  // `lib/piezas/types.ts` (sin imports, por eso se puede cargar aquí) y `check:logic` vigila que no choque con un slug real.
   async redirects() {
-    return ["placa-base", "board", "motherboard"].map((sinonimo) => ({
-      source: `/piezas/${sinonimo}`,
-      destination: "/piezas/tarjeta-madre",
-      permanent: true,
-    }));
+    return Object.entries(SINONIMOS_SLUG).flatMap(([slug, sinonimos]) =>
+      sinonimos.map((sinonimo) => ({
+        source: `/piezas/${sinonimo}`,
+        destination: `/piezas/${slug}`,
+        permanent: true,
+      })),
+    );
   },
   async headers() {
     const markdownNegotiablePaths = [

@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "slug": "comun",
+  "entradas": [
+    {
+      "id": "pasta-termica-entre-ihs-y-base",
+      "tipo": "hecho",
+      "titulo": "pasta-termica-entre-ihs-y-base",
+      "donde": "comun › sin usar todavía",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "La pasta térmica va entre la tapa metálica del procesador (IHS) y la base del disipador.",
+      "textoRevisado": null,
+      "usadoPor": [],
+      "fuentesCandidatas": [
+        {
+          "titulo": "How to Install or Remove an AMD CPU Cooler",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html",
+          "consultadoEn": "2026-10-11",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "pcie-6-2-graficas",
+      "tipo": "hecho",
+      "titulo": "pcie-6-2-graficas",
+      "donde": "comun › sin usar todavía",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Las tarjetas gráficas que piden conectores de ocho pines usan el cable PCIe 6+2 de la fuente: seis pines más dos que se acoplan.",
+      "textoRevisado": null,
+      "usadoPor": [],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "conector-12v-2x6",
+      "tipo": "hecho",
+      "titulo": "conector-12v-2x6",
+      "donde": "comun › sin usar todavía",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "El conector 12V-2x6 (ATX 3.1 y PCIe CEM 5.1) reemplazó al 12VHPWR en las tarjetas gráficas nuevas y debe quedar insertado por completo.",
+      "textoRevisado": null,
+      "usadoPor": [],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    }
+  ]
+}

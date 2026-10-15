@@ -54,7 +54,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** En la ASRock, la ranura M2_1 admite solo PCIe y la M2_2 admite SATA y PCIe. En la MSI, M2_1 llega a PCIe 4.0 x4 y M2_2 admite PCIe y SATA. En la ASUS, las tres ranuras solo listan modos PCIe. O sea, cambia por placa y por ranura dentro de la misma placa.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### m2-comparte-lineas-sata — M.2
 - **Texto publicado:** En algunas placas, ocupar ciertas ranuras M.2 reduce las líneas de una ranura PCIe o desactiva puertos SATA; el manual de cada modelo indica cuáles.
@@ -64,7 +64,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASRock B650 LiveMixer — https://download.asrock.com/Manual/B650%20LiveMixer_English.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** ASRock B760M-H/M.2: si la ranura M2_2 lleva un SSD M.2 tipo SATA, el puerto SATA3_3 queda deshabilitado. MSI B760 GAMING PLUS: el SATA8 no está disponible con un SSD M.2 SATA en M2_2. ASRock B650 LiveMixer: si la M2_3 está ocupada, la ranura PCIE3 queda deshabilitada. Los manuales hablan de «deshabilitar», no de «reducir líneas»; el caso de reducir líneas (x16 a x8) solo lo vi en foros, que no cuentan.
 - **Propuesta:** mantener (opcional, para ceñirse a lo comprobado: «En algunas placas, ocupar ciertas ranuras M.2 desactiva puertos SATA o una ranura PCIe; el manual de cada modelo indica cuáles.»)
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### nvme-lineas-pcie — M.2 (opción NVMe)
 - **Texto publicado:** Los SSD NVMe usan líneas PCIe, normalmente cuatro (x4).
@@ -74,7 +74,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** NVM Express define NVMe sobre varios transportes, entre ellos PCI Express, y lo presenta como el estándar para SSD en todos los formatos, incluido M.2. Samsung lista su 990 PRO como «PCIe Gen 4.0 x4, NVMe 2.0». El manual de ASUS muestra ranuras M.2 en modo x4 y una en modo x2, así que «normalmente» es correcto.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 
@@ -96,7 +96,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Seagate describe un conector de datos pequeño que va por cable al puerto SATA de la placa y un conector de energía aparte, más grande, que se alimenta de la fuente. El manual de ASUS indica que los puertos SATA conectan discos «mediante un cable SATA».
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 
@@ -122,7 +122,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME Z890M-PLUS WIFI — https://dlcdnets.asus.com/pub/ASUS/mb/LGA1851/PRIME_Z890M-PLUS_WIFI/E24250_PRIME_Z890M-PLUS_WIFI_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Intel indica que los Core de escritorio con F en el sufijo necesitan tarjeta gráfica aparte y que no darán imagen por el puerto integrado. El manual de ASUS aclara que las especificaciones de gráficos varían según el procesador y que, al instalar el sistema operativo, el monitor debe ir al HDMI trasero o a una gráfica dedicada. La parte de AMD (Ryzen sin gráficos, p. ej. 5600X) no la pude reabrir; el texto publicado no la nombra, así que no hace falta.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### escudo-es-integrado-o-suelto — Puertos traseros
 - **Texto publicado:** Algunas placas traen el escudo de E/S ya integrado y otras lo entregan suelto para instalarlo en el chasis.
@@ -132,7 +132,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASRock B760M-H/M.2 — https://download.asrock.com/Manual/B760M-HM.2.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** La ASUS PRIME B850-PLUS declara «Pre-mounted I/O shield» (integrado). La MSI B760 GAMING PLUS y la ASRock B760M-H/M.2 incluyen el escudo como pieza suelta en la caja e instrucciones para instalarlo.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### botones-bios-flashback-clear-cmos — Puertos traseros
 - **Texto publicado:** Algunas placas tienen botones de actualización de BIOS sin procesador (llamados Flashback o equivalentes) y de restablecimiento de la configuración (Clear CMOS); el nombre cambia por fabricante.
@@ -143,7 +143,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME Z890M-PLUS WIFI — https://dlcdnets.asus.com/pub/ASUS/mb/LGA1851/PRIME_Z890M-PLUS_WIFI/E24250_PRIME_Z890M-PLUS_WIFI_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** ASUS describe USB BIOS FlashBack (actualizar con el equipo apagado y el procesador retirado, solo en modelos que lo traen) y, para borrar CMOS, un botón o un puente según el modelo. ASRock llama a su función BIOS Flashback y dice que actualiza la BIOS sin encender el sistema, incluso sin procesador. El manual de ASUS lista «BIOS FlashBack button» en el panel trasero. MSI (Flash BIOS Button) y Gigabyte (Q-Flash Plus) solo los vi en resultados de búsqueda; sus páginas devolvieron 403, así que no los cito como confirmados.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 
@@ -166,7 +166,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** ASUS, FAQ «CPU Fan Error! Press F1» — https://www.asus.com/latin/support/faq/1006064/ (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** ASUS usa CPU_FAN, CPU_OPT, CHA_FAN y AIO_PUMP; MSI usa CPU_FAN, SYS_FAN y PUMP_FAN. ASUS explica que el mensaje de error al arrancar significa que no se detecta la velocidad del ventilador del procesador y que hay que revisar que esté en CPU_FAN. Todo coincide con el texto («suelen», «según el fabricante»).
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 
@@ -180,7 +180,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** La guía de Intel define el conector de 2x5 con interruptor de reinicio, LED de actividad del disco, LED de encendido/suspensión e interruptor de encendido. Los manuales de ASUS y MSI listan esas mismas cuatro conexiones (MSI además tiene un conector aparte JFP2 para zumbador y parlante).
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### usb-frontal-tipos — Conectores del frente del chasis
 - **Texto publicado:** Los conectores USB frontales de la placa son de tres tipos: USB 2.0 de 9 pines, USB 3.x de 19 o 20 pines y USB-C frontal (tipo Key-A).
@@ -215,7 +215,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual MSI B760 GAMING PLUS WIFI DDR4 — https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Los manuales de ASUS (B850-PLUS, Z890M-PLUS, B850-I) y MSI (B760 GAMING PLUS) indican batería tipo CR2032 de 3 V; la FAQ de ASUS también. Sirve para todos los modelos que revisé; no abrí una placa de otra marca con batería distinta, así que si quieres blindarlo agrega «suele ser».
 - **Propuesta:** mantener (opcional: «La batería de la placa suele ser una pila de botón CR2032.»)
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### bateria-que-conserva — Batería de la placa (CMOS)
 - **Texto publicado:** La batería conserva el reloj y la configuración de la BIOS mientras la placa está sin energía; lo que se guarda depende de la plataforma.
@@ -224,7 +224,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Borrar el CMOS reinicia la memoria del reloj de tiempo real, que guarda fecha, hora, contraseña de la BIOS y parámetros de configuración; el manual describe el mismo contenido y habla de un conector para la batería de litio del CMOS. Coincide con el texto.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 
@@ -249,7 +249,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** ASUS: si un procesador nuevo no enciende, se puede usar BIOS FlashBack con el sistema apagado y sin procesador, solo en modelos que lo traen. ASRock: la función actualiza la BIOS sin encender el sistema, incluso sin procesador. El manual de ASUS dice «no hace falta encender el sistema». El caso de Gigabyte (Q-Flash) del taller no lo pude confirmar con documentación: sus páginas dieron 403 y solo vi, en resultados de búsqueda, que la función sin procesador se llama «Q-Flash Plus».
 - **Propuesta:** mantener. Nota para la viñeta «Nos ha pasado» de la BIOS: ahí se nombra «Q-Flash»; en Gigabyte, la que actualiza sin procesador se llama Q-Flash Plus (el Q-Flash normal se usa desde dentro de la BIOS, que necesita arrancar). Conviene que el dueño confirme cuál usó.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 
@@ -332,7 +332,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** La especificación ATX 2.2 indica 12 pulgadas de ancho por 9,6 de profundidad (305 mm por 244 mm). El manual de ASUS de una ATX actual dice 12 x 9,6 pulgadas (30,5 x 24,4 cm). La especificación usa «profundidad», el texto «alto»: es la misma dimensión vista en planta.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### forma-micro-atx-medidas — Micro-ATX
 - **Texto publicado:** Una placa Micro-ATX mide hasta 244 mm por 244 mm (9,6 por 9,6 pulgadas).
@@ -343,7 +343,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** ASUS, PRIME B650M-A — https://asus.com/motherboards-components/motherboards/prime/prime-b650m-a/techspec (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Las fichas y manuales de dos placas ASUS Micro-ATX dicen 9,6 x 9,6 pulgadas (24,4 x 24,4 cm); el contorno de la ATX 2.2 y la tabla de VIA coinciden (244 mm). La especificación microATX propia no pude abrirla, pero tres documentos primarios la citan igual. «Hasta» es correcto porque es un máximo.
 - **Propuesta:** mantener
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ### forma-mini-itx-medidas — Mini-ITX
 - **Texto publicado:** Una placa Mini-ITX mide 170 mm por 170 mm (6,7 por 6,7 pulgadas).
@@ -352,7 +352,7 @@ Hallazgo que afecta más de un hecho: los manuales reales muestran que el tamañ
 - **Fuente consultada:** Manual ASUS ROG STRIX B850-I GAMING WIFI — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/ROG_STRIX_B850-I_GAMING_WIFI/E25172_ROG_STRIX_B850-I_GAMING_WIFI_EM_WEB_new.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** El white paper de VIA da 170 mm por 170 mm como medida máxima permitida; el manual de ASUS de una Mini-ITX actual dice 6,7 x 6,7 pulgadas (17 x 17 cm). Con esto se cierra el pendiente que la nota del borrador dejaba (no se hallaba la especificación primaria de VIA).
 - **Propuesta:** mantener (puede decir «mide hasta 170 mm por 170 mm» por simetría con Micro-ATX, pero no es necesario).
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-13)
 
 ---
 

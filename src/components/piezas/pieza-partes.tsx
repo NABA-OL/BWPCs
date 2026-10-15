@@ -8,10 +8,12 @@
 // Lista completa de partes (docs/piezas-plan.md §5.1 punto 3): es el contenido que leen los buscadores y quien navega sin JS.
 // Componente de servidor. Muestra todo el contenido, también el borrador (la puerta de publicación vive en check:logic y en el registro).
 import Link from "next/link";
+import { entornoActual } from "@/lib/piezas/entorno";
+import { enlacesResueltos } from "@/lib/piezas/registro";
 import type { Fuente, Hecho, OpcionParte, ParteContenido, PiezaContenido } from "@/lib/piezas/types";
 
 interface PiezaPartesProps {
-  contenido: PiezaContenido<string>;
+  contenido: PiezaContenido<string, string>;
 }
 
 const FOCO = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panda";
@@ -98,9 +100,11 @@ function Fuentes({ fuentes }: { fuentes: readonly Fuente[] }) {
   );
 }
 
-function ParteSeccion({ id, parte, contenido }: { id: string; parte: ParteContenido; contenido: PiezaContenido<string> }) {
+function ParteSeccion({ id, parte, contenido }: { id: string; parte: ParteContenido; contenido: PiezaContenido<string, string> }) {
   const tituloId = `${id}-titulo`;
   const relacionadas = (parte.relacionadas ?? []).filter((rid) => Object.prototype.hasOwnProperty.call(contenido.partes, rid));
+  // Los enlaces a otras piezas solo se pintan si el destino es visible en este entorno (en producción un borrador es 404).
+  const enlaces = enlacesResueltos(parte.enlaces, entornoActual());
   return (
     <section id={id} aria-labelledby={tituloId} className="border-t border-hairline py-8" style={SCROLL_BAJO_ENCABEZADO}>
       <h3 id={tituloId} className="flex items-baseline gap-3 text-xl font-semibold text-panda">
@@ -145,9 +149,9 @@ function ParteSeccion({ id, parte, contenido }: { id: string; parte: ParteConten
         </p>
       ) : null}
 
-      {parte.enlaces && parte.enlaces.length > 0 ? (
+      {enlaces.length > 0 ? (
         <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-          {parte.enlaces.map((e) => (
+          {enlaces.map((e) => (
             <li key={e.href}>
               <Link href={e.href} className={ENLACE}>
                 {e.etiqueta}

@@ -10,7 +10,24 @@
 import type { ParteGeo, Rect, VistaGeo } from "./types.ts";
 
 /** Igual a IDS_RESERVADOS de types.ts (aquí no se pueden importar valores); check-piezas compara ambas listas. */
-const IDS_RESERVADOS: readonly string[] = ["partes", "lista", "tamanos", "elegir", "errores", "fuentes", "cotizar", "preguntas"];
+const IDS_RESERVADOS: readonly string[] = [
+  "inicio",
+  "partes",
+  "lista",
+  "nombres",
+  "vistas",
+  "comparar",
+  "tamanos",
+  "elegir",
+  "errores",
+  "fuentes",
+  "cotizar",
+  "preguntas",
+  "casos",
+];
+
+/** Igual a PREFIJO_ID_VISTA de types.ts: las anclas `#vista-<id>` no son partes (check-piezas compara ambos valores). */
+const PREFIJO_ID_VISTA = "vista-";
 
 const ESCALA_MIN = 1;
 const ESCALA_MAX = 3;
@@ -79,8 +96,84 @@ export function partFromHash(hash: string, orden: readonly string[]): string | n
   } catch {
     return null; // secuencia %xx malformada: no es un id nuestro
   }
-  if (id === "" || IDS_RESERVADOS.includes(id)) return null;
+  if (id === "" || IDS_RESERVADOS.includes(id) || id.startsWith(PREFIJO_ID_VISTA)) return null;
   return orden.includes(id) ? id : null;
+}
+
+/* ---------- Multivista (docs/piezas-plan-2.md §2.3): qué partes existen en cada vista y qué queda elegido al cambiar de vista ---------- */
+
+export interface ParteDeclarada {
+  id: string;
+  orden: number;
+  vistas?: readonly string[]; // sin definir = todas
+}
+export interface VistaIndexada {
+  id: string;
+  geo: VistaGeo<string>;
+}
+/** Ids de las partes que existen en cada vista, en orden de lectura (`orden`). El orden de las claves del mapa es el de las vistas. */
+export type IndicePartes = ReadonlyMap<string, readonly string[]>;
+
+/** Una parte existe en una vista si la declara (o no restringe vistas) y la geometría de esa vista le da un ancla válida. */
+export function existeEnVista(parte: ParteDeclarada, vistaId: string, geo: VistaGeo<string>): boolean {
+  if (parte.vistas !== undefined && !parte.vistas.includes(vistaId)) return false;
+  return anclaValida(parteDe(geo, parte.id)) !== null;
+}
+
+export function indicePartesPorVista(vistas: readonly VistaIndexada[], partes: readonly ParteDeclarada[]): IndicePartes {
+  const ordenadas = [...partes].sort((a, b) => a.orden - b.orden);
+  const indice = new Map<string, readonly string[]>();
+  for (const vista of vistas) indice.set(vista.id, ordenadas.filter((p) => existeEnVista(p, vista.id, vista.geo)).map((p) => p.id));
+  return indice;
+}
+
+export interface SeleccionExplorador {
+  vista: string;
+  parte: string | null; // parte elegida que existe en la vista activa
+  ausente: string | null; // parte que estaba elegida y no existe en la vista a la que se cambió (se anuncia y se limpia)
+}
+
+export const seleccionInicial = (vista: string): SeleccionExplorador => ({ vista, parte: null, ausente: null });
+
+/** Cambia de vista conservando la parte elegida; si esa parte no existe en la vista nueva, se limpia y queda como `ausente`. */
+export function cambiarVista(sel: SeleccionExplorador, destino: string, indice: IndicePartes): SeleccionExplorador {
+  const ids = indice.get(destino);
+  if (!ids) return sel;
+  if (sel.parte === null) return { vista: destino, parte: null, ausente: null };
+  return ids.includes(sel.parte) ? { vista: destino, parte: sel.parte, ausente: null } : { vista: destino, parte: null, ausente: sel.parte };
+}
+
+/** Elige una parte. Si no está en la vista activa se pasa a la primera vista que la tiene; si no está en ninguna, no cambia nada. */
+export function elegirParte(sel: SeleccionExplorador, id: string, indice: IndicePartes): SeleccionExplorador {
+  if (indice.get(sel.vista)?.includes(id)) return { vista: sel.vista, parte: id, ausente: null };
+  for (const [vista, ids] of indice) if (ids.includes(id)) return { vista, parte: id, ausente: null };
+  return sel;
+}
+
+export const hrefDeVista = (id: string): string => `#${PREFIJO_ID_VISTA}${id}`;
+
+/** Id de vista a partir de `location.hash` (`#vista-ddr5`). Null si está malformado o no es una vista conocida. */
+export function vistaFromHash(hash: string, vistaIds: readonly string[]): string | null {
+  const crudo = hash.startsWith("#") ? hash.slice(1) : hash;
+  let id: string;
+  try {
+    id = decodeURIComponent(crudo);
+  } catch {
+    return null;
+  }
+  if (!id.startsWith(PREFIJO_ID_VISTA)) return null;
+  const vista = id.slice(PREFIJO_ID_VISTA.length);
+  return vista !== "" && vistaIds.includes(vista) ? vista : null;
+}
+
+/** Nueva selección a partir del hash (vista o parte), o null si el hash no es ninguna de las dos. `todas` = ids de todas las partes de la pieza. */
+export function seleccionDesdeHash(hash: string, sel: SeleccionExplorador, indice: IndicePartes, todas: readonly string[]): SeleccionExplorador | null {
+  const vista = vistaFromHash(hash, [...indice.keys()]);
+  if (vista !== null) return cambiarVista(sel, vista, indice);
+  const parte = partFromHash(hash, todas);
+  if (parte === null) return null;
+  const nueva = elegirParte(sel, parte, indice);
+  return nueva === sel ? null : nueva;
 }
 
 /**

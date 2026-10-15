@@ -18,12 +18,15 @@ import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { getApprovedReviews, getReviewStats } from "@/lib/reviews/reviews";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 import { entornoActual } from "@/lib/piezas/entorno";
-import { hrefPiezaServicios } from "@/lib/piezas/registro";
+import { enlacesInicio } from "@/lib/piezas/indice";
+import { hayIndice } from "@/lib/piezas/registro";
 
 export const revalidate = 3600;
 
-/** Página "a fondo" de la tarjeta madre; null mientras no sea visible (producción con borrador): entonces el texto queda como siempre. */
-const hrefBoard = hrefPiezaServicios("boards", entornoActual());
+const entornoPiezas = entornoActual();
+/** Palabras de la línea de piezas con su página "a fondo"; sin ninguna visible (producción con borradores) la línea queda como texto plano. */
+const palabrasPiezas = enlacesInicio(entornoPiezas);
+const hayEnlacesPiezas = palabrasPiezas.some((p) => p.href !== null);
 
 const trust = [
   {
@@ -195,13 +198,27 @@ export default async function HomePage() {
                 Entrega con todo funcionando.
               </p>
               <p className="mt-5 font-mono text-sm text-component">
-                {hrefBoard ? (
+                {hayEnlacesPiezas ? (
                   <>
-                    GPU · CPU · RAM ·{" "}
-                    <Link href={hrefBoard} className="underline underline-offset-4 hover:text-panda">
-                      Board
-                    </Link>{" "}
-                    · Fuente · Chasis · Refrigeración
+                    {palabrasPiezas.map((p, i) => (
+                      <span key={p.palabra}>
+                        {i > 0 && " · "}
+                        {p.href ? (
+                          <Link href={p.href} className="underline underline-offset-4 hover:text-panda">
+                            {p.palabra}
+                          </Link>
+                        ) : (
+                          p.palabra
+                        )}
+                      </span>
+                    ))}
+                    {hayIndice(entornoPiezas) ? (
+                      <span className="mt-2 block font-sans">
+                        <Link href="/piezas" className="underline underline-offset-4 hover:text-panda">
+                          Conoce cada pieza por dentro →
+                        </Link>
+                      </span>
+                    ) : null}
                   </>
                 ) : (
                   "GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración"
