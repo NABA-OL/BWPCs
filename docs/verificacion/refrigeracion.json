@@ -1,5 +1,808 @@
 {
   "version": 1,
   "slug": "refrigeracion",
-  "entradas": []
+  "entradas": [
+    {
+      "id": "ref-plastico-base",
+      "tipo": "hecho",
+      "titulo": "Base de contacto",
+      "donde": "refrigeracion › base",
+      "tambienEn": [
+        "refrigeracion › caso plastico-base-disipador"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Muchos disipadores traen la base cubierta con una película o plástico protector que se retira antes de instalarlos.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Noctua NH-U12S: producto, especificaciones y manual",
+          "editor": "Noctua",
+          "url": "https://noctua.at/en/nh-u12s",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "How to Install or Remove an AMD CPU Cooler",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html",
+          "consultadoEn": "2026-10-11",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-heatpipes-transportan-calor",
+      "tipo": "hecho",
+      "titulo": "Tubos de calor (heatpipes)",
+      "donde": "refrigeracion › heatpipes",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Los tubos de calor (heatpipes) conducen el calor desde la base del disipador hasta las aletas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Noctua NH-U12S: producto, especificaciones y manual",
+          "editor": "Noctua",
+          "url": "https://noctua.at/en/nh-u12s",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-aire-componentes",
+      "tipo": "hecho",
+      "titulo": "Tubos de calor (heatpipes)",
+      "donde": "refrigeracion › heatpipes",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › De qué se compone"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Un disipador por aire se compone de una base que toca el procesador, tubos de calor que llevan el calor hacia arriba, un bloque de aletas metálicas y uno o más ventiladores.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Noctua NH-U12S: producto, especificaciones y manual",
+          "editor": "Noctua",
+          "url": "https://noctua.at/en/nh-u12s",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Cooler Master Hyper 212: producto y especificaciones",
+          "editor": "Cooler Master",
+          "url": "https://www.coolermaster.com/en-global/products/hyper-212-black/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-mantenimiento-aire",
+      "tipo": "hecho",
+      "titulo": "Aletas del disipador",
+      "donde": "refrigeracion › aletas",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › Mantenimiento que declaran los fabricantes"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los fabricantes de disipadores por aire recomiendan limpiar el polvo de las aletas y del ventilador de forma periódica.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Noctua NH-U12S: producto, especificaciones y manual",
+          "editor": "Noctua",
+          "url": "https://noctua.at/en/nh-u12s",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-ventilador-pwm-cuatro-pines",
+      "tipo": "hecho",
+      "titulo": "Ventilador",
+      "donde": "refrigeracion › ventilador",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Los ventiladores de cuatro pines (PWM) permiten que la placa regule su velocidad con una señal; los de tres pines se regulan por voltaje.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Noctua PWM specifications white paper (cita la especificación de Intel de ventiladores PWM de cuatro hilos)",
+          "editor": "Noctua",
+          "url": "https://noctua.at/pub/media/wysiwyg/Noctua_PWM_specifications_white_paper.pdf",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Noctua NF-A12x25 PWM: producto y especificaciones",
+          "editor": "Noctua",
+          "url": "https://noctua.at/en/nf-a12x25-pwm",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-ventilador-flechas-sentido",
+      "tipo": "hecho",
+      "titulo": "Ventilador",
+      "donde": "refrigeracion › ventilador",
+      "tambienEn": [
+        "refrigeracion › caso ventiladores-todos-entrando"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El marco de muchos ventiladores de caja trae flechas moldeadas: una indica el sentido del giro y otra el sentido en que sopla el aire.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Noctua NF-A12x25 PWM: producto y especificaciones",
+          "editor": "Noctua",
+          "url": "https://noctua.at/en/nf-a12x25-pwm",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-flujo-chasis-entrada-salida",
+      "tipo": "hecho",
+      "titulo": "Ventilador",
+      "donde": "refrigeracion › ventilador",
+      "tambienEn": [
+        "refrigeracion › caso ventiladores-todos-entrando"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "En la mayoría de chasis de torre el aire fresco entra por el frente y el aire caliente sale por la parte trasera y por arriba; los fabricantes de chasis lo indican en sus fichas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y especificaciones",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Fractal Design Meshify 2 Compact: producto y especificaciones",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/meshify/meshify-2-compact/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-liquida-componentes",
+      "tipo": "hecho",
+      "titulo": "Bloque con bomba",
+      "donde": "refrigeracion › bloque-bomba",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › De qué se compone"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Una refrigeración líquida todo en uno (AIO) se compone de un bloque con bomba que se apoya en el procesador, dos mangueras, un radiador y ventiladores que atraviesan el radiador.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Refrigeración líquida para CPU (AIO)",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/c/cpu-coolers/liquid-coolers",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "ARCTIC Liquid Freezer III 360: producto y especificaciones",
+          "editor": "ARCTIC",
+          "url": "https://www.arctic.ac/en/Liquid-Freezer-III-360/ACFRE00136A",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-mantenimiento-liquida",
+      "tipo": "hecho",
+      "titulo": "Mangueras",
+      "donde": "refrigeracion › mangueras",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › Mantenimiento que declaran los fabricantes"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los fabricantes de refrigeración líquida todo en uno describen el circuito como sellado, sin recarga de líquido por parte del usuario.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Refrigeración líquida para CPU (AIO)",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/c/cpu-coolers/liquid-coolers",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "ARCTIC Liquid Freezer III 360: producto y especificaciones",
+          "editor": "ARCTIC",
+          "url": "https://www.arctic.ac/en/Liquid-Freezer-III-360/ACFRE00136A",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-radiador-tamano-por-ventiladores",
+      "tipo": "hecho",
+      "titulo": "Radiador",
+      "donde": "refrigeracion › radiador",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › Cómo se nombra el tamaño"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los radiadores de refrigeración líquida se nombran por su largo en milímetros, que corresponde a los ventiladores que admiten: 120 para uno, 240 para dos de 120, 280 para dos de 140 y 360 para tres de 120.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "ARCTIC Liquid Freezer III 360: producto y especificaciones",
+          "editor": "ARCTIC",
+          "url": "https://www.arctic.ac/en/Liquid-Freezer-III-360/ACFRE00136A",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Refrigeración líquida para CPU (AIO)",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/c/cpu-coolers/liquid-coolers",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-radiador-ubicacion-chasis",
+      "tipo": "hecho",
+      "titulo": "Radiador",
+      "donde": "refrigeracion › radiador",
+      "tambienEn": [
+        "refrigeracion › sección elegir",
+        "refrigeracion › comparación aire-vs-liquida › Qué dice el chasis"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los fabricantes de chasis indican en qué posiciones (frente, techo o parte trasera) admiten un radiador y de qué tamaño.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y especificaciones",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Fractal Design Meshify 2 Compact: producto y especificaciones",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/meshify/meshify-2-compact/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ref-altura-maxima-disipador-chasis",
+      "tipo": "hecho",
+      "titulo": "Qué mirar al elegir la refrigeración",
+      "donde": "refrigeracion › sección elegir",
+      "tambienEn": [
+        "refrigeracion › caso disipador-no-cabe-en-el-chasis",
+        "refrigeracion › comparación aire-vs-liquida › Qué dice el chasis"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los fabricantes de chasis indican la altura máxima de disipador por aire que admite cada modelo.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y especificaciones",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Fractal Design Meshify 2 Compact: producto y especificaciones",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/meshify/meshify-2-compact/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "disipador-de-caja-con-procesador-exigente",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "equipos con un procesador de gama alta armados con el disipador básico que viene en la caja, que solo alcanza para uno de gama baja. La temperatura sube y el equipo se calienta más de lo debido.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ventiladores-todos-entrando",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "equipos que llegan con casi todos los ventiladores empujando aire hacia adentro y apenas uno sacándolo. El aire no circula bien por el chasis. Revisa el sentido de cada ventilador: unos deben meter el aire y otros sacarlo.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "plastico-base-disipador",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "olvidar quitar el plástico protector de la base del disipador, sea de aire o líquido: el procesador se calienta porque la base no hace contacto con su tapa metálica.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "pasta-termica-mal-aplicada",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "aplicar la pasta térmica de forma irregular, en exceso o en muy poca cantidad, y que el disipador no transmita bien el calor del procesador.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "disipador-no-cabe-en-el-chasis",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "comprar un disipador por aire más alto de lo que admite el chasis y descubrirlo cuando el panel lateral no cierra.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "bomba-en-cabezal-de-ventilador",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "conectar la bomba de la refrigeración líquida a un cabezal de ventilador cualquiera, de modo que la placa la regule como si fuera un ventilador. Usa el cabezal de bomba que indica el manual de la placa.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "aire-menos-piezas",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Por aire · a favor",
+      "donde": "refrigeracion › vista aire › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Tiene menos piezas que pueden fallar: no hay bomba ni líquido, y el mantenimiento se reduce a limpiar el polvo.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "aire-torre-como-minimo",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Por aire · a favor",
+      "donde": "refrigeracion › vista aire › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Con un procesador de gama alta preferimos como mínimo un disipador de torre, aunque sea de un solo ventilador. Si el chasis no lo permite, por ejemplo uno compacto, usamos uno de bajo perfil de buena calidad.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "aire-caja-gama-alta",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Por aire · a considerar",
+      "donde": "refrigeracion › vista aire › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "El disipador básico que trae el procesador en la caja está pensado para uno de gama baja. Con un procesador de gama alta suele quedarse corto, así que no lo damos por suficiente.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "aire-altura-peso",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Por aire · a considerar",
+      "donde": "refrigeracion › vista aire › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Revisa que la altura quepa en el chasis y que el peso no sea un problema. Un disipador grande también puede tapar las memorias altas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "liquida-calor-al-radiador",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Líquida · a favor",
+      "donde": "refrigeracion › vista liquida › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Lleva el calor hasta un radiador montado en el chasis y deja libre el espacio alrededor del socket, algo útil cuando hay memorias altas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "liquida-bomba-es-otra-pieza",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Líquida · a considerar",
+      "donde": "refrigeracion › vista liquida › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "La bomba es una pieza más que puede fallar, y un fallo se nota rápido en la temperatura del procesador.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "liquida-ubicacion-instalacion",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Líquida · a considerar",
+      "donde": "refrigeracion › vista liquida › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Hay que decidir dónde va el radiador y comprobar que el chasis lo admita. La instalación suele tardar más que la de un disipador por aire.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    }
+  ]
 }

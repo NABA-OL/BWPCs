@@ -1,5 +1,827 @@
 {
   "version": 1,
   "slug": "almacenamiento",
-  "entradas": []
+  "entradas": [
+    {
+      "id": "alm-m2-llaves-nvme-sata",
+      "tipo": "hecho",
+      "titulo": "Llave (muesca) del conector M.2",
+      "donde": "almacenamiento › llave-m2",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Llave o muesca del conector"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Un SSD M.2 NVMe suele tener una sola muesca en el conector (llave M); un SSD M.2 SATA suele tener dos (llaves B y M).",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Preguntas frecuentes sobre SSD SATA y M.2",
+          "editor": "Kingston",
+          "url": "https://www.kingston.com/unitedkingdom/en/ssd/ssd-faq",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Hoja de datos del Samsung 990 PRO (rev. 2.0)",
+          "editor": "Samsung",
+          "url": "https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-nvme-protocolo-pcie",
+      "tipo": "hecho",
+      "titulo": "Controlador",
+      "donde": "almacenamiento › controlador",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "NVMe es el protocolo con el que un SSD se comunica con el sistema a través de PCI Express.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Acerca de NVM Express",
+          "editor": "NVM Express",
+          "url": "https://nvmexpress.org/about/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-m2-sata-usa-sata",
+      "tipo": "hecho",
+      "titulo": "Controlador",
+      "donde": "almacenamiento › controlador",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Un SSD M.2 SATA usa el protocolo SATA aunque tenga forma M.2: no se comunica por PCI Express como un NVMe.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "SATA-IO",
+          "editor": "SATA-IO",
+          "url": "https://sata-io.org/",
+          "consultadoEn": "2026-10-11",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-nand-desgaste",
+      "tipo": "hecho",
+      "titulo": "Memoria flash (NAND)",
+      "donde": "almacenamiento › memoria-nand",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Las celdas de la memoria flash NAND se desgastan con las escrituras; el controlador reparte las escrituras entre ellas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Tecnología de memoria flash NAND y unidades SSD",
+          "editor": "Kingston",
+          "url": "https://www.kingston.com/en/blog/pc-performance/nand-flash-technology-and-ssd",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-sata-conectores-iguales",
+      "tipo": "hecho",
+      "titulo": "Conector SATA de datos",
+      "donde": "almacenamiento › conector-sata-datos",
+      "tambienEn": [
+        "almacenamiento › conector-sata-poder",
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El SSD SATA y el disco duro SATA usan los mismos conectores SATA de datos y de energía, sin importar el tamaño de la unidad.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "SATA-IO",
+          "editor": "SATA-IO",
+          "url": "https://sata-io.org/",
+          "consultadoEn": "2026-10-11",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Serial ATA Basics",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/support/kb/serial-ata-basics-193811en/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-sata-formas-pulgadas",
+      "tipo": "hecho",
+      "titulo": "Carcasa de la unidad",
+      "donde": "almacenamiento › carcasa",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Forma y tamaño"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los SSD SATA suelen ser de 2,5 pulgadas. Los discos duros de escritorio suelen ser de 3,5 pulgadas, y los de portátil, de 2,5.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Samsung 870 EVO SATA III de 2,5 pulgadas",
+          "editor": "Samsung",
+          "url": "https://www.samsung.com/ca/memory-storage/sata-ssd/870-evo-250gb-sata-3-2-5-ssd-mz-77e250b-am",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Discos duros Seagate BarraCuda",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/products/hard-drives/barracuda-hard-drive/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-hdd-piezas-moviles",
+      "tipo": "hecho",
+      "titulo": "Carcasa de la unidad",
+      "donde": "almacenamiento › carcasa",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Piezas móviles"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El disco duro guarda los datos en platos que giran y los lee con cabezales móviles; el SSD guarda los datos en memoria flash y no tiene piezas móviles.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "HDD frente a SSD: cómo elegir la unidad adecuada",
+          "editor": "Western Digital",
+          "url": "https://www.westerndigital.com/solutions/hdd-vs-ssd",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Por qué no alcanzo el rendimiento anunciado de mi unidad externa (explica HDD con platos y cabezales frente a SSD con NAND)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/support/kb/lacie/Why-cant-I-reach-the-advertised-performance-of-my-external-drive/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "alm-m2-sin-cables",
+      "tipo": "hecho",
+      "titulo": "Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Cables que necesita",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Un SSD M.2 se instala directamente en la ranura de la placa y se fija con un tornillo; no usa cable de datos ni de energía.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Manual de la ASUS PRIME B850-PLUS",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Hoja de datos del Samsung 990 PRO (rev. 2.0)",
+          "editor": "Samsung",
+          "url": "https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "m2-ranura-sin-compatibilidad",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "comprar un SSD M.2 SATA para una ranura que solo admite NVMe, o al revés. Los dos entran por la forma, pero la placa puede no detectar la unidad. Revisa en el manual qué protocolo acepta cada ranura M.2.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "cables-sata-mal-conectados",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "dejar la unidad SATA con el cable de datos o el de energía suelto o sin conectar. La placa no la detecta aunque la unidad esté bien. Revisa los dos cables en ambos extremos.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "m2-sin-tornillo",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "instalar el SSD M.2 sin fijarlo con el tornillo o en un separador que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "m2-desactiva-puertos-sata",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "llenar todas las ranuras M.2 y quedarte sin algunos puertos SATA, o sin una ranura PCIe, porque el manual indica que se comparten.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "uso-nvme",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Unidad principal del equipo, donde van el sistema y los programas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "uso-m2-sata",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Cuando la placa tiene la ranura M.2 pero la unidad es SATA; confirma el protocolo antes de comprar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "uso-ssd-sata",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Ampliar el almacenamiento o actualizar un equipo que tiene bahías.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "uso-hdd",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Archivo y copias de seguridad, junto con un SSD para el sistema.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "nvme-sin-cables",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a favor",
+      "donde": "almacenamiento › vista m2-nvme › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Se instala directo en la placa, sin cables, y deja el interior del chasis más ordenado.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "nvme-unidad-del-sistema",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a favor",
+      "donde": "almacenamiento › vista m2-nvme › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Es nuestra opción habitual para la unidad donde van el sistema operativo y los programas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "nvme-ranura-compatible",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a considerar",
+      "donde": "almacenamiento › vista m2-nvme › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Revisa en el manual que la ranura M.2 que vas a usar admita NVMe y cuántas ranuras trae tu placa.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "nvme-ranuras-compartidas",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a considerar",
+      "donde": "almacenamiento › vista m2-nvme › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Algunas ranuras comparten líneas con otros puertos; mira el manual antes de llenarlas todas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "m2-sata-sin-cables",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 SATA · a favor",
+      "donde": "almacenamiento › vista m2-sata › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Sirve cuando la placa tiene una ranura M.2 compatible con SATA y no quieres usar cables.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "m2-sata-confusion-con-nvme",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 SATA · a considerar",
+      "donde": "almacenamiento › vista m2-sata › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Se confunde con facilidad con un NVMe porque tienen la misma forma; confirma el protocolo en la ficha antes de comprar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "m2-sata-ranura-nvme",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 SATA · a considerar",
+      "donde": "almacenamiento › vista m2-sata › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Si la ranura de tu placa admite solo NVMe, este tipo de SSD no funcionará allí.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ssd-sata-ampliar",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista SSD SATA · a favor",
+      "donde": "almacenamiento › vista ssd-sata › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Sirve para ampliar el almacenamiento cuando la placa ya no tiene ranuras M.2 libres, o para actualizar un equipo con bahías.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ssd-sata-cables-y-bahia",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista SSD SATA · a considerar",
+      "donde": "almacenamiento › vista ssd-sata › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Necesita cable de datos, cable de energía y un lugar donde montarlo en el chasis; revisa que haya bahía o soporte.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "hdd-archivo",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Disco duro · a favor",
+      "donde": "almacenamiento › vista hdd › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Sigue siendo una opción para guardar archivos grandes que no necesitan abrirse con urgencia, como copias de seguridad o videos.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "hdd-no-sistema",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Disco duro · a considerar",
+      "donde": "almacenamiento › vista hdd › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "En equipos nuevos solemos dejar el sistema operativo en un SSD y usar el disco duro como almacén de archivos.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "hdd-cuidado-al-mover",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Disco duro · a considerar",
+      "donde": "almacenamiento › vista hdd › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Tiene piezas móviles: trátalo con cuidado y evita mover el equipo mientras está encendido.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    }
+  ]
 }

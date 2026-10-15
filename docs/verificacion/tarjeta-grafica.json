@@ -1,5 +1,611 @@
 {
   "version": 1,
   "slug": "tarjeta-grafica",
-  "entradas": []
+  "entradas": [
+    {
+      "id": "gr-largo-maximo-chasis",
+      "tipo": "hecho",
+      "titulo": "Carcasa",
+      "donde": "tarjeta-grafica › carcasa",
+      "tambienEn": [
+        "tarjeta-grafica › caso grafica-demasiado-larga-para-el-chasis"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los fabricantes de chasis indican el largo máximo de tarjeta gráfica que admite cada modelo, y los de tarjetas indican el largo de cada una; se comparan antes de comprar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Fractal Design North: especificaciones del chasis",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/north/north/charcoal-black/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-grosor-en-ranuras",
+      "tipo": "hecho",
+      "titulo": "Bracket de salidas de video",
+      "donde": "tarjeta-grafica › bracket",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Las fichas de las tarjetas gráficas indican cuántas ranuras de expansión ocupan en grosor, y algunas recomiendan dejar libre una ranura más.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-conectores-6-y-8-pines-potencia",
+      "tipo": "hecho",
+      "titulo": "Conector de energía",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Un conector PCIe de seis pines entrega hasta 75 W y uno de ocho pines hasta 150 W, según la especificación de PCI-SIG.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-cables-independientes-por-conector",
+      "tipo": "hecho",
+      "titulo": "Conector de energía",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [
+        "tarjeta-grafica › caso cable-ramificado-en-varios-conectores"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Si la tarjeta tiene varios conectores de ocho pines, la práctica recomendada es conectar cada uno con un cable independiente de la fuente, en lugar de un solo cable que se ramifique.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-12v2x6-insertar-por-completo",
+      "tipo": "hecho",
+      "titulo": "Conector de energía",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [
+        "tarjeta-grafica › caso conector-de-doce-pines-a-medias"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El conector de doce pines de la tarjeta (12V-2x6) debe quedar insertado por completo, hasta que no se vea espacio entre los dos cuerpos del conector y el seguro haya cerrado.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Guía del cable nativo 12V-2x6",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/insights/seasonic-native-12v-2x6-cable-guide/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-12v2x6-potencia",
+      "tipo": "hecho",
+      "titulo": "Conector de energía",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Un solo cable 12V-2x6 puede alimentar tarjetas que de otro modo necesitarían varios conectores de ocho pines; el fabricante indica en la ficha de cada modelo cuál usar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-ranura-pcie-75w",
+      "tipo": "hecho",
+      "titulo": "Conector PCIe de la tarjeta",
+      "donde": "tarjeta-grafica › conector-pcie",
+      "tambienEn": [
+        "tarjeta-grafica › caso grafica-sin-cable-de-energia"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "La ranura PCIe x16 entrega a la tarjeta hasta 75 W; si la tarjeta consume más, el resto debe llegar por sus conectores de energía.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-fabricantes-chip",
+      "tipo": "hecho",
+      "titulo": "Chip gráfico (GPU)",
+      "donde": "tarjeta-grafica › chip-grafico",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "NVIDIA, AMD e Intel diseñan los chips gráficos de las tarjetas de escritorio, y varias ensambladoras fabrican y venden tarjetas con ese chip y su propio disipador y ventiladores.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NVIDIA GeForce: tarjetas gráficas",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Tarjetas gráficas AMD Radeon para escritorio",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/graphics/desktops/radeon.html",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Gráficos dedicados Intel Arc",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-marca-nvidia-geforce",
+      "tipo": "hecho",
+      "titulo": "Chip gráfico (GPU) · opción NVIDIA",
+      "donde": "tarjeta-grafica › chip-grafico › opción nvidia",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "NVIDIA vende sus tarjetas gráficas para escritorio bajo la marca GeForce.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NVIDIA GeForce: tarjetas gráficas",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-marca-amd-radeon",
+      "tipo": "hecho",
+      "titulo": "Chip gráfico (GPU) · opción AMD",
+      "donde": "tarjeta-grafica › chip-grafico › opción amd",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "AMD vende sus tarjetas gráficas para escritorio bajo la marca Radeon.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Tarjetas gráficas AMD Radeon para escritorio",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/graphics/desktops/radeon.html",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-marca-intel-arc",
+      "tipo": "hecho",
+      "titulo": "Chip gráfico (GPU) · opción Intel",
+      "donde": "tarjeta-grafica › chip-grafico › opción intel",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Intel vende sus tarjetas gráficas dedicadas bajo la marca Arc.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Gráficos dedicados Intel Arc",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-vram-nombres",
+      "tipo": "hecho",
+      "titulo": "Memoria de video (VRAM)",
+      "donde": "tarjeta-grafica › memoria-vram",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "La memoria de video de las tarjetas gráficas se nombra por su tipo: GDDR6, GDDR6X y GDDR7 son los tipos que aparecen en las tarjetas actuales.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Memoria gráfica de Micron (GDDR6, GDDR6X y GDDR7)",
+          "editor": "Micron",
+          "url": "https://www.micron.com/products/memory/graphics-memory",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "gr-potencia-fuente-recomendada",
+      "tipo": "hecho",
+      "titulo": "Qué mirar al elegir una tarjeta gráfica",
+      "donde": "tarjeta-grafica › sección elegir",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "El fabricante de cada tarjeta publica la potencia de fuente recomendada y los conectores de energía que necesita; esos datos están en la ficha del modelo.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "grafica-sin-cable-de-energia",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "una tarjeta gráfica instalada en la ranura PCIe de la placa, pero sin el cable de alimentación de la fuente conectado. La ranura sola no cubre lo que consume una tarjeta con conectores de energía: conecta cada uno antes de cerrar el chasis.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "grafica-demasiado-larga-para-el-chasis",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "una tarjeta gráfica de tres ventiladores tan larga para el chasis que no entraba o había que improvisar, por ejemplo quitando un ventilador frontal. Compara el largo de la tarjeta con el largo máximo que indica el chasis antes de comprar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "cable-ramificado-en-varios-conectores",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. En el taller usamos un cable independiente de la fuente para cada conector. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "conector-de-doce-pines-a-medias",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "que el conector de doce pines de la tarjeta quede sin insertar hasta el fondo. Debe quedar insertado por completo, sin espacio visible entre los dos cuerpos del conector. Sigue las instrucciones del fabricante de tu tarjeta y de tu fuente.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "revisar-largo-antes-de-confirmar",
+      "tipo": "criterio",
+      "titulo": "Criterio de B & W",
+      "donde": "tarjeta-grafica › criterios",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Antes de confirmar una combinación, comparamos el largo y el grosor de la tarjeta con las medidas máximas que indica el chasis.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    }
+  ]
 }

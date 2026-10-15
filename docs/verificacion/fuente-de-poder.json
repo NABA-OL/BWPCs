@@ -1,5 +1,699 @@
 {
   "version": 1,
   "slug": "fuente-de-poder",
-  "entradas": []
+  "entradas": [
+    {
+      "id": "fp-ventilador-orientacion",
+      "tipo": "hecho",
+      "titulo": "Rejilla y ventilador",
+      "donde": "fuente-de-poder › rejilla-ventilador",
+      "tambienEn": [
+        "fuente-de-poder › caso ventilador-de-la-fuente-al-reves"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "La orientación del ventilador de la fuente depende de su ubicación en el chasis: si va abajo con un filtro de aire, el ventilador mira hacia abajo, y si va arriba, hacia el interior del chasis.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y manual",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-interruptor-general",
+      "tipo": "hecho",
+      "titulo": "Entrada de corriente (AC)",
+      "donde": "fuente-de-poder › entrada-ac",
+      "tambienEn": [
+        "fuente-de-poder › interruptor",
+        "fuente-de-poder › caso interruptor-apagado-al-entregar"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "La mayoría de las fuentes ATX traen un interruptor general en la parte trasera, junto a la entrada de corriente; con él apagado la fuente no entrega energía al equipo.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Centro de ayuda y manuales de fuentes de poder",
+          "editor": "Corsair",
+          "url": "https://help.corsair.com/hc/en-us",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-modular-conectores",
+      "tipo": "hecho",
+      "titulo": "Banco de conectores modulares",
+      "donde": "fuente-de-poder › banco-modular",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "En una fuente modular los cables se enchufan en un banco de conectores de la fuente, de modo que se instalan solo los necesarios.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-modular-no-mezclar-fuentes",
+      "tipo": "hecho",
+      "titulo": "Banco de conectores modulares",
+      "donde": "fuente-de-poder › banco-modular",
+      "tambienEn": [
+        "fuente-de-poder › caso cables-modulares-de-otra-fuente"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los cables modulares de una fuente no deben usarse en otra, aunque el conector parezca igual, porque el orden de los pines puede cambiar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Centro de ayuda y manuales de fuentes de poder",
+          "editor": "Corsair",
+          "url": "https://help.corsair.com/hc/en-us",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-etiqueta-datos",
+      "tipo": "hecho",
+      "titulo": "Etiqueta de especificaciones",
+      "donde": "fuente-de-poder › etiqueta",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "La etiqueta de la fuente indica la potencia total y la corriente máxima de cada salida (+12 V, +5 V y +3,3 V), además del rango de tensión de entrada.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Centro de ayuda y manuales de fuentes de poder",
+          "editor": "Corsair",
+          "url": "https://help.corsair.com/hc/en-us",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-80-plus-certificacion",
+      "tipo": "hecho",
+      "titulo": "Etiqueta de especificaciones",
+      "donde": "fuente-de-poder › etiqueta",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "80 PLUS es un programa de certificación de eficiencia de las fuentes; las fuentes certificadas llevan un sello con su nivel, como Bronze, Gold o Titanium.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "80 PLUS: programa de certificación de eficiencia",
+          "editor": "CLEAResult (80 PLUS)",
+          "url": "https://www.clearesult.com/80plus/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-etapas-internas",
+      "tipo": "hecho",
+      "titulo": "Filtro EMI",
+      "donde": "fuente-de-poder › filtro-emi",
+      "tambienEn": [
+        "fuente-de-poder › rectificador",
+        "fuente-de-poder › pfc",
+        "fuente-de-poder › condensadores-primarios",
+        "fuente-de-poder › transformador",
+        "fuente-de-poder › salida-secundaria"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "En una fuente ATX típica la corriente alterna pasa por un filtro EMI, un rectificador, un corrector de factor de potencia (PFC), condensadores primarios, un transformador de conmutación y una etapa de salida que rectifica y regula las tensiones continuas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Corrección del factor de potencia (PFC)",
+          "editor": "Texas Instruments",
+          "url": "https://www.ti.com/power-management/ac-dc-power-supply/power-factor-correction-pfc/overview.html",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-no-abrir-fuente",
+      "tipo": "hecho",
+      "titulo": "Condensadores primarios",
+      "donde": "fuente-de-poder › condensadores-primarios",
+      "tambienEn": [
+        "fuente-de-poder › sección errores"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "No abras la fuente de poder: sus condensadores internos pueden conservar carga peligrosa aunque esté desconectada, y las reparaciones corresponden a personal calificado.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Centro de ayuda y manuales de fuentes de poder",
+          "editor": "Corsair",
+          "url": "https://help.corsair.com/hc/en-us",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-pcie-un-cable-por-conector",
+      "tipo": "hecho",
+      "titulo": "Conector PCIe 6+2 de la gráfica",
+      "donde": "fuente-de-poder › pcie-6-2",
+      "tambienEn": [
+        "fuente-de-poder › caso un-cable-por-conector-de-la-grafica"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Cuando una tarjeta gráfica tiene dos o tres conectores de ocho pines, algunos fabricantes recomiendan un cable independiente de la fuente para cada conector.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Centro de ayuda y manuales de fuentes de poder",
+          "editor": "Corsair",
+          "url": "https://help.corsair.com/hc/en-us",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Soporte y manuales de fuentes de poder",
+          "editor": "Seasonic",
+          "url": "https://seasonic.com/support",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-12v-2x6-pines",
+      "tipo": "hecho",
+      "titulo": "Conector 12V-2x6 de la gráfica",
+      "donde": "fuente-de-poder › 12v-2x6",
+      "tambienEn": [
+        "fuente-de-poder › caso conector-12v-2x6-a-medias"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El conector 12V-2x6 tiene doce contactos de potencia y cuatro contactos de señal más pequeños, y su forma impide invertirlo.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Especificaciones de PCI Express",
+          "editor": "PCI-SIG",
+          "url": "https://pcisig.com/specifications",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Centro de ayuda y manuales de fuentes de poder",
+          "editor": "Corsair",
+          "url": "https://help.corsair.com/hc/en-us",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-sata-poder-15-pines",
+      "tipo": "hecho",
+      "titulo": "Conector SATA de energía",
+      "donde": "fuente-de-poder › sata-poder",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "El conector de energía SATA tiene 15 pines y alimenta unidades de almacenamiento SATA.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "SATA-IO",
+          "editor": "SATA-IO",
+          "url": "https://sata-io.org/",
+          "consultadoEn": "2026-10-11",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "fp-molex-cuatro-pines",
+      "tipo": "hecho",
+      "titulo": "Conector Molex",
+      "donde": "fuente-de-poder › molex",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "El conector Molex tiene 4 pines; es de uso antiguo y hoy se usa sobre todo en periféricos y accesorios.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "ATX Specification, Version 2.2",
+          "editor": "Intel (formfactors.org)",
+          "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "interruptor-apagado-al-entregar",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "entregar una torre con el interruptor de la fuente en la posición de apagado, y que el cliente escriba diciendo que no enciende. Antes de entregar y ante cualquier consulta de este tipo, revisa que el interruptor esté encendido.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ventilador-de-la-fuente-al-reves",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "una fuente instalada con el ventilador mirando hacia el lado equivocado, de modo que no tomaba aire y no respiraba bien. Mira dónde queda la fuente en el chasis antes de montarla.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "grafica-sin-cable-de-energia",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "una tarjeta gráfica puesta en la ranura de la placa pero sin el cable de energía conectado. La gráfica no da imagen o funciona mal. Conecta todos los cables de energía que pida la gráfica.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "un-cable-por-conector-de-la-grafica",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "una gráfica con varios conectores de ocho pines alimentada con un solo cable que se ramifica. En el taller preferimos un cable independiente de la fuente para cada conector, siempre que el manual de la gráfica o de la fuente lo recomiende.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "conector-12v-2x6-a-medias",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "que el conector 12V-2x6 de la gráfica no quede insertado por completo. Debe entrar hasta el fondo y quedar firme, sin dobleces fuertes junto al conector.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "eps-y-pcie-confundidos",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "enchufar el cable EPS del procesador en la gráfica, o el cable PCIe de la gráfica en el conector del procesador, porque se parecen. No son intercambiables: usa el cable marcado para cada pieza.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "sata-mal-conectado",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "conectar mal el cable de datos o el de energía SATA de una unidad: la unidad no aparece o no enciende. Cada unidad necesita los dos, y no son el mismo cable.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "cables-modulares-de-otra-fuente",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "usar cables modulares de otra fuente porque el conector parece igual. El orden de los pines puede cambiar y se pueden dañar las piezas. Usa solo los cables del modelo de tu fuente.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    }
+  ]
 }

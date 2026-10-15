@@ -1,5 +1,442 @@
 {
   "version": 1,
   "slug": "memoria-ram",
-  "entradas": []
+  "entradas": [
+    {
+      "id": "ram-velocidad-mt-s",
+      "tipo": "hecho",
+      "titulo": "Chips de memoria",
+      "donde": "memoria-ram › chips-memoria",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Cómo se nombra la velocidad"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "La velocidad de la memoria se anuncia en MT/s (megatransferencias por segundo): DDR5-6000, por ejemplo, equivale a 6000 MT/s. No es lo mismo que los MHz del reloj.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "DDR4 vs DDR5 DRAM: diferencias de rendimiento, compatibilidad y plataformas",
+          "editor": "Kingston",
+          "url": "https://www.kingston.com/en/blog/pc-performance/ddr-memory-generation-differences",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Diferencia entre DDR4 y DDR5",
+          "editor": "Crucial",
+          "url": "https://www.crucial.com/articles/about-memory/difference-between-ddr4-and-ddr5",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "JESD79-5: DDR5 SDRAM",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/standards-documents/docs/jesd79-5d",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-velocidad-jedec-referencia",
+      "tipo": "hecho",
+      "titulo": "Chips de memoria",
+      "donde": "memoria-ram › chips-memoria",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Velocidad de referencia del estándar"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Al publicar DDR5, JEDEC lo presentó con una velocidad inicial de 4800 MT/s, frente a 3200 MT/s al final de DDR4.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-pmic-en-ddr5",
+      "tipo": "hecho",
+      "titulo": "PMIC (regulador de voltaje del módulo)",
+      "donde": "memoria-ram › pmic",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Dónde se regula el voltaje"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "En DDR5 el regulador de voltaje (PMIC) va en cada módulo; en DDR4 la regulación se hace en la placa.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "DDR4 vs DDR5 DRAM: diferencias de rendimiento, compatibilidad y plataformas",
+          "editor": "Kingston",
+          "url": "https://www.kingston.com/en/blog/pc-performance/ddr-memory-generation-differences",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Micron DDR5: características de los módulos para cliente (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-voltaje-nominal",
+      "tipo": "hecho",
+      "titulo": "PMIC (regulador de voltaje del módulo)",
+      "donde": "memoria-ram › pmic",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Voltaje nominal"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El voltaje nominal de los módulos es de 1,2 V en DDR4 y de 1,1 V en DDR5.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "JESD79-5: DDR5 SDRAM",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/standards-documents/docs/jesd79-5d",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Main Memory: DDR4 y DDR5 SDRAM (JESD79-4)",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/category/technology-focus-area/main-memory-ddr3-ddr4-sdram",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-chip-spd",
+      "tipo": "hecho",
+      "titulo": "Chip SPD (datos del módulo)",
+      "donde": "memoria-ram › chip-spd",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Cada módulo lleva un chip SPD que guarda los datos del módulo (velocidad, tiempos y perfiles) y que la placa lee al arrancar.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Qué es el SPD de un módulo de memoria",
+          "editor": "Crucial",
+          "url": "https://www.crucial.com/articles/about-memory/what-is-spd",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "JESD79-5: DDR5 SDRAM",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/standards-documents/docs/jesd79-5d",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-perfiles-xmp-expo",
+      "tipo": "hecho",
+      "titulo": "Chip SPD (datos del módulo)",
+      "donde": "memoria-ram › chip-spd",
+      "tambienEn": [
+        "memoria-ram › caso memoria-sin-activar-perfil",
+        "memoria-ram › comparación ddr4-vs-ddr5 › Perfiles XMP y EXPO"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "XMP (Intel) y EXPO (AMD) son perfiles de velocidad guardados en el módulo que se activan desde la BIOS; sin activarlos, el módulo arranca con la configuración estándar de JEDEC.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Intel Extreme Memory Profile (XMP)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/gaming/extreme-memory-profile-xmp.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD EXPO: perfiles de memoria",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/technologies/expo.html",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-so-dimm-distinto",
+      "tipo": "hecho",
+      "titulo": "Ranura de la tarjeta madre",
+      "donde": "memoria-ram › ranura",
+      "tambienEn": [
+        "memoria-ram › caso so-dimm-en-escritorio"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos, por lo que no son intercambiables.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Memoria para portátil (SO-DIMM) frente a memoria de escritorio (DIMM)",
+          "editor": "Crucial",
+          "url": "https://www.crucial.com/articles/about-memory/laptop-vs-desktop-memory",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Main Memory: DDR4 y DDR5 SDRAM (JESD79-4)",
+          "editor": "JEDEC",
+          "url": "https://www.jedec.org/category/technology-focus-area/main-memory-ddr3-ddr4-sdram",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "pendiente",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ddr5-para-placa-ddr4",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Nos ha pasado",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "casoTipo": "vivido",
+      "textoPublicado": "un cliente que llegó con memoria DDR5 comprada para una placa que solo admitía DDR4. La muesca está en otra posición y el módulo no asienta en la ranura, así que no había forma de usarla. Antes de comprar, mira en la ficha de la placa qué generación de memoria admite.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ram-a-medio-insertar",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "que un módulo quede a medio insertar y el equipo no dé imagen o no arranque. Debe asentar por completo, hasta que las trabas laterales cierren.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "memoria-sin-activar-perfil",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "que la memoria trabaje a una velocidad menor que la anunciada porque nadie activó el perfil XMP o EXPO en la BIOS. Se resuelve entrando a la BIOS y seleccionando el perfil del kit.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "ranuras-equivocadas-doble-canal",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "instalar dos módulos en ranuras distintas a las que indica el manual y quedarte sin el doble canal. Revisa en el manual de la placa cuáles son las ranuras recomendadas.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    },
+    {
+      "id": "so-dimm-en-escritorio",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Es de otro tamaño y no encaja en las ranuras DIMM.",
+      "textoRevisado": null,
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": null,
+      "huerfana": false
+    }
+  ]
 }
