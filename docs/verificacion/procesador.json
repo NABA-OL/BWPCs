@@ -24,15 +24,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "How to Install or Remove an AMD CPU Cooler (CPU-7)",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "La guía de AMD para instalar un disipador habla de la «tapa» (lid) de arriba del procesador y de la placa base del disipador, y pide limpiar ambas y poner pasta térmica entre las dos. No usa la sigla IHS ni dice que la tapa cubra el chip.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "El contacto tapa del procesador - base del disipador sí lo respalda AMD (CPU-7). La sigla IHS y que «cubre el chip» no aparecen en lo que abrí; son terminología corriente. El dueño decide si acepta eso o busca una ficha técnica de AMD/Intel que use «integrated heat spreader»."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "La tapa metálica del procesador (IHS, por integrated heat spreader) cubre el chip y es la superficie que toca la base del disipador, tanto en AMD como en Intel. Entre las dos superficies de metal tiene que haber un buen contacto, con pasta térmica, almohadilla térmica o metal líquido, por lo que conviene que ambas estén limpias y lisas.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "ajustado por NB (2026-10-15): redacción general para ambas marcas. Experiencia del taller sin fuente: un procesador doblado por la presión del seguro del socket no hace contacto con el disipador (no se incluyó en el texto)."
+      },
       "huerfana": false
     },
     {
@@ -67,13 +82,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Information About Intel® Core™ Ultra Boxed Desktop Processors (Series 2)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000099656/processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 7800X3D Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7800x3d.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen Processor Cooling Solutions",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/ecosystem/cpu-cooler-solutions.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel indica que sus procesadores desbloqueados requieren un disipador calificado para la potencia base del procesador (125 W en los K de Series 2) y pide revisar los requisitos de cada modelo. La ficha de AMD del 7800X3D lista una «Default TDP» de 120 W y un cooler recomendado.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide: potencia declarada (TDP en AMD, Processor Base Power en Intel) y disipador acorde. No se cita ninguna cifra en el texto."
       },
       "decision": null,
       "huerfana": false
@@ -108,15 +148,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Information About Intel® Core™ Ultra Boxed Desktop Processors (Series 2)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000099656/processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Artículo de soporte de Intel sobre el socket LGA1700 (000088168)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000088168/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "no incluye LGA1851 ni describe palanca ni ubicación de los contactos"
+        }
+      ],
+      "queDiceLaFuente": "Intel dice que LGA 1851 solo se usa con procesadores Series 2, que no son compatibles con plataformas anteriores y que los dos sockets tienen distinto número de contactos, aunque son mecánicamente parecidos en cuanto a disipadores. El artículo de LGA1700 habla de cuatro muescas (keys) frente a dos de sockets anteriores, pero no menciona LGA 1851.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "LGA 1851 no es compatible con las placas de LGA 1700: los dos sockets se parecen, pero tienen distinto número de contactos y un procesador de uno no funciona en el otro.",
+        "detalle": "Intel respalda la incompatibilidad (no son intercambiables eléctricamente). «No entra» (encaje físico) no está dicho; por eso el texto propuesto dice «no funciona». Ojo: el título de la entrada («Muescas de alineación») no coincide con lo que dice el texto; además Intel indica que los disipadores de ambos son mecánicamente parecidos."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "LGA 1851 no es compatible con las placas de LGA 1700: los dos sockets se parecen, pero tienen distinto número de contactos y un procesador de uno no funciona en el otro.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15). NB confirma que los disipadores sí son compatibles entre ambos (ya cubierto por el hecho socket-disipadores-lga1700-lga1851)."
+      },
       "huerfana": false
     },
     {
@@ -143,13 +206,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Artículo de soporte de Intel sobre el socket LGA1700 (000088168)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000088168/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "no incluye LGA1851 ni describe palanca ni ubicación de los contactos"
+        },
+        {
+          "titulo": "Processor Handling Guidance (CPU-100)",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/resources/support-articles/faqs/CPU-100.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "El artículo de Intel sobre LGA1700 describe muescas y el indicador del pin 1 en el procesador, pero no dice dónde están los contactos. La guía de manejo de AMD (CPU-100) habla de procesadores con pines (AM4) y no menciona AM5 ni LGA.",
+      "estado": "sin-fuente",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "No encontré en las fuentes primarias abiertas ninguna frase que diga que en LGA los contactos van en el socket de la placa y los del procesador son planos. Es la definición de LGA (land grid array) y las fichas de Intel usan FCLGA, pero falta citarla. Sugerencia: buscar la guía de instalación/hoja de datos del socket LGA1700 o AM5 de Intel/AMD antes de publicar."
       },
       "decision": null,
       "huerfana": false
@@ -186,13 +266,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Processor Handling Guidance (CPU-100)",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/resources/support-articles/faqs/CPU-100.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Artículo de soporte de Intel sobre el socket LGA1700 (000088168)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000088168/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "no incluye LGA1851 ni describe palanca ni ubicación de los contactos"
+        }
+      ],
+      "queDiceLaFuente": "La guía de manejo de AMD (CPU-100) habla de orientar el procesador para que caiga en el socket sin forzarlo y de pines doblados, pero no menciona la palanca ni las tapas de sujeción. El artículo de Intel de LGA1700 tampoco las describe.",
+      "estado": "sin-fuente",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Sin fuente primaria abierta para la función de la palanca (AM4: libera/sujeta pines; LGA: cierra la tapa de sujeción). Buscar el manual de instalación de AM4/AM5 o la guía de instalación de Intel antes de publicar."
       },
       "decision": null,
       "huerfana": false
@@ -227,15 +324,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/ark.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "índice de series; no lista productos sueltos"
+        },
+        {
+          "titulo": "Intel Announces Major Brand Update Ahead of Upcoming Meteor Lake Launch",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/newsroom/news/intel-announces-major-brand-update-upcoming-meteor-lake-launch.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "la URL antigua de newsroom.intel.com redirige aquí"
+        }
+      ],
+      "queDiceLaFuente": "Intel nombra hoy sus familias como Core Ultra (9, 7, 5) y Core (7, 5, 3), y su índice de especificaciones agrupa los Core i3 a i9 por generación (de la 4.ª a la 14.ª) aparte de las series nuevas Core 1, 2 y 3. El anuncio de marca habla de la escala 3/5/7/9 y de Core Ultra, pero no dice expresamente que se quite la «i».",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "La coexistencia de nombres está respaldada. La frase «Intel dejó de usar la i» solo la vi en un resumen de búsqueda de la presentación de marca de Intel (PDF download.intel.com/newsroom/2023/client-computing/Intel-Brand-Update-Media-Deck.pdf) que no abrí. Para ✅ conviene abrir ese PDF."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobado por NB (2026-10-15). Duda de NB sin resolver: confirmar cómo se numeran los Core Ultra (primer dígito = generación, dos siguientes = gama); lo cubre el hecho cpu-core-sin-ultra-numero."
+      },
       "huerfana": false
     },
     {
@@ -260,13 +388,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel Announces Major Brand Update Ahead of Upcoming Meteor Lake Launch",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/newsroom/news/intel-announces-major-brand-update-upcoming-meteor-lake-launch.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "la URL antigua de newsroom.intel.com redirige aquí"
+        }
+      ],
+      "queDiceLaFuente": "Intel presenta Core Ultra como su marca para los procesadores de cliente más avanzados, con niveles 9, 7 y 5, y Core con niveles 7, 5 y 3 y un esquema de nombres más corto, orientado a PC de uso general.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide. Nota: la Series 3 de Core Ultra añade modelos X7 y X9; no afecta a la frase."
       },
       "decision": null,
       "huerfana": false
@@ -301,13 +446,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Core™ i5-12400F Processor (18M Cache, up to 4.40 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/134587/intel-core-i512400f-processor-18m-cache-up-to-4-40-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ i7 processor 14700K (33M Cache, up to 5.60 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/236783/intel-core-i7-processor-14700k-33m-cache-up-to-5-60-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las fichas de Intel ubican al i5-12400F en la colección «12th Generation Intel Core i5» y al i7-14700K en «Core i7 (14th gen)», y avisan que los números de procesador no miden rendimiento. Ninguna página abierta enuncia la regla de los dos primeros dígitos.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "En los Core i de escritorio de cinco dígitos, los dos primeros del número de modelo coinciden con la generación: 12400 es de la 12.ª generación y 14700 de la 14.ª.",
+        "detalle": "Los dos ejemplos coinciden con la colección de generación que muestra Intel; la regla general se deduce, no está redactada. Se añade «de cinco dígitos» porque los Core i anteriores a la 10.ª tienen cuatro."
       },
       "decision": null,
       "huerfana": false
@@ -334,13 +504,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Core™ i5-12400F Processor (18M Cache, up to 4.40 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/134587/intel-core-i512400f-processor-18m-cache-up-to-4-40-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ i7 processor 14700K (33M Cache, up to 5.60 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/236783/intel-core-i7-processor-14700k-33m-cache-up-to-5-60-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las fichas de Intel del i5-12400F (socket FCLGA1700, lanzado en el primer trimestre de 2022) y del i7-14700K (FCLGA1700, cuarto trimestre de 2023) marcan el estado de mercadeo como «Launched», es decir, no descontinuados.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Intel mantiene en su catálogo, como lanzados, procesadores Core i3, i5, i7 e i9 de LGA 1700, aunque la línea nueva use LGA 1851. Si hay existencias en tiendas depende de cada distribuidor.",
+        "detalle": "Intel respalda el estado «Launched», no que «se sigan vendiendo»: esa disponibilidad es de tiendas. El estado en ARK puede cambiar; revisarlo antes de publicar. Tampoco confirmé i3 e i9 (solo abrí 12400F y 14700K)."
       },
       "decision": null,
       "huerfana": false
@@ -375,13 +562,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Core™ Ultra Processors Names and Numbers",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000097596/processors/intel-core-ultra-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ Ultra 7 Processor 265K (30M Cache, up to 5.50 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/241063/intel-core-ultra-7-processor-265k-30m-cache-up-to-5-50-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Information About Intel® Core™ Ultra Boxed Desktop Processors (Series 2)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000099656/processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel explica que el primer dígito del número de un Core Ultra indica la serie (165H es serie 1, 285K serie 2). La ficha del 265K lo ubica en «Core Ultra (Series 2)» con socket FCLGA1851, y el artículo de cajas dice que la serie 2 de escritorio usa LGA 1851 con chipset de la serie 800.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide por completo."
       },
       "decision": null,
       "huerfana": false
@@ -408,13 +620,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel dice que los procesadores Core (sin Ultra) usan un esquema de nombres más corto, con número de tres dígitos. No explica los dígitos ni compara con la longitud del número de los Core i.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Los procesadores Core sin Ultra usan un número de modelo de tres dígitos, más corto que el de los Core i de generaciones recientes.",
+        "detalle": "El «tres dígitos» está en Intel; «cinco» en los Core i se ve en los nombres (12400F, 14700K) pero no es una frase de la fuente."
       },
       "decision": null,
       "huerfana": false
@@ -441,13 +662,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ i5-12400F Processor (18M Cache, up to 4.40 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/134587/intel-core-i512400f-processor-18m-cache-up-to-4-40-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel presenta los números 9, 7, 5 (y 3 en Core) como niveles de rendimiento y advierte que los números de procesador no miden rendimiento y solo distinguen características dentro de una misma familia, no entre familias.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide, incluido «no sirve para comparar entre familias»."
       },
       "decision": null,
       "huerfana": false
@@ -474,13 +712,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen Processor Cooling Solutions",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/ecosystem/cpu-cooler-solutions.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las páginas de AMD usan Ryzen 3, 5, 7 y 9 como parte del nombre de los modelos (por ejemplo Ryzen 3 8300G, Ryzen 5 5600X, Ryzen 7 7800X3D, Ryzen 9 7950X3D), pero no explican que sean niveles ordenados de menor a mayor.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "AMD nombra sus procesadores Ryzen con una gama dentro de la línea: Ryzen 3, Ryzen 5, Ryzen 7 y Ryzen 9.",
+        "detalle": "Se quita «de menor a mayor» porque AMD no lo enuncia en lo que abrí."
       },
       "decision": null,
       "huerfana": false
@@ -515,13 +770,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Core™ Ultra Desktop Processors (Series 2) Product Brief",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/docs/processors/core-ultra/core-ultra-desktop-processors-series-2-brief.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ Ultra 7 Processor 265K (30M Cache, up to 5.50 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/241063/intel-core-ultra-7-processor-265k-30m-cache-up-to-5-50-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "El resumen de producto de Core Ultra de escritorio (Series 2) muestra modelos Core Ultra 9, 7 y 5 en las listas K y de línea principal; la ficha del 265K confirma «Series 2».",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide."
       },
       "decision": null,
       "huerfana": false
@@ -548,13 +820,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "What Do the Letters Mean in Intel® Processor Names?",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000058567/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ Ultra Desktop Processors (Series 2) Product Brief",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/docs/processors/core-ultra/core-ultra-desktop-processors-series-2-brief.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel define K como desbloqueado, F como «requiere gráficos dedicados» y S como edición especial; lista KF en Core Ultra de escritorio (265KF) sin definirlo, y no define KS.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "En Intel de escritorio, K indica multiplicador desbloqueado, F indica que no trae gráficos integrados y exige tarjeta gráfica aparte, y KF combina ambas cosas. S marca una edición especial; KS es una edición especial de la línea K.",
+        "detalle": "KF = K + F es deducción de las dos definiciones; KS no está definido literalmente (solo S = special edition). Se pide aprobación del dueño o quitar KS."
       },
       "decision": null,
       "huerfana": false
@@ -581,13 +878,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "What Do the Letters Mean in Intel® Processor Names?",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000058567/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Ambas páginas de Intel describen la T de escritorio como «power-optimized lifestyle», es decir, optimizada en consumo.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide."
       },
       "decision": null,
       "huerfana": false
@@ -614,13 +928,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "What Do the Letters Mean in Intel® Processor Names?",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000058567/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel describe H como alto rendimiento para portátil y HX como el máximo rendimiento con todos los modelos desbloqueados (HK con la misma frase en la tabla). No distingue H de HX como «alto» y «máximo»: ambos aparecen como alto rendimiento.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "En portátiles de Intel, H indica alto rendimiento y HX alto rendimiento con todos los modelos desbloqueados.",
+        "detalle": "El texto actual da un escalón (alto / máximo) que Intel no escribe."
       },
       "decision": null,
       "huerfana": false
@@ -647,13 +978,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "What Do the Letters Mean in Intel® Processor Names?",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000058567/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Processor Names, Numbers and Generation List",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/processors/processor-numbers.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ Ultra Processors Names and Numbers",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000097596/processors/intel-core-ultra-processors.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel define U como eficiente en energía para portátil y enumera V entre los sufijos móviles de Core Ultra (ejemplo 228V) sin definirlo en detalle; otro artículo lo asocia a Lunar Lake.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide; el texto ya se limita a decir que V aparece como sufijo de portátil de Core Ultra."
       },
       "decision": null,
       "huerfana": false
@@ -680,13 +1036,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 5 5600X Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/5000-series/amd-ryzen-5-5600x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las páginas de AMD muestran modelos X y XT (5600X, 7700X, 5800XT) pero ninguna que abrí define qué significan X o XT.",
+      "estado": "sin-fuente",
       "propuesta": {
-        "accion": null,
+        "accion": "quitar",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "No hay fuente primaria que defina X/XT; las guías de terceros que aparecieron no las abrí. Si el dueño quiere conservarlo, debería suavizar la frase o aceptar una fuente secundaria que se abra y se cite."
       },
       "decision": null,
       "huerfana": false
@@ -721,13 +1094,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD 3D V-Cache™ Technology",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/technologies/3d-v-cache.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 7800X3D Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7800x3d.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 5800X3D Gaming Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/5000-series/amd-ryzen-7-5800x3d.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "AMD describe 3D V-Cache como una caché vertical (apilada) y ofrece el 7800X3D con socket AM5 y el 5800X3D con socket AM4. En su segunda generación la memoria adicional queda debajo de los núcleos, no encima.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "X3D indica un Ryzen con AMD 3D V-Cache, una memoria caché adicional apilada en vertical junto a los núcleos. Existen modelos X3D en AM4 y en AM5.",
+        "detalle": "«Sobre el chip» solo vale para la primera generación; en la segunda AMD dice que va debajo de los núcleos. Lo de AM4 y AM5 queda confirmado."
       },
       "decision": null,
       "huerfana": false
@@ -762,13 +1168,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 8700G Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/8000-series/amd-ryzen-7-8700g.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen Processor Cooling Solutions",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/ecosystem/cpu-cooler-solutions.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "AMD presenta la serie G como procesadores con gráficos integrados que permiten jugar sin tarjeta gráfica; el 8700G es AM5 con Radeon 780M. El 5600G aparece en AMD solo en la lista de procesadores con cooler incluido, porque su propia ficha en amd.com devolvió 404.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "El Ryzen 5 5600G no tiene ficha vigente en amd.com (URL candidata 404); si el dueño quiere un ejemplo de AM4 con ficha, buscar otra URL o cambiar el ejemplo. Lo demás coincide."
       },
       "decision": null,
       "huerfana": false
@@ -795,13 +1226,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ 5 7500F",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7500f.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 5 8400F Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/8000-series/amd-ryzen-5-8400f.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las fichas de AMD del Ryzen 5 7500F y del Ryzen 5 8400F, ambos AM5, indican «Discrete Graphics Card Required» como modelo de gráficos.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide en los dos modelos F revisados; AMD no escribe una definición general del sufijo, pero las fichas lo muestran."
       },
       "decision": null,
       "huerfana": false
@@ -828,13 +1284,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ Processors for Laptops",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/laptop/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "no define los sufijos de portátil"
+        },
+        {
+          "titulo": "What Does U, H, HS, And HX Mean In AMD Processors?",
+          "editor": "SlashGear",
+          "url": "https://www.slashgear.com/1695345/what-does-u-h-hs-hx-mean-amd-processors",
+          "consultadoEn": "2026-10-14",
+          "tipo": "secundaria",
+          "detalle": "medio de tecnología, no es AMD"
+        }
+      ],
+      "queDiceLaFuente": "La página de portátiles de AMD no define los sufijos. Una nota secundaria (SlashGear) describe U como delgados y de autonomía, HS como alto rendimiento en equipos más delgados y HX como el máximo rendimiento; no define H.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "En portátiles Ryzen, U indica bajo consumo, HS alto rendimiento en equipos más delgados y HX el máximo rendimiento. H también aparece en los nombres de algunos modelos.",
+        "detalle": "Solo hay fuente secundaria; H no está definido. Buscar una página de AMD sobre nomenclatura móvil si se quiere ✅. Se quitó «H alto rendimiento» por falta de respaldo."
       },
       "decision": null,
       "huerfana": false
@@ -869,13 +1342,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ AI 9 HX 370",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-9-hx-370.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ Processors for Laptops",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/laptop/ryzen.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "no define los sufijos de portátil"
+        }
+      ],
+      "queDiceLaFuente": "La ficha de AMD muestra el nombre «AMD Ryzen AI 9 HX 370», familia Ryzen, serie «Ryzen AI 300 Series», socket FP8, para portátil. AMD no explica qué significa cada parte del nombre.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "La existencia del nombre y de la serie AI 300 está confirmada; la lectura (9 = gama, HX = sufijo, 370 = modelo) es una interpretación razonable pero no la declara AMD."
       },
       "decision": null,
       "huerfana": false
@@ -902,13 +1392,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ 7 8700G Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/8000-series/amd-ryzen-7-8700g.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "La ficha de AMD del Ryzen 7 8700G (serie Ryzen 8000) indica socket AM5 y gráficos AMD Radeon 780M.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide."
       },
       "decision": null,
       "huerfana": false
@@ -951,13 +1450,54 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ 5 5600X Desktop Processors",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/5000-series/amd-ryzen-5-5600x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 5800X3D Gaming Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/5000-series/amd-ryzen-7-5800x3d.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 7700X Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7700x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 8700G Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/8000-series/amd-ryzen-7-8700g.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 5 9600X",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-5-9600x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las fichas de AMD ubican al Ryzen 5 5600X (y al 5800X3D) en la serie Ryzen 5000 con socket AM4, y al 7700X, al 8700G y al 9600X en las series 7000, 8000 y 9000 con socket AM5.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "En AMD, el primer dígito del número de modelo es la serie: la serie 5000 de escritorio usa AM4 y las series 7000, 8000G y 9000 usan AM5. Por eso conviene mirar la serie y el socket en la ficha, no solo la gama (3, 5, 7 o 9).",
+        "detalle": "Los datos de socket coinciden. La última frase original («el número solo no basta para saber el socket») se contradice con que la serie sí determina el socket; se reescribe para decir que la gama sola no basta."
       },
       "decision": null,
       "huerfana": false
@@ -992,13 +1532,54 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen™ 5 7600X Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 7700X Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7700x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 5 9600X",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-5-9600x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 9700X",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-7-9700x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 5 7500F",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7500f.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las fichas de AMD del 7600X, 7700X, 9600X y 9700X (AM5) indican gráficos AMD Radeon integrados con 2 unidades de cómputo; el 7500F, con sufijo F, exige tarjeta gráfica aparte.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide. «Básicos» es calificación del texto; las fichas muestran una iGPU de 2 unidades frente a las 12 del 8700G."
       },
       "decision": null,
       "huerfana": false
@@ -1041,13 +1622,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Ryzen Processor Cooling Solutions",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/ecosystem/cpu-cooler-solutions.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 7 7800X3D Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7800x3d.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Ryzen™ 5 7600X Desktop Processor",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600x.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "La página de coolers de AMD lista el Ryzen 5 5600G entre los procesadores que incluyen Wraith Stealth, y las fichas del 7800X3D y del 7600X existen en amd.com.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Los tres existen como productos de AMD. La ficha propia del 5600G devuelve 404 hoy, por eso se respalda con la lista de coolers."
       },
       "decision": null,
       "huerfana": false
@@ -1082,13 +1688,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel® Core™ i5-12400F Processor (18M Cache, up to 4.40 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/134587/intel-core-i512400f-processor-18m-cache-up-to-4-40-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ i7 processor 14700K (33M Cache, up to 5.60 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/236783/intel-core-i7-processor-14700k-33m-cache-up-to-5-60-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Core™ Ultra 7 Processor 265K (30M Cache, up to 5.50 GHz) - Product Specifications",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/241063/intel-core-ultra-7-processor-265k-30m-cache-up-to-5-50-ghz/specifications.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Las fichas de Intel muestran el Core i5-12400F (FCLGA1700), el Core i7-14700K (FCLGA1700) y el Core Ultra 7 265K (FCLGA1851), los tres con estado «Launched».",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide."
       },
       "decision": null,
       "huerfana": false

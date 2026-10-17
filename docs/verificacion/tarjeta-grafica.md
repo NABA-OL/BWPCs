@@ -7,9 +7,9 @@
 
 | Estado | Cantidad |
 |---|---|
-| ⚪ pendiente de verificar | 13 |
-| ✅ la fuente primaria dice lo mismo | 0 |
-| 🟡 coincide en parte o con matices | 0 |
+| ⚪ pendiente de verificar | 0 |
+| ✅ la fuente primaria dice lo mismo | 10 |
+| 🟡 coincide en parte o con matices | 3 |
 | ❌ la fuente lo contradice | 0 |
 | ⚪ sin fuente primaria | 0 |
 
@@ -22,11 +22,12 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › carcasa; tarjeta-grafica › caso grafica-demasiado-larga-para-el-chasis
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** Los fabricantes de chasis indican el largo máximo de tarjeta gráfica que admite cada modelo, y los de tarjetas indican el largo de cada una; se comparan antes de comprar.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Fractal Design North: especificaciones del chasis — https://www.fractal-design.com/products/cases/north/north/charcoal-black/ (consultada 2026-10-14) · sin clasificar
-- **Fuente candidata:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** Fractal Design North: especificaciones del chasis — https://www.fractal-design.com/products/cases/north/north/charcoal-black/ (consultada 2026-10-15) · primaria (fabricante del chasis)
+- **Fuente consultada:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-15) · primaria (fabricante de la tarjeta (Founders Edition))
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5090 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Qué dice la fuente:** Fractal Design publica un largo máximo de tarjeta gráfica para el chasis North (355 mm, o 300 mm con radiador frontal de 360 mm), y NVIDIA publica las medidas de su tarjeta (304 mm de largo en la RTX 5090 Founders Edition) y pide verificar que haya espacio.
+- **Propuesta:** Coincide: el fabricante del chasis y el de la tarjeta publican esas medidas. La nota del chasis sobre el radiador frontal respalda 'compáralos antes de comprar'.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-grosor-en-ranuras — Bracket de salidas de video
@@ -34,10 +35,11 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › bracket
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** Las fichas de las tarjetas gráficas indican cuántas ranuras de expansión ocupan en grosor, y algunas recomiendan dejar libre una ranura más.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-15) · primaria (fabricante de la tarjeta (Founders Edition))
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5090 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Qué dice la fuente:** La ficha de la RTX 5090 Founders Edition indica el ancho en ranuras, y la guía de NVIDIA pide espacio para una tarjeta de 61 mm de alto, quitar dos tapas de ranura y, si es posible, dejar una ranura libre delante de los ventiladores.
+- **Propuesta:** La ficha web dice '2 ranuras' en la tabla pero también habla de 61 mm y de una tarjeta de 3 ranuras en la sección de espacio; confirma que cada modelo indique su grosor, tal como dice el texto.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-conectores-6-y-8-pines-potencia — Conector de energía
@@ -45,11 +47,11 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › conector-energia
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** Un conector PCIe de seis pines entrega hasta 75 W y uno de ocho pines hasta 150 W, según la especificación de PCI-SIG.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Especificaciones de PCI Express — https://pcisig.com/specifications (sin consultar) · sin clasificar
-- **Fuente candidata:** Which PSU cables go where? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/ (consultada 2026-10-13) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide (336521, Rev. 2.1a, alineada con ATX 3.1) — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (especificación de Intel que reproduce lo definido por PCIe CEM 5.1 y remite a pcisig.com para lo vigente; el sitio de PCI-SIG no abrió (403))
+- **Fuente consultada:** Which PSU cables go where? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/ (consultada 2026-10-15) · primaria (fabricante de fuentes)
+- **Qué dice la fuente:** La guía de diseño ATX de Intel, que reproduce PCIe CEM 5.1, define el conector auxiliar de 2x3 (seis pines) para 75 W y el de 2x4 (ocho pines) para 150 W sostenidos; Corsair repite el límite de 150 W por conector de ocho pines.
+- **Propuesta:** No se pudo abrir pcisig.com (403); los valores se confirmaron en la guía ATX de Intel (tabla 3-5). El texto atribuye a PCI-SIG; si el dueño quiere exactitud estricta, puede decir 'según la especificación PCIe CEM'.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-cables-independientes-por-conector — Conector de energía
@@ -57,11 +59,12 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › conector-energia; tarjeta-grafica › caso cable-ramificado-en-varios-conectores
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** Si la tarjeta tiene varios conectores de ocho pines, la práctica recomendada es conectar cada uno con un cable independiente de la fuente, en lugar de un solo cable que se ramifique.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-14) · sin clasificar
-- **Fuente candidata:** Which PSU cables go where? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/ (consultada 2026-10-13) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** 🟡
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5090 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5080 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5080_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Fuente consultada:** Individual 8-pin vs pigtail connectors for GPUs — https://www.corsair.com/ww/pl/explorer/diy-builder/power-supply-units/individual-8-pin-vs-pigtail-connectors-for-gpus/ (consultada 2026-10-15) · primaria (fabricante de fuentes; habla de sus propias fuentes)
+- **Qué dice la fuente:** Las guías de NVIDIA piden conectar el adaptador de sus tarjetas con cables independientes y dedicados de la fuente. Corsair, en cambio, dice que un cable con dos conectores de ocho pines es seguro en sus fuentes y recomienda cables individuales si la fuente es de otra marca.
+- **Propuesta:** El texto publicado lo presenta como práctica general; NVIDIA lo exige para su adaptador y Corsair matiza que cables con dos conectores son válidos en sus fuentes. Reformular para no contradecir a fabricantes de fuentes.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-12v2x6-insertar-por-completo — Conector de energía
@@ -69,11 +72,11 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › conector-energia; tarjeta-grafica › caso conector-de-doce-pines-a-medias
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** El conector de doce pines de la tarjeta (12V-2x6) debe quedar insertado por completo, hasta que no se vea espacio entre los dos cuerpos del conector y el seguro haya cerrado.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Guía del cable nativo 12V-2x6 — https://seasonic.com/insights/seasonic-native-12v-2x6-cable-guide/ (sin consultar) · sin clasificar
-- **Fuente candidata:** Especificaciones de PCI Express — https://pcisig.com/specifications (sin consultar) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** 🟡
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5090 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5080 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5080_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Qué dice la fuente:** La guía de NVIDIA advierte que el conector de 16 pines debe quedar completamente insertado y a ras del receptáculo de la tarjeta, y recomienda enchufarlo a la tarjeta antes de instalarla en la placa. No menciona de forma explícita 'espacio entre los cuerpos' ni el seguro.
+- **Propuesta:** NVIDIA confirma 'completamente insertado y a ras'; el detalle de 'sin espacio entre los dos cuerpos' y 'seguro cerrado' no aparece en las fuentes abiertas (Seasonic dio 403 y PCI-SIG no abrió). El caso 'conector-de-doce-pines-a-medias' repite 'sin espacio visible entre los dos cuerpos': ajustarlo igual si se reformula.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-12v2x6-potencia — Conector de energía
@@ -81,10 +84,12 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › conector-energia
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** Un solo cable 12V-2x6 puede alimentar tarjetas que de otro modo necesitarían varios conectores de ocho pines; el fabricante indica en la ficha de cada modelo cuál usar.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-15) · primaria (fabricante de la tarjeta (Founders Edition))
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5090 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide (336521, Rev. 2.1a, alineada con ATX 3.1) — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (especificación de Intel que reproduce lo definido por PCIe CEM 5.1 y remite a pcisig.com para lo vigente; el sitio de PCI-SIG no abrió (403))
+- **Qué dice la fuente:** NVIDIA indica para la RTX 5090 dos opciones: un solo cable PCIe Gen 5 de 600 W o más (16 pines), o al menos cuatro cables de ocho pines con su adaptador. La guía ATX de Intel define el conector 12V-2x6 para hasta 600 W frente a los 150 W del conector de ocho pines.
+- **Propuesta:** La ficha de NVIDIA no usa el nombre '12V-2x6' (dice cable PCIe Gen 5 de 16 pines); el nombre sale de la guía ATX de Intel.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-ranura-pcie-75w — Conector PCIe de la tarjeta
@@ -92,10 +97,10 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › conector-pcie; tarjeta-grafica › caso grafica-sin-cable-de-energia
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** La ranura PCIe x16 entrega a la tarjeta hasta 75 W; si la tarjeta consume más, el resto debe llegar por sus conectores de energía.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Especificaciones de PCI Express — https://pcisig.com/specifications (sin consultar) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide (336521, Rev. 2.1a, alineada con ATX 3.1) — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (especificación de Intel que reproduce lo definido por PCIe CEM 5.1 y remite a pcisig.com para lo vigente; el sitio de PCI-SIG no abrió (403))
+- **Qué dice la fuente:** La guía ATX de Intel, que sigue PCIe CEM 5.1, dice que las tarjetas toman hasta 75 W de la ranura y el resto por conectores auxiliares; pone el ejemplo de una tarjeta que toma 75 W por el borde de la ranura y 600 W por un 12V-2x6.
+- **Propuesta:** pcisig.com dio 403; confirmado en la guía ATX de Intel (sección 3). El texto dice 'ranura PCIe x16': la guía habla de la ranura de la tarjeta en general.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-fabricantes-chip — Chip gráfico (GPU)
@@ -103,12 +108,13 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › chip-grafico
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** NVIDIA, AMD e Intel diseñan los chips gráficos de las tarjetas de escritorio, y varias ensambladoras fabrican y venden tarjetas con ese chip y su propio disipador y ventiladores.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** NVIDIA GeForce: tarjetas gráficas — https://www.nvidia.com/en-us/geforce/graphics-cards/ (consultada 2026-10-14) · sin clasificar
-- **Fuente candidata:** Tarjetas gráficas AMD Radeon para escritorio — https://www.amd.com/en/products/graphics/desktops/radeon.html (sin consultar) · sin clasificar
-- **Fuente candidata:** Gráficos dedicados Intel Arc — https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** 🟡
+- **Fuente consultada:** NVIDIA GeForce: tarjetas gráficas — https://www.nvidia.com/en-us/geforce/graphics-cards/ (consultada 2026-10-15) · primaria
+- **Fuente consultada:** Nuevas tarjetas gráficas y portátiles GeForce RTX 50 (anuncio) — https://www.nvidia.com/en-us/geforce/news/rtx-50-series-graphics-cards-gpu-laptop-announcements/ (consultada 2026-10-15) · primaria
+- **Fuente consultada:** AMD Radeon RX Graphics Cards — https://www.amd.com/en/products/graphics/desktops/radeon.html (consultada 2026-10-15) · primaria (consultada con curl)
+- **Fuente consultada:** Gráficos dedicados Intel Arc — https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html (consultada 2026-10-15) · primaria
+- **Qué dice la fuente:** NVIDIA, AMD e Intel presentan tarjetas gráficas de escritorio con sus marcas GeForce, Radeon y Arc. NVIDIA dice que habrá modelos de proveedores como ASUS, GIGABYTE o MSI, y AMD muestra diseños de socios (ASUS, GIGABYTE, SAPPHIRE, XFX y otros); la página de Intel no menciona socios.
+- **Propuesta:** 'Su propio disipador y ventiladores' no aparece como tal en las páginas abiertas, y Intel no menciona ensambladoras. Se reformula a lo que sí dicen las fuentes.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-marca-nvidia-geforce — Chip gráfico (GPU) · opción NVIDIA
@@ -116,10 +122,10 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › chip-grafico › opción nvidia
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** NVIDIA vende sus tarjetas gráficas para escritorio bajo la marca GeForce.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** NVIDIA GeForce: tarjetas gráficas — https://www.nvidia.com/en-us/geforce/graphics-cards/ (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** NVIDIA GeForce: tarjetas gráficas — https://www.nvidia.com/en-us/geforce/graphics-cards/ (consultada 2026-10-15) · primaria
+- **Qué dice la fuente:** La página de NVIDIA presenta sus tarjetas gráficas para escritorio bajo la marca GeForce (por ejemplo, la serie GeForce RTX 50).
+- **Propuesta:** mantener
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-marca-amd-radeon — Chip gráfico (GPU) · opción AMD
@@ -127,10 +133,10 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › chip-grafico › opción amd
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** AMD vende sus tarjetas gráficas para escritorio bajo la marca Radeon.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Tarjetas gráficas AMD Radeon para escritorio — https://www.amd.com/en/products/graphics/desktops/radeon.html (sin consultar) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** AMD Radeon RX Graphics Cards — https://www.amd.com/en/products/graphics/desktops/radeon.html (consultada 2026-10-15) · primaria (consultada con curl)
+- **Qué dice la fuente:** La página de AMD presenta sus tarjetas gráficas de escritorio como Radeon RX (serie RX 9000).
+- **Propuesta:** mantener
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-marca-intel-arc — Chip gráfico (GPU) · opción Intel
@@ -138,10 +144,10 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › chip-grafico › opción intel
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** Intel vende sus tarjetas gráficas dedicadas bajo la marca Arc.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Gráficos dedicados Intel Arc — https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** Gráficos dedicados Intel Arc — https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html (consultada 2026-10-15) · primaria
+- **Qué dice la fuente:** Intel presenta sus tarjetas gráficas dedicadas de escritorio bajo la marca Intel Arc (serie B).
+- **Propuesta:** mantener
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-vram-nombres — Memoria de video (VRAM)
@@ -149,10 +155,11 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › memoria-vram
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** La memoria de video de las tarjetas gráficas se nombra por su tipo: GDDR6, GDDR6X y GDDR7 son los tipos que aparecen en las tarjetas actuales.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Memoria gráfica de Micron (GDDR6, GDDR6X y GDDR7) — https://www.micron.com/products/memory/graphics-memory (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** Memoria gráfica de Micron (GDDR6, GDDR6X y GDDR7) — https://www.micron.com/products/memory/graphics-memory (consultada 2026-10-15) · primaria (fabricante de la memoria)
+- **Fuente consultada:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-15) · primaria (fabricante de la tarjeta (Founders Edition))
+- **Qué dice la fuente:** Micron lista GDDR6, GDDR6X y GDDR7 como sus memorias gráficas (GDDR7 como la más reciente), y la ficha de la RTX 5090 declara 32 GB de GDDR7.
+- **Propuesta:** Las fuentes abiertas no listan qué tarjetas usan GDDR6 o GDDR6X, pero sí los tres nombres de tipo y un uso real de GDDR7.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### gr-potencia-fuente-recomendada — Qué mirar al elegir una tarjeta gráfica
@@ -160,10 +167,12 @@ Hechos: 13 · casos: 4 · criterios: 1 · decisiones del dueño: 0 aprobar, 0 aj
 - **Dónde:** tarjeta-grafica › sección elegir
 - **Usado por:** tarjeta-grafica
 - **Texto publicado:** El fabricante de cada tarjeta publica la potencia de fuente recomendada y los conectores de energía que necesita; esos datos están en la ficha del modelo.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-14) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** NVIDIA GeForce RTX 5090: ficha del modelo — https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/ (consultada 2026-10-15) · primaria (fabricante de la tarjeta (Founders Edition))
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5090 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Fuente consultada:** Guía de inicio rápido GeForce RTX 5080 — https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5080_User_Guide_Rev1.pdf (consultada 2026-10-15) · primaria (PDF oficial del fabricante; texto extraído con pdftotext)
+- **Qué dice la fuente:** NVIDIA publica en la ficha y en la guía de cada modelo la potencia mínima de fuente (1000 W en la RTX 5090, 850 W en la RTX 5080) y los conectores de energía necesarios.
+- **Propuesta:** Evidencia de NVIDIA (Founders Edition); los modelos de ensambladoras pueden variar en su propia ficha.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ## Casos del taller

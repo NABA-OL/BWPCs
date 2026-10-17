@@ -7,9 +7,9 @@
 
 | Estado | Cantidad |
 |---|---|
-| ⚪ pendiente de verificar | 3 |
-| ✅ la fuente primaria dice lo mismo | 18 |
-| 🟡 coincide en parte o con matices | 8 |
+| ⚪ pendiente de verificar | 0 |
+| ✅ la fuente primaria dice lo mismo | 20 |
+| 🟡 coincide en parte o con matices | 9 |
 | ❌ la fuente lo contradice | 0 |
 | ⚪ sin fuente primaria | 0 |
 
@@ -352,10 +352,10 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Dónde:** procesador › ihs; procesador › caso pasta-termica-mal-aplicada; refrigeracion › base; refrigeracion › caso pasta-termica-mal-aplicada; refrigeracion › comparación aire-vs-liquida › Pasta térmica
 - **Usado por:** procesador, refrigeracion
 - **Texto publicado:** La pasta térmica va entre la tapa metálica del procesador (IHS) y la base del disipador.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** How to Install or Remove an AMD CPU Cooler — https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html (consultada 2026-10-11) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** How to Install or Remove an AMD CPU Cooler (CPU-7) — https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html (consultada 2026-10-15) · primaria (artículo de soporte del fabricante; dice «lid» (tapa) del procesador, no «IHS»; abrió con curl)
+- **Qué dice la fuente:** AMD indica aplicar una capa fina de pasta térmica sobre la tapa (lid) del procesador y luego apoyar el disipador encima; pide limpiar la tapa y la placa base del disipador de pasta vieja antes de reinstalar, y aclara que si el disipador nuevo ya trae pasta no hay que agregar más.
+- **Propuesta:** mantener. La fuente respalda el texto: la pasta va entre la tapa del procesador y la base del disipador. AMD escribe «tapa» (lid); «IHS» es el nombre técnico equivalente.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### pcie-6-2-graficas — Conector PCIe 6+2 de la gráfica
@@ -363,11 +363,11 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Dónde:** fuente-de-poder › pcie-6-2; fuente-de-poder › sección elegir; fuente-de-poder › caso grafica-sin-cable-de-energia; tarjeta-grafica › conector-energia
 - **Usado por:** fuente-de-poder, tarjeta-grafica
 - **Texto publicado:** Las tarjetas gráficas que piden conectores de ocho pines usan el cable PCIe 6+2 de la fuente: seis pines más dos que se acoplan.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Which PSU cables go where? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/ (consultada 2026-10-13) · sin clasificar
-- **Fuente candidata:** Especificaciones de PCI Express — https://pcisig.com/specifications (sin consultar) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** ✅
+- **Fuente consultada:** Which PSU cables go where? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/ (consultada 2026-10-15) · primaria (guía del fabricante de fuentes)
+- **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide, Rev. 2.1a (noviembre de 2023) · secciones 1.3, 3.2, 3.3 y 5.2.2.4 — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (documento de Intel; refleja PCIe CEM 5.1)
+- **Qué dice la fuente:** Corsair describe el cable PCIe de 8 pines como un conector de 6 pines con otro de 2 pines que cuelga al lado, y se acopla al zócalo de 8 pines de la gráfica (o se usa solo el de 6 si basta). La guía de Intel define los conectores auxiliares 2x3 (75 W) y 2x4 (150 W) y dice que el 2x4 de la tarjeta también acepta el enchufe 2x3.
+- **Propuesta:** mantener. El texto coincide con Corsair e Intel. Matiz opcional: la fuente no dice que sean «las tarjetas que piden ocho pines» usen siempre 6+2; algunas fuentes traen el cable de 8 pines fijo. Los nombres «6+2»/«2x4» no vienen del PCI-SIG (su página dio 403).
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
 
 ### conector-12v-2x6 — Conector 12V-2x6 de la gráfica
@@ -375,8 +375,9 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Dónde:** fuente-de-poder › 12v-2x6; fuente-de-poder › sección elegir; fuente-de-poder › caso conector-12v-2x6-a-medias; tarjeta-grafica › conector-energia
 - **Usado por:** fuente-de-poder, tarjeta-grafica
 - **Texto publicado:** El conector 12V-2x6 (ATX 3.1 y PCIe CEM 5.1) reemplazó al 12VHPWR en las tarjetas gráficas nuevas y debe quedar insertado por completo.
-- **Estado:** ⚪ pendiente de verificar
-- **Fuente candidata:** Especificaciones de PCI Express — https://pcisig.com/specifications (sin consultar) · sin clasificar
-- **Qué dice la fuente:** —
-- **Propuesta:** —
+- **Estado:** 🟡
+- **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide, Rev. 2.1a (noviembre de 2023) · secciones 1.3, 3.2, 3.3 y 5.2.2.4 — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (documento de Intel; refleja PCIe CEM 5.1)
+- **Fuente consultada:** Does the 50 series need a 12V-2x6 cable? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/does-the-50-series-need-a-12v-2x6-cable/ (consultada 2026-10-15) · primaria (fabricante de fuentes; solo confirma que las RTX 50 usan 12V-2x6; no habla de ATX 3.1 ni de insertar por completo)
+- **Qué dice la fuente:** La guía de Intel dice que el 12V-2x6 de PCIe CEM 5.1 reemplaza al 12VHPWR de CEM 5.0 para corregir problemas de fiabilidad, y que los diseños nuevos deben montar solo el 12V-2x6. Añade que un conector sin asentar del todo hace que la tarjeta lea 0 W en las señales SENSE y no tome energía por el cable. El documento se titula «ATX Version 3»; el nombre «ATX 3.1» no aparece en él.
+- **Propuesta:** reformular. Respaldado: reemplazo del 12VHPWR por el 12V-2x6 en CEM 5.1 e inserción completa. «ATX 3.1» no figura en el documento de Intel (se llama «ATX Version 3», Rev. 2.1a); solo aparece en medios secundarios, así que se quita o se deja como nombre comercial aparte. La especificación del PCI-SIG no abrió (403), por lo que se citó la guía de Intel, que la reproduce.
 - **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______

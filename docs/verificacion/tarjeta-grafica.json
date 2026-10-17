@@ -34,13 +34,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Fractal Design North: especificaciones del chasis",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/north/north/charcoal-black/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante del chasis"
+        },
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de la tarjeta (Founders Edition)"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5090",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        }
+      ],
+      "queDiceLaFuente": "Fractal Design publica un largo máximo de tarjeta gráfica para el chasis North (355 mm, o 300 mm con radiador frontal de 360 mm), y NVIDIA publica las medidas de su tarjeta (304 mm de largo en la RTX 5090 Founders Edition) y pide verificar que haya espacio.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Coincide: el fabricante del chasis y el de la tarjeta publican esas medidas. La nota del chasis sobre el radiador frontal respalda 'compáralos antes de comprar'."
       },
       "decision": null,
       "huerfana": false
@@ -67,13 +92,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de la tarjeta (Founders Edition)"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5090",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        }
+      ],
+      "queDiceLaFuente": "La ficha de la RTX 5090 Founders Edition indica el ancho en ranuras, y la guía de NVIDIA pide espacio para una tarjeta de 61 mm de alto, quitar dos tapas de ranura y, si es posible, dejar una ranura libre delante de los ventiladores.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "La ficha web dice '2 ranuras' en la tabla pero también habla de 61 mm y de una tarjeta de 3 ranuras en la sección de espacio; confirma que cada modelo indique su grosor, tal como dice el texto."
       },
       "decision": null,
       "huerfana": false
@@ -108,13 +150,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide (336521, Rev. 2.1a, alineada con ATX 3.1)",
+          "editor": "Intel",
+          "url": "https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "especificación de Intel que reproduce lo definido por PCIe CEM 5.1 y remite a pcisig.com para lo vigente; el sitio de PCI-SIG no abrió (403)"
+        },
+        {
+          "titulo": "Which PSU cables go where?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de fuentes"
+        }
+      ],
+      "queDiceLaFuente": "La guía de diseño ATX de Intel, que reproduce PCIe CEM 5.1, define el conector auxiliar de 2x3 (seis pines) para 75 W y el de 2x4 (ocho pines) para 150 W sostenidos; Corsair repite el límite de 150 W por conector de ocho pines.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "No se pudo abrir pcisig.com (403); los valores se confirmaron en la guía ATX de Intel (tabla 3-5). El texto atribuye a PCI-SIG; si el dueño quiere exactitud estricta, puede decir 'según la especificación PCIe CEM'."
       },
       "decision": null,
       "huerfana": false
@@ -151,13 +210,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5090",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5080",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5080_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        },
+        {
+          "titulo": "Individual 8-pin vs pigtail connectors for GPUs",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/ww/pl/explorer/diy-builder/power-supply-units/individual-8-pin-vs-pigtail-connectors-for-gpus/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de fuentes; habla de sus propias fuentes"
+        }
+      ],
+      "queDiceLaFuente": "Las guías de NVIDIA piden conectar el adaptador de sus tarjetas con cables independientes y dedicados de la fuente. Corsair, en cambio, dice que un cable con dos conectores de ocho pines es seguro en sus fuentes y recomienda cables individuales si la fuente es de otra marca.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Para el adaptador de sus tarjetas, NVIDIA indica conectar cada conector de ocho pines con un cable independiente de la fuente; algunos fabricantes de fuentes aceptan cables con dos conectores en sus propios modelos, así que sigue la guía de tu tarjeta y de tu fuente.",
+        "detalle": "El texto publicado lo presenta como práctica general; NVIDIA lo exige para su adaptador y Corsair matiza que cables con dos conectores son válidos en sus fuentes. Reformular para no contradecir a fabricantes de fuentes."
       },
       "decision": null,
       "huerfana": false
@@ -194,13 +278,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5090",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5080",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5080_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        }
+      ],
+      "queDiceLaFuente": "La guía de NVIDIA advierte que el conector de 16 pines debe quedar completamente insertado y a ras del receptáculo de la tarjeta, y recomienda enchufarlo a la tarjeta antes de instalarla en la placa. No menciona de forma explícita 'espacio entre los cuerpos' ni el seguro.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "El conector de doce pines de la tarjeta (12V-2x6) debe quedar insertado por completo y a ras del receptáculo de la tarjeta, como indica NVIDIA; revisa la guía de tu tarjeta y de tu fuente.",
+        "detalle": "NVIDIA confirma 'completamente insertado y a ras'; el detalle de 'sin espacio entre los dos cuerpos' y 'seguro cerrado' no aparece en las fuentes abiertas (Seasonic dio 403 y PCI-SIG no abrió). El caso 'conector-de-doce-pines-a-medias' repite 'sin espacio visible entre los dos cuerpos': ajustarlo igual si se reformula."
       },
       "decision": null,
       "huerfana": false
@@ -227,13 +328,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de la tarjeta (Founders Edition)"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5090",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        },
+        {
+          "titulo": "ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide (336521, Rev. 2.1a, alineada con ATX 3.1)",
+          "editor": "Intel",
+          "url": "https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "especificación de Intel que reproduce lo definido por PCIe CEM 5.1 y remite a pcisig.com para lo vigente; el sitio de PCI-SIG no abrió (403)"
+        }
+      ],
+      "queDiceLaFuente": "NVIDIA indica para la RTX 5090 dos opciones: un solo cable PCIe Gen 5 de 600 W o más (16 pines), o al menos cuatro cables de ocho pines con su adaptador. La guía ATX de Intel define el conector 12V-2x6 para hasta 600 W frente a los 150 W del conector de ocho pines.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "La ficha de NVIDIA no usa el nombre '12V-2x6' (dice cable PCIe Gen 5 de 16 pines); el nombre sale de la guía ATX de Intel."
       },
       "decision": null,
       "huerfana": false
@@ -262,13 +388,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide (336521, Rev. 2.1a, alineada con ATX 3.1)",
+          "editor": "Intel",
+          "url": "https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "especificación de Intel que reproduce lo definido por PCIe CEM 5.1 y remite a pcisig.com para lo vigente; el sitio de PCI-SIG no abrió (403)"
+        }
+      ],
+      "queDiceLaFuente": "La guía ATX de Intel, que sigue PCIe CEM 5.1, dice que las tarjetas toman hasta 75 W de la ranura y el resto por conectores auxiliares; pone el ejemplo de una tarjeta que toma 75 W por el borde de la ranura y 600 W por un 12V-2x6.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "pcisig.com dio 403; confirmado en la guía ATX de Intel (sección 3). El texto dice 'ranura PCIe x16': la guía habla de la ranura de la tarjeta en general."
       },
       "decision": null,
       "huerfana": false
@@ -311,13 +446,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NVIDIA GeForce: tarjetas gráficas",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Nuevas tarjetas gráficas y portátiles GeForce RTX 50 (anuncio)",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/news/rtx-50-series-graphics-cards-gpu-laptop-announcements/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "AMD Radeon RX Graphics Cards",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/graphics/desktops/radeon.html",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "consultada con curl"
+        },
+        {
+          "titulo": "Gráficos dedicados Intel Arc",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "NVIDIA, AMD e Intel presentan tarjetas gráficas de escritorio con sus marcas GeForce, Radeon y Arc. NVIDIA dice que habrá modelos de proveedores como ASUS, GIGABYTE o MSI, y AMD muestra diseños de socios (ASUS, GIGABYTE, SAPPHIRE, XFX y otros); la página de Intel no menciona socios.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "NVIDIA, AMD e Intel venden tarjetas gráficas de escritorio con chips propios, y varias ensambladoras ofrecen tarjetas con esos chips en diseños propios; NVIDIA y AMD lo señalan en sus páginas.",
+        "detalle": "'Su propio disipador y ventiladores' no aparece como tal en las páginas abiertas, y Intel no menciona ensambladoras. Se reformula a lo que sí dicen las fuentes."
       },
       "decision": null,
       "huerfana": false
@@ -344,11 +512,20 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NVIDIA GeForce: tarjetas gráficas",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "La página de NVIDIA presenta sus tarjetas gráficas para escritorio bajo la marca GeForce (por ejemplo, la serie GeForce RTX 50).",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
         "detalle": null
       },
@@ -377,11 +554,20 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "AMD Radeon RX Graphics Cards",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/graphics/desktops/radeon.html",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "consultada con curl"
+        }
+      ],
+      "queDiceLaFuente": "La página de AMD presenta sus tarjetas gráficas de escritorio como Radeon RX (serie RX 9000).",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
         "detalle": null
       },
@@ -410,11 +596,20 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Gráficos dedicados Intel Arc",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/details/discrete-gpus/arc.html",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Intel presenta sus tarjetas gráficas dedicadas de escritorio bajo la marca Intel Arc (serie B).",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
         "detalle": null
       },
@@ -443,13 +638,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Memoria gráfica de Micron (GDDR6, GDDR6X y GDDR7)",
+          "editor": "Micron",
+          "url": "https://www.micron.com/products/memory/graphics-memory",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de la memoria"
+        },
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de la tarjeta (Founders Edition)"
+        }
+      ],
+      "queDiceLaFuente": "Micron lista GDDR6, GDDR6X y GDDR7 como sus memorias gráficas (GDDR7 como la más reciente), y la ficha de la RTX 5090 declara 32 GB de GDDR7.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Las fuentes abiertas no listan qué tarjetas usan GDDR6 o GDDR6X, pero sí los tres nombres de tipo y un uso real de GDDR7."
       },
       "decision": null,
       "huerfana": false
@@ -476,13 +688,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NVIDIA GeForce RTX 5090: ficha del modelo",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de la tarjeta (Founders Edition)"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5090",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5090_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        },
+        {
+          "titulo": "Guía de inicio rápido GeForce RTX 5080",
+          "editor": "NVIDIA",
+          "url": "https://www.nvidia.com/content/geforce-gtx/GeForce_RTX_5080_User_Guide_Rev1.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "PDF oficial del fabricante; texto extraído con pdftotext"
+        }
+      ],
+      "queDiceLaFuente": "NVIDIA publica en la ficha y en la guía de cada modelo la potencia mínima de fuente (1000 W en la RTX 5090, 850 W en la RTX 5080) y los conectores de energía necesarios.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "Evidencia de NVIDIA (Founders Edition); los modelos de ensambladoras pueden variar en su propia ficha."
       },
       "decision": null,
       "huerfana": false

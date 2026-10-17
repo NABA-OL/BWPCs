@@ -13,7 +13,7 @@
 | ❌ la fuente lo contradice | 1 |
 | ⚪ sin fuente primaria | 1 |
 
-Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 ajustar, 0 quitar, 17 hechos sin decidir.
+Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 13 ajustar, 1 quitar, 3 hechos sin decidir.
 
 ## Hechos
 
@@ -53,7 +53,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** What Are the Hardware Requirements for Overclocking an Intel® Processor? — https://www.intel.com/content/www/us/en/support/articles/000097808/processors/intel-core-processors.html (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** La tabla de AMD marca overclock del procesador habilitado en X870E, X870, B850, X670E y X670, y no habilitado en B840 ni A620; el ajuste de memoria (EXPO) figura habilitado en todos los de la tabla. En Intel, ARK marca ajuste de procesador y de reloj base solo en los Z (Z890, Z790, Z690); los B y H permiten como mucho ajustar la memoria (H610 y H810 ni eso). El artículo de Intel pide un procesador con multiplicador desbloqueado (sufijo K o X) y, en general, un chipset de la serie Z.
 - **Propuesta:** reformular a: «No todos los chipsets permiten ajustar la frecuencia del procesador. En AM5, AMD lo habilita en X870E, X870, B850, X670E y X670, pero no en B840 ni A620. En Intel hace falta un procesador desbloqueado (sufijo K) y un chipset de la serie Z; con otros chipsets, como mucho se puede ajustar la memoria.» El texto actual no es falso, pero omite X670/X670E y pone el A620 solo como «entrada». Dato que envejece.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «No todos los chipsets están pensados para ajustar la frecuencia del procesador. Lo recomendable es usar los que lo habilitan de forma oficial: en AM5, X870E, X870, B850, X670E y X670; en Intel, la serie Z con un procesador desbloqueado (sufijo K). Algunas placas con otros chipsets, como ciertas de la serie B, también permiten ajustes según el fabricante y el modelo; no es lo recomendable y exige que la placa tenga un buen VRM (fases de alimentación).»  ☐ quitar   Nota: ajustado por NB 2026-10-15 (dictado). La parte de placas B con buen VRM es experiencia del taller, sin fuente: confirmar la redacción final.
 
 ### chipsets-intel — Chipset
 - **Tipo:** hecho
@@ -65,7 +65,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Intel® Z890 Chipset (ARK) — https://www.intel.com/content/www/us/en/products/sku/237777/intel-z890-chipset/specifications.html (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** ARK lista, en la serie 600: H610, B660, H670, Z690 (y variantes de negocio); en la 700: B760, H770, Z790; en la 800: Z890, B860, H810 (y variantes de negocio Q870, W880, W890). Faltan en el texto el H770 (LGA 1700) y la palabra «incluyen» para LGA 1700 (está como «son»). Los de LGA 1851 coinciden.
 - **Propuesta:** reformular a: «Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.» Revisar cuando Intel agregue chipsets.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15)
 
 ### chipset-enlace-procesador — Chipset
 - **Tipo:** hecho
@@ -77,7 +77,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** AMD Socket AM5 Chipset for Motherboards — https://www.amd.com/en/products/processors/chipsets/am5.html (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** La ficha de Intel lista las líneas DMI del chipset (8) y la revisión DMI (4.0): confirma que Intel une chipset y procesador por DMI. La página de AMD separa las líneas PCIe del procesador de las que provee el chipset, pero no describe en palabras el enlace entre ambos ni que sea PCIe. Lo de «los dispositivos comparten el enlace» no aparece expresado en ninguna de las dos.
 - **Propuesta:** reformular a: «El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.» Quitar la afirmación de que en AMD son líneas PCIe (solo la respaldan fuentes secundarias que aparecieron en una búsqueda y no abrí), o respaldarla con un documento técnico de AMD.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. En AMD el enlace no tiene un nombre propio, pero cumple la misma función. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.»  ☐ quitar   Nota: propuesta aprobada con el agregado de AMD pedido por NB (2026-10-15). La frase de AMD no tiene fuente abierta.
 
 ### chipset-vs-procesador-lineas — Chipset
 - **Tipo:** hecho
@@ -103,7 +103,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Manual de la B650 AORUS ELITE AX (Gigabyte) — https://download.gigabyte.com/FileList/Manual/mb_manual_b650-aorus-elite-ax_1204_e.pdf (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** La guía de SSI dice que la energía del procesador debe obtenerse con convertidores locales CC-CC que idealmente parten del riel de +12 V, aunque pueden partir de otros rieles. El manual de Gigabyte dice que el conector de 12 V alimenta principalmente al procesador y que sin él el equipo no enciende. Ninguna fuente usa el término VRM ni la frase exacta.
 - **Propuesta:** reformular a: «El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador.» Sigue sin cifras de «fases» (regla V2 del plan).
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador. Junto con los condensadores que lo rodean, filtra el ruido y los picos para mantener el voltaje estable, porque un voltaje alto puede dañar el procesador. Un procesador más potente consume más y suele pedir más fases de alimentación: con menos fases puede funcionar, pero la placa se vuelve inestable bajo carga.»  ☐ quitar   Nota: propuesta aprobada con el agregado de condensadores y fases pedido por NB (2026-10-15). Ese agregado es experiencia del taller, sin fuente: confirmar la redacción final.
 
 ### pcie-x16-cableada-menos-lineas — Ranuras PCIe secundarias
 - **Tipo:** hecho
@@ -128,7 +128,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** SATA-IO, guía de nombres — https://sata-io.org/developers/sata-naming-guidelines (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** SATA-IO confirma 6 Gb/s y habla de 600 MB/s como tasa del enlace, pero aclara que no todo es dato útil por el protocolo (comandos y confirmaciones). Además pide NO usar «SATA III» ni «SATA 3.0» en nombres de producto y usar «SATA 6Gb/s». El texto actual dice «velocidad útil» (incorrecto según SATA-IO) y usa el nombre desaconsejado.
 - **Propuesta:** reformular a: «Los puertos SATA de las placas actuales son de 6 Gb/s (unos 600 MB/s como tope del enlace); la velocidad real que logra una unidad es menor.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Los puertos SATA de las placas actuales son de 6 Gb/s (unos 600 MB/s como tope del enlace); la velocidad real que logra una unidad es menor.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15)
 
 ### escudo-es-integrado-o-suelto — Puertos traseros (E/S)
 - **Tipo:** hecho
@@ -167,7 +167,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** ASUS, TUF GAMING B550-PLUS — https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-b550-plus/ (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** El manual de MSI explica que cada conector puede trabajar en modo PWM (12 V constantes y señal de control) o modo DC (control por voltaje) y que se elige en la BIOS. ASUS indica que los cabezales del chasis de esa placa detectan solos si el ventilador es PWM o DC. Eso respalda la idea, pero con matices: en algunas placas hay que cambiar el modo a mano y no todos los cabezales (por ejemplo, el del procesador) se comportan igual. La especificación Intel de 4 hilos y el white paper de Noctua no se pudieron abrir.
 - **Propuesta:** reformular a: «Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15)
 
 ### panel-frontal-conexiones — Conectores del frente del chasis
 - **Tipo:** hecho
@@ -194,7 +194,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Manuales ASUS PRIME B850-PLUS y MSI B760 GAMING PLUS WIFI DDR4 (URLs arriba) · primaria
 - **Qué dice la fuente:** Intel define el encabezado USB 2.0 de 2x5 con una posición de llave (nueve pines con señal) y numera 19 pines para el USB 3.0 interno. Los manuales de ASUS y MSI muestran un encabezado USB 2.0, un encabezado USB de 5 Gbps y un conector «USB Type-C front panel». Lo que NO encontré en fuente primaria: el «20 pines» del USB 3.x ni el nombre «Key-A» para el USB-C (solo salió en foros y fichas de tiendas).
 - **Propuesta:** reformular a: «Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15): se nombra por tipo, no por la marca de cada fabricante
 
 ### audio-frontal-hd — Conectores del frente del chasis
 - **Tipo:** hecho
@@ -207,7 +207,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Intel, Front Panel I/O Connectivity Design Guide, Rev. 1.1 — https://cdn.hackaday.io/files/1626526958903168/600569-fpio-dg-rev1p1.pdf (consultada 2026-10-13) · primaria (copia de terceros)
 - **Qué dice la fuente:** El manual de ASUS describe el conector «F_AUDIO» como para un módulo de audio frontal que soporta HD Audio; el de MSI lo llama «JAUD1». La rotulación «AAFP» solo aparece como etiqueta en un dibujo de otra placa ASUS (la Mini-ITX), no como el nombre del cabezal. La guía de Intel que abrí describe el cabezal de 10 posiciones (una es llave) con la tabla de señales de la generación anterior y no menciona «HD Audio»; la especificación Intel HD Audio no la abrí.
 - **Propuesta:** reformular a: «Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1).»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1), pero es el mismo tipo de conector, para que funcione con el cable de audio de los chasis.»  ☐ quitar   Nota: aprobada la propuesta de reformular con el agregado de NB (2026-10-15): mismo conector con distinto nombre según la marca. Lo de la compatibilidad con los chasis es criterio de NB, sin fuente.
 
 ### bateria-cr2032 — Batería de la placa (CMOS)
 - **Tipo:** hecho
@@ -272,7 +272,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** What Is Trusted Platform Model (TPM) and Its Relation to Intel® Platform Trust Technology (Intel® PTT)? — https://www.intel.com/content/www/us/en/support/articles/000094205/processors/intel-core-processors.html (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Microsoft pide firmware UEFI «con capacidad de arranque seguro» (no dice que deba estar activado) y TPM versión 2.0. Su página de soporte dice que la opción puede llamarse «AMD fTPM switch», «AMD PSP fTPM», «Intel PTT» o «Intel Platform Trust Technology» y estar en menús de seguridad de la BIOS. Intel describe PTT como un TPM 2.0 integrado en el firmware, presente desde la 8.ª generación Core.
 - **Propuesta:** reformular a: «Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS como fTPM (AMD) o PTT (Intel).» (Cambio clave: «exige arranque seguro» → «capacidad de arranque seguro».)
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS, y cada fabricante de procesador lo llama distinto: fTPM en AMD y PTT en Intel, pero cumplen la misma función.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15); se agrega que fTPM y PTT son lo mismo con otro nombre (pedido de NB).
 
 ### errores-rgb-vs-argb — Errores comunes de compatibilidad
 - **Tipo:** hecho
@@ -286,7 +286,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** ASUS ROG Crosshair X870E Extreme, especificaciones — https://rog.asus.com/motherboards/rog-crosshair/rog-crosshair-x870e-extreme/spec/ (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** Los voltajes y los pines coinciden: MSI describe un conector RGB de 4 pines para tiras de 12 V y conectores ARGB de 3 pines (A-RAINBOW V2); ASUS describe el cabezal Aura RGB como 12V/G/R/B y el direccionable como 5V/Data/Ground. MSI advierte que conectar una tira ARGB de 5 V al conector JRGB daña la tira. Lo que NO respaldan: que se pueda dañar «la placa» (solo se menciona la tira), ni el sentido contrario (12 V en un conector de 5 V). Además hay excepciones al número de pines: la Crosshair X870E Extreme de ASUS lista un cabezal ARGB Gen 2 de 6 pines.
 - **Propuesta:** reformular a: «Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Confirma en el manual de tu placa cuáles conectores trae.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Fíjate bien en la orientación: el conector del cable y el de la placa traen una marca de pin 1 (una flecha o un triángulo) que debe quedar alineada; conectarlo al revés puede dañar las luces o la placa. Confirma en el manual de tu placa cuáles conectores trae.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15) con el agregado de la orientación (NB). La advertencia de conectar al revés es experiencia del taller, sin fuente: confirmar la redacción final.
 
 ### errores-bios-flash-usb — Errores comunes de compatibilidad
 - **Tipo:** hecho
@@ -313,7 +313,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Wikipedia, Motherboard form factor — https://en.wikipedia.org/wiki/Motherboard_form_factor (consultada 2026-10-13) · secundaria
 - **Qué dice la fuente:** La ATX 2.2 dice textualmente que el formato admite hasta siete ranuras; su figura de contornos marca un máximo de cuatro ubicaciones junto al contorno microATX. La especificación microATX propia no pude abrirla. El white paper de VIA describe su placa Mini-ITX con una ranura PCI y la ASUS ROG STRIX B850-I (Mini-ITX) trae una sola ranura PCIe. Son máximos: la ASUS PRIME B850-PLUS, que es ATX, trae solo 2 ranuras PCIe, y la PRIME Z890M-PLUS WIFI, que es Micro-ATX, trae 4.
 - **Propuesta:** reformular a: «Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15). NB dictó «ATX hasta 6»; la propuesta y la fuente dicen siete, se dejó siete. Pendiente opcional: aclarar que algunas Mini-ITX traen la ranura PCIe en otra orientación y que en ATX no todas las ranuras son PCIe.
 
 ### tamanos-chasis-compatibles — Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX
 - **Tipo:** hecho
@@ -326,7 +326,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Wikipedia, Motherboard form factor y ATX — https://en.wikipedia.org/wiki/Motherboard_form_factor (consultada 2026-10-13) · secundaria
 - **Qué dice la fuente:** La ATX 2.2 afirma que el tamaño de la ATX completa permite que muchos chasis ATX acepten también placas microATX. Para Mini-ITX, el white paper original de VIA habla de montarla en chasis FlexATX o microATX modificando las posiciones de los orificios; que hoy los orificios coincidan con los de ATX lo dice Wikipedia (secundaria), y la especificación de Intel que lo confirmaría no la pude abrir.
 - **Propuesta:** reformular a: «Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15)
 
 ### tamanos-e-atx-sin-medida-unica — Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX
 - **Tipo:** hecho
@@ -339,7 +339,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Wikipedia, Motherboard form factor y ATX — https://en.wikipedia.org/wiki/ATX (consultada 2026-10-13) · secundaria
 - **Qué dice la fuente:** No existe una especificación «E-ATX» que se pueda citar; es un término comercial. La ASUS Crosshair X870E Extreme se anuncia como E-ATX de 12 x 10,9 pulgadas, mientras que Corsair y Wikipedia dicen que el tamaño SSI-EEB (12 x 13 pulgadas) es otro, que se llama a veces «E-ATX», y que los fabricantes usan profundidades distintas. Es coherente con el texto, pero se apoya en fuentes secundarias y el hecho aporta poco: la página no dibuja ni compara E-ATX.
 - **Propuesta:** quitar (no hay fuente primaria posible; el sitio solo compara ATX, Micro-ATX y Mini-ITX; si se quiere decir algo, basta «Existen placas más grandes que ATX; sus medidas cambian según el fabricante»).
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☑ quitar   Nota: aprobado quitar el hecho (NB, 2026-10-15). Pendiente: mencionar en la prosa de tamaños que existe E-ATX (Extended ATX), formato de nicho para servidores y estaciones de trabajo, sin cifras.
 
 ### tamanos-orificios-separadores — Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX
 - **Tipo:** hecho
@@ -375,7 +375,7 @@ Hechos: 32 · casos: 10 · criterios: 0 · decisiones del dueño: 15 aprobar, 0 
 - **Fuente consultada:** Manuales ASUS ROG STRIX B850-I (Mini-ITX), PRIME Z890M-PLUS WIFI (Micro-ATX) y PRIME B850-PLUS (ATX) (URLs arriba) · primaria
 - **Qué dice la fuente:** Mini-ITX ASUS B850-I: 2 M.2 y 2 SATA. Micro-ATX ASUS Z890M-PLUS: 3 M.2 y 6 SATA. ATX ASUS B850-PLUS: 3 M.2 y 4 SATA. Es decir, la Micro-ATX tiene más SATA que la ATX: «tiende a ser menor» solo se sostiene en Mini-ITX y depende del chipset y de la gama, no del formato. Dado el mensaje del dueño, esta frase se puede leer como «lo pequeño trae menos» y conviene suavizarla.
 - **Propuesta:** reformular a: «La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-15)
 
 ### tamanos-espacio-vrm — Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX
 - **Tipo:** hecho

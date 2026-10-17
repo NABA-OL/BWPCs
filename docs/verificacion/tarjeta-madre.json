@@ -209,7 +209,13 @@
         "textoPropuesto": "No todos los chipsets permiten ajustar la frecuencia del procesador. En AM5, AMD lo habilita en X870E, X870, B850, X670E y X670, pero no en B840 ni A620. En Intel hace falta un procesador desbloqueado (sufijo K) y un chipset de la serie Z; con otros chipsets, como mucho se puede ajustar la memoria.",
         "detalle": "reformular a: «No todos los chipsets permiten ajustar la frecuencia del procesador. En AM5, AMD lo habilita en X870E, X870, B850, X670E y X670, pero no en B840 ni A620. En Intel hace falta un procesador desbloqueado (sufijo K) y un chipset de la serie Z; con otros chipsets, como mucho se puede ajustar la memoria.» El texto actual no es falso, pero omite X670/X670E y pone el A620 solo como «entrada». Dato que envejece."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "No todos los chipsets están pensados para ajustar la frecuencia del procesador. Lo recomendable es usar los que lo habilitan de forma oficial: en AM5, X870E, X870, B850, X670E y X670; en Intel, la serie Z con un procesador desbloqueado (sufijo K). Algunas placas con otros chipsets, como ciertas de la serie B, también permiten ajustes según el fabricante y el modelo; no es lo recomendable y exige que la placa tenga un buen VRM (fases de alimentación).",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "ajustado por NB 2026-10-15 (dictado). La parte de placas B con buen VRM es experiencia del taller, sin fuente: confirmar la redacción final."
+      },
       "huerfana": false
     },
     {
@@ -259,7 +265,13 @@
         "textoPropuesto": "Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.",
         "detalle": "reformular a: «Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.» Revisar cuando Intel agregue chipsets."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15)"
+      },
       "huerfana": false
     },
     {
@@ -317,7 +329,13 @@
         "textoPropuesto": "El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.",
         "detalle": "reformular a: «El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.» Quitar la afirmación de que en AMD son líneas PCIe (solo la respaldan fuentes secundarias que aparecieron en una búsqueda y no abrí), o respaldarla con un documento técnico de AMD."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. En AMD el enlace no tiene un nombre propio, pero cumple la misma función. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "propuesta aprobada con el agregado de AMD pedido por NB (2026-10-15). La frase de AMD no tiene fuente abierta."
+      },
       "huerfana": false
     },
     {
@@ -471,7 +489,13 @@
         "textoPropuesto": "El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador.",
         "detalle": "reformular a: «El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador.» Sigue sin cifras de «fases» (regla V2 del plan)."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador. Junto con los condensadores que lo rodean, filtra el ruido y los picos para mantener el voltaje estable, porque un voltaje alto puede dañar el procesador. Un procesador más potente consume más y suele pedir más fases de alimentación: con menos fases puede funcionar, pero la placa se vuelve inestable bajo carga.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "propuesta aprobada con el agregado de condensadores y fases pedido por NB (2026-10-15). Ese agregado es experiencia del taller, sin fuente: confirmar la redacción final."
+      },
       "huerfana": false
     },
     {
@@ -601,7 +625,13 @@
         "textoPropuesto": "Los puertos SATA de las placas actuales son de 6 Gb/s (unos 600 MB/s como tope del enlace); la velocidad real que logra una unidad es menor.",
         "detalle": "reformular a: «Los puertos SATA de las placas actuales son de 6 Gb/s (unos 600 MB/s como tope del enlace); la velocidad real que logra una unidad es menor.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Los puertos SATA de las placas actuales son de 6 Gb/s (unos 600 MB/s como tope del enlace); la velocidad real que logra una unidad es menor.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15)"
+      },
       "huerfana": false
     },
     {
@@ -827,7 +857,13 @@
         "textoPropuesto": "Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.",
         "detalle": "reformular a: «Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15)"
+      },
       "huerfana": false
     },
     {
@@ -981,7 +1017,13 @@
         "textoPropuesto": "Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.",
         "detalle": "reformular a: «Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15): se nombra por tipo, no por la marca de cada fabricante"
+      },
       "huerfana": false
     },
     {
@@ -1039,7 +1081,13 @@
         "textoPropuesto": "Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1).",
         "detalle": "reformular a: «Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1).»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1), pero es el mismo tipo de conector, para que funcione con el cable de audio de los chasis.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular con el agregado de NB (2026-10-15): mismo conector con distinto nombre según la marca. Lo de la compatibilidad con los chasis es criterio de NB, sin fuente."
+      },
       "huerfana": false
     },
     {
@@ -1417,7 +1465,13 @@
         "textoPropuesto": "Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS como fTPM (AMD) o PTT (Intel).",
         "detalle": "reformular a: «Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS como fTPM (AMD) o PTT (Intel).» (Cambio clave: «exige arranque seguro» → «capacidad de arranque seguro».)"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS, y cada fabricante de procesador lo llama distinto: fTPM en AMD y PTT en Intel, pero cumplen la misma función.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15); se agrega que fTPM y PTT son lo mismo con otro nombre (pedido de NB)."
+      },
       "huerfana": false
     },
     {
@@ -1483,7 +1537,13 @@
         "textoPropuesto": "Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Confirma en el manual de tu placa cuáles conectores trae.",
         "detalle": "reformular a: «Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Confirma en el manual de tu placa cuáles conectores trae.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Fíjate bien en la orientación: el conector del cable y el de la placa traen una marca de pin 1 (una flecha o un triángulo) que debe quedar alineada; conectarlo al revés puede dañar las luces o la placa. Confirma en el manual de tu placa cuáles conectores trae.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15) con el agregado de la orientación (NB). La advertencia de conectar al revés es experiencia del taller, sin fuente: confirmar la redacción final."
+      },
       "huerfana": false
     },
     {
@@ -1637,7 +1697,13 @@
         "textoPropuesto": "Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.",
         "detalle": "reformular a: «Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15). NB dictó «ATX hasta 6»; la propuesta y la fuente dicen siete, se dejó siete. Pendiente opcional: aclarar que algunas Mini-ITX traen la ranura PCIe en otra orientación y que en ATX no todas las ranuras son PCIe."
+      },
       "huerfana": false
     },
     {
@@ -1703,7 +1769,13 @@
         "textoPropuesto": "Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.",
         "detalle": "reformular a: «Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15)"
+      },
       "huerfana": false
     },
     {
@@ -1761,7 +1833,13 @@
         "textoPropuesto": null,
         "detalle": "quitar (no hay fuente primaria posible; el sitio solo compara ATX, Micro-ATX y Mini-ITX; si se quiere decir algo, basta «Existen placas más grandes que ATX; sus medidas cambian según el fabricante»)."
       },
-      "decision": null,
+      "decision": {
+        "valor": "quitar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobado quitar el hecho (NB, 2026-10-15). Pendiente: mencionar en la prosa de tamaños que existe E-ATX (Extended ATX), formato de nicho para servidores y estaciones de trabajo, sin cifras."
+      },
       "huerfana": false
     },
     {
@@ -1935,7 +2013,13 @@
         "textoPropuesto": "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.",
         "detalle": "reformular a: «La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.",
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-15)"
+      },
       "huerfana": false
     },
     {

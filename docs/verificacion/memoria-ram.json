@@ -42,13 +42,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de memoria"
+        },
+        {
+          "titulo": "MT/s vs MHz Explained",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/memory/mts-vs-mhz-explained/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "artículo del fabricante de memoria; contiene un error propio (afirma que un megatransferencia equivale a un megabyte), esa frase no se usa"
+        }
+      ],
+      "queDiceLaFuente": "Micron expresa la velocidad de DDR5 en MT/s (arranca en 4800 MT/s). Corsair explica que MT/s es la tasa de datos y MHz la frecuencia del reloj, y que como DDR transfiere en los dos flancos, un kit anunciado como 3600 es 3600 MT/s y un reloj de 1800 MHz; por eso no son lo mismo.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Ninguna fuente dice literalmente «DDR5-6000 equivale a 6000 MT/s», pero es la convención de nombre y coincide con cómo Micron y Corsair rotulan sus kits. Para sustituir las candidatas que no abrieron: Kingston devolvió 403 y Crucial devolvió 404; usar el documento de Micron y el artículo de Corsair (sin citar su frase errónea de «un megatransferencia = un megabyte»). JESD79-5 es de pago."
       },
       "decision": null,
       "huerfana": false
@@ -77,13 +94,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)",
+          "editor": "JEDEC",
+          "url": "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "copia de Wayback Machine (captura del 2025-01-17) del comunicado de JEDEC; la URL original devolvió 403"
+        },
+        {
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de memoria"
+        }
+      ],
+      "queDiceLaFuente": "El comunicado de JEDEC dice que DDR5 se esperaba lanzar a 4,8 Gbps, un 50 % por encima de la velocidad de fin de vida de DDR4, de 3,2 Gbps. Micron confirma que las velocidades de DDR5 arrancan en 4800 MT/s.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. JEDEC escribe 4,8 y 3,2 Gbps (por pin) y «se espera lanzar»; las cifras equivalen a 4800 y 3200 MT/s, y Micron confirma los 4800 MT/s. La URL original del comunicado devolvió 403 desde esta máquina; se leyó una copia de Wayback Machine."
       },
       "decision": null,
       "huerfana": false
@@ -128,13 +162,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)",
+          "editor": "JEDEC",
+          "url": "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "copia de Wayback Machine (captura del 2025-01-17) del comunicado de JEDEC; la URL original devolvió 403"
+        },
+        {
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de memoria"
+        },
+        {
+          "titulo": "Optimized DDR5 DIMM solutions powering leading-edge server memory modules",
+          "editor": "Samsung Semiconductor",
+          "url": "https://semiconductor.samsung.com/news-events/tech-blog/optimized-ddr5-dimm-solutions-powering-leading-edge-server-memory-modules",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "blog técnico del fabricante de memoria; habla de módulos de servidor, pero describe el cambio de DDR4 a DDR5 en general"
+        }
+      ],
+      "queDiceLaFuente": "JEDEC lista como novedad de DDR5 un regulador de voltaje en el propio módulo. Micron dice que la gestión de energía se hacía históricamente en la placa y que DDR5 la lleva al módulo con un PMIC; Samsung describe que en DDR4 el PMIC iba externo, montado en la placa.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Las dos fuentes de fabricante (Micron, Samsung) y el comunicado de JEDEC coinciden. Kingston devolvió 403 (no se abrió)."
       },
       "decision": null,
       "huerfana": false
@@ -179,13 +238,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)",
+          "editor": "JEDEC",
+          "url": "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "copia de Wayback Machine (captura del 2025-01-17) del comunicado de JEDEC; la URL original devolvió 403"
+        }
+      ],
+      "queDiceLaFuente": "JEDEC señala que el Vdd baja de 1,2 V a 1,1 V frente a DDR4, lo que mejora la eficiencia energética.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Ojo: la tabla de Micron (guía de módulos, rev. M) lista 1,1 V también para sus módulos DDR4, contradiciendo a JEDEC; no se usó para DDR4. JESD79-5 y JESD79-4 son de pago o no abren sin registro."
       },
       "decision": null,
       "huerfana": false
@@ -220,13 +288,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Serial Presence Detect: DDR5 SPD Contents (JESD400-5D) y Annex L para DDR4",
+          "editor": "JEDEC",
+          "url": "https://web.archive.org/web/20260104113250/https://www.jedec.org/taxonomy/term/2390",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "copia de Wayback Machine (captura del 2026-01-04) de la página de JEDEC; la URL original devolvió 403 y el contenido de los estándares es de descarga con registro"
+        },
+        {
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de memoria"
+        },
+        {
+          "titulo": "[Motherboard] How to optimize the Memory performance by setting XMP, EXPO or DOCP in BIOS?",
+          "editor": "ASUS",
+          "url": "https://www.asus.com/support/faq/1042256/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "FAQ de soporte del fabricante de placas"
+        },
+        {
+          "titulo": "Serial presence detect",
+          "editor": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Serial_presence_detect",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "JEDEC describe el SPD como los valores del módulo que el BIOS usa para inicializar y optimizar la memoria. Micron explica que en DDR5 un chip llamado SPD hub contiene la memoria del SPD, y ASUS indica que la placa carga el perfil y los tiempos desde el chip SPD del módulo; Wikipedia añade que el BIOS lo lee al arrancar y guarda tiempos y datos del fabricante.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. La lista «velocidad, tiempos y perfiles» la respaldan ASUS y Wikipedia más que la página gratuita de JEDEC (los estándares con el detalle de bytes son de descarga con registro). En DDR5 ese chip se llama SPD hub; el texto no necesita nombrarlo. Crucial devolvió 404."
       },
       "decision": null,
       "huerfana": false
@@ -264,13 +365,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Intel Extreme Memory Profile (XMP)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/gaming/extreme-memory-profile-xmp.html",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "abierta con WebFetch; con curl devuelve 403"
+        },
+        {
+          "titulo": "AMD EXPO Technology for AMD Ryzen Processors for Socket AM5",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/products/processors/technologies/expo.html",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "How to Enable XMP/EXPO in BIOS",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/memory/how-to-enable-xmpexpo-in-bios/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante de memoria"
+        },
+        {
+          "titulo": "[Motherboard] How to optimize the Memory performance by setting XMP, EXPO or DOCP in BIOS?",
+          "editor": "ASUS",
+          "url": "https://www.asus.com/support/faq/1042256/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "FAQ de soporte del fabricante de placas"
+        }
+      ],
+      "queDiceLaFuente": "Intel presenta XMP como perfiles de velocidad, tiempos y voltaje que se activan en el BIOS, y dice que los módulos XMP arrancan primero con los ajustes JEDEC por defecto. Corsair confirma que sin activarlos la memoria corre con ajustes JEDEC seguros, que XMP es de Intel y EXPO de AMD; ASUS indica que la placa los carga desde el chip SPD del módulo, y AMD describe EXPO como perfiles para memoria DDR5.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. La página de AMD no dice dónde se guardan los perfiles ni cómo se activan; eso lo cubren Intel, Corsair y ASUS. EXPO aplica solo a DDR5, mientras XMP existe para DDR4 y DDR5, dato que el texto no contradice."
       },
       "decision": null,
       "huerfana": false
@@ -307,13 +441,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "DRAM module reference guide (rev. M, marzo de 2026)",
+          "editor": "Micron",
+          "url": "https://www.micron.com/content/dam/micron/global/public/products/memory/dram-modules/broad-product/dram-module-reference-guide.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "fabricante de memoria; su tabla lista 1,1 V también para DDR4, lo que contradice a JEDEC (1,2 V), así que no se usa para el voltaje de DDR4"
+        },
+        {
+          "titulo": "DIMM",
+          "editor": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/DIMM",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Micron lista los módulos de DDR5 con 288 contactos y unos 133 mm de largo para el DIMM de escritorio, frente a 262 contactos y unos 70 mm para el SO-DIMM; en DDR4 el SO-DIMM tiene 260 contactos. Wikipedia añade que las generaciones de memoria no son intercambiables y que cada tipo tiene distinto número de contactos o posición de la muesca.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Tamaño menor y distinta cantidad de contactos quedan respaldados por Micron (fuente primaria). Que «no son intercambiables» es una consecuencia de lo anterior que ninguna fuente primaria dice literal; Wikipedia (secundaria) la respalda para generaciones, no para el factor de forma. Crucial devolvió 404 y la página de JEDEC de DDR4 no se abrió."
       },
       "decision": null,
       "huerfana": false

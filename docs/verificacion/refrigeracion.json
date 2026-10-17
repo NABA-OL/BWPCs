@@ -34,13 +34,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Alphacool ES 1 1U: manual de instalación (paso «retirar el film de protección del refrigerador»)",
+          "editor": "Alphacool",
+          "url": "https://download.alphacool.com/manual/13528_Alphacool_ES_1_1U_Manual.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual del fabricante de un refrigerador de CPU para servidores 1U; es un ejemplo, no un disipador de PC de escritorio"
+        },
+        {
+          "titulo": "How to Install or Remove an AMD CPU Cooler",
+          "editor": "AMD",
+          "url": "https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "habla de grasa térmica ya aplicada y de limpiar la placa inferior; no menciona una película protectora"
+        },
+        {
+          "titulo": "Esse é o erro mais básico que você pode cometer ao instalar cooler/watercooler; veja qual é",
+          "editor": "Hardware.com.br",
+          "url": "https://www.hardware.com.br/?p=338614",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": "medio especializado; describe películas y cubiertas rígidas en la base y cita a Noctua"
+        }
+      ],
+      "queDiceLaFuente": "El manual de Alphacool incluye un paso previo para retirar el film de protección del refrigerador antes de aplicar la pasta. La guía de AMD habla de pasta ya aplicada y de limpiar la placa inferior, pero no menciona película. Hardware.com.br (secundaria) describe películas adhesivas y cubiertas rígidas en la base según el fabricante. Las páginas de Noctua (ficha, manuales y preguntas frecuentes) respondieron HTTP 429 y no se pudieron abrir; quedan como candidatas sin consultar.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. «Muchos» está respaldado por manuales de fabricantes distintos (Alphacool lo confirma; una búsqueda mostró lo mismo en otros manuales, que no se abrieron). Pendiente para el dueño: citar el manual de Noctua cuando esté accesible."
       },
       "decision": null,
       "huerfana": false
@@ -67,13 +92,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Cooler Master Hyper 212 Black: ficha de producto",
+          "editor": "Cooler Master",
+          "url": "https://www.coolermaster.com/en-global/products/hyper-212-black/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "la ficha lista materiales del disipador, no explica el mecanismo"
+        }
+      ],
+      "queDiceLaFuente": "La ficha del Hyper 212 lista un disipador con 4 tubos de calor, contacto directo y aletas de aluminio, junto con un ventilador, pero no explica cómo se transporta el calor. El mecanismo (el fluido se evapora en la base y se condensa en las aletas) solo apareció en fuentes secundarias. Las páginas de Noctua (ficha, manuales y preguntas frecuentes) respondieron HTTP 429 y no se pudieron abrir; quedan como candidatas sin consultar.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener el texto, que es correcto, pero falta una fuente primaria que describa el mecanismo. Sugerencia: fuente de Noctua o be quiet! (las páginas de be quiet! respondieron 403 y no se abrieron)."
       },
       "decision": null,
       "huerfana": false
@@ -110,13 +144,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Cooler Master Hyper 212 Black: ficha de producto",
+          "editor": "Cooler Master",
+          "url": "https://www.coolermaster.com/en-global/products/hyper-212-black/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "la ficha lista materiales del disipador, no explica el mecanismo"
+        }
+      ],
+      "queDiceLaFuente": "La ficha de Cooler Master describe 4 tubos de calor, «contacto directo» y aletas de aluminio, con un ventilador. Es decir, en ese modelo los tubos tocan el procesador sin una base aparte, así que «una base» no aplica a todos los diseños. Las páginas de Noctua (ficha, manuales y preguntas frecuentes) respondieron HTTP 429 y no se pudieron abrir; quedan como candidatas sin consultar.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Un disipador por aire se compone de una superficie de contacto con el procesador (una base metálica o los propios tubos de calor), tubos de calor que llevan el calor hacia arriba, un bloque de aletas metálicas y uno o más ventiladores.",
+        "detalle": "reformular: algunos disipadores, como el de la ficha abierta, no tienen base separada sino tubos en contacto directo con el procesador."
       },
       "decision": null,
       "huerfana": false
@@ -145,13 +188,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "How to clean PC fans",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/fans/how-to-clean-pc-fans/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "habla de ventiladores y radiadores; no menciona disipadores"
+        },
+        {
+          "titulo": "Why is my CPU running hot and what can I do about it?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/ca/en/explorer/diy-builder/cpu-coolers/why-is-my-cpu-running-hot-and-what-can-i-do-about-it/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "menciona los disipadores solo en general"
+        },
+        {
+          "titulo": "How to Clean an AIO Liquid CPU Cooler",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/kr/zh/explorer/diy-builder/cpu-coolers/how-to-clean-an-aio-liquid-cpu-cooler/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        },
+        {
+          "titulo": "DeepCool AK700 DIGITAL NYX",
+          "editor": "DeepCool",
+          "url": "https://www.deepcool.com/products/Cooling/cpuaircoolers/AK700-DIGITAL-NYX-AI-Dynamic-Adjustment-CPU-Cooler-with-Digital-Display/2025/21815.shtml",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "es una función del producto, no una recomendación de mantenimiento"
+        }
+      ],
+      "queDiceLaFuente": "Corsair recomienda limpiar con regularidad el polvo de los ventiladores y, en los equipos con refrigeración líquida, de las aletas del radiador; su guía general dice enfocarse en el procesador, los ventiladores y los disipadores. DeepCool tiene en un modelo una función de limpieza automática de polvo en aspas y disipador. Ninguna página abierta es de un fabricante de disipadores por aire que lo recomiende de forma explícita. Las páginas de Noctua (ficha, manuales y preguntas frecuentes) respondieron HTTP 429 y no se pudieron abrir; quedan como candidatas sin consultar.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Los fabricantes de refrigeración recomiendan limpiar el polvo de los ventiladores y de los disipadores o radiadores de forma periódica.",
+        "detalle": "reformular al enunciado más amplio que sí respaldan las guías abiertas, o añadir la guía de limpieza de Noctua (indicada por una búsqueda, pero bloqueada con HTTP 429)."
       },
       "decision": null,
       "huerfana": false
@@ -186,13 +262,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "PWM Control Case Fans",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/c/case-fans/pwm-fans",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "página de categoría del fabricante"
+        }
+      ],
+      "queDiceLaFuente": "Corsair indica que los ventiladores DC usan conector de 3 pines y su velocidad cambia variando el voltaje, mientras que los PWM usan 4 pines y el pin adicional lleva una señal de control de la placa o del controlador que fija la velocidad. El white paper de Noctua (HTTP 429) y la copia de la especificación de Intel (HTTP 403) no se pudieron abrir.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Opcional: agregar la especificación de Intel de ventiladores PWM de 4 hilos o el white paper de Noctua cuando se puedan abrir."
       },
       "decision": null,
       "huerfana": false
@@ -221,13 +306,22 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Which direction are case fans blowing?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/de/tw/explorer/diy-builder/fans/which-direction-are-case-fans-blowing/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante de ventiladores"
+        }
+      ],
+      "queDiceLaFuente": "Corsair dice que sus ventiladores traen flechas en los costados: una indica el sentido de giro de las aspas y otra el del flujo de aire, aunque la posición y el tamaño cambian según la serie. Las páginas de Noctua (ficha, manuales y preguntas frecuentes) respondieron HTTP 429 y no se pudieron abrir; quedan como candidatas sin consultar.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Matiz ya cubierto por «muchos»: algunos ventiladores no traen flechas."
       },
       "decision": null,
       "huerfana": false
@@ -264,13 +358,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y especificaciones",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Fractal Design Meshify 2 Compact: producto y especificaciones",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/meshify/meshify-2-compact/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Which direction are case fans blowing?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/de/tw/explorer/diy-builder/fans/which-direction-are-case-fans-blowing/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante de ventiladores"
+        }
+      ],
+      "queDiceLaFuente": "NZXT describe aire que entra por el frente y por abajo, con ventiladores incluidos al frente y atrás, pero no dice «salida» de forma expresa; la ficha de Fractal lista montajes de ventiladores sin rotularlos como entrada o salida. Corsair sí recomienda los del frente como entrada y los de arriba y atrás como salida.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "En la configuración habitual de un chasis de torre, el aire fresco entra por el frente (y en algunos modelos por abajo) y el aire caliente sale por la parte trasera y por arriba, aunque depende del chasis y de cómo se montan los ventiladores.",
+        "detalle": "reformular: las fichas abiertas no afirman con esas palabras la entrada y la salida; la pauta general proviene de la guía de Corsair y de la descripción de NZXT."
       },
       "decision": null,
       "huerfana": false
@@ -307,13 +426,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "CORSAIR AIOs: Everything you need to know",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/cpu-coolers/corsair-aios-everything-you-need-to-know/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        },
+        {
+          "titulo": "How to Clean an AIO Liquid CPU Cooler",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/kr/zh/explorer/diy-builder/cpu-coolers/how-to-clean-an-aio-liquid-cpu-cooler/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        },
+        {
+          "titulo": "iCUE LINK H150i RGB AIO Liquid CPU Cooler",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/p/cpu-coolers/cw-9061003-ww/icue-link-h150i-rgb-aio-liquid-cpu-cooler-cw-9061003-ww",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "ARCTIC Liquid Freezer III 360: producto",
+          "editor": "ARCTIC",
+          "url": "https://www.arctic.de/en/Liquid-Freezer-III-360/ACFRE00136A",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "la parte de especificaciones llegó cortada"
+        }
+      ],
+      "queDiceLaFuente": "Corsair describe una placa fría que se apoya en el procesador con una bomba encima, un radiador con ventiladores y tubería flexible entre ambos. ARCTIC habla de cabezal de bomba, mangueras, radiador y ventiladores en configuración de empuje. Ninguna fuente abierta fija en dos el número de mangueras.",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Una refrigeración líquida todo en uno (AIO) se compone de un bloque con bomba que se apoya en el procesador, mangueras que lo conectan con un radiador y ventiladores montados en el radiador.",
+        "detalle": "reformular: quitar «dos» (no está en las fuentes abiertas) y «atraviesan», que no aparece tal cual."
       },
       "decision": null,
       "huerfana": false
@@ -350,13 +502,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "Do I need to maintain an AIO?",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/sl/explorer/diy-builder/cpu-coolers/do-i-need-to-maintain-an-aio/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        },
+        {
+          "titulo": "How to Clean an AIO Liquid CPU Cooler",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/kr/zh/explorer/diy-builder/cpu-coolers/how-to-clean-an-aio-liquid-cpu-cooler/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        },
+        {
+          "titulo": "CORSAIR AIOs: Everything you need to know",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/cpu-coolers/corsair-aios-everything-you-need-to-know/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        }
+      ],
+      "queDiceLaFuente": "Corsair dice que el circuito viene sellado de fábrica, que el AIO llega prellenado y que no hay que drenarlo ni rellenarlo; el mantenimiento se limita a mantener limpios el radiador y los ventiladores. Las páginas de Noctua (ficha, manuales y preguntas frecuentes) respondieron HTTP 429 y no se pudieron abrir; quedan como candidatas sin consultar.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener. Solo Corsair se abrió; el texto dice «los fabricantes». Opcional: citar también la pregunta frecuente de Noctua sobre su AIO (bloqueada con HTTP 429)."
       },
       "decision": null,
       "huerfana": false
@@ -393,13 +570,46 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "CORSAIR AIOs: Everything you need to know",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/cpu-coolers/corsair-aios-everything-you-need-to-know/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "guía del fabricante"
+        },
+        {
+          "titulo": "360mm AIO Liquid CPU Coolers (categoría)",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/c/cpu-coolers/360mm-aio-radiator",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "240mm AIO Liquid CPU Coolers (categoría)",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/uk/en/c/cpu-coolers/240mm-aio-radiator",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "280mm AIO Liquid CPU Coolers (categoría)",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/c/cpu-coolers/280mm-aio-radiator",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Corsair dice que el largo del radiador va en el nombre del modelo y que determina cuántos ventiladores caben: 240 con dos de 120, 280 con dos de 140 y 360 con tres de 120. La ficha de ARCTIC incluye «360» en el nombre sin explicarlo. Ninguna fuente abierta confirma la equivalencia «120 para uno» (Corsair solo dice que sus AIO van de 120 a 420 mm).",
+      "estado": "parcial",
       "propuesta": {
-        "accion": null,
-        "textoPropuesto": null,
-        "detalle": null
+        "accion": "reformular",
+        "textoPropuesto": "Los radiadores de refrigeración líquida se nombran por su largo en milímetros, que corresponde a los ventiladores que admiten: 240 para dos de 120, 280 para dos de 140 y 360 para tres de 120.",
+        "detalle": "reformular: quitar «120 para uno» o respaldarlo con la ficha de un AIO de 120 mm."
       },
       "decision": null,
       "huerfana": false
@@ -437,13 +647,38 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y especificaciones",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Fractal Design Meshify 2 Compact: producto y especificaciones",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/meshify/meshify-2-compact/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "How to mount your AIO: AIO Cooler Orientation explained",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/cpu-coolers/how-should-you-mount-your-aio/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "NZXT indica radiador de hasta 360 mm al frente, hasta 240 mm arriba (280 con memoria de bajo perfil) y ninguno atrás; Fractal lista frente (120 a 360), techo (120 o 240), fondo y trasera (120). Corsair confirma que la mayoría de los chasis medianos y grandes se pensaron para montar el radiador arriba o al frente.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener."
       },
       "decision": null,
       "huerfana": false
@@ -481,13 +716,30 @@
           "detalle": null
         }
       ],
-      "fuentesConsultadas": [],
-      "queDiceLaFuente": null,
-      "estado": "pendiente",
+      "fuentesConsultadas": [
+        {
+          "titulo": "NZXT H5 Flow: producto y especificaciones",
+          "editor": "NZXT",
+          "url": "https://nzxt.com/product/h5-flow",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Fractal Design Meshify 2 Compact: producto y especificaciones",
+          "editor": "Fractal Design",
+          "url": "https://www.fractal-design.com/products/cases/meshify/meshify-2-compact/",
+          "consultadoEn": "2026-10-14",
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "La ficha de NZXT lista altura máxima de disipador de CPU de 170 mm y la de Fractal Design, de 169 mm.",
+      "estado": "verificado",
       "propuesta": {
-        "accion": null,
+        "accion": "mantener",
         "textoPropuesto": null,
-        "detalle": null
+        "detalle": "mantener."
       },
       "decision": null,
       "huerfana": false
