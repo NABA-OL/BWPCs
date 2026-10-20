@@ -166,12 +166,15 @@ export const ramDobleCanal: Hecho = hechoVerificado(
 export const pcieTamanosFisicos: Hecho = verificadoPorDueno(
   hecho(
     "pcie-tamanos-fisicos",
-    "Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas, normalmente la primera, la más cercana al procesador. Una tarjeta puede usar menos líneas que las de la ranura: algunas gráficas de gama baja traen conector x16 pero aprovechan menos; funcionan igual, con el rendimiento que permitan esas líneas.",
+    "Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas. Una ranura x16 puede trabajar con menos líneas que su tamaño físico, y una tarjeta de menos líneas encaja en una ranura más larga: en ambos casos funciona con el rendimiento que permitan esas líneas.",
     [
+      { titulo: "PCI Express Card Edge Connectors (hoja de datos de conectores)", editor: "FCI (Amphenol)", url: "https://static.chipdip.ru/lib/073/DOC025073648.pdf", consultadoEn: "2026-10-19" },
+      { titulo: "PRIME B650M-A WIFI - Tech Specs", editor: "ASUS", url: "https://www.asus.com/motherboards-components/motherboards/prime/prime-b650m-a-wifi/techspec/", consultadoEn: "2026-10-19" },
+      { titulo: "PCI Express FAQ for Graphics", editor: "Microsoft", url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/pci-express-faq-for-graphics", consultadoEn: "2026-10-19" },
       { titulo: "What Are PCI and PCI Express and What Is a PCIe Slot (Dell)", editor: "Dell", url: "https://www.dell.com/support/kbdoc/en-us/000123517/what-is-pci-and-pci-express-kb-article-161614", consultadoEn: "2026-10-13" },
       { titulo: "Introduction to PCI Express (Lenovo Press)", editor: "Lenovo", url: "https://lenovopress.lenovo.com/tips0456", consultadoEn: "2026-10-13" },
     ],
-    "Decisión de NB (2026-10-19, hoja comun): ajustar. ajustado por NB (2026-10-19): gráfica en la primera ranura x16 y tarjetas con menos líneas activas. El ejemplo de gráficas de gama baja con menos líneas y los adaptadores M.2 a x16 (no incluidos) son experiencia de NB, sin fuente.",
+    "Decisión de NB (2026-10-19, hoja comun): ajustar. ajustado por NB (2026-10-19): gráfica en la primera ranura x16 y tarjetas con menos líneas activas. Recortado el 2026-10-19: ninguna fuente abierta respalda «normalmente la primera, la más cercana al procesador» ni el ejemplo de gráficas de gama baja con conector x16 que aprovechan menos (experiencia de NB, sin fuente), así que se quitaron del texto; los adaptadores M.2 a x16 tampoco se incluyen. Fuentes abiertas: FCI (tamaños x1/x4/x8/x16 y x16 para gráficas), ASUS (ranuras x16 en modo x16/x8/x4/x1) y Microsoft (tarjeta menor en ranura mayor).",
   ),
   "2026-10-19",
   "NB",

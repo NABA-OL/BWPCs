@@ -200,9 +200,10 @@ Hechos: 13 · casos: 3 · criterios: 1 · decisiones del dueño: 10 aprobar, 3 a
 - **Tipo:** caso (Puede pasar)
 - **Dónde:** tarjeta-grafica › casos
 - **Texto publicado:** alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. En el taller usamos un cable independiente de la fuente para cada conector. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.
+- **Texto al decidir:** alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. Si la fuente solo trae un cable así, puede usarse, pero lo más recomendable es un cable independiente de la fuente para cada conector, para que el cable no se caliente de más. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.
 - **Estado:** ⚪ no verificable con fuente (solo aprobación)
 - **Propuesta:** —
-- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo.
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo. | RETOCADO por NB (2026-10-19): texto ajustado a los hechos ya decididos; reaprobado con la misma decisión.
 
 ### conector-de-doce-pines-a-medias — Caso del taller · Puede pasar
 - **Tipo:** caso (Puede pasar)

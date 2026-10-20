@@ -472,7 +472,7 @@ const casos: readonly Caso[] = [
     id: "cable-ramificado-en-varios-conectores",
     tipo: "puede-pasar",
     texto:
-      "alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. En el taller usamos un cable independiente de la fuente para cada conector. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.",
+      "alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. Si la fuente solo trae un cable así, puede usarse, pero lo más recomendable es un cable independiente de la fuente para cada conector, para que el cable no se caliente de más. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.",
     aprobadoEn: "2026-10-19",
     aprobadoPor: "NB",
     hechos: [cablesIndependientes],
