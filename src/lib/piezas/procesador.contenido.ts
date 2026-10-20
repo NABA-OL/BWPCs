@@ -640,7 +640,7 @@ const criterios: readonly Criterio[] = [
 
 export const PROCESADOR_CONTENIDO: PiezaContenido<ProcesadorParteId, ProcesadorVistaId> = {
   slug: "procesador",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "procesador",
   nombreCorto: "Procesador",
   titulo: "Procesador: partes y qué significan K, F, X y X3D",
@@ -696,7 +696,7 @@ export const PROCESADOR_CONTENIDO: PiezaContenido<ProcesadorParteId, ProcesadorV
   ],
   sinonimos: ["CPU"],
   publicadoEn: null,
-  actualizadoEn: "2026-10-14",
+  actualizadoEn: "2026-10-20",
   bloques: ["nombres", "partes", "lista", "vistas", "comparar", "elegir", "errores"],
   vistas: [
     {

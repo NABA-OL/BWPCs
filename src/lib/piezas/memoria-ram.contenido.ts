@@ -365,7 +365,7 @@ export const MEMORIA_RAM_CONTENIDO: PiezaContenido<MemoriaRamParteId, MemoriaRam
   terminos: ["DDR4", "DDR5", "DIMM", "SO-DIMM", "PMIC", "SPD", "XMP", "EXPO", "JEDEC", "AM4", "AM5", "LGA 1700", "LGA 1851"],
   sinonimos: ["memoria de acceso aleatorio"],
   publicadoEn: null,
-  actualizadoEn: "2026-10-14",
+  actualizadoEn: "2026-10-20",
   bloques: ["partes", "lista", "vistas", "comparar", "elegir", "errores", "preguntas"],
   vistas: [
     {

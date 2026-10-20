@@ -531,7 +531,7 @@ const casos: readonly Caso[] = [
 
 export const FUENTE_DE_PODER_CONTENIDO: PiezaContenido<FuenteParteId, FuenteVistaId> = {
   slug: "fuente-de-poder",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "fuentes",
   nombreCorto: "Fuente de poder",
   titulo: "Fuente de poder: partes por dentro y conectores",
@@ -556,7 +556,7 @@ export const FUENTE_DE_PODER_CONTENIDO: PiezaContenido<FuenteParteId, FuenteVist
   terminos: ["ATX", "EPS", "PCIe", "PCIe 6+2", "SATA", "Molex", "PFC", "EMI", "AC", "12V-2x6", "12VHPWR", "80 Plus", "24 pines"],
   sinonimos: ["PSU", "fuente de alimentación"],
   publicadoEn: null,
-  actualizadoEn: "2026-10-14",
+  actualizadoEn: "2026-10-20",
   bloques: ["partes", "lista", "vistas", "elegir", "errores", "preguntas"],
   vistas: [
     {

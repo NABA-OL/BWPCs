@@ -491,7 +491,7 @@ const criterios: readonly Criterio[] = [
 /* ---------- Contenido ---------- */
 export const TARJETA_GRAFICA_CONTENIDO: PiezaContenido<TarjetaGraficaParteId, TarjetaGraficaVistaId> = {
   slug: "tarjeta-grafica",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "graficas",
   nombreCorto: "Tarjeta gráfica",
   titulo: "Partes de la tarjeta gráfica y para qué sirven",
@@ -514,7 +514,7 @@ export const TARJETA_GRAFICA_CONTENIDO: PiezaContenido<TarjetaGraficaParteId, Ta
   terminos: ["GPU", "VRAM", "VRM", "PCIe", "PCIe x16", "x16", "GDDR6", "GDDR6X", "GDDR7", "12V-2x6", "HDMI", "DisplayPort", "NVIDIA", "AMD", "Intel", "GeForce", "Radeon", "Arc"],
   sinonimos: ["tarjeta de video"],
   publicadoEn: null,
-  actualizadoEn: "2026-10-14",
+  actualizadoEn: "2026-10-20",
   bloques: ["partes", "lista", "vistas", "elegir", "errores", "preguntas"],
   vistas: [
     {
