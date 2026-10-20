@@ -867,7 +867,7 @@ const factoresForma: readonly FactorForma[] = [
 /* ---------- Contenido ---------- */
 export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId, TarjetaMadreVistaId> = {
   slug: "tarjeta-madre",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "boards",
   nombreCorto: "Tarjeta madre",
   titulo: "Partes de la tarjeta madre (board) y para qué sirven",

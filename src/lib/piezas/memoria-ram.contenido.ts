@@ -350,7 +350,7 @@ const casos: readonly Caso[] = [
 
 export const MEMORIA_RAM_CONTENIDO: PiezaContenido<MemoriaRamParteId, MemoriaRamVistaId> = {
   slug: "memoria-ram",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "ram",
   nombreCorto: "Memoria RAM",
   titulo: "Memoria RAM DDR4 vs DDR5: partes y diferencias",
