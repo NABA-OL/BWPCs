@@ -354,7 +354,7 @@ const casos: readonly Caso[] = [
 
 export const ALMACENAMIENTO_CONTENIDO: PiezaContenido<AlmacenamientoParteId, AlmacenamientoVistaId> = {
   slug: "almacenamiento",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "almacenamiento",
   nombreCorto: "Almacenamiento",
   titulo: "SSD M.2 NVMe, SATA y disco duro: diferencias",
@@ -369,7 +369,7 @@ export const ALMACENAMIENTO_CONTENIDO: PiezaContenido<AlmacenamientoParteId, Alm
   terminos: ["M.2", "NVMe", "SATA", "SSD", "HDD", "PCIe", "NAND"],
   sinonimos: ["disco de estado sólido"],
   publicadoEn: null,
-  actualizadoEn: "2026-10-14",
+  actualizadoEn: "2026-10-20",
   bloques: ["partes", "lista", "vistas", "comparar", "elegir", "errores", "preguntas"],
   vistas: [
     {

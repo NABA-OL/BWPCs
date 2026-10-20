@@ -6,9 +6,31 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 // Utilidades compartidas de las comprobaciones de "Piezas a fondo" (check-piezas.mjs partido por tema, docs/piezas-plan-2.md §2.3).
+import { PIEZAS } from "../../src/lib/piezas/registro.ts";
+import { PIEZA_SLUGS } from "../../src/lib/piezas/types.ts";
+
 export const RAIZ = new URL("../..", import.meta.url).pathname;
 export const HOY = "2026-10-11";
+/** Fecha real de hoy (AAAA-MM-DD); solo para las pruebas que miran el contenido real, no los escenarios de HOY fijo. */
+export const HOY_REAL = new Date().toISOString().slice(0, 10);
 export const clonar = (valor) => structuredClone(valor);
+
+/**
+ * Registro de prueba: copia de PIEZAS donde SOLO las `publicadas` quedan en "publicado" y las demás en "borrador".
+ * Las pruebas de escenarios («nada publicado», «1 publicada», «2 publicadas») lo usan para no depender del estado real del contenido.
+ */
+export function registroConPublicadas(publicadas) {
+  const copia = {};
+  for (const slug of PIEZA_SLUGS) copia[slug] = { ...PIEZAS[slug], contenido: { ...PIEZAS[slug].contenido, estado: publicadas.includes(slug) ? "publicado" : "borrador" } };
+  return copia;
+}
+
+/** Registro de prueba con todas las piezas en el mismo estado. */
+export function registroConEstado(estado) {
+  const copia = {};
+  for (const slug of PIEZA_SLUGS) copia[slug] = { ...PIEZAS[slug], contenido: { ...PIEZAS[slug].contenido, estado } };
+  return copia;
+}
 export const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 export const FECHA = /^\d{4}-\d{2}-\d{2}$/;
 

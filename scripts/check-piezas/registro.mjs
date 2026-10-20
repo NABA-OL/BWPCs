@@ -13,7 +13,8 @@ import { entornoActual } from "../../src/lib/piezas/entorno.ts";
 import { PIEZAS, SINONIMOS_SLUG, enlacesResueltos, hayIndice, hrefPiezaServicios, piezaPorSlug, piezasVisibles, resolverEnlace } from "../../src/lib/piezas/registro.ts";
 import { PIEZA_SLUGS } from "../../src/lib/piezas/types.ts";
 import { ORDEN_INDICE, PALABRAS_INICIO, enlacesInicio, enlacesServicios, indiceEsBorrador, indiceSchema, piezasDelIndice, rutasSitemapPiezas, temasReservados } from "../../src/lib/piezas/indice.ts";
-import { RAIZ } from "./comun.mjs";
+import { HOY_REAL, RAIZ, registroConEstado, registroConPublicadas } from "./comun.mjs";
+import { problemasDePublicacion } from "../../src/lib/piezas/publicacion.ts";
 
 // ---------------------------------------------------------------- registro y entorno
 {
@@ -27,28 +28,43 @@ import { RAIZ } from "./comun.mjs";
     assert.ok(geo !== null || contenido.sinDibujo === true, `${slug}: trae geometría o declara sinDibujo`);
   }
 
-  // Producción solo ve lo publicado: hoy ningún estado es "publicado".
-  for (const slug of PIEZA_SLUGS) assert.equal(PIEZAS[slug].contenido.estado, "borrador", `${slug} sigue en borrador`);
-  assert.deepEqual(piezasVisibles("produccion"), [], "producción no incluye borradores");
-  for (const slug of PIEZA_SLUGS) assert.equal(piezaPorSlug(slug, "produccion"), null, `${slug} es 404 en producción`);
+  // Estado real del contenido: solo se comprueba que sea uno válido; los escenarios usan registros de prueba (no dependen del contenido).
+  for (const slug of PIEZA_SLUGS) assert.ok(["borrador", "revision", "publicado"].includes(PIEZAS[slug].contenido.estado), `${slug}: estado válido`);
+
+  // Con el registro REAL en producción: se ve exactamente lo que el contenido declara "publicado".
+  const publicadasReales = PIEZA_SLUGS.filter((slug) => PIEZAS[slug].contenido.estado === "publicado");
+  assert.deepEqual(piezasVisibles("produccion").map((p) => p.contenido.slug), publicadasReales, "producción (registro real): exactamente las publicadas, en el orden de PIEZA_SLUGS");
+  for (const slug of PIEZA_SLUGS) {
+    const esperada = publicadasReales.includes(slug);
+    assert.equal(piezaPorSlug(slug, "produccion")?.contenido.slug ?? null, esperada ? slug : null, `${slug}: ${esperada ? "visible" : "404"} en producción (registro real)`);
+  }
+  assert.equal(hayIndice("produccion"), publicadasReales.length >= 2, "índice real en producción solo con 2 o más publicadas reales");
+  // Toda pieza publicada en el contenido real pasa la puerta de publicación con la fecha real de hoy.
+  for (const slug of publicadasReales) {
+    const { contenido, geo } = PIEZAS[slug];
+    assert.deepEqual(problemasDePublicacion(contenido, HOY_REAL, geo !== null), [], `${slug}: publicada y sin problemas de publicación`);
+  }
+
+  // Escenario «todo en borrador» (registro de prueba): producción no incluye nada.
+  const todoBorrador = registroConPublicadas([]);
+  assert.deepEqual(piezasVisibles("produccion", todoBorrador), [], "producción no incluye borradores");
+  for (const slug of PIEZA_SLUGS) assert.equal(piezaPorSlug(slug, "produccion", todoBorrador), null, `${slug} es 404 en producción mientras sea borrador`);
   for (const entorno of ["preview", "desarrollo"]) {
     assert.equal(piezasVisibles(entorno).length, Object.keys(PIEZAS).length, `${entorno} ve todas`);
     assert.deepEqual(piezasVisibles(entorno).map((p) => p.contenido.slug), [...PIEZA_SLUGS], `${entorno}: mismo orden que PIEZA_SLUGS`);
+    assert.equal(piezasVisibles(entorno, todoBorrador).length, PIEZA_SLUGS.length, `${entorno} ve todas aunque sean borrador`);
   }
   // Un registro de prueba con piezas publicadas (clon): producción solo ve las publicadas.
-  const registroPrueba = (publicadas) => {
-    const copia = {};
-    for (const slug of PIEZA_SLUGS) copia[slug] = { ...PIEZAS[slug], contenido: { ...PIEZAS[slug].contenido, estado: publicadas.includes(slug) ? "publicado" : "borrador" } };
-    return copia;
-  };
-  assert.deepEqual(piezasVisibles("produccion", registroPrueba(["procesador"])).map((p) => p.contenido.slug), ["procesador"]);
-  assert.equal(piezaPorSlug("procesador", "produccion", registroPrueba(["procesador"]))?.contenido.slug, "procesador");
-  assert.equal(piezaPorSlug("memoria-ram", "produccion", registroPrueba(["procesador"])), null);
+  assert.deepEqual(piezasVisibles("produccion", registroConPublicadas(["procesador"])).map((p) => p.contenido.slug), ["procesador"]);
+  assert.equal(piezaPorSlug("procesador", "produccion", registroConPublicadas(["procesador"]))?.contenido.slug, "procesador");
+  assert.equal(piezaPorSlug("memoria-ram", "produccion", registroConPublicadas(["procesador"])), null);
+  assert.deepEqual(piezasVisibles("produccion", registroConEstado("revision")), [], "revisión tampoco se ve en producción");
+  assert.equal(piezasVisibles("produccion", registroConEstado("publicado")).length, PIEZA_SLUGS.length, "todo publicado: producción ve las 7");
 
   // Índice /piezas: solo con 2 o más visibles.
-  assert.equal(hayIndice("produccion"), false, "0 publicadas: sin índice");
-  assert.equal(hayIndice("produccion", registroPrueba(["procesador"])), false, "1 publicada: sin índice");
-  assert.equal(hayIndice("produccion", registroPrueba(["procesador", "memoria-ram"])), true, "2 publicadas: hay índice");
+  assert.equal(hayIndice("produccion", todoBorrador), false, "0 publicadas: sin índice");
+  assert.equal(hayIndice("produccion", registroConPublicadas(["procesador"])), false, "1 publicada: sin índice");
+  assert.equal(hayIndice("produccion", registroConPublicadas(["procesador", "memoria-ram"])), true, "2 publicadas: hay índice");
   assert.equal(hayIndice("desarrollo"), true);
   assert.equal(hayIndice("preview"), true);
 
@@ -56,10 +72,10 @@ import { RAIZ } from "./comun.mjs";
   const PASO_A_PIEZA = { boards: "tarjeta-madre", procesador: "procesador", ram: "memoria-ram", graficas: "tarjeta-grafica", fuentes: "fuente-de-poder", almacenamiento: "almacenamiento", refrigeracion: "refrigeracion" };
   for (const [paso, slug] of Object.entries(PASO_A_PIEZA)) {
     assert.equal(PIEZAS[slug].contenido.piezaServicios, paso, `${slug} declara el paso ${paso}`);
-    assert.equal(hrefPiezaServicios(paso, "produccion"), null, `${paso}: sin enlace en producción mientras sea borrador`);
+    assert.equal(hrefPiezaServicios(paso, "produccion", todoBorrador), null, `${paso}: sin enlace en producción mientras sea borrador`);
     assert.equal(hrefPiezaServicios(paso, "desarrollo"), `/piezas/${slug}`, `${paso} → ${slug}`);
     assert.equal(hrefPiezaServicios(paso, "preview"), `/piezas/${slug}`);
-    assert.equal(hrefPiezaServicios(paso, "produccion", registroPrueba([slug])), `/piezas/${slug}`, `${paso}: enlaza cuando está publicada`);
+    assert.equal(hrefPiezaServicios(paso, "produccion", registroConPublicadas([slug])), `/piezas/${slug}`, `${paso}: enlaza cuando está publicada`);
   }
   assert.equal(new Set(PIEZA_SLUGS.map((s) => PIEZAS[s].contenido.piezaServicios)).size, 7, "un paso por pieza");
   assert.equal(hrefPiezaServicios("chasis", "desarrollo"), null, "el chasis no tiene pieza a fondo");
@@ -100,11 +116,8 @@ import { RAIZ } from "./comun.mjs";
 
 // ---------------------------------------------------------------- enlaces cruzados por registro
 {
-  const publicarTodo = () => {
-    const copia = {};
-    for (const slug of PIEZA_SLUGS) copia[slug] = { ...PIEZAS[slug], contenido: { ...PIEZAS[slug].contenido, estado: "publicado" } };
-    return copia;
-  };
+  const publicarTodo = () => registroConEstado("publicado");
+  const todoBorrador = registroConPublicadas([]);
   let enlacesAPiezas = 0;
   for (const slug of PIEZA_SLUGS) {
     for (const [id, parte] of Object.entries(PIEZAS[slug].contenido.partes)) {
@@ -116,7 +129,7 @@ import { RAIZ } from "./comun.mjs";
       assert.equal(enlacesResueltos(enlaces, "preview").length, enlaces.length, `${slug}.${id}: ... y en preview`);
       assert.equal(enlacesResueltos(enlaces, "produccion", publicarTodo()).length, enlaces.length, `${slug}.${id}: ... y en producción con todo publicado`);
       // En producción con borradores, los enlaces a otras piezas no se pintan (serían un 404); los internos fijos sí.
-      assert.equal(enlacesResueltos(enlaces, "produccion").length, enlaces.length - apuntadores.length, `${slug}.${id}: en producción solo quedan los enlaces fijos`);
+      assert.equal(enlacesResueltos(enlaces, "produccion", todoBorrador).length, enlaces.length - apuntadores.length, `${slug}.${id}: en producción solo quedan los enlaces fijos`);
     }
   }
   assert.ok(enlacesAPiezas >= 5, "la tarjeta madre enlaza a las piezas a fondo");
@@ -126,8 +139,8 @@ import { RAIZ } from "./comun.mjs";
   assert.equal(resolverEnlace({ etiqueta: "x", pieza: "fuente-de-poder", parte: "no-existe" }, "desarrollo"), null, "parte inexistente");
   assert.equal(resolverEnlace({ etiqueta: "x", pieza: "fuente-de-poder", parte: "constructor" }, "desarrollo"), null, "parte heredada del prototipo");
   assert.equal(resolverEnlace({ etiqueta: "x", pieza: "no-existe" }, "desarrollo"), null, "pieza inexistente");
-  assert.equal(resolverEnlace({ etiqueta: "x", pieza: "procesador" }, "produccion"), null, "borrador en producción");
-  assert.deepEqual(resolverEnlace({ etiqueta: "Cotizador", href: "/cotizador" }, "produccion"), { etiqueta: "Cotizador", href: "/cotizador" });
+  assert.equal(resolverEnlace({ etiqueta: "x", pieza: "procesador" }, "produccion", todoBorrador), null, "borrador en producción");
+  assert.deepEqual(resolverEnlace({ etiqueta: "Cotizador", href: "/cotizador" }, "produccion", todoBorrador), { etiqueta: "Cotizador", href: "/cotizador" });
 }
 
 // ---------------------------------------------------------------- redirecciones generadas desde SINONIMOS_SLUG (next.config.ts)
@@ -158,11 +171,7 @@ import { RAIZ } from "./comun.mjs";
 
 // ---------------------------------------------------------------- índice /piezas, enlaces de /servicios y del inicio, sitemap y blog (B3)
 {
-  const registroConPublicadas = (publicadas) => {
-    const copia = {};
-    for (const slug of PIEZA_SLUGS) copia[slug] = { ...PIEZAS[slug], contenido: { ...PIEZAS[slug].contenido, estado: publicadas.includes(slug) ? "publicado" : "borrador" } };
-    return copia;
-  };
+  const todoBorrador = registroConPublicadas([]);
   const ordenServicios = ["procesador", "graficas", "ram", "boards", "fuentes", "chasis", "refrigeracion", "almacenamiento"];
   const slugs = (piezas) => piezas.map((p) => p.contenido.slug);
 
@@ -173,7 +182,7 @@ import { RAIZ } from "./comun.mjs";
 
   // 0, 1 y 2 visibles según entorno: tamaño, orden y existencia del índice.
   const pruebas = [
-    { entorno: "produccion", reg: PIEZAS, esperadas: [], indice: false },
+    { entorno: "produccion", reg: todoBorrador, esperadas: [], indice: false },
     { entorno: "produccion", reg: registroConPublicadas(["refrigeracion"]), esperadas: ["refrigeracion"], indice: false },
     { entorno: "produccion", reg: registroConPublicadas(["refrigeracion", "procesador"]), esperadas: ["procesador", "refrigeracion"], indice: true },
     { entorno: "preview", reg: PIEZAS, esperadas: [...ORDEN_INDICE], indice: true },
@@ -184,7 +193,7 @@ import { RAIZ } from "./comun.mjs";
     assert.equal(hayIndice(entorno, reg), indice, `${entorno}: índice ${esperadas.length}`);
     assert.equal(piezasDelIndice(entorno, reg).length >= 2, indice, "el índice existe si y solo si hay 2 o más");
   }
-  assert.equal(indiceEsBorrador("desarrollo"), true, "todas borrador: el índice lleva noindex");
+  assert.equal(indiceEsBorrador("desarrollo", todoBorrador), true, "todas borrador: el índice lleva noindex");
   assert.equal(indiceEsBorrador("produccion", registroConPublicadas(["procesador", "memoria-ram"])), false, "publicadas: se indexa");
   assert.equal(indiceEsBorrador("preview", registroConPublicadas(["procesador"])), false, "una publicada entre borradores: no es todo borrador");
 
@@ -197,7 +206,7 @@ import { RAIZ } from "./comun.mjs";
   assert.ok(esquema.mainEntity.itemListElement.every((e) => e.name.length > 0));
 
   // Enlaces de /servicios: ninguno en producción con borradores; en desarrollo uno por paso con pieza; nunca a una pieza no visible.
-  assert.deepEqual(enlacesServicios(ordenServicios, "produccion"), [], "producción: /servicios sin enlaces");
+  assert.deepEqual(enlacesServicios(ordenServicios, "produccion", todoBorrador), [], "producción: /servicios sin enlaces");
   const enDesarrollo = enlacesServicios(ordenServicios, "desarrollo");
   assert.deepEqual(enDesarrollo.map((e) => e.paso), ordenServicios.filter((p) => p !== "chasis"), "desarrollo: todos los pasos menos el chasis, en el orden del recorrido");
   for (const e of enDesarrollo) assert.equal(e.href, hrefPiezaServicios(e.paso, "desarrollo"));
@@ -206,7 +215,7 @@ import { RAIZ } from "./comun.mjs";
 
   // Inicio: la línea conserva sus 7 palabras en orden; solo se enlazan las que tienen pieza visible.
   assert.deepEqual(PALABRAS_INICIO.map((p) => p.palabra), ["GPU", "CPU", "RAM", "Board", "Fuente", "Chasis", "Refrigeración"]);
-  assert.ok(enlacesInicio("produccion").every((p) => p.href === null), "producción: ninguna palabra enlazada");
+  assert.ok(enlacesInicio("produccion", todoBorrador).every((p) => p.href === null), "producción: ninguna palabra enlazada");
   const inicioDev = enlacesInicio("desarrollo");
   assert.equal(inicioDev.find((p) => p.palabra === "Chasis")?.href, null, "el chasis no tiene pieza");
   assert.equal(inicioDev.filter((p) => p.href !== null).length, 6);
@@ -220,7 +229,7 @@ import { RAIZ } from "./comun.mjs";
   }
 
   // Sitemap: sin piezas ni índice en producción con borradores; con publicadas, solo ellas (y el índice si son 2 o más).
-  assert.deepEqual(rutasSitemapPiezas(), [], "sitemap: nada mientras sean borrador");
+  assert.deepEqual(rutasSitemapPiezas(todoBorrador), [], "sitemap: nada mientras sean borrador");
   assert.deepEqual(rutasSitemapPiezas(registroConPublicadas(["procesador"])).map((r) => r.ruta), ["/piezas/procesador"], "1 publicada: sin índice");
   const dos = rutasSitemapPiezas(registroConPublicadas(["refrigeracion", "procesador"]));
   assert.deepEqual(dos.map((r) => r.ruta), ["/piezas", "/piezas/procesador", "/piezas/refrigeracion"], "2 publicadas: índice y piezas en el orden del índice");

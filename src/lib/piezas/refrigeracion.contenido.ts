@@ -442,7 +442,7 @@ const casos: readonly Caso[] = [
 
 export const REFRIGERACION_CONTENIDO: PiezaContenido<RefrigeracionParteId, RefrigeracionVistaId> = {
   slug: "refrigeracion",
-  estado: "borrador",
+  estado: "publicado",
   piezaServicios: "refrigeracion",
   nombreCorto: "Refrigeración",
   titulo: "Disipador por aire o refrigeración líquida: diferencias",
@@ -466,7 +466,7 @@ export const REFRIGERACION_CONTENIDO: PiezaContenido<RefrigeracionParteId, Refri
   terminos: ["AIO", "PWM", "CPU_FAN", "AIO_PUMP", "AM4", "AM5", "LGA 1700", "LGA 1851"],
   sinonimos: [],
   publicadoEn: null,
-  actualizadoEn: "2026-10-14",
+  actualizadoEn: "2026-10-20",
   bloques: ["partes", "lista", "vistas", "comparar", "elegir", "errores"],
   vistas: [
     {

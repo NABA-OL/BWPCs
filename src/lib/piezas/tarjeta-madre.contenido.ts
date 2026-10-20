@@ -913,7 +913,7 @@ export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId, Tarjet
   ],
   sinonimos: ["placa base", "motherboard", "board"],
   publicadoEn: null,
-  actualizadoEn: "2026-10-11",
+  actualizadoEn: "2026-10-20",
   bloques: ["partes", "lista", "tamanos", "elegir", "errores", "preguntas"],
   vistas: [
     {

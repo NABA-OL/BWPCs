@@ -24,7 +24,6 @@ import { PiezaExplorador } from "@/components/piezas/pieza-explorador";
 import { PiezaNombres } from "@/components/piezas/pieza-nombres";
 import { PiezaPartes } from "@/components/piezas/pieza-partes";
 import { PiezaVistas } from "@/components/piezas/pieza-vistas";
-import { TowerBackdrop } from "@/components/tower-hero";
 import { ButtonLink } from "@/components/ui/button";
 import { entornoActual } from "@/lib/piezas/entorno";
 import { bloquesVisibles, fechaRevision, fuentesGenerales, navDePieza } from "@/lib/piezas/pagina";
@@ -347,7 +346,7 @@ export default async function PiezaPage({ params }: PiezaPageProps) {
         ]}
       />
       <JsonLd data={articleSchema(contenido, conDibujo)} />
-      <TowerBackdrop />
+      {/* Sin torre de fondo: son páginas de lectura y la torre fija cruzaba los párrafos largos (2026-10-20). */}
       <SectionNav items={navItems} />
 
       <div id="inicio">

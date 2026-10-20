@@ -13,9 +13,10 @@ import { HOY, clonar, criteriosDe, hechosDe } from "./comun.mjs";
 
 // ---------------------------------------------------------------- puerta de publicación
 {
-  assert.equal(CONTENIDO.estado, "borrador", "el piloto sigue en borrador");
-  assert.deepEqual(problemasDePublicacion(CONTENIDO, HOY, true), [], "un borrador no se bloquea");
-  assert.deepEqual(advertenciasDePublicacion(CONTENIDO, HOY), [], "un borrador no avisa");
+  // Estas pruebas no dependen del estado real del contenido: parten de clones con el estado forzado.
+  const borrador = { ...clonar(CONTENIDO), estado: "borrador" };
+  assert.deepEqual(problemasDePublicacion(borrador, HOY, true), [], "un borrador no se bloquea");
+  assert.deepEqual(advertenciasDePublicacion(borrador, HOY), [], "un borrador no avisa");
   const revision = { ...clonar(CONTENIDO), estado: "revision" };
   assert.deepEqual(problemasDePublicacion(revision, HOY, true), [], "revisión tampoco se bloquea");
 
