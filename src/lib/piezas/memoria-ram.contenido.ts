@@ -341,7 +341,7 @@ const casos: readonly Caso[] = [
   {
     id: "so-dimm-en-escritorio",
     tipo: "puede-pasar",
-    texto: "comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Es de otro tamaño y no encaja en las ranuras DIMM.",
+    texto: "comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Aunque sea de la misma generación, es de otro tamaño, con otros contactos y otra posición de la muesca, y no encaja en las ranuras DIMM.",
     hechos: [ramSoDimm],
     aprobadoEn: "2026-10-19",
     aprobadoPor: "NB",

@@ -149,9 +149,10 @@ Hechos: 8 · casos: 4 · criterios: 16 · decisiones del dueño: 7 aprobar, 1 aj
 - **Tipo:** caso (Puede pasar)
 - **Dónde:** almacenamiento › casos
 - **Texto publicado:** instalar el SSD M.2 sin fijarlo con el tornillo o en un separador que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.
+- **Texto al decidir:** instalar el SSD M.2 sin fijarlo, ya sea con el tornillo o con el seguro plástico que traen algunas placas, o en un punto de fijación que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.
 - **Estado:** ⚪ no verificable con fuente (solo aprobación)
 - **Propuesta:** —
-- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo.
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo. | RETOCADO por NB (2026-10-19): texto ajustado a los hechos ya decididos; reaprobado con la misma decisión.
 
 ### m2-desactiva-puertos-sata — Caso del taller · Puede pasar
 - **Tipo:** caso (Puede pasar)

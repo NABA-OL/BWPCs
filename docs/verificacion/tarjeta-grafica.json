@@ -940,7 +940,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. En el taller usamos un cable independiente de la fuente para cada conector. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.",
-      "textoRevisado": "alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. En el taller usamos un cable independiente de la fuente para cada conector. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.",
+      "textoRevisado": "alimentar una tarjeta con varios conectores de ocho pines con un solo cable que se ramifica. Si la fuente solo trae un cable así, puede usarse, pero lo más recomendable es un cable independiente de la fuente para cada conector, para que el cable no se caliente de más. Confirma en la guía de tu tarjeta o de tu fuente qué cables admite.",
       "usadoPor": [
         "tarjeta-grafica"
       ],
@@ -958,7 +958,7 @@
         "textoFinal": null,
         "por": "NB",
         "en": "2026-10-19",
-        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo. | RETOCADO por NB (2026-10-19): texto ajustado a los hechos ya decididos; reaprobado con la misma decisión."
       },
       "huerfana": false
     },

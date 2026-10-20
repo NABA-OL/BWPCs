@@ -144,6 +144,7 @@ Hechos: 7 · casos: 5 · criterios: 0 · decisiones del dueño: 6 aprobar, 1 aju
 - **Tipo:** caso (Puede pasar)
 - **Dónde:** memoria-ram › casos
 - **Texto publicado:** comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Es de otro tamaño y no encaja en las ranuras DIMM.
+- **Texto al decidir:** comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Aunque sea de la misma generación, es de otro tamaño, con otros contactos y otra posición de la muesca, y no encaja en las ranuras DIMM.
 - **Estado:** ⚪ no verificable con fuente (solo aprobación)
 - **Propuesta:** —
-- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo.
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo. | RETOCADO por NB (2026-10-19): texto ajustado a los hechos ya decididos; reaprobado con la misma decisión.

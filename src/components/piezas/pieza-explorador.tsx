@@ -38,6 +38,7 @@ const FOCO = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visib
 const TRANSICION = "transition-[transform,background-color,color] duration-150 motion-reduce:transition-none";
 
 const SIN_ZOOM = { scale: 1, tx: 0, ty: 0 };
+const TRANSICION_MARCADOR = "transition-[transform,background-color,color,left,top] duration-300 ease-out motion-reduce:transition-none";
 const TRANSICION_ZOOM = "transition-transform duration-300 ease-out motion-reduce:transition-none";
 
 const dosCifras = (n: number): string => String(n).padStart(2, "0");
@@ -202,7 +203,7 @@ export function PiezaExplorador({ slug, vistas, partes, selectorTitulo }: PiezaE
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
-        <figure className={`m-0 lg:col-span-7${multi ? " print:hidden" : ""}`}>
+        <figure className={multi ? "m-0 lg:col-span-7 print:hidden" : "m-0 lg:col-span-7"}>
           <div className="relative bg-vanilla" style={{ aspectRatio: `${geo.w} / ${geo.h}` }}>
             <div className="absolute inset-0 overflow-hidden">
             <div
@@ -270,7 +271,7 @@ export function PiezaExplorador({ slug, vistas, partes, selectorTitulo }: PiezaE
                   onClick={alClicEnlace(p.id)}
                   aria-label={`${p.orden}. ${p.nombre}`}
                   aria-current={activa ? "true" : undefined}
-                  className={`${TRANSICION} ${FOCO} font-mono text-xs leading-none no-underline ${
+                  className={`${TRANSICION_MARCADOR} ${FOCO} font-mono text-xs leading-none no-underline ${
                     activa ? "border-accent bg-accent text-accent-ink" : "border-panda bg-vanilla text-panda"
                   }`}
                   style={{

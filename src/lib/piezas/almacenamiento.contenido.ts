@@ -337,7 +337,7 @@ const casos: readonly Caso[] = [
   {
     id: "m2-sin-tornillo",
     tipo: "puede-pasar",
-    texto: "instalar el SSD M.2 sin fijarlo con el tornillo o en un separador que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.",
+    texto: "instalar el SSD M.2 sin fijarlo, ya sea con el tornillo o con el seguro plástico que traen algunas placas, o en un punto de fijación que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.",
     hechos: [m2Largos],
     aprobadoEn: "2026-10-19",
     aprobadoPor: "NB",
