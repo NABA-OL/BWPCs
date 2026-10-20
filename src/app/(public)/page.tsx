@@ -17,8 +17,16 @@ import { SectionNav } from "@/components/section-nav";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { getApprovedReviews, getReviewStats } from "@/lib/reviews/reviews";
 import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
+import { entornoActual } from "@/lib/piezas/entorno";
+import { enlacesInicio } from "@/lib/piezas/indice";
+import { hayIndice } from "@/lib/piezas/registro";
 
 export const revalidate = 3600;
+
+const entornoPiezas = entornoActual();
+/** Palabras de la línea de piezas con su página "a fondo"; sin ninguna visible (producción con borradores) la línea queda como texto plano. */
+const palabrasPiezas = enlacesInicio(entornoPiezas);
+const hayEnlacesPiezas = palabrasPiezas.some((p) => p.href !== null);
 
 const trust = [
   {
@@ -190,7 +198,31 @@ export default async function HomePage() {
                 Entrega con todo funcionando.
               </p>
               <p className="mt-5 font-mono text-sm text-component">
-                GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración
+                {hayEnlacesPiezas ? (
+                  <>
+                    {palabrasPiezas.map((p, i) => (
+                      <span key={p.palabra}>
+                        {i > 0 && " · "}
+                        {p.href ? (
+                          <Link href={p.href} className="underline underline-offset-4 hover:text-panda">
+                            {p.palabra}
+                          </Link>
+                        ) : (
+                          p.palabra
+                        )}
+                      </span>
+                    ))}
+                    {hayIndice(entornoPiezas) ? (
+                      <span className="mt-2 block font-sans">
+                        <Link href="/piezas" className="underline underline-offset-4 hover:text-panda">
+                          Conoce cada pieza por dentro →
+                        </Link>
+                      </span>
+                    ) : null}
+                  </>
+                ) : (
+                  "GPU · CPU · RAM · Board · Fuente · Chasis · Refrigeración"
+                )}
               </p>
             </div>
             <div className="mt-10 border-t border-hairline/50 pt-10 md:mt-0 md:border-l md:border-t-0 md:pl-12 md:pt-0">

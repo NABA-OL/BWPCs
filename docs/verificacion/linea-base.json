@@ -1,0 +1,4784 @@
+{
+  "version": 1,
+  "congeladoEn": "2026-10-19",
+  "fusiones": [
+    {
+      "origen": "cpu-intel-sufijos-h-hx",
+      "destino": "cpu-intel-sufijos-k",
+      "hojaOrigen": "procesador",
+      "hojaDestino": "procesador"
+    },
+    {
+      "origen": "cpu-amd-x3d",
+      "destino": "cpu-amd-sufijos-x-xt",
+      "hojaOrigen": "procesador",
+      "hojaDestino": "procesador"
+    },
+    {
+      "origen": "cpu-amd-sufijo-g",
+      "destino": "cpu-amd-sufijos-x-xt",
+      "hojaOrigen": "procesador",
+      "hojaDestino": "procesador"
+    },
+    {
+      "origen": "cpu-amd-portatil-sufijos",
+      "destino": "cpu-amd-sufijos-x-xt",
+      "hojaOrigen": "procesador",
+      "hojaDestino": "procesador"
+    },
+    {
+      "origen": "cpu-amd-ryzen-ai-esquema",
+      "destino": "cpu-amd-sufijos-x-xt",
+      "hojaOrigen": "procesador",
+      "hojaDestino": "procesador"
+    }
+  ],
+  "hechos": {
+    "socket-mismo-no-garantiza": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › socket",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 96,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "chipsets-am5": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › chipset",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 169,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "chipsets-overclock": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › chipset",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 175,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "chipsets-intel": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › chipset",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 181,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "chipset-enlace-procesador": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › chipset",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 187,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "chipset-vs-procesador-lineas": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › chipset",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 193,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "vrm-funcion": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › vrm",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 219,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pcie-x16-cableada-menos-lineas": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › pcie-secundarias",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 333,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "sata-iii-velocidad": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sata",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 214,
+          "nodo": {
+            "constante": "sataIiiVelocidad",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "escudo-es-integrado-o-suelto": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › puertos-traseros",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 447,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "botones-bios-flashback-clear-cmos": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › puertos-traseros",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 453,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ventilador-cuatro-pines-pwm-y-tres-pines": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › cabezales-ventilador",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 479,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "panel-frontal-conexiones": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › conectores-frontales",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 506,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "usb-frontal-tipos": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › conectores-frontales",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 512,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "audio-frontal-hd": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › conectores-frontales",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 518,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "bateria-cr2032": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › bateria-cmos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 543,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "bateria-que-conserva": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › bateria-cmos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 549,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "uefi-reemplazo-bios": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección elegir",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 577,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "bios-procesador-nuevo-flashback": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección elegir",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 583,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "windows-tpm-arranque-seguro": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección elegir",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 589,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "errores-rgb-vs-argb": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección errores",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 606,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "errores-bios-flash-usb": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección errores",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 612,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-ranuras-expansion": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 637,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-chasis-compatibles": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 643,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-e-atx-sin-medida-unica": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 649,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-orificios-separadores": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 655,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-ranuras-memoria": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 661,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-m2-sata-cantidad": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 667,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "tamanos-espacio-vrm": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 673,
+          "nodo": {
+            "constante": "hechos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "forma-atx-medidas": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › factor atx",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 771,
+          "nodo": {
+            "constante": "hecho",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "forma-micro-atx-medidas": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › factor micro-atx",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 785,
+          "nodo": {
+            "constante": "hecho",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "forma-mini-itx-medidas": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › factor mini-itx",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+          "linea": 799,
+          "nodo": {
+            "constante": "hecho",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-ihs-tapa-metalica": {
+      "hoja": "procesador",
+      "donde": "procesador › ihs",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 300,
+          "nodo": {
+            "constante": "ihsTapaMetalica",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-potencia-disipador": {
+      "hoja": "procesador",
+      "donde": "procesador › ihs",
+      "tambienEn": [
+        "procesador › sección elegir"
+      ],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 312,
+          "nodo": {
+            "constante": "potenciaDisipador",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-lga1700-lga1851-muescas": {
+      "hoja": "procesador",
+      "donde": "procesador › muescas",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 292,
+          "nodo": {
+            "constante": "lga1851NoCompatible",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-lga-contactos-en-placa": {
+      "hoja": "procesador",
+      "donde": "procesador › contactos-socket",
+      "tambienEn": [
+        "procesador › comparación plataformas › Dónde están los contactos"
+      ],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 285,
+          "nodo": {
+            "constante": "lgaContactosEnPlaca",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-socket-palanca-sujecion": {
+      "hoja": "procesador",
+      "donde": "procesador › tapa-sujecion",
+      "tambienEn": [
+        "procesador › palanca"
+      ],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 306,
+          "nodo": {
+            "constante": "palancaSujecion",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-intel-marca-core-i-a-core": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 95,
+          "nodo": {
+            "constante": "marcaCoreIACore",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-core-vs-core-ultra": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 104,
+          "nodo": {
+            "constante": "coreVsCoreUltra",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-core-i-generacion": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 113,
+          "nodo": {
+            "constante": "coreIGeneracion",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-core-i-lga1700-vigentes": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 122,
+          "nodo": {
+            "constante": "coreILga1700Vigentes",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-core-ultra-serie": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 131,
+          "nodo": {
+            "constante": "coreUltraSerie",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-core-sin-ultra-numero": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 140,
+          "nodo": {
+            "constante": "coreSinUltraNumero",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-intel-gamas-relativas": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 148,
+          "nodo": {
+            "constante": "intelGamasRelativas",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-amd-gamas-relativas": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 154,
+          "nodo": {
+            "constante": "amdGamasRelativas",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-core-ultra-escritorio-gamas": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 161,
+          "nodo": {
+            "constante": "coreUltraEscritorioGamas",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-intel-sufijos-k": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 169,
+          "nodo": {
+            "constante": "intelSufijosK",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-intel-sufijo-t": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 175,
+          "nodo": {
+            "constante": "intelSufijoT",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-intel-sufijos-h-hx": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 181,
+          "nodo": {
+            "constante": "intelSufijosHHx",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-intel-sufijos-u-v": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 187,
+          "nodo": {
+            "constante": "intelSufijosUV",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-amd-sufijos-x-xt": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 193,
+          "nodo": {
+            "constante": "amdSufijosXXt",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-amd-x3d": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 200,
+          "nodo": {
+            "constante": "amdX3d",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-amd-sufijo-g": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 208,
+          "nodo": {
+            "constante": "amdSufijoG",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-amd-sufijo-f": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 214,
+          "nodo": {
+            "constante": "amdSufijoF",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "cpu-amd-portatil-sufijos": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 221,
+          "nodo": {
+            "constante": "amdPortatilSufijos",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-amd-ryzen-ai-esquema": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 230,
+          "nodo": {
+            "constante": "amdRyzenAiEsquema",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-amd-8000g-am5": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 239,
+          "nodo": {
+            "constante": "amd8000gAm5",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-amd-serie-no-es-generacion": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 248,
+          "nodo": {
+            "constante": "amdSerieNoEsGeneracion",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-amd-am5-graficos-integrados": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 257,
+          "nodo": {
+            "constante": "amdAm5GraficosIntegrados",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-ejemplos-amd": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 266,
+          "nodo": {
+            "constante": "ejemplosAmd",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "cpu-ejemplos-intel": {
+      "hoja": "procesador",
+      "donde": "procesador › sección nombres",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/procesador.contenido.ts",
+          "linea": 275,
+          "nodo": {
+            "constante": "ejemplosIntel",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "ram-velocidad-mt-s": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › chips-memoria",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Cómo se nombra la velocidad"
+      ],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 93,
+          "nodo": {
+            "constante": "ramVelocidadMts",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ram-velocidad-jedec-referencia": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › chips-memoria",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Velocidad de referencia del estándar"
+      ],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 100,
+          "nodo": {
+            "constante": "ramVelocidadJedec",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "ram-pmic-en-ddr5": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › pmic",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Dónde se regula el voltaje"
+      ],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 81,
+          "nodo": {
+            "constante": "ramPmicEnDdr5",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ram-voltaje-nominal": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › pmic",
+      "tambienEn": [
+        "memoria-ram › comparación ddr4-vs-ddr5 › Voltaje nominal"
+      ],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 87,
+          "nodo": {
+            "constante": "ramVoltajeNominal",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ram-chip-spd": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › chip-spd",
+      "tambienEn": [],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 114,
+          "nodo": {
+            "constante": "ramChipSpd",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ram-perfiles-xmp-expo": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › chip-spd",
+      "tambienEn": [
+        "memoria-ram › caso memoria-sin-activar-perfil",
+        "memoria-ram › comparación ddr4-vs-ddr5 › Perfiles XMP y EXPO"
+      ],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 108,
+          "nodo": {
+            "constante": "ramPerfilesXmpExpo",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ram-so-dimm-distinto": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › ranura",
+      "tambienEn": [
+        "memoria-ram › caso so-dimm-en-escritorio"
+      ],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+          "linea": 120,
+          "nodo": {
+            "constante": "ramSoDimm",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-m2-llaves-nvme-sata": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › llave-m2",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Llave o muesca del conector"
+      ],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 65,
+          "nodo": {
+            "constante": "almM2Llaves",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-nvme-protocolo-pcie": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › controlador",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 71,
+          "nodo": {
+            "constante": "almNvmeProtocolo",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-m2-sata-usa-sata": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › controlador",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 77,
+          "nodo": {
+            "constante": "almM2SataProtocolo",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-nand-desgaste": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › memoria-nand",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 107,
+          "nodo": {
+            "constante": "almNandDesgaste",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-sata-conectores-iguales": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › conector-sata-datos",
+      "tambienEn": [
+        "almacenamiento › conector-sata-poder",
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 89,
+          "nodo": {
+            "constante": "almConectoresSataIguales",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-sata-formas-pulgadas": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › carcasa",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Forma y tamaño"
+      ],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 95,
+          "nodo": {
+            "constante": "almFormasSata",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-hdd-piezas-moviles": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › carcasa",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Piezas móviles"
+      ],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 101,
+          "nodo": {
+            "constante": "almPiezasMoviles",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "alm-m2-sin-cables": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Cables que necesita",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+          "linea": 83,
+          "nodo": {
+            "constante": "almM2SinCables",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-plastico-base": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › base",
+      "tambienEn": [
+        "refrigeracion › caso plastico-base-disipador"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 66,
+          "nodo": {
+            "constante": "plasticoBase",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-heatpipes-transportan-calor": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › heatpipes",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 60,
+          "nodo": {
+            "constante": "heatpipesTransportan",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-aire-componentes": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › heatpipes",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › De qué se compone"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 48,
+          "nodo": {
+            "constante": "aireComponentes",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-mantenimiento-aire": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › aletas",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › Mantenimiento que declaran los fabricantes"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 108,
+          "nodo": {
+            "constante": "mantenimientoAire",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-ventilador-pwm-cuatro-pines": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › ventilador",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 90,
+          "nodo": {
+            "constante": "ventiladorPwm",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-ventilador-flechas-sentido": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › ventilador",
+      "tambienEn": [
+        "refrigeracion › caso ventiladores-todos-entrando"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 96,
+          "nodo": {
+            "constante": "ventiladorFlechas",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-flujo-chasis-entrada-salida": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › ventilador",
+      "tambienEn": [
+        "refrigeracion › caso ventiladores-todos-entrando"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 102,
+          "nodo": {
+            "constante": "flujoChasis",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-liquida-componentes": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › bloque-bomba",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › De qué se compone"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 54,
+          "nodo": {
+            "constante": "liquidaComponentes",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-mantenimiento-liquida": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › mangueras",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › Mantenimiento que declaran los fabricantes"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 114,
+          "nodo": {
+            "constante": "mantenimientoLiquida",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-radiador-tamano-por-ventiladores": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › radiador",
+      "tambienEn": [
+        "refrigeracion › comparación aire-vs-liquida › Cómo se nombra el tamaño"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 84,
+          "nodo": {
+            "constante": "radiadorTamanoPorVentiladores",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-radiador-ubicacion-chasis": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › radiador",
+      "tambienEn": [
+        "refrigeracion › sección elegir",
+        "refrigeracion › comparación aire-vs-liquida › Qué dice el chasis"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 78,
+          "nodo": {
+            "constante": "radiadorUbicacion",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ref-altura-maxima-disipador-chasis": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › sección elegir",
+      "tambienEn": [
+        "refrigeracion › caso disipador-no-cabe-en-el-chasis",
+        "refrigeracion › comparación aire-vs-liquida › Qué dice el chasis"
+      ],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+          "linea": 72,
+          "nodo": {
+            "constante": "alturaMaximaChasis",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-ventilador-orientacion": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › rejilla-ventilador",
+      "tambienEn": [
+        "fuente-de-poder › caso ventilador-de-la-fuente-al-reves"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 85,
+          "nodo": {
+            "constante": "ventiladorOrientacion",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-interruptor-general": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › entrada-ac",
+      "tambienEn": [
+        "fuente-de-poder › interruptor",
+        "fuente-de-poder › caso interruptor-apagado-al-entregar"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 55,
+          "nodo": {
+            "constante": "interruptorGeneral",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-modular-conectores": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › banco-modular",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 61,
+          "nodo": {
+            "constante": "modularConectores",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-modular-no-mezclar-fuentes": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › banco-modular",
+      "tambienEn": [
+        "fuente-de-poder › caso cables-modulares-de-otra-fuente"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 67,
+          "nodo": {
+            "constante": "modularNoMezclar",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-etiqueta-datos": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › etiqueta",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 73,
+          "nodo": {
+            "constante": "etiquetaDatos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-80-plus-certificacion": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › etiqueta",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 79,
+          "nodo": {
+            "constante": "ochentaPlus",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-etapas-internas": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › filtro-emi",
+      "tambienEn": [
+        "fuente-de-poder › rectificador",
+        "fuente-de-poder › pfc",
+        "fuente-de-poder › condensadores-primarios",
+        "fuente-de-poder › transformador",
+        "fuente-de-poder › salida-secundaria"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 49,
+          "nodo": {
+            "constante": "etapasInternas",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-no-abrir-fuente": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › condensadores-primarios",
+      "tambienEn": [
+        "fuente-de-poder › sección errores"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 43,
+          "nodo": {
+            "constante": "noAbrirFuente",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-pcie-un-cable-por-conector": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › pcie-6-2",
+      "tambienEn": [
+        "fuente-de-poder › caso un-cable-por-conector-de-la-grafica"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 91,
+          "nodo": {
+            "constante": "pcie8PinesIndependientes",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-12v-2x6-pines": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › 12v-2x6",
+      "tambienEn": [
+        "fuente-de-poder › caso conector-12v-2x6-a-medias"
+      ],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 97,
+          "nodo": {
+            "constante": "conector12v2x6Pines",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-sata-poder-15-pines": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › sata-poder",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 103,
+          "nodo": {
+            "constante": "sataPoder15Pines",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "fp-molex-cuatro-pines": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › molex",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+          "linea": 109,
+          "nodo": {
+            "constante": "molexCuatroPines",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "gr-largo-maximo-chasis": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › carcasa",
+      "tambienEn": [
+        "tarjeta-grafica › caso grafica-demasiado-larga-para-el-chasis"
+      ],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 144,
+          "nodo": {
+            "constante": "largoChasis",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "gr-grosor-en-ranuras": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › bracket",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 150,
+          "nodo": {
+            "constante": "grosorEnRanuras",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "gr-conectores-6-y-8-pines-potencia": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 114,
+          "nodo": {
+            "constante": "conectoresSeisOchoPines",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "gr-cables-independientes-por-conector": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [
+        "tarjeta-grafica › caso cable-ramificado-en-varios-conectores"
+      ],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 120,
+          "nodo": {
+            "constante": "cablesIndependientes",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "gr-12v2x6-insertar-por-completo": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [
+        "tarjeta-grafica › caso conector-de-doce-pines-a-medias"
+      ],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 127,
+          "nodo": {
+            "constante": "insertarPorCompleto",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-12v2x6-potencia": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › conector-energia",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 136,
+          "nodo": {
+            "constante": "potencia600w",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-ranura-pcie-75w": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › conector-pcie",
+      "tambienEn": [
+        "tarjeta-grafica › caso grafica-sin-cable-de-energia"
+      ],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 108,
+          "nodo": {
+            "constante": "ranura75w",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "gr-fabricantes-chip": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › chip-grafico",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 78,
+          "nodo": {
+            "constante": "fabricantesDelChip",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-marca-nvidia-geforce": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › chip-grafico › opción nvidia",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 87,
+          "nodo": {
+            "constante": "marcaNvidia",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-marca-amd-radeon": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › chip-grafico › opción amd",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 96,
+          "nodo": {
+            "constante": "marcaAmd",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-marca-intel-arc": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › chip-grafico › opción intel",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 100,
+          "nodo": {
+            "constante": "marcaIntel",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-vram-nombres": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › memoria-vram",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 69,
+          "nodo": {
+            "constante": "vramNombres",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "gr-potencia-fuente-recomendada": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › sección elegir",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+          "linea": 156,
+          "nodo": {
+            "constante": "potenciaFuente",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "socket-disipadores-am4-am5": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket",
+      "tambienEn": [
+        "procesador › sección elegir",
+        "procesador › comparación plataformas › Disipadores de la plataforma anterior",
+        "refrigeracion › base",
+        "refrigeracion › sección elegir"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 55,
+          "nodo": {
+            "constante": "socketDisipadoresAm4Am5",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "socket-disipadores-lga1700-lga1851": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket",
+      "tambienEn": [
+        "procesador › sección elegir",
+        "procesador › comparación plataformas › Disipadores de la plataforma anterior",
+        "refrigeracion › base",
+        "refrigeracion › sección elegir"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 62,
+          "nodo": {
+            "constante": "socketDisipadoresLga1700Lga1851",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "socket-marca-pin-uno": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket",
+      "tambienEn": [
+        "procesador › marca-pin-1",
+        "procesador › caso pines-doblados-al-instalar"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 69,
+          "nodo": {
+            "constante": "socketMarcaPinUno",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "am4-pga-ryzen": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket › opción am4",
+      "tambienEn": [
+        "procesador › pines-procesador",
+        "procesador › zocalo",
+        "procesador › zocalo › opción am4",
+        "procesador › comparación plataformas › Dónde están los contactos",
+        "procesador › comparación plataformas › Memoria que usa",
+        "memoria-ram › ranura › opción am4",
+        "memoria-ram › comparación ddr4-vs-ddr5 › Plataformas de AMD"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 77,
+          "nodo": {
+            "constante": "am4PgaRyzen",
+            "llamada": "hechoVerificado",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "am5-lga": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket › opción am5",
+      "tambienEn": [
+        "procesador › contactos-socket",
+        "procesador › zocalo",
+        "procesador › zocalo › opción am5",
+        "procesador › comparación plataformas › Dónde están los contactos"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 87,
+          "nodo": {
+            "constante": "am5Lga",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "am5-memoria-ddr5": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket › opción am5",
+      "tambienEn": [
+        "procesador › zocalo",
+        "procesador › zocalo › opción am5",
+        "procesador › comparación plataformas › Memoria que usa",
+        "memoria-ram › ranura › opción am5",
+        "memoria-ram › comparación ddr4-vs-ddr5 › Plataformas de AMD"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 97,
+          "nodo": {
+            "constante": "am5MemoriaDdr5",
+            "llamada": "hechoVerificado",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "lga1700-generaciones-memoria": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket › opción lga-1700",
+      "tambienEn": [
+        "procesador › zocalo",
+        "procesador › zocalo › opción lga-1700",
+        "procesador › comparación plataformas › Memoria que usa",
+        "memoria-ram › ranura › opción lga-1700",
+        "memoria-ram › comparación ddr4-vs-ddr5 › Placas LGA 1700 de Intel"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 107,
+          "nodo": {
+            "constante": "lga1700GeneracionesMemoria",
+            "llamada": "hechoVerificado",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "lga1851-procesadores-memoria": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › socket › opción lga-1851",
+      "tambienEn": [
+        "procesador › zocalo",
+        "procesador › zocalo › opción lga-1851",
+        "memoria-ram › ranura › opción lga-1851"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 117,
+          "nodo": {
+            "constante": "lga1851ProcesadoresMemoria",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "ram-ddr4-ddr5-muesca": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › ranuras-ram",
+      "tambienEn": [
+        "memoria-ram › contactos",
+        "memoria-ram › muesca",
+        "memoria-ram › comparación ddr4-vs-ddr5 › Contactos y muesca"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 126,
+          "nodo": {
+            "constante": "ramDdr4Ddr5Muesca",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ram-una-generacion-por-placa": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › ranuras-ram",
+      "tambienEn": [
+        "memoria-ram › ranura"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 134,
+          "nodo": {
+            "constante": "ramUnaGeneracionPorPlaca",
+            "llamada": "hechoVerificado",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "ram-doble-canal": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › ranuras-ram",
+      "tambienEn": [
+        "memoria-ram › ranura",
+        "memoria-ram › caso ranuras-equivocadas-doble-canal"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 143,
+          "nodo": {
+            "constante": "ramDobleCanal",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pcie-tamanos-fisicos": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › pcie-principal",
+      "tambienEn": [
+        "tarjeta-grafica › conector-pcie"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 150,
+          "nodo": {
+            "constante": "pcieTamanosFisicos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pcie-ancho-banda-generaciones": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › pcie-principal",
+      "tambienEn": [
+        "tarjeta-grafica › conector-pcie"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 157,
+          "nodo": {
+            "constante": "pcieAnchoBandaGeneraciones",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pcie-compatibilidad-atras": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › pcie-principal",
+      "tambienEn": [
+        "almacenamiento › ranura-m2",
+        "tarjeta-grafica › conector-pcie"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 164,
+          "nodo": {
+            "constante": "pcieCompatibilidadAtras",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pcie-x16-desde-procesador": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › pcie-principal",
+      "tambienEn": [
+        "tarjeta-grafica › conector-pcie"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 171,
+          "nodo": {
+            "constante": "pcieX16DesdeProcesador",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "m2-llaves": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › m2",
+      "tambienEn": [
+        "almacenamiento › llave-m2"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 178,
+          "nodo": {
+            "constante": "m2Llaves",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "m2-largos": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › m2",
+      "tambienEn": [
+        "almacenamiento › tornillo-m2",
+        "almacenamiento › caso m2-sin-tornillo",
+        "almacenamiento › comparación tipos-de-unidad › Forma y tamaño"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 185,
+          "nodo": {
+            "constante": "m2Largos",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "m2-protocolos": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › m2",
+      "tambienEn": [
+        "almacenamiento › llave-m2",
+        "almacenamiento › ranura-m2",
+        "almacenamiento › caso m2-ranura-sin-compatibilidad",
+        "almacenamiento › comparación tipos-de-unidad › Dónde se conecta"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 192,
+          "nodo": {
+            "constante": "m2Protocolos",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "m2-comparte-lineas-sata": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › m2",
+      "tambienEn": [
+        "almacenamiento › ranura-m2",
+        "almacenamiento › caso m2-desactiva-puertos-sata"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 199,
+          "nodo": {
+            "constante": "m2ComparteLineasSata",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "nvme-lineas-pcie": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › m2 › opción nvme",
+      "tambienEn": [
+        "almacenamiento › controlador"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 206,
+          "nodo": {
+            "constante": "nvmeLineasPcie",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "sata-datos-y-energia": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › sata",
+      "tambienEn": [
+        "almacenamiento › conector-sata-datos",
+        "almacenamiento › conector-sata-poder",
+        "almacenamiento › caso cables-sata-mal-conectados",
+        "almacenamiento › comparación tipos-de-unidad › Cables que necesita",
+        "fuente-de-poder › sata-poder",
+        "fuente-de-poder › caso sata-mal-conectado"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "almacenamiento",
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 223,
+          "nodo": {
+            "constante": "sataDatosYEnergia",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "atx-24-pines": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › conector-24-pines",
+      "tambienEn": [
+        "fuente-de-poder › atx-24"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 231,
+          "nodo": {
+            "constante": "atx24Pines",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    },
+    "eps-ocho-pines": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › conector-cpu",
+      "tambienEn": [
+        "fuente-de-poder › eps-cpu"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 240,
+          "nodo": {
+            "constante": "epsOchoPines",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "eps-vs-pcie-grafica": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › conector-cpu",
+      "tambienEn": [
+        "fuente-de-poder › eps-cpu",
+        "fuente-de-poder › pcie-6-2",
+        "fuente-de-poder › caso eps-y-pcie-confundidos",
+        "tarjeta-grafica › conector-energia"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "fuente-de-poder",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 247,
+          "nodo": {
+            "constante": "epsVsPcieGrafica",
+            "llamada": "hechoVerificado",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "video-requiere-graficos-integrados": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › puertos-traseros",
+      "tambienEn": [
+        "procesador › sección nombres",
+        "procesador › sección elegir",
+        "procesador › caso monitor-sin-graficos-integrados",
+        "tarjeta-grafica › bracket"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "procesador",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 254,
+          "nodo": {
+            "constante": "videoRequiereGraficosIntegrados",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "ventilador-nombres-cabezales": {
+      "hoja": "comun",
+      "donde": "tarjeta-madre › cabezales-ventilador",
+      "tambienEn": [
+        "refrigeracion › ventilador",
+        "refrigeracion › bloque-bomba",
+        "refrigeracion › caso bomba-en-cabezal-de-ventilador",
+        "refrigeracion › comparación aire-vs-liquida › Dónde se conecta a la placa"
+      ],
+      "usadoPor": [
+        "tarjeta-madre",
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 261,
+          "nodo": {
+            "constante": "ventiladorNombresCabezales",
+            "llamada": "hechoVerificadoB",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pasta-termica-entre-ihs-y-base": {
+      "hoja": "comun",
+      "donde": "procesador › ihs",
+      "tambienEn": [
+        "procesador › caso pasta-termica-mal-aplicada",
+        "refrigeracion › base",
+        "refrigeracion › caso pasta-termica-mal-aplicada",
+        "refrigeracion › comparación aire-vs-liquida › Pasta térmica"
+      ],
+      "usadoPor": [
+        "procesador",
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 269,
+          "nodo": {
+            "constante": "pastaTermicaEntreIhsYBase",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "pcie-6-2-graficas": {
+      "hoja": "comun",
+      "donde": "fuente-de-poder › pcie-6-2",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir",
+        "fuente-de-poder › caso grafica-sin-cable-de-energia",
+        "tarjeta-grafica › conector-energia"
+      ],
+      "usadoPor": [
+        "fuente-de-poder",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 275,
+          "nodo": {
+            "constante": "pcie62Graficas",
+            "llamada": "hecho",
+            "envolturas": []
+          }
+        }
+      ]
+    },
+    "conector-12v-2x6": {
+      "hoja": "comun",
+      "donde": "fuente-de-poder › 12v-2x6",
+      "tambienEn": [
+        "fuente-de-poder › sección elegir",
+        "fuente-de-poder › caso conector-12v-2x6-a-medias",
+        "tarjeta-grafica › conector-energia"
+      ],
+      "usadoPor": [
+        "fuente-de-poder",
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "ajustar",
+      "ubicaciones": [
+        {
+          "archivo": "src/lib/piezas/comun.hechos.ts",
+          "linea": 282,
+          "nodo": {
+            "constante": "conector12v2x6",
+            "llamada": "hecho",
+            "envolturas": [
+              "conRevision"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "casos": {
+    "tarjeta-madre/bios-sin-reconocer-procesador": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 686,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/ddr5-en-placa-ddr4": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 694,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/rgb-argb-no-compatibles": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 702,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/monitor-en-la-placa": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 710,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/pines-del-socket-doblados": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 718,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/cabezal-equivocado": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 725,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/m2-ranura-incompatible": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 732,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/placa-no-cabe-en-el-chasis": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 739,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/ram-a-medio-insertar": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 746,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-madre/olvido-del-cable-eps": {
+      "hoja": "tarjeta-madre",
+      "donde": "tarjeta-madre › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-madre.contenido.ts",
+        "linea": 753,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "procesador/bios-sin-reconocer-procesador": {
+      "hoja": "procesador",
+      "donde": "procesador › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 503,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "procesador/monitor-sin-graficos-integrados": {
+      "hoja": "procesador",
+      "donde": "procesador › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 512,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "procesador/plastico-base-disipador": {
+      "hoja": "procesador",
+      "donde": "procesador › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 522,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "procesador/pasta-termica-mal-aplicada": {
+      "hoja": "procesador",
+      "donde": "procesador › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 530,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "procesador/pines-doblados-al-instalar": {
+      "hoja": "procesador",
+      "donde": "procesador › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 538,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "procesador/comparar-solo-por-numero": {
+      "hoja": "procesador",
+      "donde": "procesador › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 547,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "memoria-ram/ddr5-para-placa-ddr4": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+        "linea": 305,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "memoria-ram/ram-a-medio-insertar": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+        "linea": 314,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "memoria-ram/memoria-sin-activar-perfil": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+        "linea": 321,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "memoria-ram/ranuras-equivocadas-doble-canal": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+        "linea": 329,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "memoria-ram/so-dimm-en-escritorio": {
+      "hoja": "memoria-ram",
+      "donde": "memoria-ram › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "memoria-ram"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/memoria-ram.contenido.ts",
+        "linea": 337,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "almacenamiento/m2-ranura-sin-compatibilidad": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 297,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "almacenamiento/cables-sata-mal-conectados": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 306,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "almacenamiento/m2-sin-tornillo": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 314,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "almacenamiento/m2-desactiva-puertos-sata": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 322,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/disipador-de-caja-con-procesador-exigente": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 327,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/ventiladores-todos-entrando": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 336,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/plastico-base-disipador": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 346,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/pasta-termica-mal-aplicada": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 355,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/disipador-no-cabe-en-el-chasis": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 363,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/bomba-en-cabezal-de-ventilador": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 371,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/interruptor-apagado-al-entregar": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 395,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/ventilador-de-la-fuente-al-reves": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 405,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/grafica-sin-cable-de-energia": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 415,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/un-cable-por-conector-de-la-grafica": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 425,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/conector-12v-2x6-a-medias": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 435,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/eps-y-pcie-confundidos": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 444,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/sata-mal-conectado": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 453,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "fuente-de-poder/cables-modulares-de-otra-fuente": {
+      "hoja": "fuente-de-poder",
+      "donde": "fuente-de-poder › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "fuente-de-poder"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/fuente-de-poder.contenido.ts",
+        "linea": 462,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-grafica/grafica-sin-cable-de-energia": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+        "linea": 405,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-grafica/grafica-demasiado-larga-para-el-chasis": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+        "linea": 415,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-grafica/cable-ramificado-en-varios-conectores": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+        "linea": 425,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-grafica/conector-de-doce-pines-a-medias": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › casos",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "quitar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+        "linea": 434,
+        "nodo": {
+          "constante": "casos",
+          "forma": "literal"
+        }
+      }
+    }
+  },
+  "criterios": {
+    "procesador/disipador-de-caja-con-procesador-exigente": {
+      "hoja": "procesador",
+      "donde": "procesador › criterios",
+      "tambienEn": [],
+      "usadoPor": [
+        "procesador"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/procesador.contenido.ts",
+        "linea": 559,
+        "nodo": {
+          "constante": "criterios",
+          "forma": "literal"
+        }
+      }
+    },
+    "almacenamiento/uso-nvme": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 493,
+        "nodo": {
+          "constante": "criterio",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/uso-m2-sata": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 494,
+        "nodo": {
+          "constante": "criterio",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/uso-ssd-sata": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 495,
+        "nodo": {
+          "constante": "criterio",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/uso-hdd": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 496,
+        "nodo": {
+          "constante": "criterio",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/nvme-sin-cables": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-nvme › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 363,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/nvme-unidad-del-sistema": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-nvme › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 364,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/nvme-ranura-compatible": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-nvme › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 367,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/nvme-ranuras-compartidas": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-nvme › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 368,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/m2-sata-sin-cables": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-sata › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 382,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/m2-sata-confusion-con-nvme": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-sata › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 384,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/m2-sata-ranura-nvme": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista m2-sata › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 385,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/ssd-sata-ampliar": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista ssd-sata › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 396,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/ssd-sata-cables-y-bahia": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista ssd-sata › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 398,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/hdd-archivo": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista hdd › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 410,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/hdd-no-sistema": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista hdd › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 412,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "almacenamiento/hdd-cuidado-al-mover": {
+      "hoja": "almacenamiento",
+      "donde": "almacenamiento › vista hdd › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/almacenamiento.contenido.ts",
+        "linea": 413,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "llamada"
+        }
+      }
+    },
+    "refrigeracion/aire-menos-piezas": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista aire › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 124,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/aire-torre-como-minimo": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista aire › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 130,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/aire-caja-gama-alta": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista aire › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 139,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/aire-altura-peso": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista aire › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 146,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/liquida-calor-al-radiador": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista liquida › a favor",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 157,
+        "nodo": {
+          "constante": "aFavor",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/liquida-bomba-es-otra-pieza": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista liquida › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 165,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "literal"
+        }
+      }
+    },
+    "refrigeracion/liquida-ubicacion-instalacion": {
+      "hoja": "refrigeracion",
+      "donde": "refrigeracion › vista liquida › a considerar",
+      "tambienEn": [],
+      "usadoPor": [
+        "refrigeracion"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/refrigeracion.contenido.ts",
+        "linea": 171,
+        "nodo": {
+          "constante": "aConsiderar",
+          "forma": "literal"
+        }
+      }
+    },
+    "tarjeta-grafica/revisar-largo-antes-de-confirmar": {
+      "hoja": "tarjeta-grafica",
+      "donde": "tarjeta-grafica › criterios",
+      "tambienEn": [],
+      "usadoPor": [
+        "tarjeta-grafica"
+      ],
+      "huerfana": false,
+      "decision": "aprobar",
+      "ubicacion": {
+        "archivo": "src/lib/piezas/tarjeta-grafica.contenido.ts",
+        "linea": 446,
+        "nodo": {
+          "constante": "criterios",
+          "forma": "literal"
+        }
+      }
+    }
+  },
+  "referencias": [
+    {
+      "campo": "familias",
+      "clave": "ryzen",
+      "hechoIds": [
+        "cpu-amd-gamas-relativas",
+        "cpu-amd-serie-no-es-generacion"
+      ]
+    },
+    {
+      "campo": "familias",
+      "clave": "ryzen-ai",
+      "hechoIds": [
+        "cpu-amd-ryzen-ai-esquema"
+      ]
+    },
+    {
+      "campo": "familias",
+      "clave": "core-i",
+      "hechoIds": [
+        "cpu-intel-marca-core-i-a-core",
+        "cpu-core-i-generacion",
+        "cpu-intel-gamas-relativas",
+        "cpu-core-i-lga1700-vigentes"
+      ]
+    },
+    {
+      "campo": "familias",
+      "clave": "core",
+      "hechoIds": [
+        "cpu-core-vs-core-ultra",
+        "cpu-core-sin-ultra-numero"
+      ]
+    },
+    {
+      "campo": "familias",
+      "clave": "core-ultra",
+      "hechoIds": [
+        "cpu-core-vs-core-ultra",
+        "cpu-core-ultra-serie",
+        "cpu-core-ultra-escritorio-gamas"
+      ]
+    },
+    {
+      "campo": "series",
+      "clave": "ryzen:5",
+      "hechoId": "cpu-amd-serie-no-es-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "ryzen:7",
+      "hechoId": "cpu-amd-serie-no-es-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "ryzen:8",
+      "hechoId": "cpu-amd-8000g-am5"
+    },
+    {
+      "campo": "series",
+      "clave": "ryzen:9",
+      "hechoId": "cpu-amd-serie-no-es-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "ryzen-ai:3",
+      "hechoId": "cpu-amd-ryzen-ai-esquema"
+    },
+    {
+      "campo": "series",
+      "clave": "core-i:10",
+      "hechoId": "cpu-core-i-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "core-i:11",
+      "hechoId": "cpu-core-i-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "core-i:12",
+      "hechoId": "cpu-core-i-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "core-i:13",
+      "hechoId": "cpu-core-i-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "core-i:14",
+      "hechoId": "cpu-core-i-generacion"
+    },
+    {
+      "campo": "series",
+      "clave": "core:1",
+      "hechoId": "cpu-core-sin-ultra-numero"
+    },
+    {
+      "campo": "series",
+      "clave": "core-ultra:1",
+      "hechoId": "cpu-core-ultra-serie"
+    },
+    {
+      "campo": "series",
+      "clave": "core-ultra:2",
+      "hechoId": "cpu-core-ultra-serie"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:K",
+      "hechoId": "cpu-intel-sufijos-k"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:KF",
+      "hechoId": "cpu-intel-sufijos-k"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:KS",
+      "hechoId": "cpu-intel-sufijos-k"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:F",
+      "hechoId": "video-requiere-graficos-integrados"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:T",
+      "hechoId": "cpu-intel-sufijo-t"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:HX",
+      "hechoId": "cpu-intel-sufijos-h-hx"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:H",
+      "hechoId": "cpu-intel-sufijos-h-hx"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-i+core+core-ultra:U",
+      "hechoId": "cpu-intel-sufijos-u-v"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "core-ultra:V",
+      "hechoId": "cpu-intel-sufijos-u-v"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen:X3D",
+      "hechoId": "cpu-amd-x3d"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen:XT",
+      "hechoId": "cpu-amd-sufijos-x-xt"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen:X",
+      "hechoId": "cpu-amd-sufijos-x-xt"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen:G",
+      "hechoId": "cpu-amd-sufijo-g"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen:F",
+      "hechoId": "cpu-amd-sufijo-f"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen+ryzen-ai:HX",
+      "hechoId": "cpu-amd-portatil-sufijos"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen+ryzen-ai:HS",
+      "hechoId": "cpu-amd-portatil-sufijos"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen+ryzen-ai:H",
+      "hechoId": "cpu-amd-portatil-sufijos"
+    },
+    {
+      "campo": "sufijos",
+      "clave": "ryzen+ryzen-ai:U",
+      "hechoId": "cpu-amd-portatil-sufijos"
+    },
+    {
+      "campo": "ejemplos",
+      "clave": "Ryzen 5 5600G",
+      "hechoId": "cpu-ejemplos-amd"
+    },
+    {
+      "campo": "ejemplos",
+      "clave": "Ryzen 7 7800X3D",
+      "hechoId": "cpu-ejemplos-amd"
+    },
+    {
+      "campo": "ejemplos",
+      "clave": "Ryzen 5 7600X",
+      "hechoId": "cpu-ejemplos-amd"
+    },
+    {
+      "campo": "ejemplos",
+      "clave": "Core i5-12400F",
+      "hechoId": "cpu-ejemplos-intel"
+    },
+    {
+      "campo": "ejemplos",
+      "clave": "Core i7-14700K",
+      "hechoId": "cpu-ejemplos-intel"
+    },
+    {
+      "campo": "ejemplos",
+      "clave": "Core Ultra 7 265K",
+      "hechoId": "cpu-ejemplos-intel"
+    }
+  ]
+}

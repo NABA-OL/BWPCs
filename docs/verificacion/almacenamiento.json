@@ -1,0 +1,1339 @@
+{
+  "version": 1,
+  "slug": "almacenamiento",
+  "entradas": [
+    {
+      "id": "alm-m2-llaves-nvme-sata",
+      "tipo": "hecho",
+      "titulo": "Llave (muesca) del conector M.2",
+      "donde": "almacenamiento › llave-m2",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Llave o muesca del conector"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Un SSD M.2 NVMe suele tener una sola muesca en el conector (llave M); un SSD M.2 SATA suele tener dos (llaves B y M).",
+      "textoRevisado": "Un SSD M.2 NVMe suele tener una sola muesca en el conector (llave M); un SSD M.2 SATA suele tener dos (llaves B y M).",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Data Sheet: WD_BLACK SN850X NVMe SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-black-ssd/data-sheet-wd-black-sn850x-nvme-ssd.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "SSD Types Explained: SATA, NVMe, M.2, U.2 and PCIe",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/blog/ssd-types/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; modelos M.2 2280 con llave «B+M» e interfaz SATA III 6 Gb/s"
+        },
+        {
+          "titulo": "Data Sheet: WD_BLACK SN850X NVMe SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-black-ssd/data-sheet-wd-black-sn850x-nvme-ssd.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; pide un puerto M.2 con llave «M» y usa PCIe Gen4"
+        },
+        {
+          "titulo": "SSD Types Explained: SATA, NVMe, M.2, U.2 and PCIe",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/blog/ssd-types/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": "artículo divulgativo del fabricante; explica las llaves M, B y B+M"
+        },
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual de la placa; sus ranuras M.2 para SSD son «Key M»"
+        }
+      ],
+      "queDiceLaFuente": "La ficha del WD Green SATA indica que sus modelos M.2 2280 tienen llave B+M y trabajan por SATA III, y la del WD_BLACK SN850X (NVMe) pide una ranura M.2 con llave M. Seagate explica que una unidad B+M entra en zócalos B o M y que la velocidad real depende de la unidad y de la ranura. No abrí la especificación M.2 de PCI-SIG ni la página de Kingston (403).",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. «Suele» es correcto: dos fichas de fabricante coinciden con lo publicado. Ojo con lo que NO se debe inferir: las placas (p. ej. ASRock) tienen ranuras de llave M que aceptan SATA y/o PCIe según el modelo, así que la llave por sí sola no confirma el protocolo; el texto ya remite a la ficha en los criterios. Kingston (FAQ) y PCI-SIG no abrieron (403 / bloqueado)."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-nvme-protocolo-pcie",
+      "tipo": "hecho",
+      "titulo": "Controlador",
+      "donde": "almacenamiento › controlador",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "NVMe es el protocolo con el que un SSD se comunica con el sistema a través de PCI Express.",
+      "textoRevisado": "NVMe es el protocolo con el que un SSD se comunica con el sistema a través de PCI Express.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Acerca de NVM Express",
+          "editor": "NVM Express",
+          "url": "https://nvmexpress.org/about/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Datasheet: Samsung 990 PRO (rev. 2.0)",
+          "editor": "Samsung",
+          "url": "https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Data Sheet: WD_BLACK SN850X NVMe SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-black-ssd/data-sheet-wd-black-sn850x-nvme-ssd.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "Acerca de NVM Express",
+          "editor": "NVM Express",
+          "url": "https://nvmexpress.org/about/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "sitio del organismo que mantiene el estándar"
+        },
+        {
+          "titulo": "Datasheet: Samsung 990 PRO (rev. 2.0)",
+          "editor": "Samsung",
+          "url": "https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; interfaz PCIe Gen 4.0 x4, NVMe 2.0"
+        },
+        {
+          "titulo": "Data Sheet: WD_BLACK SN850X NVMe SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-black-ssd/data-sheet-wd-black-sn850x-nvme-ssd.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; NVMe sobre PCIe Gen4 de hasta 4 líneas"
+        }
+      ],
+      "queDiceLaFuente": "NVM Express describe NVMe como la especificación de interfaz de hardware y conjunto de comandos para dispositivos de almacenamiento conectados por PCI Express, y el estándar de la industria para SSD PCIe. Las fichas de Samsung y WD muestran SSD NVMe que trabajan sobre PCIe 4.0 x4.",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. Lo dice el propio organismo del estándar; las fichas de dos fabricantes lo confirman en productos reales."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-m2-sata-usa-sata",
+      "tipo": "hecho",
+      "titulo": "Controlador",
+      "donde": "almacenamiento › controlador",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Un SSD M.2 SATA usa el protocolo SATA aunque tenga forma M.2: no se comunica por PCI Express como un NVMe.",
+      "textoRevisado": "Un SSD M.2 SATA usa el protocolo SATA aunque tenga forma M.2: no se comunica por PCI Express como un NVMe.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "SATA-IO",
+          "editor": "SATA-IO",
+          "url": "https://sata-io.org/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual de la placa; la ranura M2_2 admite modos SATA3 6 Gb/s y PCIe Gen3x4, y al usar un M.2 SATA se desactiva SATA3_3; la ranura Key E no admite M.2 SATA"
+        },
+        {
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual de la placa; SATA8 queda sin uso al instalar un SSD M.2 SATA en M2_2"
+        },
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; modelos M.2 2280 con interfaz SATA III 6 Gb/s"
+        },
+        {
+          "titulo": "SATA-IO",
+          "editor": "SATA-IO",
+          "url": "https://sata-io.org/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "la portada solo nombra «SATA M.2 Card» como categoría; no describe el protocolo"
+        }
+      ],
+      "queDiceLaFuente": "Los manuales de ASRock y MSI tratan al SSD M.2 SATA como una unidad SATA: al ocuparlo se deshabilita un puerto SATA de la placa, y la ficha del WD Green lista sus modelos M.2 con interfaz SATA III. ASRock separa los modos SATA3 y PCIe de la misma ranura. La portada de SATA-IO no detalla el tema.",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. Que el M.2 SATA comparta recursos con un puerto SATA (y no con líneas PCIe) en dos manuales de placa es la prueba práctica de que usa el protocolo SATA. SATA-IO solo se abrió como referencia general."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-nand-desgaste",
+      "tipo": "hecho",
+      "titulo": "Memoria flash (NAND)",
+      "donde": "almacenamiento › memoria-nand",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Las celdas de la memoria flash NAND se desgastan con las escrituras; el controlador reparte las escrituras entre ellas.",
+      "textoRevisado": "Las celdas de la memoria flash NAND se desgastan con las escrituras; el controlador reparte las escrituras entre ellas.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "White Paper: SSD Endurance and HDD Workloads",
+          "editor": "Western Digital",
+          "url": "https://documents.westerndigital.com/content/dam/doc-library/en_us/assets/public/western-digital/collateral/white-paper/white-paper-ssd-endurance-and-hdd-workloads.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "What Is SSD Over-Provisioning?",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/blog/ssd-over-provisioning-and-benefits/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "White Paper: SSD Endurance and HDD Workloads",
+          "editor": "Western Digital",
+          "url": "https://documents.westerndigital.com/content/dam/doc-library/en_us/assets/public/western-digital/collateral/white-paper/white-paper-ssd-endurance-and-hdd-workloads.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "white paper del fabricante; los ciclos repetidos de programación y borrado degradan las capas de óxido de la celda, y el wear-leveling reparte esos ciclos casi por igual entre toda la NAND"
+        },
+        {
+          "titulo": "What Is SSD Over-Provisioning?",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/blog/ssd-over-provisioning-and-benefits/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": "artículo divulgativo del fabricante; dice que el controlador reparte la actividad de programación y borrado entre las celdas"
+        }
+      ],
+      "queDiceLaFuente": "Western Digital explica que cada ciclo de programar y borrar degrada la celda NAND, algo inherente a esta tecnología (por eso se especifica una resistencia de escritura), y que el wear-leveling distribuye esos ciclos más o menos por igual entre toda la NAND. Seagate añade que es el controlador quien reparte la actividad entre las celdas para que ninguna se gaste antes de tiempo. La página de Kingston que traía el código dio 403.",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. Respaldado por un white paper de WD (primaria) y por Seagate para la parte del controlador. Kingston (candidata original) devolvió 403."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-sata-conectores-iguales",
+      "tipo": "hecho",
+      "titulo": "Conector SATA de datos",
+      "donde": "almacenamiento › conector-sata-datos",
+      "tambienEn": [
+        "almacenamiento › conector-sata-poder",
+        "almacenamiento › comparación tipos-de-unidad › Protocolo o interfaz"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El SSD SATA y el disco duro SATA usan los mismos conectores SATA de datos y de energía, sin importar el tamaño de la unidad.",
+      "textoRevisado": "El SSD SATA y el disco duro SATA usan los mismos conectores SATA de datos y de energía, sin importar el tamaño de la unidad.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "SATA 2.5\" Product Manual (Rev. J, septiembre de 2020)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/product-content/seagate-laptop-fam/barracuda_25/en-us/docs/100804767j.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Video 3.5 HDD Product Manual (Rev. U, mayo de 2019)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/content/dam/seagate/migrated-assets/staticfiles/support/docs/manual/ce/Pipeline%20HD%20Series/100633414u.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Serial ATA Basics",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/support/kb/serial-ata-basics-193811en/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Choose the right SSD form factor for your upgrade",
+          "editor": "Samsung",
+          "url": "https://insights.samsung.com/2023/07/28/choose-the-right-ssd-form-factor-for-your-upgrade-2/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "SATA 2.5\" Product Manual (Rev. J, septiembre de 2020)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/product-content/seagate-laptop-fam/barracuda_25/en-us/docs/100804767j.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual del fabricante; una unidad de 2,5 pulgadas con conector de datos de 7 pines, conector de energía de 15 pines, alimentación por conector SATA nativo y cables con conectores con seguro"
+        },
+        {
+          "titulo": "Video 3.5 HDD Product Manual (Rev. U, mayo de 2019)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/content/dam/seagate/migrated-assets/staticfiles/support/docs/manual/ce/Pipeline%20HD%20Series/100633414u.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual del fabricante; una unidad de 3,5 pulgadas con la misma tabla de pines SATA (7 de señal y 15 de energía) y conector de energía SATA nativo"
+        },
+        {
+          "titulo": "Choose the right SSD form factor for your upgrade",
+          "editor": "Samsung",
+          "url": "https://insights.samsung.com/2023/07/28/choose-the-right-ssd-form-factor-for-your-upgrade-2/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": "artículo divulgativo; dice que las interfaces del SSD SATA de 2,5 pulgadas y del disco de 3,5 pulgadas son las mismas y que el SSD puede usar el cable del disco"
+        },
+        {
+          "titulo": "Serial ATA Basics",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/support/kb/serial-ata-basics-193811en/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "artículo de soporte del fabricante; describe los conectores de energía y datos SATA, sin comparar tipos de unidad"
+        }
+      ],
+      "queDiceLaFuente": "Los manuales de Seagate de una unidad de 2,5 pulgadas y de otra de 3,5 pulgadas traen la misma tabla de conectores SATA (7 pines de señal y 15 de energía) y ambas toman energía de un conector SATA nativo. Samsung dice que un SSD SATA puede usar el mismo cable que tenía un disco SATA de 3,5 pulgadas. El manual de 3,5 pulgadas usa +5 V y +12 V, el de 2,5 pulgadas solo +5 V.",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. Mismo conector y mismo pinout en las dos formas; la diferencia es solo eléctrica (el +12 V lo usa el disco de 3,5 pulgadas, el de 2,5 solo +5 V), no del conector. Los SSD M.2 SATA no usan estos conectores, pero el texto habla de la unidad SATA con cables."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-sata-formas-pulgadas",
+      "tipo": "hecho",
+      "titulo": "Carcasa de la unidad",
+      "donde": "almacenamiento › carcasa",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Forma y tamaño"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "Los SSD SATA suelen ser de 2,5 pulgadas. Los discos duros de escritorio suelen ser de 3,5 pulgadas, y los de portátil, de 2,5.",
+      "textoRevisado": "Los SSD SATA suelen ser de 2,5 pulgadas. Los discos duros de escritorio suelen ser de 3,5 pulgadas, y los de portátil, de 2,5.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Samsung 870 EVO SATA III 2.5\" SSD (250 GB)",
+          "editor": "Samsung",
+          "url": "https://www.samsung.com/ca/memory-storage/sata-ssd/870-evo-250gb-sata-3-2-5-ssd-mz-77e250b-am",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Seagate BarraCuda hard drives",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/products/hard-drives/barracuda-hard-drive/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "SATA 2.5\" Product Manual (Rev. J, septiembre de 2020)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/product-content/seagate-laptop-fam/barracuda_25/en-us/docs/100804767j.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Choose the right SSD form factor for your upgrade",
+          "editor": "Samsung",
+          "url": "https://insights.samsung.com/2023/07/28/choose-the-right-ssd-form-factor-for-your-upgrade-2/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "Samsung 870 EVO SATA III 2.5\" SSD (250 GB)",
+          "editor": "Samsung",
+          "url": "https://www.samsung.com/ca/memory-storage/sata-ssd/870-evo-250gb-sata-3-2-5-ssd-mz-77e250b-am",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del producto; SSD de 2,5 pulgadas con interfaz SATA III"
+        },
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; sus SSD SATA vienen en formato de 2,5 pulgadas con carcasa (7 mm) y también en M.2 2280"
+        },
+        {
+          "titulo": "Seagate BarraCuda hard drives",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/products/hard-drives/barracuda-hard-drive/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "página del fabricante; los BarraCuda de escritorio aparecen en formato de 3,5 pulgadas con conexión SATA; no menciona unidades de 2,5 pulgadas"
+        },
+        {
+          "titulo": "SATA 2.5\" Product Manual (Rev. J, septiembre de 2020)",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/product-content/seagate-laptop-fam/barracuda_25/en-us/docs/100804767j.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual del fabricante de un disco BarraCuda de 2,5 pulgadas"
+        },
+        {
+          "titulo": "Choose the right SSD form factor for your upgrade",
+          "editor": "Samsung",
+          "url": "https://insights.samsung.com/2023/07/28/choose-the-right-ssd-form-factor-for-your-upgrade-2/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "secundaria",
+          "detalle": "artículo divulgativo; los portátiles con disco tradicional usan unidades SATA de 2,5 pulgadas, y muchos equipos de escritorio usan discos de 3,5 pulgadas"
+        }
+      ],
+      "queDiceLaFuente": "Samsung y WD describen sus SSD SATA con carcasa como unidades de 2,5 pulgadas, y Seagate muestra los discos BarraCuda de escritorio en 3,5 pulgadas y publica un manual de BarraCuda de 2,5 pulgadas para portátil. El artículo de Samsung dice que los portátiles con disco tradicional usan SATA de 2,5 pulgadas y muchos equipos de escritorio, discos de 3,5 pulgadas.",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. Ojo: algunos SSD SATA vienen en M.2 (p. ej. el WD Green M.2 2280); el texto dice «suelen» y se refiere a la unidad con carcasa, así que se sostiene. La página de BarraCuda de Seagate no lista las de 2,5 pulgadas; ese dato sale del manual específico."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-hdd-piezas-moviles",
+      "tipo": "hecho",
+      "titulo": "Carcasa de la unidad",
+      "donde": "almacenamiento › carcasa",
+      "tambienEn": [
+        "almacenamiento › comparación tipos-de-unidad › Piezas móviles"
+      ],
+      "casoTipo": null,
+      "textoPublicado": "El disco duro guarda los datos en platos que giran y los lee con cabezales móviles; el SSD guarda los datos en memoria flash y no tiene piezas móviles.",
+      "textoRevisado": "El disco duro guarda los datos en platos que giran y los lee con cabezales móviles; el SSD guarda los datos en memoria flash y no tiene piezas móviles.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "HDD vs. SSD: Which Is Right for You?",
+          "editor": "Western Digital",
+          "url": "https://www.westerndigital.com/solutions/hdd-vs-ssd",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Why can't I reach the advertised performance of my external drive?",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/support/kb/lacie/Why-cant-I-reach-the-advertised-performance-of-my-external-drive/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "HDD vs. SSD: Which Is Right for You?",
+          "editor": "Western Digital",
+          "url": "https://www.westerndigital.com/solutions/hdd-vs-ssd",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "página del fabricante; el HDD usa platos que giran y cabezales de lectura y escritura, el SSD guarda en memoria flash sin componentes mecánicos"
+        },
+        {
+          "titulo": "Why can't I reach the advertised performance of my external drive?",
+          "editor": "Seagate",
+          "url": "https://www.seagate.com/support/kb/lacie/Why-cant-I-reach-the-advertised-performance-of-my-external-drive/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "artículo de soporte del fabricante; HDD con piezas móviles (platos y cabezales) y SSD con memoria NAND sin piezas móviles"
+        },
+        {
+          "titulo": "Datasheet: WD Green SATA SSD",
+          "editor": "Western Digital / SanDisk",
+          "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/western-digital/product/internal-drives/wd-green-ssd/datasheet-wd-green-sata-internal-ssd-cased.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; «sin partes móviles»"
+        }
+      ],
+      "queDiceLaFuente": "Western Digital describe el disco duro con platos giratorios y cabezales de lectura y escritura, y el SSD con memoria flash sin componentes mecánicos. Seagate dice lo mismo: el disco tiene piezas móviles (platos y cabezales) y guarda los datos magnéticamente; el SSD usa memoria NAND sin piezas móviles.",
+      "estado": "verificado",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. Coincide con las dos fuentes candidatas del código."
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
+      "huerfana": false
+    },
+    {
+      "id": "alm-m2-sin-cables",
+      "tipo": "hecho",
+      "titulo": "Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Cables que necesita",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Un SSD M.2 se instala directamente en la ranura de la placa y se sujeta con un tornillo o con un seguro plástico, según la placa; no usa cable de datos ni de energía. El punto de fijación cambia según el largo del módulo (por ejemplo, 2280 es un largo muy común).",
+      "textoRevisado": "Un SSD M.2 se instala directamente en la ranura de la placa y se fija con un tornillo; no usa cable de datos ni de energía.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Manual de la ASUS PRIME B850-PLUS",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Datasheet: Samsung 990 PRO (rev. 2.0)",
+          "editor": "Samsung",
+          "url": "https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "Manual de la ASUS PRIME B850-PLUS",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual de la placa; instalación de un módulo M.2: poner el separador (screw stand), insertar el módulo en la ranura y fijarlo con el tornillo; sin pasos de cableado"
+        },
+        {
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual de la placa; instalar el separador, insertar el SSD M.2 a 30 grados y fijarlo con el tornillo M.2"
+        },
+        {
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "manual de la placa; define M.2 como conector de borde de tarjeta y explica la posición del separador según el largo (2260 o 2280)"
+        },
+        {
+          "titulo": "Datasheet: Samsung 990 PRO (rev. 2.0)",
+          "editor": "Samsung",
+          "url": "https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "primaria",
+          "detalle": "ficha del fabricante; formato M.2 (2280) y PCIe/NVMe; no habla de cables"
+        }
+      ],
+      "queDiceLaFuente": "Los tres manuales de placa instalan el SSD M.2 insertándolo en la ranura y fijándolo con un tornillo en un separador, sin ningún paso de cable de datos ni de energía; ASRock lo describe como conector de borde de tarjeta. Ninguna fuente dice con esas palabras que no usa cable, así que es una conclusión del procedimiento.",
+      "estado": "parcial",
+      "propuesta": {
+        "accion": "mantener",
+        "textoPropuesto": null,
+        "detalle": "mantener. El procedimiento (ranura + tornillo) respalda el texto, pero ninguna fuente afirma explícitamente «no usa cable». Dato extra no verificado: algunas placas fijan el M.2 con un seguro sin herramientas en lugar de tornillo; si quieres cubrirlo, el texto podría decir «se fija con un tornillo o un seguro de la placa». No se abrió la especificación M.2 (PCI-SIG)."
+      },
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Un SSD M.2 se instala directamente en la ranura de la placa y se sujeta con un tornillo o con un seguro plástico, según la placa; no usa cable de datos ni de energía. El punto de fijación cambia según el largo del módulo (por ejemplo, 2280 es un largo muy común).",
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "ajustado por NB (2026-10-19): ranura más tornillo o seguro, según la placa. El seguro plástico y la posición según el largo son experiencia del taller, sin fuente."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "m2-ranura-sin-compatibilidad",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "comprar un SSD M.2 SATA para una ranura que solo admite NVMe, o al revés. Los dos entran por la forma, pero la placa puede no detectar la unidad. Revisa en el manual qué protocolo acepta cada ranura M.2.",
+      "textoRevisado": "comprar un SSD M.2 SATA para una ranura que solo admite NVMe, o al revés. Los dos entran por la forma, pero la placa puede no detectar la unidad. Revisa en el manual qué protocolo acepta cada ranura M.2.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "cables-sata-mal-conectados",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "dejar la unidad SATA con el cable de datos o el de energía suelto o sin conectar. La placa no la detecta aunque la unidad esté bien. Revisa los dos cables en ambos extremos.",
+      "textoRevisado": "dejar la unidad SATA con el cable de datos o el de energía suelto o sin conectar. La placa no la detecta aunque la unidad esté bien. Revisa los dos cables en ambos extremos.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "m2-sin-tornillo",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "instalar el SSD M.2 sin fijarlo con el tornillo o en un separador que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.",
+      "textoRevisado": "instalar el SSD M.2 sin fijarlo, ya sea con el tornillo o con el seguro plástico que traen algunas placas, o en un punto de fijación que no corresponde a su largo. El módulo queda levantado o suelto y puede no hacer buen contacto.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo. | RETOCADO por NB (2026-10-19): texto ajustado a los hechos ya decididos; reaprobado con la misma decisión."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "m2-desactiva-puertos-sata",
+      "tipo": "caso",
+      "titulo": "Caso del taller · Puede pasar",
+      "donde": "almacenamiento › casos",
+      "tambienEn": [],
+      "casoTipo": "puede-pasar",
+      "textoPublicado": "llenar todas las ranuras M.2 y quedarte sin algunos puertos SATA, o sin una ranura PCIe, porque el manual indica que se comparten.",
+      "textoRevisado": "llenar todas las ranuras M.2 y quedarte sin algunos puertos SATA, o sin una ranura PCIe, porque el manual indica que se comparten.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "uso-nvme",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Unidad principal del equipo, donde van el sistema y los programas.",
+      "textoRevisado": "Unidad principal del equipo, donde van el sistema y los programas.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "uso-m2-sata",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Cuando la placa tiene la ranura M.2 pero la unidad es SATA; confirma el protocolo antes de comprar.",
+      "textoRevisado": "Cuando la placa tiene la ranura M.2 pero la unidad es SATA; confirma el protocolo antes de comprar.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "uso-ssd-sata",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Ampliar el almacenamiento o actualizar un equipo que tiene bahías.",
+      "textoRevisado": "Ampliar el almacenamiento o actualizar un equipo que tiene bahías.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "uso-hdd",
+      "tipo": "criterio",
+      "titulo": "Criterio · Los cuatro tipos de unidad según las especificaciones y las fichas",
+      "donde": "almacenamiento › comparación tipos-de-unidad › Uso que solemos darle",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Archivo y copias de seguridad, junto con un SSD para el sistema.",
+      "textoRevisado": "Archivo y copias de seguridad, junto con un SSD para el sistema.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "nvme-sin-cables",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a favor",
+      "donde": "almacenamiento › vista m2-nvme › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Se instala directo en la placa, sin cables, y deja el interior del chasis más ordenado.",
+      "textoRevisado": "Se instala directo en la placa, sin cables, y deja el interior del chasis más ordenado.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "nvme-unidad-del-sistema",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a favor",
+      "donde": "almacenamiento › vista m2-nvme › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Es nuestra opción habitual para la unidad donde van el sistema operativo y los programas.",
+      "textoRevisado": "Es nuestra opción habitual para la unidad donde van el sistema operativo y los programas.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "nvme-ranura-compatible",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a considerar",
+      "donde": "almacenamiento › vista m2-nvme › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Revisa en el manual que la ranura M.2 que vas a usar admita NVMe y cuántas ranuras trae tu placa.",
+      "textoRevisado": "Revisa en el manual que la ranura M.2 que vas a usar admita NVMe y cuántas ranuras trae tu placa.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "nvme-ranuras-compartidas",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 NVMe · a considerar",
+      "donde": "almacenamiento › vista m2-nvme › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Algunas ranuras comparten líneas con otros puertos; mira el manual antes de llenarlas todas.",
+      "textoRevisado": "Algunas ranuras comparten líneas con otros puertos; mira el manual antes de llenarlas todas.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "m2-sata-sin-cables",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 SATA · a favor",
+      "donde": "almacenamiento › vista m2-sata › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Sirve cuando la placa tiene una ranura M.2 compatible con SATA y no quieres usar cables.",
+      "textoRevisado": "Sirve cuando la placa tiene una ranura M.2 compatible con SATA y no quieres usar cables.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "m2-sata-confusion-con-nvme",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 SATA · a considerar",
+      "donde": "almacenamiento › vista m2-sata › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Se confunde con facilidad con un NVMe porque tienen la misma forma; confirma el protocolo en la ficha antes de comprar.",
+      "textoRevisado": "Se confunde con facilidad con un NVMe porque tienen la misma forma; confirma el protocolo en la ficha antes de comprar.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "m2-sata-ranura-nvme",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista M.2 SATA · a considerar",
+      "donde": "almacenamiento › vista m2-sata › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Si la ranura de tu placa admite solo NVMe, este tipo de SSD no funcionará allí.",
+      "textoRevisado": "Si la ranura de tu placa admite solo NVMe, este tipo de SSD no funcionará allí.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "ssd-sata-ampliar",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista SSD SATA · a favor",
+      "donde": "almacenamiento › vista ssd-sata › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Sirve para ampliar el almacenamiento cuando la placa ya no tiene ranuras M.2 libres, o para actualizar un equipo con bahías.",
+      "textoRevisado": "Sirve para ampliar el almacenamiento cuando la placa ya no tiene ranuras M.2 libres, o para actualizar un equipo con bahías.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "ssd-sata-cables-y-bahia",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista SSD SATA · a considerar",
+      "donde": "almacenamiento › vista ssd-sata › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Necesita cable de datos, cable de energía y un lugar donde montarlo en el chasis; revisa que haya bahía o soporte.",
+      "textoRevisado": "Necesita cable de datos, cable de energía y un lugar donde montarlo en el chasis; revisa que haya bahía o soporte.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "hdd-archivo",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Disco duro · a favor",
+      "donde": "almacenamiento › vista hdd › a favor",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Sigue siendo una opción para guardar archivos grandes que no necesitan abrirse con urgencia, como copias de seguridad o videos.",
+      "textoRevisado": "Sigue siendo una opción para guardar archivos grandes que no necesitan abrirse con urgencia, como copias de seguridad o videos.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "hdd-no-sistema",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Disco duro · a considerar",
+      "donde": "almacenamiento › vista hdd › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "En equipos nuevos solemos dejar el sistema operativo en un SSD y usar el disco duro como almacén de archivos.",
+      "textoRevisado": "En equipos nuevos solemos dejar el sistema operativo en un SSD y usar el disco duro como almacén de archivos.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    },
+    {
+      "id": "hdd-cuidado-al-mover",
+      "tipo": "criterio",
+      "titulo": "Criterio · vista Disco duro · a considerar",
+      "donde": "almacenamiento › vista hdd › a considerar",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Tiene piezas móviles: trátalo con cuidado y evita mover el equipo mientras está encendido.",
+      "textoRevisado": "Tiene piezas móviles: trátalo con cuidado y evita mover el equipo mientras está encendido.",
+      "usadoPor": [
+        "almacenamiento"
+      ],
+      "fuentesCandidatas": [],
+      "fuentesConsultadas": [],
+      "queDiceLaFuente": null,
+      "estado": "no-aplica",
+      "propuesta": {
+        "accion": null,
+        "textoPropuesto": null,
+        "detalle": null
+      },
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como criterio de B & W; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
+      "huerfana": false
+    }
+  ]
+}
