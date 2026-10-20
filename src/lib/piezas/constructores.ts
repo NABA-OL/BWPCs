@@ -8,7 +8,7 @@
 // Constructores de `Hecho` compartidos por el contenido de todas las piezas y por `comun.hechos.ts`.
 // Reglas: prosa sin cifras (salvo nombres de estándar en `terminos`); toda cifra vive en un `Hecho` con fuente.
 // `consultadoEn: ""` = URL candidata que NO se pudo consultar desde esa sesión (la verifica una persona). Con fecha = se abrió ese día.
-import type { Fuente, Hecho } from "./types.ts";
+import type { Aprobacion, Fuente, Hecho } from "./types.ts";
 
 export const HOY = "2026-10-11";
 
@@ -48,4 +48,18 @@ export function consultadaEnVerificacion(fuente: Fuente): Fuente {
 /** Marca cada cuántos meses se debe revisar un hecho (6 = volátil, 12 = por defecto, 24 = medida de especificación). No toca su verificación. */
 export function conRevision(h: Hecho, meses: 6 | 12 | 24): Hecho {
   return { ...h, revisarCadaMeses: meses };
+}
+
+/**
+ * Hecho aprobado o ajustado por el dueño en una hoja de verificación (docs/verificacion/<slug>.json): fija verificadoEn y verificadoPor con la
+ * fecha y las iniciales de su decisión. Solo lo escribe `scripts/hoja-verificacion.mjs --aplicar`; nadie lo pone a mano. Envuelve la llamada
+ * interior (`hecho(...)`) y, si hay revisión periódica, va dentro de `conRevision(...)`.
+ */
+export function verificadoPorDueno(h: Hecho, en: string, por: string): Hecho {
+  return { ...h, verificadoEn: en, verificadoPor: por };
+}
+
+/** Caso o criterio aprobado por el dueño en su hoja: fija aprobadoEn y aprobadoPor. Solo lo escribe `--aplicar`, para los que se crean con un ayudante (`criterio(...)`). */
+export function aprobadoPorDueno<T extends Aprobacion>(c: T, en: string, por: string): T {
+  return { ...c, aprobadoEn: en, aprobadoPor: por };
 }

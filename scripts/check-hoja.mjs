@@ -16,6 +16,7 @@ import { PIEZAS } from "../src/lib/piezas/registro.ts";
 import { PIEZA_SLUGS } from "../src/lib/piezas/types.ts";
 import { SLUGS_HOJA } from "../src/lib/piezas/hoja.ts";
 import { DIR_VERIFICACION, aplicarBloquesMd, construirEsqueletos, fusionarTodas, leerHojas, nuevaEntrada, textosCambiados } from "./hoja-verificacion.mjs";
+import { verificarContraDisco } from "./hoja-verificar.mjs";
 import { contarHoja, lineaDecision, parsearDecision, parsearFuente, parsearMd, parsearPropuesta, renderBloque, renderConsolidada, renderHojaMd } from "./hoja-md.mjs";
 
 const clonar = (valor) => structuredClone(valor);
@@ -207,8 +208,9 @@ for (const [slug, hoja] of enDisco) {
 const idsEnDisco = [...enDisco.values()].flatMap((h) => h.entradas.filter((e) => e.tipo === "hecho").map((e) => e.id));
 assert.equal(new Set(idsEnDisco).size, idsEnDisco.length, "JSON en disco: ningún hecho en dos hojas (comun no duplica)");
 if (enDisco.has("tarjeta-madre")) {
-  const aprobados = new Set(enDisco.get("tarjeta-madre").entradas.filter((e) => e.decision !== null).map((e) => e.id));
-  for (const b of bloques.filter((x) => x.decision)) assert.ok(aprobados.has(b.id), `${b.id}: la decisión de las hojas A/B está en tarjeta-madre.json`);
+  // Un hecho que usan varias piezas vive en comun.json: la decisión de las hojas A/B puede estar en cualquiera de las hojas del disco.
+  const aprobados = new Set([...enDisco.values()].flatMap((h) => h.entradas.filter((e) => e.decision !== null).map((e) => e.id)));
+  for (const b of bloques.filter((x) => x.decision)) assert.ok(aprobados.has(b.id), `${b.id}: la decisión de las hojas A/B está en alguna hoja de docs/verificacion`);
 }
 
 // --- Consolidada ---
@@ -217,16 +219,31 @@ const consolidada = renderConsolidada([...fusionCompartido.values()], nombres);
 for (const seccion of ["## Cómo responder", "## Resumen de conteos", "## Aprobados", "## Para decidir", "## Casos del taller", "## Criterios de taller", "## Quitar recomendado"]) assert.ok(consolidada.includes(seccion), seccion);
 assert.ok(consolidada.includes("`compartido`") && consolidada.includes("aprobar"), "la consolidada lista lo aprobado");
 
-// --- CLI: --aplicar es un esqueleto de la Fase 4; --estado y --validar no escriben ---
+// --- Fase 4: --congelar, --aplicar y --verificar (funciones puras sobre texto de ejemplo) ---
+import "./check-hoja-aplicar.mjs";
+
+// --- Hojas ya aplicadas: la verificación completa contra el código real. La lista crece en cada lote de la Fase 4 (docs/piezas-plan-2.md §5.6);
+// empieza vacía porque nada se ha aplicado todavía. Cada hoja de la lista debe dar CERO errores en `--verificar`.
+export const HOJAS_APLICADAS = ["tarjeta-madre", "procesador", "memoria-ram", "almacenamiento", "refrigeracion", "fuente-de-poder", "tarjeta-grafica", "comun"];
+if (HOJAS_APLICADAS.length > 0) {
+  const resultado = verificarContraDisco({ soloHojas: HOJAS_APLICADAS });
+  assert.deepEqual(resultado.errores.map((e) => e.texto), [], `--verificar de ${HOJAS_APLICADAS.join(", ")} debe dar cero errores`);
+}
+
+// --- CLI: --estado, --validar y --verificar no escriben; --aplicar sin --escribir tampoco ---
 const cli = (...args) => spawnSync(process.execPath, ["--experimental-strip-types", "--disable-warning=ExperimentalWarning", "--disable-warning=MODULE_TYPELESS_PACKAGE_JSON", join(DIR_VERIFICACION, "../../scripts/hoja-verificacion.mjs"), ...args], { encoding: "utf8" });
-const aplicar = cli("--aplicar");
-assert.equal(aplicar.status, 2, "--aplicar aún no existe");
-assert.match(aplicar.stdout, /Fase 4/);
 const estado = cli("--estado");
 assert.equal(estado.status, 0, estado.stderr);
 assert.match(estado.stdout, /Tarjeta madre/);
 assert.match(estado.stdout, /Hechos comunes/);
 assert.equal(cli("--esqueleto", "no-existe").status, 1, "una hoja desconocida se rechaza");
 assert.equal(existsSync(join(DIR_VERIFICACION, "no-existe.json")), false);
+assert.equal(cli("--aplicar", "no-existe").status, 1, "--aplicar rechaza una hoja desconocida");
+assert.equal(cli("--verificar", "no-existe").status, 1, "--verificar rechaza una hoja desconocida");
+assert.equal(cli("--verificar", "--hoy=ayer").status, 1, "--hoy debe ser una fecha");
+const verificarCli = cli("--verificar", "--todas");
+assert.ok([0, 1].includes(verificarCli.status), verificarCli.stderr);
+assert.match(verificarCli.stdout, /Resumen \(.*\): \d+ errores, \d+ avisos/);
+assert.equal(verificarCli.status === 1, /\nERROR |^ERROR /.test(verificarCli.stdout), "sale con 1 si y solo si hay errores");
 
 console.log("check:hoja OK");

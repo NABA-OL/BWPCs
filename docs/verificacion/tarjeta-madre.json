@@ -153,8 +153,8 @@
       "donde": "tarjeta-madre › chipset",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "No todos los chipsets permiten ajustar la frecuencia del procesador: en AM5, AMD presenta X870E, X870 y B850 con soporte de overclock, mientras que el A620 es una opción de entrada. En Intel depende además de la serie del procesador.",
-      "textoRevisado": null,
+      "textoPublicado": "No todos los chipsets están pensados para ajustar la frecuencia del procesador. Lo recomendable es usar los que lo habilitan de forma oficial: en AM5, X870E, X870, B850, X670E y X670; en Intel, la serie Z con un procesador desbloqueado (sufijo K). Algunas placas con otros chipsets, como ciertas de la serie B, también permiten ajustes según el fabricante y el modelo; no es lo recomendable y exige que la placa tenga un buen VRM (fases de alimentación).",
+      "textoRevisado": "No todos los chipsets permiten ajustar la frecuencia del procesador: en AM5, AMD presenta X870E, X870 y B850 con soporte de overclock, mientras que el A620 es una opción de entrada. En Intel depende además de la serie del procesador.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -163,15 +163,23 @@
           "titulo": "AMD Socket AM5 Chipsets",
           "editor": "AMD",
           "url": "https://www.amd.com/en/products/processors/chipsets/am5.html",
-          "consultadoEn": "2026-10-11",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Intel Product Specifications (ARK)",
+          "titulo": "Desktop Chipsets Product Specifications (Intel ARK)",
           "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/ark.html",
-          "consultadoEn": null,
+          "url": "https://www.intel.com/content/www/us/en/ark/products/series/46645/desktop-chipsets.html",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "What Are the Hardware Requirements for Overclocking an Intel® Processor?",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000097808/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -225,17 +233,25 @@
       "donde": "tarjeta-madre › chipset",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Los chipsets de LGA 1700 son H610, B660, H670, Z690, B760 y Z790; los de LGA 1851 incluyen Z890, B860 y H810.",
-      "textoRevisado": null,
+      "textoPublicado": "Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.",
+      "textoRevisado": "Los chipsets de LGA 1700 son H610, B660, H670, Z690, B760 y Z790; los de LGA 1851 incluyen Z890, B860 y H810.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Intel Product Specifications (ARK)",
+          "titulo": "Desktop Chipsets Product Specifications (Intel ARK)",
           "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/ark.html",
-          "consultadoEn": null,
+          "url": "https://www.intel.com/content/www/us/en/ark/products/series/46645/desktop-chipsets.html",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Intel® Z890 Chipset (ARK)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/products/sku/237777/intel-z890-chipset/specifications.html",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -281,17 +297,17 @@
       "donde": "tarjeta-madre › chipset",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "El chipset se conecta al procesador mediante un enlace único: en Intel se llama DMI y en AMD usa líneas PCIe. Los dispositivos que cuelgan del chipset comparten ese enlace.",
-      "textoRevisado": null,
+      "textoPublicado": "El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. En AMD el enlace no tiene un nombre propio, pero cumple la misma función. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.",
+      "textoRevisado": "El chipset se conecta al procesador mediante un enlace único: en Intel se llama DMI y en AMD usa líneas PCIe. Los dispositivos que cuelgan del chipset comparten ese enlace.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Intel Product Specifications (ARK)",
+          "titulo": "Intel® Z890 Chipset (ARK)",
           "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/ark.html",
-          "consultadoEn": null,
+          "url": "https://www.intel.com/content/www/us/en/products/sku/237777/intel-z890-chipset/specifications.html",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
@@ -299,7 +315,7 @@
           "titulo": "AMD Socket AM5 Chipsets",
           "editor": "AMD",
           "url": "https://www.amd.com/en/products/processors/chipsets/am5.html",
-          "consultadoEn": "2026-10-11",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -441,25 +457,25 @@
       "donde": "tarjeta-madre › vrm",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "El VRM reduce los 12 V que entrega la fuente al voltaje de funcionamiento del procesador.",
-      "textoRevisado": null,
+      "textoPublicado": "El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador. Junto con los condensadores que lo rodean, filtra el ruido y los picos para mantener el voltaje estable, porque un voltaje alto puede dañar el procesador. Un procesador más potente consume más y suele pedir más fases de alimentación: con menos fases puede funcionar, pero la placa se vuelve inestable bajo carga.",
+      "textoRevisado": "El VRM reduce los 12 V que entrega la fuente al voltaje de funcionamiento del procesador.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Intel Product Specifications (ARK)",
-          "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/ark.html",
-          "consultadoEn": null,
+          "titulo": "EPS12V Power Supply Design Guide, v2.91 (SSI; copia alojada en xDevs.com)",
+          "editor": "SSI",
+          "url": "https://xDevs.com/doc/xDevs.com/Neutron/pdf/eps_designguide_2.91.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "AMD Socket AM5 Chipsets",
-          "editor": "AMD",
-          "url": "https://www.amd.com/en/products/processors/chipsets/am5.html",
-          "consultadoEn": "2026-10-11",
+          "titulo": "B650 AORUS ELITE AX: manual de usuario (Rev. 1204)",
+          "editor": "Gigabyte",
+          "url": "https://download.gigabyte.com/FileList/Manual/mb_manual_b650-aorus-elite-ax_1204_e.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -585,17 +601,25 @@
       "donde": "tarjeta-madre › sata",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "SATA III funciona a 6 Gb/s, lo que equivale a unos 600 MB/s de velocidad útil.",
-      "textoRevisado": null,
+      "textoPublicado": "Los puertos SATA de las placas actuales son de 6 Gb/s (unos 600 MB/s como tope del enlace); la velocidad real que logra una unidad es menor.",
+      "textoRevisado": "SATA III funciona a 6 Gb/s, lo que equivale a unos 600 MB/s de velocidad útil.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "SATA-IO",
+          "titulo": "SATA-IO, FAQ de SATA Revision 3.0",
           "editor": "SATA-IO",
-          "url": "https://sata-io.org/",
-          "consultadoEn": "2026-10-11",
+          "url": "https://sata-io.org/sites/default/files/documents/SATA-Revision-3.0-FAQ-FINAL.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "SATA-IO, guía de nombres",
+          "editor": "SATA-IO",
+          "url": "https://sata-io.org/developers/sata-naming-guidelines",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -817,17 +841,25 @@
       "donde": "tarjeta-madre › cabezales-ventilador",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Un cabezal de ventilador de 4 pines (PWM) también acepta ventiladores de 3 pines, que se controlan por voltaje.",
-      "textoRevisado": null,
+      "textoPublicado": "Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.",
+      "textoRevisado": "Un cabezal de ventilador de 4 pines (PWM) también acepta ventiladores de 3 pines, que se controlan por voltaje.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Noctua PWM specifications white paper (cita la especificación de Intel de ventiladores PWM de cuatro hilos)",
-          "editor": "Noctua",
-          "url": "https://noctua.at/pub/media/wysiwyg/Noctua_PWM_specifications_white_paper.pdf",
-          "consultadoEn": null,
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "ASUS, TUF GAMING B550-PLUS",
+          "editor": "ASUS",
+          "url": "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-b550-plus/",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -953,25 +985,25 @@
       "donde": "tarjeta-madre › conectores-frontales",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Los conectores USB frontales de la placa son de tres tipos: USB 2.0 de 9 pines, USB 3.x de 19 o 20 pines y USB-C frontal (tipo Key-A).",
-      "textoRevisado": null,
+      "textoPublicado": "Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.",
+      "textoRevisado": "Los conectores USB frontales de la placa son de tres tipos: USB 2.0 de 9 pines, USB 3.x de 19 o 20 pines y USB-C frontal (tipo Key-A).",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Conector USB frontal: asignación de pines (soporte de Intel)",
+          "titulo": "Intel, USB 3.0 Internal Connector and Cable Specification, Rev. 1.0",
           "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/support/articles/000060175/server-products/server-boards.html",
-          "consultadoEn": null,
+          "url": "https://www.intel.com.au/content/dam/www/public/us/en/documents/technical-specifications/usb3-internal-connector-cable-specification.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "USB-IF Document Library",
-          "editor": "USB-IF",
-          "url": "https://www.usb.org/documents",
-          "consultadoEn": "2026-10-11",
+          "titulo": "Front Panel I/O Connectivity Design Guide, Rev. 1.1 (julio 2018; copia alojada en hackaday.io)",
+          "editor": "Intel",
+          "url": "https://cdn.hackaday.io/files/1626526958903168/600569-fpio-dg-rev1p1.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1033,17 +1065,33 @@
       "donde": "tarjeta-madre › conectores-frontales",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "El cabezal de audio frontal sigue el estándar Intel HD Audio y suele rotularse AAFP.",
-      "textoRevisado": null,
+      "textoPublicado": "Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1), pero es el mismo tipo de conector, para que funcione con el cable de audio de los chasis.",
+      "textoRevisado": "El cabezal de audio frontal sigue el estándar Intel HD Audio y suele rotularse AAFP.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Conector USB frontal: asignación de pines (soporte de Intel)",
+          "titulo": "Manual de la ASUS PRIME B850-PLUS",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Front Panel I/O Connectivity Design Guide, Rev. 1.1 (julio 2018; copia alojada en hackaday.io)",
           "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/support/articles/000060175/server-products/server-boards.html",
-          "consultadoEn": null,
+          "url": "https://cdn.hackaday.io/files/1626526958903168/600569-fpio-dg-rev1p1.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1417,17 +1465,33 @@
       "donde": "tarjeta-madre › sección elegir",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Windows 11 exige firmware UEFI con arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas lo ofrecen como fTPM (AMD) o PTT (Intel) dentro de la BIOS.",
-      "textoRevisado": null,
+      "textoPublicado": "Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS, y cada fabricante de procesador lo llama distinto: fTPM en AMD y PTT en Intel, pero cumplen la misma función.",
+      "textoRevisado": "Windows 11 exige firmware UEFI con arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas lo ofrecen como fTPM (AMD) o PTT (Intel) dentro de la BIOS.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Windows 11 requirements",
+          "titulo": "Windows 11 requirements (Microsoft Learn)",
           "editor": "Microsoft",
-          "url": "https://learn.microsoft.com/windows/whats-new/windows-11-requirements",
-          "consultadoEn": "2026-10-11",
+          "url": "https://learn.microsoft.com/en-us/windows/whats-new/windows-11-requirements",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Enable TPM 2.0 on your PC (Soporte de Microsoft)",
+          "editor": "Microsoft",
+          "url": "https://support.microsoft.com/en-us/windows/enable-tpm-2-0-on-your-pc-1fd5a332-360d-4f46-a1e7-ae6b0c90645c",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "What Is Trusted Platform Model (TPM) and Its Relation to Intel® Platform Trust Technology (Intel® PTT)?",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/support/articles/000094205/processors/intel-core-processors.html",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1481,17 +1545,41 @@
       "donde": "tarjeta-madre › sección errores",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Los cabezales RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; conectar uno en el otro puede dañar las luces o la placa.",
-      "textoRevisado": null,
+      "textoPublicado": "Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Fíjate bien en la orientación: el conector del cable y el de la placa traen una marca de pin 1 (una flecha o un triángulo) que debe quedar alineada; conectarlo al revés puede dañar las luces o la placa. Confirma en el manual de tu placa cuáles conectores trae.",
+      "textoRevisado": "Los cabezales RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; conectar uno en el otro puede dañar las luces o la placa.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Soporte y manuales de placas ASUS (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASUS)",
-          "url": "https://www.asus.com/support/",
-          "consultadoEn": null,
+          "titulo": "Manual de la MSI B760 GAMING PLUS WIFI DDR4",
+          "editor": "MSI",
+          "url": "https://download-2.msi.com/archive/mnu_exe/mb/B760GAMINGPLUSWIFIDDR4_EN.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la ASUS PRIME Z890M-PLUS WIFI",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/LGA1851/PRIME_Z890M-PLUS_WIFI/E24250_PRIME_Z890M-PLUS_WIFI_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "ASUS, FAQ de tiras +5 V ARGB y +12 V RGB",
+          "editor": "ASUS",
+          "url": "https://rog.asus.com/jp/support/faq/1056087/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "ASUS ROG Crosshair X870E Extreme, especificaciones",
+          "editor": "ASUS",
+          "url": "https://rog.asus.com/motherboards/rog-crosshair/rog-crosshair-x870e-extreme/spec/",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1633,8 +1721,8 @@
       "donde": "tarjeta-madre › sección tamanos",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "El formato ATX admite hasta siete ranuras de expansión; Micro-ATX hasta cuatro y Mini-ITX una.",
-      "textoRevisado": null,
+      "textoPublicado": "Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.",
+      "textoRevisado": "El formato ATX admite hasta siete ranuras de expansión; Micro-ATX hasta cuatro y Mini-ITX una.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -1643,15 +1731,23 @@
           "titulo": "ATX Specification, Version 2.2",
           "editor": "Intel (formfactors.org)",
           "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
-          "consultadoEn": "2026-10-11",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Formato Mini-ITX",
+          "titulo": "Mini-ITX Mainboard Specification White Paper (copia alojada en linuxdevices.org)",
           "editor": "VIA Technologies",
-          "url": "https://www.viatech.com/en/",
-          "consultadoEn": null,
+          "url": "https://linuxdevices.org/ldfiles/misc/Mini-ITX.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Wikipedia, Motherboard form factor",
+          "editor": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Motherboard_form_factor",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1713,8 +1809,8 @@
       "donde": "tarjeta-madre › sección tamanos",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Un chasis ATX suele aceptar también placas Micro-ATX y Mini-ITX, porque sus orificios de montaje coinciden con algunos de los de ATX.",
-      "textoRevisado": null,
+      "textoPublicado": "Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.",
+      "textoRevisado": "Un chasis ATX suele aceptar también placas Micro-ATX y Mini-ITX, porque sus orificios de montaje coinciden con algunos de los de ATX.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -1723,15 +1819,23 @@
           "titulo": "ATX Specification, Version 2.2",
           "editor": "Intel (formfactors.org)",
           "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
-          "consultadoEn": "2026-10-11",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Formato Mini-ITX",
+          "titulo": "Mini-ITX Mainboard Specification White Paper (copia alojada en linuxdevices.org)",
           "editor": "VIA Technologies",
-          "url": "https://www.viatech.com/en/",
-          "consultadoEn": null,
+          "url": "https://linuxdevices.org/ldfiles/misc/Mini-ITX.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Wikipedia, Motherboard form factor y ATX",
+          "editor": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Motherboard_form_factor",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1779,153 +1883,31 @@
       "huerfana": false
     },
     {
-      "id": "tamanos-e-atx-sin-medida-unica",
-      "tipo": "hecho",
-      "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
-      "donde": "tarjeta-madre › sección tamanos",
-      "tambienEn": [],
-      "casoTipo": null,
-      "textoPublicado": "Extended ATX (E-ATX) no tiene una medida única definida: cada fabricante indica la suya.",
-      "textoRevisado": null,
-      "usadoPor": [
-        "tarjeta-madre"
-      ],
-      "fuentesCandidatas": [
-        {
-          "titulo": "Intel Product Specifications (ARK)",
-          "editor": "Intel",
-          "url": "https://www.intel.com/content/www/us/en/ark.html",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        }
-      ],
-      "fuentesConsultadas": [
-        {
-          "titulo": "ASUS ROG Crosshair X870E Extreme, especificaciones",
-          "editor": null,
-          "url": "https://rog.asus.com/motherboards/rog-crosshair/rog-crosshair-x870e-extreme/spec/",
-          "consultadoEn": "2026-10-13",
-          "tipo": "primaria",
-          "detalle": null
-        },
-        {
-          "titulo": "Corsair, «SSI EEB and CEB motherboards explained»",
-          "editor": null,
-          "url": "https://www.corsair.com/eu/da/explorer/diy-builder/power-supply-units/ssi-eeb-and-ceb-motherboards-explained/",
-          "consultadoEn": "2026-10-13",
-          "tipo": "secundaria",
-          "detalle": null
-        },
-        {
-          "titulo": "Wikipedia, Motherboard form factor y ATX",
-          "editor": null,
-          "url": "https://en.wikipedia.org/wiki/ATX",
-          "consultadoEn": "2026-10-13",
-          "tipo": "secundaria",
-          "detalle": null
-        }
-      ],
-      "queDiceLaFuente": "No existe una especificación «E-ATX» que se pueda citar; es un término comercial. La ASUS Crosshair X870E Extreme se anuncia como E-ATX de 12 x 10,9 pulgadas, mientras que Corsair y Wikipedia dicen que el tamaño SSI-EEB (12 x 13 pulgadas) es otro, que se llama a veces «E-ATX», y que los fabricantes usan profundidades distintas. Es coherente con el texto, pero se apoya en fuentes secundarias y el hecho aporta poco: la página no dibuja ni compara E-ATX.",
-      "estado": "parcial",
-      "propuesta": {
-        "accion": "quitar",
-        "textoPropuesto": null,
-        "detalle": "quitar (no hay fuente primaria posible; el sitio solo compara ATX, Micro-ATX y Mini-ITX; si se quiere decir algo, basta «Existen placas más grandes que ATX; sus medidas cambian según el fabricante»)."
-      },
-      "decision": {
-        "valor": "quitar",
-        "textoFinal": null,
-        "por": "NB",
-        "en": "2026-10-15",
-        "nota": "aprobado quitar el hecho (NB, 2026-10-15). Pendiente: mencionar en la prosa de tamaños que existe E-ATX (Extended ATX), formato de nicho para servidores y estaciones de trabajo, sin cifras."
-      },
-      "huerfana": false
-    },
-    {
-      "id": "tamanos-orificios-separadores",
-      "tipo": "hecho",
-      "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
-      "donde": "tarjeta-madre › sección tamanos",
-      "tambienEn": [],
-      "casoTipo": null,
-      "textoPublicado": "Cada formato define la posición de los orificios de montaje y de los separadores (standoffs) en el chasis; los de Micro-ATX y Mini-ITX son un subconjunto de los de ATX.",
-      "textoRevisado": null,
-      "usadoPor": [
-        "tarjeta-madre"
-      ],
-      "fuentesCandidatas": [
-        {
-          "titulo": "ATX Specification, Version 2.2",
-          "editor": "Intel (formfactors.org)",
-          "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
-          "consultadoEn": "2026-10-11",
-          "tipo": "sin-clasificar",
-          "detalle": null
-        },
-        {
-          "titulo": "Formato Mini-ITX",
-          "editor": "VIA Technologies",
-          "url": "https://www.viatech.com/en/",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        }
-      ],
-      "fuentesConsultadas": [
-        {
-          "titulo": "ATX Specification 2.2",
-          "editor": null,
-          "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
-          "consultadoEn": "2026-10-13",
-          "tipo": "primaria",
-          "detalle": "copia de terceros"
-        },
-        {
-          "titulo": "VIA, Mini-ITX Mainboard Specification White Paper",
-          "editor": null,
-          "url": "https://linuxdevices.org/ldfiles/misc/Mini-ITX.pdf",
-          "consultadoEn": "2026-10-13",
-          "tipo": "primaria",
-          "detalle": "copia de terceros"
-        }
-      ],
-      "queDiceLaFuente": "La figura 2 de la ATX 2.2 enumera orificios distintos por formato: ATX usa A, C, F, G, H, J, K, L, M y microATX usa B, C, F, H, J, L, M, R, S, con R y S «añadidos para microATX». El texto dice que, donde es posible, los orificios de ATX se alinean con los de microATX; o sea, comparten varios pero no es un subconjunto estricto. Para Mini-ITX, el white paper de VIA habla de modificar la posición de orificios en chasis microATX; la afirmación de «subconjunto de ATX» no pude confirmarla en la especificación de Intel.",
-      "estado": "contradicho",
-      "propuesta": {
-        "accion": "quitar",
-        "textoPropuesto": null,
-        "detalle": "quitar (repite lo de `tamanos-chasis-compatibles`). Si se conserva: «Cada formato define la posición de sus orificios de montaje; varios coinciden entre formatos, por eso muchos chasis aceptan más de un tamaño. Confirma en la ficha del chasis.»"
-      },
-      "decision": null,
-      "huerfana": false
-    },
-    {
       "id": "tamanos-ranuras-memoria",
       "tipo": "hecho",
       "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
       "donde": "tarjeta-madre › sección tamanos",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "Las placas Mini-ITX suelen traer dos ranuras de memoria, y las Micro-ATX y ATX suelen traer cuatro; hay excepciones según el modelo.",
-      "textoRevisado": null,
+      "textoPublicado": "Las placas Mini-ITX suelen traer dos ranuras de memoria y la mayoría de las Micro-ATX y ATX traen cuatro; hay excepciones, como algunas Micro-ATX económicas con dos.",
+      "textoRevisado": "Las placas Mini-ITX suelen traer dos ranuras de memoria, y las Micro-ATX y ATX suelen traer cuatro; hay excepciones según el modelo.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Soporte y manuales de placas ASUS (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASUS)",
-          "url": "https://www.asus.com/support/",
-          "consultadoEn": null,
+          "titulo": "Manual de la ASUS ROG STRIX B850-I GAMING WIFI",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/ROG_STRIX_B850-I_GAMING_WIFI/E25172_ROG_STRIX_B850-I_GAMING_WIFI_EM_WEB_new.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Soporte y manuales de placas ASRock (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASRock)",
-          "url": "https://www.asrock.com/support/index.asp",
-          "consultadoEn": null,
+          "titulo": "Manual de la ASRock B760M-H/M.2",
+          "editor": "ASRock",
+          "url": "https://download.asrock.com/Manual/B760M-HM.2.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -1963,7 +1945,13 @@
         "textoPropuesto": "Las placas Mini-ITX suelen traer dos ranuras de memoria y la mayoría de las Micro-ATX y ATX traen cuatro; hay excepciones, como algunas Micro-ATX económicas con dos.",
         "detalle": "reformular a: «Las placas Mini-ITX suelen traer dos ranuras de memoria y la mayoría de las Micro-ATX y ATX traen cuatro; hay excepciones, como algunas Micro-ATX económicas con dos.»"
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Las placas Mini-ITX suelen traer dos ranuras de memoria y la mayoría de las Micro-ATX y ATX traen cuatro; hay excepciones, como algunas Micro-ATX económicas con dos.",
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobada la propuesta de reformular (NB, 2026-10-19)"
+      },
       "huerfana": false
     },
     {
@@ -1973,35 +1961,59 @@
       "donde": "tarjeta-madre › sección tamanos",
       "tambienEn": [],
       "casoTipo": null,
-      "textoPublicado": "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y tiende a ser menor en los formatos más pequeños.",
-      "textoRevisado": null,
+      "textoPublicado": "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.",
+      "textoRevisado": "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y tiende a ser menor en los formatos más pequeños.",
       "usadoPor": [
         "tarjeta-madre"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Soporte y manuales de placas ASUS (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASUS)",
-          "url": "https://www.asus.com/support/",
-          "consultadoEn": null,
+          "titulo": "Manual de la ASUS PRIME B850-PLUS",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Soporte y manuales de placas ASRock (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASRock)",
-          "url": "https://www.asrock.com/support/index.asp",
-          "consultadoEn": null,
+          "titulo": "Manual de la ASUS PRIME Z890M-PLUS WIFI",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/LGA1851/PRIME_Z890M-PLUS_WIFI/E24250_PRIME_Z890M-PLUS_WIFI_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual de la ASUS ROG STRIX B850-I GAMING WIFI",
+          "editor": "ASUS",
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/ROG_STRIX_B850-I_GAMING_WIFI/E25172_ROG_STRIX_B850-I_GAMING_WIFI_EM_WEB_new.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "sin-clasificar",
           "detalle": null
         }
       ],
       "fuentesConsultadas": [
         {
-          "titulo": "Manuales ASUS ROG STRIX B850-I (Mini-ITX), PRIME Z890M-PLUS WIFI (Micro-ATX) y PRIME B850-PLUS (ATX) (URLs arriba)",
+          "titulo": "Manual ASUS PRIME B850-PLUS",
           "editor": null,
-          "url": null,
-          "consultadoEn": null,
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual ASUS PRIME Z890M-PLUS WIFI",
+          "editor": null,
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/LGA1851/PRIME_Z890M-PLUS_WIFI/E24250_PRIME_Z890M-PLUS_WIFI_EM_WEB.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Manual ASUS ROG STRIX B850-I GAMING WIFI",
+          "editor": null,
+          "url": "https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/ROG_STRIX_B850-I_GAMING_WIFI/E25172_ROG_STRIX_B850-I_GAMING_WIFI_EM_WEB_new.pdf",
+          "consultadoEn": "2026-10-13",
           "tipo": "primaria",
           "detalle": null
         }
@@ -2020,56 +2032,6 @@
         "en": "2026-10-15",
         "nota": "aprobada la propuesta de reformular (NB, 2026-10-15)"
       },
-      "huerfana": false
-    },
-    {
-      "id": "tamanos-espacio-vrm",
-      "tipo": "hecho",
-      "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
-      "donde": "tarjeta-madre › sección tamanos",
-      "tambienEn": [],
-      "casoTipo": null,
-      "textoPublicado": "En una placa más pequeña hay menos superficie disponible para el disipador del VRM, y los fabricantes lo resuelven de forma distinta según el modelo.",
-      "textoRevisado": null,
-      "usadoPor": [
-        "tarjeta-madre"
-      ],
-      "fuentesCandidatas": [
-        {
-          "titulo": "Soporte y manuales de placas ASUS (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASUS)",
-          "url": "https://www.asus.com/support/",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        },
-        {
-          "titulo": "Soporte y manuales de placas ASRock (falta fijar el manual de un modelo concreto)",
-          "editor": "Manual <modelo> (ASRock)",
-          "url": "https://www.asrock.com/support/index.asp",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        }
-      ],
-      "fuentesConsultadas": [
-        {
-          "titulo": "(ninguna sirve) Manuales ASUS de B850-I, Z890M-PLUS y B850-PLUS (URLs arriba)",
-          "editor": null,
-          "url": null,
-          "consultadoEn": null,
-          "tipo": "primaria",
-          "detalle": null
-        }
-      ],
-      "queDiceLaFuente": "Los manuales solo listan «VRM heatsink design» como característica, sin comparar espacios entre formatos. Es un razonamiento de ingeniería plausible (menos área, menos disipador) pero no hay fuente primaria que lo sostenga, y presentado así puede leerse como «las pequeñas disipan peor», justo lo que el dueño no quiere sugerir.",
-      "estado": "sin-fuente",
-      "propuesta": {
-        "accion": "quitar",
-        "textoPropuesto": null,
-        "detalle": "quitar (el hecho y la viñeta correspondiente de la sección `tamanos`). Alternativa neutral sin afirmar desventaja: «El espacio para disipadores cambia con el formato y cada fabricante lo resuelve a su manera según el modelo.»"
-      },
-      "decision": null,
       "huerfana": false
     },
     {
@@ -2304,7 +2266,7 @@
       "tambienEn": [],
       "casoTipo": "vivido",
       "textoPublicado": "armar el equipo con un procesador compatible con la placa, pero con una BIOS que aún no lo reconocía. Al encender, los ventiladores giraban y el equipo se apagaba. Se resolvió actualizando la BIOS por USB con la función que traen algunas placas (según el fabricante se llama Flashback, Q-Flash u otro nombre). Antes de comprar, confirma en la lista de compatibilidad qué versión de BIOS necesita tu procesador.",
-      "textoRevisado": null,
+      "textoRevisado": "armar el equipo con un procesador compatible con la placa, pero con una BIOS que aún no lo reconocía. Al encender, los ventiladores giraban y el equipo se apagaba. Se resolvió actualizando la BIOS por USB con la función que traen algunas placas (según el fabricante se llama Flashback, Q-Flash u otro nombre). Antes de comprar, confirma en la lista de compatibilidad qué versión de BIOS necesita tu procesador.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2317,7 +2279,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Nos ha pasado»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2328,7 +2296,7 @@
       "tambienEn": [],
       "casoTipo": "vivido",
       "textoPublicado": "un cliente que trajo sus componentes con memoria DDR5 y la placa era DDR4. Los módulos tienen la muesca en otro lugar y una generación no entra en la otra.",
-      "textoRevisado": null,
+      "textoRevisado": "un cliente que trajo sus componentes con memoria DDR5 y la placa era DDR4. Los módulos tienen la muesca en otro lugar y una generación no entra en la otra.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2341,7 +2309,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Nos ha pasado»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2352,7 +2326,7 @@
       "tambienEn": [],
       "casoTipo": "vivido",
       "textoPublicado": "ventiladores o luces RGB que no eran compatibles con la placa. Hay conectores de cuatro pines (RGB) y de tres pines (ARGB direccionable) que se ven parecidos, pero no son intercambiables. Revisa en el manual cuáles trae tu placa antes de comprar las luces.",
-      "textoRevisado": null,
+      "textoRevisado": "ventiladores o luces RGB que no eran compatibles con la placa. Hay conectores de cuatro pines (RGB) y de tres pines (ARGB direccionable) que se ven parecidos, pero no son intercambiables. Revisa en el manual cuáles trae tu placa antes de comprar las luces.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2365,7 +2339,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Nos ha pasado»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2376,7 +2356,7 @@
       "tambienEn": [],
       "casoTipo": "vivido",
       "textoPublicado": "clientes que conectan el cable del monitor a la salida de video de la placa teniendo gráfica dedicada, y entonces no ven el rendimiento que esperan porque la gráfica no se está usando. Y al revés, si el procesador no tiene gráficos integrados, la salida de la placa no da imagen. Conecta el monitor a la gráfica.",
-      "textoRevisado": null,
+      "textoRevisado": "clientes que conectan el cable del monitor a la salida de video de la placa teniendo gráfica dedicada, y entonces no ven el rendimiento que esperan porque la gráfica no se está usando. Y al revés, si el procesador no tiene gráficos integrados, la salida de la placa no da imagen. Conecta el monitor a la gráfica.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2389,7 +2369,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Nos ha pasado»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2400,7 +2386,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "instalar el procesador mal y doblar los pines del socket, una reparación difícil. Alinea el procesador con la marca del pin uno y nunca lo fuerces.",
-      "textoRevisado": null,
+      "textoRevisado": "instalar el procesador mal y doblar los pines del socket, una reparación difícil. Alinea el procesador con la marca del pin uno y nunca lo fuerces.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2413,7 +2399,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2424,7 +2416,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "conectar el cable de un ventilador o de una luz en un cabezal que no corresponde, con riesgo de dañar la pieza o la placa. Cada cabezal tiene un uso y una forma: confirma en el manual cuál es cuál.",
-      "textoRevisado": null,
+      "textoRevisado": "conectar el cable de un ventilador o de una luz en un cabezal que no corresponde, con riesgo de dañar la pieza o la placa. Cada cabezal tiene un uso y una forma: confirma en el manual cuál es cuál.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2437,7 +2429,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2448,7 +2446,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "instalar una unidad M.2 en una ranura que no admite ese tipo (algunas son solo NVMe, otras aceptan SATA), o llenar todas las ranuras M.2 y quedarte sin puertos SATA porque el manual indica que se comparten.",
-      "textoRevisado": null,
+      "textoRevisado": "instalar una unidad M.2 en una ranura que no admite ese tipo (algunas son solo NVMe, otras aceptan SATA), o llenar todas las ranuras M.2 y quedarte sin puertos SATA porque el manual indica que se comparten.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2461,7 +2459,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2472,7 +2476,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "elegir un formato de placa que no cabe en el chasis, o un chasis que no admite ese tamaño.",
-      "textoRevisado": null,
+      "textoRevisado": "elegir un formato de placa que no cabe en el chasis, o un chasis que no admite ese tamaño.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2485,7 +2489,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2496,7 +2506,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "que un módulo de memoria quede a medio insertar. Debe asentar por completo hasta que las trabas laterales cierren.",
-      "textoRevisado": null,
+      "textoRevisado": "que un módulo de memoria quede a medio insertar. Debe asentar por completo hasta que las trabas laterales cierren.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2509,7 +2519,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -2520,7 +2536,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "olvidar el cable EPS del procesador. El equipo no enciende o se apaga al poco tiempo.",
-      "textoRevisado": null,
+      "textoRevisado": "olvidar el cable EPS del procesador. El equipo no enciende o se apaga al poco tiempo.",
       "usadoPor": [
         "tarjeta-madre"
       ],
@@ -2533,8 +2549,198 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
+    },
+    {
+      "id": "tamanos-e-atx-sin-medida-unica",
+      "tipo": "hecho",
+      "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Extended ATX (E-ATX) no tiene una medida única definida: cada fabricante indica la suya.",
+      "textoRevisado": "Extended ATX (E-ATX) no tiene una medida única definida: cada fabricante indica la suya.",
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Intel Product Specifications (ARK)",
+          "editor": "Intel",
+          "url": "https://www.intel.com/content/www/us/en/ark.html",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "ASUS ROG Crosshair X870E Extreme, especificaciones",
+          "editor": null,
+          "url": "https://rog.asus.com/motherboards/rog-crosshair/rog-crosshair-x870e-extreme/spec/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "primaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Corsair, «SSI EEB and CEB motherboards explained»",
+          "editor": null,
+          "url": "https://www.corsair.com/eu/da/explorer/diy-builder/power-supply-units/ssi-eeb-and-ceb-motherboards-explained/",
+          "consultadoEn": "2026-10-13",
+          "tipo": "secundaria",
+          "detalle": null
+        },
+        {
+          "titulo": "Wikipedia, Motherboard form factor y ATX",
+          "editor": null,
+          "url": "https://en.wikipedia.org/wiki/ATX",
+          "consultadoEn": "2026-10-13",
+          "tipo": "secundaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "No existe una especificación «E-ATX» que se pueda citar; es un término comercial. La ASUS Crosshair X870E Extreme se anuncia como E-ATX de 12 x 10,9 pulgadas, mientras que Corsair y Wikipedia dicen que el tamaño SSI-EEB (12 x 13 pulgadas) es otro, que se llama a veces «E-ATX», y que los fabricantes usan profundidades distintas. Es coherente con el texto, pero se apoya en fuentes secundarias y el hecho aporta poco: la página no dibuja ni compara E-ATX.",
+      "estado": "parcial",
+      "propuesta": {
+        "accion": "quitar",
+        "textoPropuesto": null,
+        "detalle": "quitar (no hay fuente primaria posible; el sitio solo compara ATX, Micro-ATX y Mini-ITX; si se quiere decir algo, basta «Existen placas más grandes que ATX; sus medidas cambian según el fabricante»)."
+      },
+      "decision": {
+        "valor": "quitar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-15",
+        "nota": "aprobado quitar el hecho (NB, 2026-10-15). Pendiente: mencionar en la prosa de tamaños que existe E-ATX (Extended ATX), formato de nicho para servidores y estaciones de trabajo, sin cifras."
+      },
+      "huerfana": true
+    },
+    {
+      "id": "tamanos-orificios-separadores",
+      "tipo": "hecho",
+      "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "Cada formato define la posición de los orificios de montaje y de los separadores (standoffs) en el chasis; los de Micro-ATX y Mini-ITX son un subconjunto de los de ATX.",
+      "textoRevisado": "Cada formato define la posición de los orificios de montaje y de los separadores (standoffs) en el chasis; los de Micro-ATX y Mini-ITX son un subconjunto de los de ATX.",
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "ATX Specification, Version 2.2",
+          "editor": "Intel (formfactors.org)",
+          "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
+          "consultadoEn": "2026-10-11",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Formato Mini-ITX",
+          "editor": "VIA Technologies",
+          "url": "https://www.viatech.com/en/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "ATX Specification 2.2",
+          "editor": null,
+          "url": "https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "primaria",
+          "detalle": "copia de terceros"
+        },
+        {
+          "titulo": "VIA, Mini-ITX Mainboard Specification White Paper",
+          "editor": null,
+          "url": "https://linuxdevices.org/ldfiles/misc/Mini-ITX.pdf",
+          "consultadoEn": "2026-10-13",
+          "tipo": "primaria",
+          "detalle": "copia de terceros"
+        }
+      ],
+      "queDiceLaFuente": "La figura 2 de la ATX 2.2 enumera orificios distintos por formato: ATX usa A, C, F, G, H, J, K, L, M y microATX usa B, C, F, H, J, L, M, R, S, con R y S «añadidos para microATX». El texto dice que, donde es posible, los orificios de ATX se alinean con los de microATX; o sea, comparten varios pero no es un subconjunto estricto. Para Mini-ITX, el white paper de VIA habla de modificar la posición de orificios en chasis microATX; la afirmación de «subconjunto de ATX» no pude confirmarla en la especificación de Intel.",
+      "estado": "contradicho",
+      "propuesta": {
+        "accion": "quitar",
+        "textoPropuesto": null,
+        "detalle": "quitar (repite lo de `tamanos-chasis-compatibles`). Si se conserva: «Cada formato define la posición de sus orificios de montaje; varios coinciden entre formatos, por eso muchos chasis aceptan más de un tamaño. Confirma en la ficha del chasis.»"
+      },
+      "decision": {
+        "valor": "quitar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "quitar por NB (2026-10-19): estado «contradicho» (se elimina todo hecho contradicho o sin fuente). La Fase 4 debe borrar el hecho y la prosa que dependía de él."
+      },
+      "huerfana": true
+    },
+    {
+      "id": "tamanos-espacio-vrm",
+      "tipo": "hecho",
+      "titulo": "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
+      "donde": "tarjeta-madre › sección tamanos",
+      "tambienEn": [],
+      "casoTipo": null,
+      "textoPublicado": "En una placa más pequeña hay menos superficie disponible para el disipador del VRM, y los fabricantes lo resuelven de forma distinta según el modelo.",
+      "textoRevisado": "En una placa más pequeña hay menos superficie disponible para el disipador del VRM, y los fabricantes lo resuelven de forma distinta según el modelo.",
+      "usadoPor": [
+        "tarjeta-madre"
+      ],
+      "fuentesCandidatas": [
+        {
+          "titulo": "Soporte y manuales de placas ASUS (falta fijar el manual de un modelo concreto)",
+          "editor": "Manual <modelo> (ASUS)",
+          "url": "https://www.asus.com/support/",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Soporte y manuales de placas ASRock (falta fijar el manual de un modelo concreto)",
+          "editor": "Manual <modelo> (ASRock)",
+          "url": "https://www.asrock.com/support/index.asp",
+          "consultadoEn": null,
+          "tipo": "sin-clasificar",
+          "detalle": null
+        }
+      ],
+      "fuentesConsultadas": [
+        {
+          "titulo": "(ninguna sirve) Manuales ASUS de B850-I, Z890M-PLUS y B850-PLUS (URLs arriba)",
+          "editor": null,
+          "url": null,
+          "consultadoEn": null,
+          "tipo": "primaria",
+          "detalle": null
+        }
+      ],
+      "queDiceLaFuente": "Los manuales solo listan «VRM heatsink design» como característica, sin comparar espacios entre formatos. Es un razonamiento de ingeniería plausible (menos área, menos disipador) pero no hay fuente primaria que lo sostenga, y presentado así puede leerse como «las pequeñas disipan peor», justo lo que el dueño no quiere sugerir.",
+      "estado": "sin-fuente",
+      "propuesta": {
+        "accion": "quitar",
+        "textoPropuesto": null,
+        "detalle": "quitar (el hecho y la viñeta correspondiente de la sección `tamanos`). Alternativa neutral sin afirmar desventaja: «El espacio para disipadores cambia con el formato y cada fabricante lo resuelve a su manera según el modelo.»"
+      },
+      "decision": {
+        "valor": "quitar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "quitar por NB (2026-10-19): estado «sin-fuente» (se elimina todo hecho contradicho o sin fuente). La Fase 4 debe borrar el hecho y la prosa que dependía de él."
+      },
+      "huerfana": true
     }
   ]
 }

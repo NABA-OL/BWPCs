@@ -13,7 +13,7 @@
 | ❌ la fuente lo contradice | 0 |
 | ⚪ sin fuente primaria | 0 |
 
-Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 ajustar, 0 quitar, 12 hechos sin decidir.
+Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 21 aprobar, 8 ajustar, 0 quitar, 0 hechos sin decidir.
 
 ## Hechos
 
@@ -21,12 +21,13 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › socket; procesador › sección elegir; procesador › comparación plataformas › Disipadores de la plataforma anterior; refrigeracion › base; refrigeracion › sección elegir
 - **Usado por:** tarjeta-madre, procesador, refrigeracion
-- **Texto publicado:** Muchos disipadores diseñados para AM4 se pueden montar en AM5 sin cambiar el soporte, porque se mantuvo la distancia entre los orificios de montaje. Confirma el soporte con el fabricante de tu disipador.
+- **Texto publicado:** AMD indicó que los disipadores de AM4 siguen siendo compatibles con AM5. Aun así, algunos modelos pueden necesitar piezas de montaje nuevas: si vas a pasar de AM4 a AM5, o armas hoy una AM4 pensando en actualizar después, confirma con el fabricante de tu disipador que sirva en ambas plataformas.
+- **Texto al decidir:** Muchos disipadores diseñados para AM4 se pueden montar en AM5 sin cambiar el soporte, porque se mantuvo la distancia entre los orificios de montaje. Confirma el soporte con el fabricante de tu disipador.
 - **Estado:** 🟡
 - **Fuente consultada:** Meet The AMD Socket AM5 Platform (artículo para socios de AMD) — https://www.amd.com/en/partner/articles/socket-am5-change-game.html (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** En la lista de novedades de AM5, AMD afirma que las soluciones de refrigeración existentes de AM4 seguirán siendo compatibles. No explica el motivo (distancia entre orificios) ni dice que no haga falta cambiar ninguna pieza de montaje.
 - **Propuesta:** reformular a: «AMD indicó que los disipadores de AM4 siguen siendo compatibles con AM5. Aun así, algunos modelos pueden necesitar piezas de montaje nuevas, así que confirma el soporte con el fabricante de tu disipador.» (La causa "se mantuvo la distancia entre los orificios" solo la respaldan fuentes secundarias que aparecieron en una búsqueda y no abrí; mejor no afirmarla. La parte "algunos modelos pueden necesitar piezas nuevas" también viene de esas fuentes secundarias; por eso va con "pueden".)
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «AMD indicó que los disipadores de AM4 siguen siendo compatibles con AM5. Aun así, algunos modelos pueden necesitar piezas de montaje nuevas: si vas a pasar de AM4 a AM5, o armas hoy una AM4 pensando en actualizar después, confirma con el fabricante de tu disipador que sirva en ambas plataformas.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-19). NB propuso «90 % de los casos»; no se usó la cifra por falta de fuente. El caso de armar en AM4 con vistas a actualizar es agregado de NB.
 
 ### socket-disipadores-lga1700-lga1851 — Socket del procesador
 - **Tipo:** hecho
@@ -54,7 +55,7 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 
 ### am4-pga-ryzen — Socket del procesador · opción AM4
 - **Tipo:** hecho
-- **Dónde:** tarjeta-madre › socket › opción am4; procesador › pines-procesador; procesador › zocalo; procesador › zocalo › opción am4; procesador › comparación plataformas › Dónde están los contactos; procesador › comparación plataformas › Memoria que usa; memoria-ram › ranura › opción am4; memoria-ram › comparación ddr4-vs-ddr5 › Plataformas de AMD
+- **Dónde:** tarjeta-madre › socket › opción am4; procesador › pines-procesador; procesador › zocalo; procesador › zocalo › opción am4; procesador › comparación plataformas › Memoria que usa; memoria-ram › ranura › opción am4; memoria-ram › comparación ddr4-vs-ddr5 › Plataformas de AMD
 - **Usado por:** tarjeta-madre, procesador, memoria-ram
 - **Texto publicado:** AM4 es un socket de tipo PGA: los pines están en el procesador y la placa tiene orificios. AMD lo usa con procesadores Ryzen de la serie 5000 y anteriores, con memoria DDR4.
 - **Estado:** ✅
@@ -67,7 +68,7 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 
 ### am5-lga — Socket del procesador · opción AM5
 - **Tipo:** hecho
-- **Dónde:** tarjeta-madre › socket › opción am5; procesador › contactos-socket; procesador › zocalo; procesador › zocalo › opción am5; procesador › comparación plataformas › Dónde están los contactos
+- **Dónde:** tarjeta-madre › socket › opción am5; procesador › contactos-socket; procesador › zocalo; procesador › zocalo › opción am5
 - **Usado por:** tarjeta-madre, procesador
 - **Texto publicado:** AM5 es un socket de tipo LGA: los contactos están en la placa y el procesador no lleva pines. Tiene 1718 contactos.
 - **Estado:** ✅
@@ -76,7 +77,7 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Fuente consultada:** ROG STRIX B850-F GAMING WIFI7 NEO (ASUS) — https://rog.asus.com/motherboards/rog-strix/rog-strix-b850-f-gaming-wifi7-neo/ (consultada 2026-10-13) · primaria
 - **Qué dice la fuente:** AMD describe el socket AM5 de sus procesadores Ryzen Embedded 7000 como LGA de 40 × 40 mm y 1718 pines (es el mismo socket de escritorio). ASRock lo rotula «Socket AM5 (LGA1718)». ASUS lo llama «Socket AM5» sin nombrar LGA.
 - **Propuesta:** mantener. Ninguna página de AMD de escritorio dice LGA ni 1718; la cifra sale del comunicado de AMD para la línea embebida y del catálogo de ASRock. Agregar ambos a `fuentes`.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19): verificado con fuente consultada
 
 ### am5-memoria-ddr5 — Socket del procesador · opción AM5
 - **Tipo:** hecho
@@ -108,13 +109,17 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › socket › opción lga-1851; procesador › zocalo; procesador › zocalo › opción lga-1851; memoria-ram › ranura › opción lga-1851
 - **Usado por:** tarjeta-madre, procesador, memoria-ram
-- **Texto publicado:** LGA 1851 (FCLGA1851 en ARK) es el socket de los procesadores Intel Core Ultra de la serie 200S, y esos procesadores usan memoria DDR5.
+- **Texto publicado:** LGA 1851 (FCLGA1851 en ARK) es el socket de los procesadores Intel Core Ultra para escritorio (serie 2), incluidos los modelos «Plus» más recientes (Core Ultra 5 250K Plus y Core Ultra 7 270K Plus), y esos procesadores usan memoria DDR5.
+- **Texto al decidir:** LGA 1851 (FCLGA1851 en ARK) es el socket de los procesadores Intel Core Ultra de la serie 200S, y esos procesadores usan memoria DDR5.
 - **Estado:** 🟡
 - **Fuente consultada:** Intel® Core™ Ultra 7 Processor 265K (ARK) — https://www.intel.com/content/www/us/en/products/sku/241063/intel-core-ultra-7-processor-265k-30m-cache-up-to-5-50-ghz/specifications.html (consultada 2026-10-13) · primaria
 - **Fuente consultada:** Information About Intel® Core™ Ultra Boxed Desktop Processors (Series 2) — https://www.intel.com/content/www/us/en/support/articles/000099656/processors.html (consultada 2026-10-13) · primaria
-- **Qué dice la fuente:** ARK da para el 265K socket FCLGA1851 y memoria solo DDR5 (hasta 6400 MT/s), dentro de «Core Ultra (Series 2)» (código Arrow Lake). El artículo de soporte de Intel dice socket LGA 1851 con chipset de la serie 800 y DDR5. Ninguna de las dos páginas usa la etiqueta «200S».
+- **Fuente consultada:** Intel® Core™ Ultra 7 processor 270K Plus (ARK) — https://www.intel.com/content/www/us/en/products/sku/245692/intel-core-ultra-7-processor-270k-plus-36m-cache-up-to-5-50-ghz/specifications.html (consultada 2026-10-19) · primaria
+- **Fuente consultada:** Intel Announces New Intel Core Ultra 200S Plus Series Desktop Processors — https://www.intel.com/content/www/us/en/newsroom/news/client-computing/intel-announces-new-intel-core-ultra-200s-plus-series-desktop-processors.html (consultada 2026-10-19) · primaria (no nombra el socket; confirma modelos, memoria y compatibilidad con placas serie 800)
+- **Fuente consultada:** Intel® Core™ Ultra Processors (Series 2) Product Specifications (listado ARK) — https://www.intel.com/content/www/us/en/ark/products/series/241071/intel-core-ultra-processors-series-2.html (consultada 2026-10-19) · primaria (lista los modelos «Plus» de escritorio dentro de la serie 2; no trae el socket)
+- **Qué dice la fuente:** Intel lista como Core Ultra (serie 2) de escritorio, además de los 245K/265K/285K, los modelos Core Ultra 5 250K Plus, 250KF Plus y Core Ultra 7 270K Plus (llamados «200S Plus»); el ARK del 270K Plus da socket FCLGA1851 y DDR5 hasta 7200 MT/s. El artículo de soporte de Intel dice que LGA 1851 solo se usa con los Core Ultra de escritorio (serie 2), con chipsets serie 800, e incluye los Plus en esa tabla; el comunicado dice que mantienen compatibilidad con las placas serie 800 actuales. En lo abierto no aparece ningún procesador de escritorio «serie 3» para este socket.
 - **Propuesta:** reformular a: «LGA 1851 (FCLGA1851 en ARK) es el socket de los procesadores Intel Core Ultra para escritorio (serie 2), y esos procesadores usan memoria DDR5.» Revisar periódicamente: Intel ha ido agregando modelos a este socket.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «LGA 1851 (FCLGA1851 en ARK) es el socket de los procesadores Intel Core Ultra para escritorio (serie 2), incluidos los modelos «Plus» más recientes (Core Ultra 5 250K Plus y Core Ultra 7 270K Plus), y esos procesadores usan memoria DDR5.»  ☐ quitar   Nota: ajustado por NB (2026-10-19) con la propuesta. Verificado (2026-10-19, fuentes primarias de Intel): LGA 1851 también lo usan los «Core Ultra 200S Plus», que Intel clasifica dentro de la serie 2 (no es una serie 3): Core Ultra 5 250K Plus, 250KF Plus y Core Ultra 7 270K Plus; todos DDR5 (hasta 7200 MT/s en los Plus). Corrección al dictado: el ejemplo «245 → 245 Plus» no existe; el 245K sigue siendo el modelo normal y el Plus es el 250K. Recortado: no se menciona «serie 3» porque no hay procesador de escritorio con ese nombre para este socket en las páginas abiertas (no se revisó el listado ARK de la serie 3, que es de portátiles). Pendiente menor: el ARK del 250K Plus no se abrió; el socket de ese modelo sale del artículo de soporte de Intel (placas serie 800), no de su ficha. Sigue valiendo revisar periódicamente.
 
 ### ram-ddr4-ddr5-muesca — Ranuras de memoria RAM
 - **Tipo:** hecho
@@ -159,25 +164,27 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › pcie-principal; tarjeta-grafica › conector-pcie
 - **Usado por:** tarjeta-madre, tarjeta-grafica
-- **Texto publicado:** Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas.
+- **Texto publicado:** Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas, normalmente la primera, la más cercana al procesador. Una tarjeta puede usar menos líneas que las de la ranura: algunas gráficas de gama baja traen conector x16 pero aprovechan menos; funcionan igual, con el rendimiento que permitan esas líneas.
+- **Texto al decidir:** Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas.
 - **Estado:** 🟡
 - **Fuente consultada:** What Are PCI and PCI Express and What Is a PCIe Slot (Dell) — https://www.dell.com/support/kbdoc/en-us/000123517/what-is-pci-and-pci-express-kb-article-161614 (consultada 2026-10-13) · secundaria (fabricante de sistemas; no es el estándar)
 - **Fuente consultada:** Introduction to PCI Express (Lenovo Press) — https://lenovopress.lenovo.com/tips0456 (consultada 2026-10-13) · secundaria
 - **Qué dice la fuente:** Dell dice que las ranuras PCIe vienen en tamaños físicos x1, x4, x8 y x16 y que las gráficas suelen ir en la x16. Lenovo trae una tabla de compatibilidad con esos cuatro tamaños y señala x16 como el uso previsto para gráficos. Las especificaciones de PCI-SIG no se pudieron abrir (bloqueo de acceso).
 - **Propuesta:** mantener (dato estándar y de bajo riesgo). Para pasar de 🟡 a ✅ haría falta abrir la especificación de PCI-SIG; el dueño puede aceptarlo con las fuentes de Dell y Lenovo.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Las ranuras PCIe existen en tamaños físicos x1, x4, x8 y x16. La ranura x16 es la más larga y es la que usan las tarjetas gráficas, normalmente la primera, la más cercana al procesador. Una tarjeta puede usar menos líneas que las de la ranura: algunas gráficas de gama baja traen conector x16 pero aprovechan menos; funcionan igual, con el rendimiento que permitan esas líneas.»  ☐ quitar   Nota: ajustado por NB (2026-10-19): gráfica en la primera ranura x16 y tarjetas con menos líneas activas. El ejemplo de gráficas de gama baja con menos líneas y los adaptadores M.2 a x16 (no incluidos) son experiencia de NB, sin fuente.
 
 ### pcie-ancho-banda-generaciones — Ranura PCIe principal (tarjeta gráfica)
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › pcie-principal; tarjeta-grafica › conector-pcie
 - **Usado por:** tarjeta-madre, tarjeta-grafica
-- **Texto publicado:** Cada generación de PCIe duplica el ancho de banda de la anterior: 8 GT/s por línea en PCIe 3.0, 16 GT/s en PCIe 4.0 y 32 GT/s en PCIe 5.0 (unos 1, 2 y 4 GB/s por línea y por sentido, de forma aproximada).
+- **Texto publicado:** Cada generación de PCIe duplica el ancho de banda de la anterior: 8 GT/s por línea en PCIe 3.0, 16 GT/s en PCIe 4.0 y 32 GT/s en PCIe 5.0. El ancho de banda total depende además de cuántas líneas use el dispositivo.
+- **Texto al decidir:** Cada generación de PCIe duplica el ancho de banda de la anterior: 8 GT/s por línea en PCIe 3.0, 16 GT/s en PCIe 4.0 y 32 GT/s en PCIe 5.0 (unos 1, 2 y 4 GB/s por línea y por sentido, de forma aproximada).
 - **Estado:** 🟡
 - **Fuente consultada:** PCI-SIG Announces PCI Express 4.0 Evolution to 16GT/s (comunicado de PCI-SIG, copia en Design-Reuse) — https://www.design-reuse.com/news/27909/pci-express-4-0.html (consultada 2026-10-13) · primaria (comunicado del consorcio, copia de terceros)
 - **Fuente consultada:** PCI-SIG Achieves 32GT/s with New PCI Express 5.0 Specification (comunicado de PCI-SIG, copia en Design-Reuse) — https://us.design-reuse.com/news/46222/32gt-s-pci-express-5-0-specification.html (consultada 2026-10-13) · primaria (copia de terceros)
 - **Qué dice la fuente:** El comunicado de PCIe 4.0 dice que 16 GT/s duplica el ancho de banda de PCIe 3.0 (lo que implica 8 GT/s para la 3.0, que no lo dice con esa cifra). El de PCIe 5.0 dice que 32 GT/s duplica el ancho de banda de PCIe 4.0. Las cifras en GB/s por línea no aparecen en las fuentes que abrí; son una conversión (velocidad por la eficiencia de codificación) y coinciden con la aritmética, pero son cálculo propio.
 - **Propuesta:** reformular a: «Cada generación de PCIe duplica el ancho de banda de la anterior: 8 GT/s por línea en PCIe 3.0, 16 GT/s en PCIe 4.0 y 32 GT/s en PCIe 5.0.» Quitar el paréntesis en GB/s o mantenerlo si el dueño acepta que es una conversión aproximada. Nota: el comunicado de 5.0 da dos cifras para x16 (128 y 64 GB/s según cuente uno o ambos sentidos); por eso conviene evitar GB/s.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Cada generación de PCIe duplica el ancho de banda de la anterior: 8 GT/s por línea en PCIe 3.0, 16 GT/s en PCIe 4.0 y 32 GT/s en PCIe 5.0. El ancho de banda total depende además de cuántas líneas use el dispositivo.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-19) con el agregado de NB de que depende también de las líneas.
 
 ### pcie-compatibilidad-atras — Ranura PCIe principal (tarjeta gráfica)
 - **Tipo:** hecho
@@ -189,7 +196,7 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Fuente consultada:** PCI-SIG Announces PCI Express 4.0 Evolution to 16GT/s (copia en Design-Reuse) — https://www.design-reuse.com/news/27909/pci-express-4-0.html (consultada 2026-10-13) · primaria (copia de terceros)
 - **Qué dice la fuente:** PCI-SIG declara que PCIe 5.0 mantiene compatibilidad con 4.0, 3.x, 2.x y 1.x, y que PCIe 4.0 busca conservar la compatibilidad con arquitecturas previas. Ninguno de los dos comunicados dice explícitamente que el conjunto funcione a la velocidad de la generación menor.
 - **Propuesta:** mantener. La compatibilidad está confirmada; la consecuencia «velocidad de la menor» es la lectura habitual, pero no la vi escrita en una fuente primaria que pudiera abrir. Si el dueño prefiere, reformular a: «Las tarjetas y ranuras PCIe de generaciones distintas son compatibles entre sí; el conjunto trabaja con las capacidades de la generación menor.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado por NB (2026-10-19), texto sin cambios. Las fuentes no dicen literalmente que el conjunto trabaje a la velocidad de la generación menor; NB lo confirma por experiencia.
 
 ### pcie-x16-desde-procesador — Ranura PCIe principal (tarjeta gráfica)
 - **Tipo:** hecho
@@ -209,7 +216,8 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › m2; almacenamiento › llave-m2
 - **Usado por:** tarjeta-madre, almacenamiento
-- **Texto publicado:** M.2 define varias llaves; los SSD usan la llave M (o B y M) y las tarjetas inalámbricas suelen usar la llave E. Cada llave indica qué tipo de dispositivo admite la ranura.
+- **Texto publicado:** En las placas actuales, las ranuras M.2 para SSD usan la llave M y las tarjetas inalámbricas suelen usar la llave E; algunos SSD SATA traen las llaves B y M. La llave indica qué tipo de dispositivo admite la ranura, pero no garantiza el protocolo: una ranura con llave M puede aceptar SATA o solo PCIe según la placa, así que confirma en el manual.
+- **Texto al decidir:** M.2 define varias llaves; los SSD usan la llave M (o B y M) y las tarjetas inalámbricas suelen usar la llave E. Cada llave indica qué tipo de dispositivo admite la ranura.
 - **Estado:** 🟡
 - **Fuente consultada:** Manual ASRock B760M-H/M.2 — https://download.asrock.com/Manual/B760M-HM.2.pdf (consultada 2026-10-13) · primaria
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
@@ -217,13 +225,14 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Fuente consultada:** ASUS ROG, guía «Buying an M.2 SSD» — https://rog.asus.com/articles/guides/buying-an-m-2-ssd-how-to-tell-which-is-which/ (consultada 2026-10-13) · secundaria (guía editorial del fabricante)
 - **Qué dice la fuente:** Los manuales de ASUS y ASRock describen sus ranuras de SSD como «Key M» y una ranura aparte «Key E» para tarjetas WiFi/Bluetooth. La parte «B y M» y el nombre de las llaves solo salen en fuentes secundarias; la especificación M.2 de PCI-SIG no se pudo abrir.
 - **Propuesta:** reformular a: «En las placas actuales, las ranuras M.2 para SSD usan la llave M y las tarjetas inalámbricas usan la llave E. La llave indica qué tipo de dispositivo admite la ranura.»
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «En las placas actuales, las ranuras M.2 para SSD usan la llave M y las tarjetas inalámbricas suelen usar la llave E; algunos SSD SATA traen las llaves B y M. La llave indica qué tipo de dispositivo admite la ranura, pero no garantiza el protocolo: una ranura con llave M puede aceptar SATA o solo PCIe según la placa, así que confirma en el manual.»  ☐ quitar   Nota: ajustado por NB (2026-10-19): se conserva B y M (respaldado en la hoja de almacenamiento: WD y Seagate) y se agrega que la ranura puede no admitir SATA. «Según la placa» es experiencia de NB, sin fuente.
 
 ### m2-largos — Ranuras M.2
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › m2; almacenamiento › tornillo-m2; almacenamiento › caso m2-sin-tornillo; almacenamiento › comparación tipos-de-unidad › Forma y tamaño
 - **Usado por:** tarjeta-madre, almacenamiento
-- **Texto publicado:** Los SSD M.2 se nombran por su tamaño: 2230, 2242, 2260, 2280 y 22110 (22 mm de ancho y 30, 42, 60, 80 o 110 mm de largo). El 2280 es el más habitual.
+- **Texto publicado:** Los SSD M.2 se nombran por su tamaño: 2230, 2242, 2260, 2280 y 22110 (22 mm de ancho y 30, 42, 60, 80 o 110 mm de largo). El 2280 es el más habitual en escritorio, y el 2230, más corto, se usa en consolas portátiles y mini PC. Cada ranura admite solo algunos largos; el manual de la placa indica cuáles.
+- **Texto al decidir:** Los SSD M.2 se nombran por su tamaño: 2230, 2242, 2260, 2280 y 22110 (22 mm de ancho y 30, 42, 60, 80 o 110 mm de largo). El 2280 es el más habitual.
 - **Estado:** 🟡
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
 - **Fuente consultada:** Hoja de datos Samsung 990 PRO — https://download.semiconductor.samsung.com/resources/data-sheet/samsung_nvme_ssd_990_pro_datasheet_rev.2.0.pdf (consultada 2026-10-13) · primaria
@@ -231,7 +240,7 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Fuente consultada:** ASUS ROG, guía de SSD M.2 — https://rog.asus.com/articles/guides/buying-an-m-2-ssd-how-to-tell-which-is-which/ (consultada 2026-10-13) · secundaria
 - **Qué dice la fuente:** El manual de ASUS lista ranuras que admiten «2280» y otra que admite «2242/2260/2280/22110», y Samsung vende su 990 PRO como M.2 (2280): los nombres de tamaño existen y cada ranura admite solo algunos. Que la nomenclatura es ancho 22 mm por largo en mm y que el 2280 es el más usado viene solo de fuentes secundarias; «más habitual» es una afirmación de mercado que ninguna especificación respalda.
 - **Propuesta:** reformular a: «Los SSD M.2 se nombran por su tamaño: 2230, 2242, 2260, 2280 y 22110 (22 mm de ancho y 30, 42, 60, 80 o 110 mm de largo). Cada ranura admite solo algunos largos; el manual de la placa indica cuáles.» (se quita «el 2280 es el más habitual».)
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «Los SSD M.2 se nombran por su tamaño: 2230, 2242, 2260, 2280 y 22110 (22 mm de ancho y 30, 42, 60, 80 o 110 mm de largo). El 2280 es el más habitual en escritorio, y el 2230, más corto, se usa en consolas portátiles y mini PC. Cada ranura admite solo algunos largos; el manual de la placa indica cuáles.»  ☐ quitar   Nota: aprobada la propuesta de reformular (NB, 2026-10-19). «2280 más habitual» y el uso del 2230 son afirmaciones de mercado de NB, sin fuente.
 
 ### m2-protocolos — Ranuras M.2
 - **Tipo:** hecho
@@ -288,13 +297,16 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Tipo:** hecho
 - **Dónde:** tarjeta-madre › conector-24-pines; fuente-de-poder › atx-24
 - **Usado por:** tarjeta-madre, fuente-de-poder
-- **Texto publicado:** El conector principal de energía de la placa es de 24 pines (20+4) en el estándar ATX.
+- **Texto publicado:** El conector principal de energía de la placa es de 24 pines en el estándar ATX. Algunos equipos de marca usan conectores y fuentes propios, así que no siempre sirve una fuente ATX estándar.
+- **Texto al decidir:** El conector principal de energía de la placa es de 24 pines (20+4) en el estándar ATX.
 - **Estado:** 🟡
 - **Fuente consultada:** ATX Specification 2.2 — https://xdevs.com/doc/_PC_HW/Form_factors/atx2_2.pdf (consultada 2026-10-13) · primaria (copia de terceros del documento de Intel)
 - **Fuente consultada:** Manual ASUS PRIME B850-PLUS — https://dlcdnets.asus.com/pub/ASUS/mb/SocketAM5/PRIME_B850-PLUS/E25803_PRIME_B850-PLUS_EM_WEB.pdf (consultada 2026-10-13) · primaria
-- **Qué dice la fuente:** La ATX 2.2 registra el cambio del conector principal de 20 a 24 pines por PCI Express y recomienda con fuerza un conector de 24 pines; el manual de ASUS lista «1 x 24-pin Main Power connector». La especificación no habla de «20+4»; ese desglose viene de la guía de fuentes ATX12V, que no abrí.
+- **Fuente consultada:** OptiPlex proprietary 8 pin and 6 pin pinout (hilo de la comunidad) — https://www.dell.com/community/en/conversations/optiplex-desktops/optiplex-proprietary-8-pin-and-6-pin-pinout/647f8f68f4ccf8a8de077d92 (consultada 2026-10-19) · secundaria (foro alojado por Dell pero con mensajes de usuarios, sin personal de Dell; no es documentación de Dell)
+- **Fuente consultada:** HP dc5100 / DC7600 / DX6100 power supply pinout — https://pinouts.ru/Power/hp_dc5100.shtml (consultada 2026-10-19) · secundaria (sitio de pinouts de terceros; muestra un conector de 24 pines de HP con numeración y señales propias (TAC, FANCMD) y un solo contacto de +12 V)
+- **Qué dice la fuente:** Las fuentes abiertas son de terceros: un hilo de usuarios en la comunidad de Dell describe conectores de 6 y 8 pines propios de OptiPlex y afirma que no existe un estándar ATX/EPS para ellos, y una página de pinouts muestra un conector de 24 pines de HP con una asignación distinta a la ATX. No se encontró documentación de Dell, Lenovo ni HP que lo diga, y la página de Lenovo con el tema (foros) no cargó el contenido. Tampoco hay fuente abierta para el caso de 20 pines.
 - **Propuesta:** reformular a: «El conector principal de energía de la placa es de 24 pines en el estándar ATX.» (se quita «(20+4)»)
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «El conector principal de energía de la placa es de 24 pines en el estándar ATX. Algunos equipos de marca usan conectores y fuentes propios, así que no siempre sirve una fuente ATX estándar.»  ☐ quitar   Nota: ajustado por NB (2026-10-19): propuesta más la mención de equipos de marca. Verificado solo en fuentes secundarias abiertas (2026-10-19): existen equipos de marca (Dell OptiPlex con conectores de 6/8 pines, HP con 24 pines de asignación propia) con conectores de energía que no siguen el estándar ATX. Recortado: se quitaron los nombres «Dell» y «Lenovo» y cualquier mención a «20 pines»: no hay documentación de Dell/Lenovo/HP abierta que lo respalde (solo foros de usuarios y sitios de terceros; los hilos de Lenovo no cargaron) y el caso de 20 pines es experiencia de NB sin fuente. La frase queda en 🟡 con respaldo secundario; si NB la quiere más específica, necesita un manual de servicio de ese equipo (p. ej. el número de modelo de la placa que vio).
 
 ### eps-ocho-pines — Conector de energía del procesador (EPS)
 - **Tipo:** hecho
@@ -356,7 +368,7 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Fuente consultada:** How to Install or Remove an AMD CPU Cooler (CPU-7) — https://www.amd.com/en/resources/support-articles/faqs/CPU-7.html (consultada 2026-10-15) · primaria (artículo de soporte del fabricante; dice «lid» (tapa) del procesador, no «IHS»; abrió con curl)
 - **Qué dice la fuente:** AMD indica aplicar una capa fina de pasta térmica sobre la tapa (lid) del procesador y luego apoyar el disipador encima; pide limpiar la tapa y la placa base del disipador de pasta vieja antes de reinstalar, y aclara que si el disipador nuevo ya trae pasta no hay que agregar más.
 - **Propuesta:** mantener. La fuente respalda el texto: la pasta va entre la tapa del procesador y la base del disipador. AMD escribe «tapa» (lid); «IHS» es el nombre técnico equivalente.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19): verificado con fuente consultada
 
 ### pcie-6-2-graficas — Conector PCIe 6+2 de la gráfica
 - **Tipo:** hecho
@@ -368,16 +380,20 @@ Hechos: 29 · casos: 0 · criterios: 0 · decisiones del dueño: 17 aprobar, 0 a
 - **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide, Rev. 2.1a (noviembre de 2023) · secciones 1.3, 3.2, 3.3 y 5.2.2.4 — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (documento de Intel; refleja PCIe CEM 5.1)
 - **Qué dice la fuente:** Corsair describe el cable PCIe de 8 pines como un conector de 6 pines con otro de 2 pines que cuelga al lado, y se acopla al zócalo de 8 pines de la gráfica (o se usa solo el de 6 si basta). La guía de Intel define los conectores auxiliares 2x3 (75 W) y 2x4 (150 W) y dice que el 2x4 de la tarjeta también acepta el enchufe 2x3.
 - **Propuesta:** mantener. El texto coincide con Corsair e Intel. Matiz opcional: la fuente no dice que sean «las tarjetas que piden ocho pines» usen siempre 6+2; algunas fuentes traen el cable de 8 pines fijo. Los nombres «6+2»/«2x4» no vienen del PCI-SIG (su página dio 403).
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☑ aprobar  ☐ ajustar  ☐ quitar   Nota: aprobado en lote por NB (2026-10-19): verificado con fuente consultada
 
 ### conector-12v-2x6 — Conector 12V-2x6 de la gráfica
 - **Tipo:** hecho
 - **Dónde:** fuente-de-poder › 12v-2x6; fuente-de-poder › sección elegir; fuente-de-poder › caso conector-12v-2x6-a-medias; tarjeta-grafica › conector-energia
 - **Usado por:** fuente-de-poder, tarjeta-grafica
-- **Texto publicado:** El conector 12V-2x6 (ATX 3.1 y PCIe CEM 5.1) reemplazó al 12VHPWR en las tarjetas gráficas nuevas y debe quedar insertado por completo.
+- **Texto publicado:** El conector 12V-2x6 (definido en PCIe CEM 5.1) es una versión mejorada del 12VHPWR, creada para corregir sus problemas de fiabilidad, y reemplazó a este en las tarjetas gráficas nuevas. El cambio está en el conector de la tarjeta, con contactos de potencia más largos y de señal más cortos, y el cable es el mismo. Debe quedar insertado por completo: si queda a medias, la tarjeta no toma energía por el cable.
+- **Texto al decidir:** El conector 12V-2x6 (ATX 3.1 y PCIe CEM 5.1) reemplazó al 12VHPWR en las tarjetas gráficas nuevas y debe quedar insertado por completo.
 - **Estado:** 🟡
 - **Fuente consultada:** ATX Version 3 Multi Rail Desktop Platform Power Supply Design Guide, Rev. 2.1a (noviembre de 2023) · secciones 1.3, 3.2, 3.3 y 5.2.2.4 — https://cdrdv2-public.intel.com/336521/336521_Rev2p1a.pdf (consultada 2026-10-15) · primaria (documento de Intel; refleja PCIe CEM 5.1)
 - **Fuente consultada:** Does the 50 series need a 12V-2x6 cable? — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/does-the-50-series-need-a-12v-2x6-cable/ (consultada 2026-10-15) · primaria (fabricante de fuentes; solo confirma que las RTX 50 usan 12V-2x6; no habla de ATX 3.1 ni de insertar por completo)
-- **Qué dice la fuente:** La guía de Intel dice que el 12V-2x6 de PCIe CEM 5.1 reemplaza al 12VHPWR de CEM 5.0 para corregir problemas de fiabilidad, y que los diseños nuevos deben montar solo el 12V-2x6. Añade que un conector sin asentar del todo hace que la tarjeta lea 0 W en las señales SENSE y no tome energía por el cable. El documento se titula «ATX Version 3»; el nombre «ATX 3.1» no aparece en él.
+- **Fuente consultada:** Differences Between ATX 3.0 and ATX 3.1 Standards — https://knowledge.seasonic.com/article/79-comparison-atx-3-0-vs-atx-3-1-standards (consultada 2026-10-19) · secundaria (fabricante de fuentes; asocia 12VHPWR con «ATX 3.0» y 12V-2x6 con «ATX 3.1» (nombres comerciales) y dice que el cambio es del conector de la tarjeta, no del cable; es la única fuente abierta que habla de conectores derretidos, sin mencionar NVIDIA ni la serie 4000)
+- **Fuente consultada:** Evolving standards: 12VHPWR and 12V-2x6 — https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/evolving-standards-12vhpwr-and-12v-2x6/ (consultada 2026-10-19) · secundaria (fabricante de fuentes; da las medidas (contactos de señal 1,5 mm más cortos, de potencia 0,25 mm más largos); no habla de versión ATX ni de quemaduras)
+- **Fuente consultada:** ATX 3.1 power supply safeguards and you — https://www.asus.com/blog/atx-3-1-power-supply-safeguards-and-you-how-a-modern-psu-protects-your-pc/ (consultada 2026-10-19) · secundaria (blog de fabricante; el 12V-2x6 busca reducir conexiones parciales y sus contactos de potencia asientan antes que los de señal; no menciona derretimiento)
+- **Qué dice la fuente:** La guía de Intel (Rev. 2.0, febrero de 2022, introdujo el 12VHPWR; Rev. 2.1, septiembre de 2023, lo renombró 12V-2x6) dice que cambió la longitud interna de los contactos del conector de la tarjeta: los de potencia se alargaron y los de señal (SENSE) se acortaron, para que la señal engrane al final y solo con la potencia bien acoplada, y que el enchufe del cable no cambió. También redefine las señales SENSE: si ambas quedan al aire, la tarjeta lee 0 W y no toma energía. Los fabricantes (Seasonic, Corsair) cuentan lo mismo y ponen los nombres «ATX 3.0» (12VHPWR) y «ATX 3.1» (12V-2x6); en la guía de Intel solo aparecen «ATX Version 3» y los números de revisión.
 - **Propuesta:** reformular. Respaldado: reemplazo del 12VHPWR por el 12V-2x6 en CEM 5.1 e inserción completa. «ATX 3.1» no figura en el documento de Intel (se llama «ATX Version 3», Rev. 2.1a); solo aparece en medios secundarios, así que se quita o se deja como nombre comercial aparte. La especificación del PCI-SIG no abrió (403), por lo que se citó la guía de Intel, que la reproduce.
-- **Decisión del dueño:** ☐ aprobar  ☐ ajustar  ☐ quitar   Nota: ______
+- **Decisión del dueño:** ☐ aprobar  ☑ ajustar → «El conector 12V-2x6 (definido en PCIe CEM 5.1) es una versión mejorada del 12VHPWR, creada para corregir sus problemas de fiabilidad, y reemplazó a este en las tarjetas gráficas nuevas. El cambio está en el conector de la tarjeta, con contactos de potencia más largos y de señal más cortos, y el cable es el mismo. Debe quedar insertado por completo: si queda a medias, la tarjeta no toma energía por el cable.»  ☐ quitar   Nota: ajustado por NB (2026-10-19): mejora del conector, no solo reemplazo. Verificado con Intel (fuente primaria, 2026-10-19): el 12V-2x6 de CEM 5.1 reemplaza al 12VHPWR de CEM 5.0 «para corregir problemas de fiabilidad»; potencia más larga y señal más corta en el conector de la tarjeta; el enchufe del cable no cambió; sin asentar del todo = 0 W. Recortado: (1) no se dice «conectores quemados» ni «serie 4000 de NVIDIA»: ninguna fuente abierta de Intel/NVIDIA/PCI-SIG lo dice; solo Seasonic (fabricante, secundaria) habla de conectores derretidos en el lado de la GPU, y la declaración de NVIDIA sobre las RTX 4090 solo salió en resultados de prensa que no se pudieron abrir (HotHardware dio 403) ni está en nvidia.com. (2) No se afirma «ATX 3.0/3.1» como especificación: la guía de Intel se titula «ATX Version 3» (Rev. 2.0 = 12VHPWR, Rev. 2.1 = 12V-2x6); «3.0» y «3.1» son nombres de uso común que solo respaldan fabricantes. (3) No se citan las medidas 1,5 mm y 0,25 mm: solo las da Corsair, no Intel. La especificación PCIe CEM 5.1 del PCI-SIG no se pudo abrir (acceso bloqueado).

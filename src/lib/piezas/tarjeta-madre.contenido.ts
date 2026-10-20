@@ -38,19 +38,8 @@ import {
   videoRequiereGraficosIntegrados,
   ventiladorNombresCabezales,
 } from "./comun.hechos.ts";
-import { hecho, hechoVerificado, hechoVerificadoB } from "./constructores.ts";
+import { hecho, hechoVerificado, hechoVerificadoB, verificadoPorDueno } from "./constructores.ts";
 import {
-  AMD_CHIPSETS_AM5,
-  INTEL_ARK,
-  INTEL_FRONT_PANEL,
-  PWM_FAN_SPEC,
-  ATX_22,
-  VIA_MINI_ITX,
-  USB_IF,
-  MS_WINDOWS_11,
-  MANUAL_ASUS,
-  MANUAL_ASROCK,
-  NOTA_MANUAL,
   V_AMD_AM5,
   V_AMD_AM4,
   V_AMD_7700X,
@@ -172,23 +161,45 @@ const chipset: ParteContenido = {
       [V_AMD_7700X, V_AMD_AM5],
       "La ficha del 7700X lista exactamente esos chipsets; la página de chipsets AM5 ya no muestra B650 ni B650E pero repite el aviso de BIOS. Dato que envejece: revisar al salir chipsets nuevos (cada 6 meses).",
     ),
-    hecho(
-      "chipsets-overclock",
-      "No todos los chipsets permiten ajustar la frecuencia del procesador: en AM5, AMD presenta X870E, X870 y B850 con soporte de overclock, mientras que el A620 es una opción de entrada. En Intel depende además de la serie del procesador.",
-      [AMD_CHIPSETS_AM5, INTEL_ARK],
-      "Parcial: la página de chipsets AM5 menciona overclock en X870E, X870 y B850. Falta el detalle por chipset en AMD (A620, B840, B650) y toda la parte de Intel (qué chipsets y qué procesadores permiten overclock de CPU y de memoria).",
+    verificadoPorDueno(
+      hecho(
+        "chipsets-overclock",
+        "No todos los chipsets están pensados para ajustar la frecuencia del procesador. Lo recomendable es usar los que lo habilitan de forma oficial: en AM5, X870E, X870, B850, X670E y X670; en Intel, la serie Z con un procesador desbloqueado (sufijo K). Algunas placas con otros chipsets, como ciertas de la serie B, también permiten ajustes según el fabricante y el modelo; no es lo recomendable y exige que la placa tenga un buen VRM (fases de alimentación).",
+        [
+          V_AMD_AM5,
+          { titulo: "Desktop Chipsets Product Specifications (Intel ARK)", editor: "Intel", url: "https://www.intel.com/content/www/us/en/ark/products/series/46645/desktop-chipsets.html", consultadoEn: "2026-10-13" },
+          { titulo: "What Are the Hardware Requirements for Overclocking an Intel® Processor?", editor: "Intel", url: "https://www.intel.com/content/www/us/en/support/articles/000097808/processors/intel-core-processors.html", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. ajustado por NB 2026-10-15 (dictado). La parte de placas B con buen VRM es experiencia del taller, sin fuente: confirmar la redacción final.",
+      ),
+      "2026-10-15",
+      "NB",
     ),
-    hecho(
-      "chipsets-intel",
-      "Los chipsets de LGA 1700 son H610, B660, H670, Z690, B760 y Z790; los de LGA 1851 incluyen Z890, B860 y H810.",
-      [INTEL_ARK],
-      "NO confirmado. Falta la página de plataformas o chipsets de escritorio de Intel; verificar la lista de LGA 1851 (¿H810?).",
+    verificadoPorDueno(
+      hecho(
+        "chipsets-intel",
+        "Entre los chipsets de LGA 1700 están H610, B660, H670, Z690, H770, B760 y Z790; entre los de LGA 1851, Z890, B860 y H810.",
+        [
+          { titulo: "Desktop Chipsets Product Specifications (Intel ARK)", editor: "Intel", url: "https://www.intel.com/content/www/us/en/ark/products/series/46645/desktop-chipsets.html", consultadoEn: "2026-10-13" },
+          { titulo: "Intel® Z890 Chipset (ARK)", editor: "Intel", url: "https://www.intel.com/content/www/us/en/products/sku/237777/intel-z890-chipset/specifications.html", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15)",
+      ),
+      "2026-10-15",
+      "NB",
     ),
-    hecho(
-      "chipset-enlace-procesador",
-      "El chipset se conecta al procesador mediante un enlace único: en Intel se llama DMI y en AMD usa líneas PCIe. Los dispositivos que cuelgan del chipset comparten ese enlace.",
-      [INTEL_ARK, AMD_CHIPSETS_AM5],
-      "NO confirmado en las páginas consultadas. Buscar el diagrama de bloques de una plataforma de AMD y una de Intel.",
+    verificadoPorDueno(
+      hecho(
+        "chipset-enlace-procesador",
+        "El chipset se conecta al procesador mediante un enlace dedicado; en Intel se llama DMI. En AMD el enlace no tiene un nombre propio, pero cumple la misma función. Los dispositivos que cuelgan del chipset comparten el ancho de banda de ese enlace.",
+        [
+          { titulo: "Intel® Z890 Chipset (ARK)", editor: "Intel", url: "https://www.intel.com/content/www/us/en/products/sku/237777/intel-z890-chipset/specifications.html", consultadoEn: "2026-10-13" },
+          V_AMD_AM5,
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. propuesta aprobada con el agregado de AMD pedido por NB (2026-10-15). La frase de AMD no tiene fuente abierta.",
+      ),
+      "2026-10-15",
+      "NB",
     ),
     hechoVerificado(
       "chipset-vs-procesador-lineas",
@@ -216,11 +227,18 @@ const vrm: ParteContenido = {
     "Asegura un buen flujo de aire cerca del socket: ayuda al VRM y al procesador.",
   ],
   hechos: [
-    hecho(
-      "vrm-funcion",
-      "El VRM reduce los 12 V que entrega la fuente al voltaje de funcionamiento del procesador.",
-      [INTEL_ARK, AMD_CHIPSETS_AM5],
-      "NO confirmado: falta una nota técnica de Intel, AMD o un fabricante de placas que lo describa. No se afirman cifras de fases ni 'más fases = mejor' (V2).",
+    verificadoPorDueno(
+      hecho(
+        "vrm-funcion",
+        "El VRM toma la energía de 12 V que llega por el conector del procesador y la convierte al voltaje con el que trabaja el procesador. Junto con los condensadores que lo rodean, filtra el ruido y los picos para mantener el voltaje estable, porque un voltaje alto puede dañar el procesador. Un procesador más potente consume más y suele pedir más fases de alimentación: con menos fases puede funcionar, pero la placa se vuelve inestable bajo carga.",
+        [
+          { titulo: "EPS12V Power Supply Design Guide, v2.91 (SSI; copia alojada en xDevs.com)", editor: "SSI", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/eps_designguide_2.91.pdf", consultadoEn: "2026-10-13" },
+          V_MANUAL_GIGABYTE_B650,
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. propuesta aprobada con el agregado de condensadores y fases pedido por NB (2026-10-15). Ese agregado es experiencia del taller, sin fuente: confirmar la redacción final.",
+      ),
+      "2026-10-15",
+      "NB",
     ),
   ],
   relacionadas: ["conector-cpu", "socket"],
@@ -476,11 +494,18 @@ const ventiladores: ParteContenido = {
     "Si la refrigeración es líquida, busca un cabezal pensado para la bomba.",
   ],
   hechos: [
-    hecho(
-      "ventilador-cuatro-pines-pwm-y-tres-pines",
-      "Un cabezal de ventilador de 4 pines (PWM) también acepta ventiladores de 3 pines, que se controlan por voltaje.",
-      [PWM_FAN_SPEC],
-      "NO se encontró la especificación primaria de Intel (4-Wire PWM Controlled Fans, revisión 1.3) en una URL pública estable; el white paper de Noctua la cita. Buscar copia oficial.",
+    verificadoPorDueno(
+      hecho(
+        "ventilador-cuatro-pines-pwm-y-tres-pines",
+        "Los cabezales de ventilador de 4 pines (PWM) suelen aceptar también ventiladores de 3 pines, que se controlan por voltaje; en algunas placas hay que elegir el modo DC en la BIOS y el comportamiento depende del modelo.",
+        [
+          V_MANUAL_MSI_B760,
+          { titulo: "ASUS, TUF GAMING B550-PLUS", editor: "ASUS", url: "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-b550-plus/", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15)",
+      ),
+      "2026-10-15",
+      "NB",
     ),
     ventiladorNombresCabezales,
   ],
@@ -509,17 +534,28 @@ const conectoresFrontales: ParteContenido = {
       [V_INTEL_FRONT_PANEL_GUIA, V_MANUAL_MSI_B760, V_MANUAL_ASUS_B850_PLUS],
       "La guía de Intel es copia de terceros (hackaday.io) del documento de Intel. Los manuales de ASUS y MSI listan las mismas cuatro conexiones.",
     ),
-    hecho(
-      "usb-frontal-tipos",
-      "Los conectores USB frontales de la placa son de tres tipos: USB 2.0 de 9 pines, USB 3.x de 19 o 20 pines y USB-C frontal (tipo Key-A).",
-      [INTEL_FRONT_PANEL, USB_IF],
-      "NO confirmado. Intel publica la asignación de pines del USB 3 frontal; USB-IF no publica de forma pública el conector frontal de placa. Verificar la denominación 'Key-A'.",
+    verificadoPorDueno(
+      hecho(
+        "usb-frontal-tipos",
+        "Los conectores USB frontales de la placa son de tres tipos: USB 2.0, USB 3.x y USB-C frontal. Cada uno usa su propio cable y no son intercambiables.",
+        [
+          { titulo: "Intel, USB 3.0 Internal Connector and Cable Specification, Rev. 1.0", editor: "Intel", url: "https://www.intel.com.au/content/dam/www/public/us/en/documents/technical-specifications/usb3-internal-connector-cable-specification.pdf", consultadoEn: "2026-10-13" },
+          V_INTEL_FRONT_PANEL_GUIA,
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15): se nombra por tipo, no por la marca de cada fabricante",
+      ),
+      "2026-10-15",
+      "NB",
     ),
-    hecho(
-      "audio-frontal-hd",
-      "El cabezal de audio frontal sigue el estándar Intel HD Audio y suele rotularse AAFP.",
-      [INTEL_FRONT_PANEL],
-      "NO confirmado en fuente consultada.",
+    verificadoPorDueno(
+      hecho(
+        "audio-frontal-hd",
+        "Las placas actuales traen un conector de audio frontal para chasis con audio HD; su nombre cambia según el fabricante (por ejemplo, F_AUDIO o JAUD1), pero es el mismo tipo de conector, para que funcione con el cable de audio de los chasis.",
+        [V_MANUAL_ASUS_B850_PLUS, V_MANUAL_MSI_B760, V_INTEL_FRONT_PANEL_GUIA],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular con el agregado de NB (2026-10-15): mismo conector con distinto nombre según la marca. Lo de la compatibilidad con los chasis es criterio de NB, sin fuente.",
+      ),
+      "2026-10-15",
+      "NB",
     ),
   ],
   relacionadas: ["puertos-traseros", "bateria-cmos"],
@@ -586,11 +622,19 @@ const seccionElegir: SeccionTexto = {
       [V_AMD_AM5, V_AMD_AM4, V_INTEL_Z690_BIOS, V_ASUS_B850F, V_MANUAL_GIGABYTE_B650],
       "AMD e Intel confirman que puede hacer falta BIOS nueva. El «sin procesador» lo respalda ASUS (BIOS FlashBack); el manual de Gigabyte describe Q-Flash Plus sin afirmarlo. El texto dice «algunas placas».",
     ),
-    hecho(
-      "windows-tpm-arranque-seguro",
-      "Windows 11 exige firmware UEFI con arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas lo ofrecen como fTPM (AMD) o PTT (Intel) dentro de la BIOS.",
-      [MS_WINDOWS_11],
-      "Parcial: Microsoft confirma 'System firmware: UEFI, Secure Boot capable' y 'TPM version 2.0'. NO confirmado: los nombres fTPM y PTT (documentación de AMD e Intel).",
+    verificadoPorDueno(
+      hecho(
+        "windows-tpm-arranque-seguro",
+        "Windows 11 requiere firmware UEFI con capacidad de arranque seguro (Secure Boot) y TPM versión 2.0; muchas placas ofrecen el TPM dentro de la BIOS, y cada fabricante de procesador lo llama distinto: fTPM en AMD y PTT en Intel, pero cumplen la misma función.",
+        [
+          { titulo: "Windows 11 requirements (Microsoft Learn)", editor: "Microsoft", url: "https://learn.microsoft.com/en-us/windows/whats-new/windows-11-requirements", consultadoEn: "2026-10-13" },
+          { titulo: "Enable TPM 2.0 on your PC (Soporte de Microsoft)", editor: "Microsoft", url: "https://support.microsoft.com/en-us/windows/enable-tpm-2-0-on-your-pc-1fd5a332-360d-4f46-a1e7-ae6b0c90645c", consultadoEn: "2026-10-13" },
+          { titulo: "What Is Trusted Platform Model (TPM) and Its Relation to Intel® Platform Trust Technology (Intel® PTT)?", editor: "Intel", url: "https://www.intel.com/content/www/us/en/support/articles/000094205/processors/intel-core-processors.html", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15); se agrega que fTPM y PTT son lo mismo con otro nombre (pedido de NB).",
+      ),
+      "2026-10-15",
+      "NB",
     ),
   ],
 };
@@ -603,11 +647,20 @@ const seccionErrores: SeccionTexto = {
     "Los que empiezan con «Nos ha pasado» los hemos visto en el taller; los que empiezan con «Puede pasar» son riesgos conocidos que prevenimos al armar.",
   ],
   hechos: [
-    hecho(
-      "errores-rgb-vs-argb",
-      "Los cabezales RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; conectar uno en el otro puede dañar las luces o la placa.",
-      [MANUAL_ASUS],
-      `PENDIENTE de verificar con un manual concreto de placa. Dato dado de memoria por el dueño (no estaba seguro de cuál voltaje era cada uno); coincide con lo habitual, pero NO afirmar sin fuente. ${NOTA_MANUAL}`,
+    verificadoPorDueno(
+      hecho(
+        "errores-rgb-vs-argb",
+        "Los conectores RGB de cuatro pines trabajan a 12 V y los ARGB direccionables de tres pines a 5 V; no son intercambiables, y conectar una tira ARGB de 5 V en un conector RGB de 12 V puede dañar la tira. Fíjate bien en la orientación: el conector del cable y el de la placa traen una marca de pin 1 (una flecha o un triángulo) que debe quedar alineada; conectarlo al revés puede dañar las luces o la placa. Confirma en el manual de tu placa cuáles conectores trae.",
+        [
+          V_MANUAL_MSI_B760,
+          V_MANUAL_ASUS_Z890M,
+          { titulo: "ASUS, FAQ de tiras +5 V ARGB y +12 V RGB", editor: "ASUS", url: "https://rog.asus.com/jp/support/faq/1056087/", consultadoEn: "2026-10-13" },
+          { titulo: "ASUS ROG Crosshair X870E Extreme, especificaciones", editor: "ASUS", url: "https://rog.asus.com/motherboards/rog-crosshair/rog-crosshair-x870e-extreme/spec/", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15) con el agregado de la orientación (NB). La advertencia de conectar al revés es experiencia del taller, sin fuente: confirmar la redacción final.",
+      ),
+      "2026-10-15",
+      "NB",
     ),
     hechoVerificadoB(
       "errores-bios-flash-usb",
@@ -622,59 +675,65 @@ const seccionTamanos: SeccionTexto = {
   id: "tamanos",
   titulo: "Tamaños de tarjeta madre: ATX, Micro-ATX y Mini-ITX",
   parrafos: [
-    "El tamaño de la placa no define su calidad. Cambia cuántas ranuras y puertos trae y en qué chasis cabe. Hay placas pequeñas de gama alta y placas grandes de gama baja.",
+    "El tamaño de la placa no define su calidad. Cambia cuántas ranuras de expansión y de memoria suele traer y en qué chasis cabe. Hay placas pequeñas de gama alta y placas grandes de gama baja.",
     // TODO(dueño): aprobar esta frase (es experiencia de taller, no verificable con fuente primaria).
     "A veces una placa pequeña cuesta más porque lleva lo mismo en menos espacio.",
-    "Los tres formatos comparten la lógica de los orificios de montaje, así que muchos chasis pensados para ATX aceptan también placas más pequeñas. Confirma siempre en la ficha del chasis qué formatos admite.",
+    "Muchos chasis pensados para ATX aceptan también placas más pequeñas. Confirma siempre en la ficha del chasis qué formatos admite.",
+    "Existe además un formato mayor, Extended ATX (E-ATX), poco común en equipos de uso general. Lo usan sobre todo entusiastas que arman servidores o estaciones de trabajo propias, y exige un chasis pensado para él.",
   ],
   vinetas: [
     "Ranuras de expansión: cambia cuántas tarjetas puedes instalar además de la gráfica.",
-    "Ranuras de memoria: cambia cuántos módulos admite la placa.",
-    "M.2 y SATA: cambia cuántas unidades de almacenamiento puedes conectar.",
-    "Espacio para disipar el VRM: una placa más pequeña tiene menos superficie para disipadores, y cada fabricante lo resuelve de forma distinta según el modelo.",
+    "Ranuras de memoria: el formato suele marcar cuántos módulos admite la placa, con excepciones según el modelo.",
+    "M.2 y SATA: la cantidad depende más del modelo y del chipset que del formato; revísala en la ficha de la placa.",
   ],
   hechos: [
-    hecho(
-      "tamanos-ranuras-expansion",
-      "El formato ATX admite hasta siete ranuras de expansión; Micro-ATX hasta cuatro y Mini-ITX una.",
-      [ATX_22, VIA_MINI_ITX],
-      "Parcial: la especificación ATX 2.2 consultada confirma 'up to seven expansion slots' para ATX y el esquema muestra 4 ubicaciones máximas para microATX. NO confirmado: una ranura para Mini-ITX (especificación de VIA).",
+    verificadoPorDueno(
+      hecho(
+        "tamanos-ranuras-expansion",
+        "Según su especificación, el formato ATX admite hasta siete ranuras de expansión, Micro-ATX hasta cuatro y Mini-ITX una; cuántas trae cada placa depende del modelo.",
+        [
+          V_ATX_22,
+          V_VIA_MINI_ITX_WHITE_PAPER,
+          { titulo: "Wikipedia, Motherboard form factor", editor: "Wikipedia", url: "https://en.wikipedia.org/wiki/Motherboard_form_factor", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15). NB dictó «ATX hasta 6»; la propuesta y la fuente dicen siete, se dejó siete. Pendiente opcional: aclarar que algunas Mini-ITX traen la ranura PCIe en otra orientación y que en ATX no todas las ranuras son PCIe.",
+      ),
+      "2026-10-15",
+      "NB",
     ),
-    hecho(
-      "tamanos-chasis-compatibles",
-      "Un chasis ATX suele aceptar también placas Micro-ATX y Mini-ITX, porque sus orificios de montaje coinciden con algunos de los de ATX.",
-      [ATX_22, VIA_MINI_ITX],
-      "Parcial: la especificación ATX 2.2 consultada dice que 'many ATX form factor chassis accept microATX boards' y que los orificios de ATX y microATX coinciden. NO confirmado para Mini-ITX.",
+    verificadoPorDueno(
+      hecho(
+        "tamanos-chasis-compatibles",
+        "Muchos chasis ATX aceptan también placas Micro-ATX y, con frecuencia, Mini-ITX. Confirma siempre en la ficha del chasis qué formatos admite.",
+        [
+          V_ATX_22,
+          V_VIA_MINI_ITX_WHITE_PAPER,
+          { titulo: "Wikipedia, Motherboard form factor y ATX", editor: "Wikipedia", url: "https://en.wikipedia.org/wiki/Motherboard_form_factor", consultadoEn: "2026-10-13" },
+        ],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15)",
+      ),
+      "2026-10-15",
+      "NB",
     ),
-    hecho(
-      "tamanos-e-atx-sin-medida-unica",
-      "Extended ATX (E-ATX) no tiene una medida única definida: cada fabricante indica la suya.",
-      [INTEL_ARK],
-      "NO confirmado. Si no hay fuente primaria, retirar este hecho y no dar cifra de E-ATX.",
+    verificadoPorDueno(
+      hecho(
+        "tamanos-ranuras-memoria",
+        "Las placas Mini-ITX suelen traer dos ranuras de memoria y la mayoría de las Micro-ATX y ATX traen cuatro; hay excepciones, como algunas Micro-ATX económicas con dos.",
+        [V_MANUAL_ASUS_B850I, V_MANUAL_ASROCK_B760M],
+        "Decisión de NB (2026-10-19, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-19)",
+      ),
+      "2026-10-19",
+      "NB",
     ),
-    hecho(
-      "tamanos-orificios-separadores",
-      "Cada formato define la posición de los orificios de montaje y de los separadores (standoffs) en el chasis; los de Micro-ATX y Mini-ITX son un subconjunto de los de ATX.",
-      [ATX_22, VIA_MINI_ITX],
-      "Parcial: confirmado para ATX y microATX en la especificación ATX 2.2 (figura de orificios). NO confirmado para Mini-ITX.",
-    ),
-    hecho(
-      "tamanos-ranuras-memoria",
-      "Las placas Mini-ITX suelen traer dos ranuras de memoria, y las Micro-ATX y ATX suelen traer cuatro; hay excepciones según el modelo.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `Dato de mercado, no de una especificación. ${NOTA_MANUAL}`,
-    ),
-    hecho(
-      "tamanos-m2-sata-cantidad",
-      "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y tiende a ser menor en los formatos más pequeños.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      `Dato de mercado, no de una especificación. ${NOTA_MANUAL}`,
-    ),
-    hecho(
-      "tamanos-espacio-vrm",
-      "En una placa más pequeña hay menos superficie disponible para el disipador del VRM, y los fabricantes lo resuelven de forma distinta según el modelo.",
-      [MANUAL_ASUS, MANUAL_ASROCK],
-      "Afirmación cualitativa; confirmar con fichas de producto de tres modelos de formatos distintos.",
+    verificadoPorDueno(
+      hecho(
+        "tamanos-m2-sata-cantidad",
+        "La cantidad de ranuras M.2 y de puertos SATA depende del modelo de placa y de su chipset, más que del formato.",
+        [V_MANUAL_ASUS_B850_PLUS, V_MANUAL_ASUS_Z890M, V_MANUAL_ASUS_B850I],
+        "Decisión de NB (2026-10-15, hoja tarjeta-madre): ajustar. aprobada la propuesta de reformular (NB, 2026-10-15)",
+      ),
+      "2026-10-15",
+      "NB",
     ),
   ],
 };
@@ -688,74 +747,74 @@ const casos: readonly Caso[] = [
     tipo: "vivido",
     texto: "armar el equipo con un procesador compatible con la placa, pero con una BIOS que aún no lo reconocía. Al encender, los ventiladores giraban y el equipo se apagaba. Se resolvió actualizando la BIOS por USB con la función que traen algunas placas (según el fabricante se llama Flashback, Q-Flash u otro nombre). Antes de comprar, confirma en la lista de compatibilidad qué versión de BIOS necesita tu procesador.",
     confirmadoPorDueno: true,
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "ddr5-en-placa-ddr4",
     tipo: "vivido",
     texto: "un cliente que trajo sus componentes con memoria DDR5 y la placa era DDR4. Los módulos tienen la muesca en otro lugar y una generación no entra en la otra.",
     confirmadoPorDueno: true,
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "rgb-argb-no-compatibles",
     tipo: "vivido",
     texto: "ventiladores o luces RGB que no eran compatibles con la placa. Hay conectores de cuatro pines (RGB) y de tres pines (ARGB direccionable) que se ven parecidos, pero no son intercambiables. Revisa en el manual cuáles trae tu placa antes de comprar las luces.",
     confirmadoPorDueno: true,
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "monitor-en-la-placa",
     tipo: "vivido",
     texto: "clientes que conectan el cable del monitor a la salida de video de la placa teniendo gráfica dedicada, y entonces no ven el rendimiento que esperan porque la gráfica no se está usando. Y al revés, si el procesador no tiene gráficos integrados, la salida de la placa no da imagen. Conecta el monitor a la gráfica.",
     confirmadoPorDueno: true,
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "pines-del-socket-doblados",
     tipo: "puede-pasar",
     texto: "instalar el procesador mal y doblar los pines del socket, una reparación difícil. Alinea el procesador con la marca del pin uno y nunca lo fuerces.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "cabezal-equivocado",
     tipo: "puede-pasar",
     texto: "conectar el cable de un ventilador o de una luz en un cabezal que no corresponde, con riesgo de dañar la pieza o la placa. Cada cabezal tiene un uso y una forma: confirma en el manual cuál es cuál.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "m2-ranura-incompatible",
     tipo: "puede-pasar",
     texto: "instalar una unidad M.2 en una ranura que no admite ese tipo (algunas son solo NVMe, otras aceptan SATA), o llenar todas las ranuras M.2 y quedarte sin puertos SATA porque el manual indica que se comparten.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "placa-no-cabe-en-el-chasis",
     tipo: "puede-pasar",
     texto: "elegir un formato de placa que no cabe en el chasis, o un chasis que no admite ese tamaño.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "ram-a-medio-insertar",
     tipo: "puede-pasar",
     texto: "que un módulo de memoria quede a medio insertar. Debe asentar por completo hasta que las trabas laterales cierren.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "olvido-del-cable-eps",
     tipo: "puede-pasar",
     texto: "olvidar el cable EPS del procesador. El equipo no enciende o se apaga al poco tiempo.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
 ];
 
@@ -894,7 +953,7 @@ export const TARJETA_MADRE_CONTENIDO: PiezaContenido<TarjetaMadreParteId, Tarjet
     },
     {
       q: "¿Una tarjeta madre pequeña es de menor calidad?",
-      a: "No necesariamente. El tamaño cambia cuántas ranuras y puertos trae la placa y en qué chasis cabe, pero no su calidad. Compara las funciones del modelo que necesitas, no solo el formato.",
+      a: "No necesariamente. El tamaño cambia cuántas ranuras de expansión y de memoria suele traer la placa y en qué chasis cabe, pero no su calidad. Compara las funciones del modelo que necesitas, no solo el formato.",
     },
     {
       q: "¿Qué pasa si mi procesador no tiene gráficos integrados?",

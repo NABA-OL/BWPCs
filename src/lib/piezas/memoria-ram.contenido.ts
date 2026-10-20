@@ -17,111 +17,115 @@ import {
   ramDobleCanal,
   ramUnaGeneracionPorPlaca,
 } from "./comun.hechos.ts";
-import { conRevision, hecho } from "./constructores.ts";
-import { JEDEC_DDR4, JEDEC_DDR5 } from "./fuentes.ts";
+import { conRevision, hecho, verificadoPorDueno } from "./constructores.ts";
 import type { Caso, Fuente, Hecho, MemoriaRamParteId, MemoriaRamVistaId, ParteContenido, PiezaContenido, SeccionTexto } from "./types.ts";
 
 /* ---------- Fuentes de esta pieza (consultadoEn solo si se abrió la página; "" = candidata sin abrir) ---------- */
-const JEDEC_PRENSA_DDR5: Fuente = {
-  titulo: "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
-  editor: "JEDEC",
-  url: "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
-  consultadoEn: "2026-10-14",
-};
-const KINGSTON_DDR4_VS_DDR5: Fuente = {
-  titulo: "DDR4 vs DDR5 DRAM: diferencias de rendimiento, compatibilidad y plataformas",
-  editor: "Kingston",
-  url: "https://www.kingston.com/en/blog/pc-performance/ddr-memory-generation-differences",
-  consultadoEn: "",
-};
 const KINGSTON_DDR5_RESUMEN: Fuente = {
   titulo: "Estándar de memoria DDR5: introducción a la siguiente generación de módulos DRAM",
   editor: "Kingston",
   url: "https://www.kingston.com/en/blog/pc-performance/ddr5-overview",
   consultadoEn: "",
 };
-const MICRON_DDR5_MODULO: Fuente = {
-  titulo: "Micron DDR5: características de los módulos para cliente (documento técnico)",
-  editor: "Micron",
-  url: "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
-  consultadoEn: "",
-};
-const INTEL_XMP: Fuente = {
-  titulo: "Intel Extreme Memory Profile (XMP)",
-  editor: "Intel",
-  url: "https://www.intel.com/content/www/us/en/gaming/extreme-memory-profile-xmp.html",
-  consultadoEn: "2026-10-14",
-};
-const AMD_EXPO: Fuente = {
-  titulo: "AMD EXPO: perfiles de memoria",
-  editor: "AMD",
-  url: "https://www.amd.com/en/products/processors/technologies/expo.html",
-  consultadoEn: "",
-};
-const CRUCIAL_SPD: Fuente = {
-  titulo: "Qué es el SPD de un módulo de memoria",
-  editor: "Crucial",
-  url: "https://www.crucial.com/articles/about-memory/what-is-spd",
-  consultadoEn: "",
-};
-const CRUCIAL_DDR4_VS_DDR5: Fuente = {
-  titulo: "Diferencia entre DDR4 y DDR5",
-  editor: "Crucial",
-  url: "https://www.crucial.com/articles/about-memory/difference-between-ddr4-and-ddr5",
-  consultadoEn: "",
-};
-const CRUCIAL_SODIMM: Fuente = {
-  titulo: "Memoria para portátil (SO-DIMM) frente a memoria de escritorio (DIMM)",
-  editor: "Crucial",
-  url: "https://www.crucial.com/articles/about-memory/laptop-vs-desktop-memory",
-  consultadoEn: "",
-};
 
 /* ---------- Hechos nuevos de la pieza (7) ---------- */
-const ramPmicEnDdr5: Hecho = hecho(
-  "ram-pmic-en-ddr5",
-  "En DDR5 el regulador de voltaje (PMIC) va en cada módulo; en DDR4 la regulación se hace en la placa.",
-  [KINGSTON_DDR4_VS_DDR5, JEDEC_PRENSA_DDR5, MICRON_DDR5_MODULO],
-  "RM2 del plan 2. El comunicado de JEDEC (abierto) habla de un «voltage regulator on DIMM design» sin usar la sigla PMIC; Kingston y Micron (vistos solo en resultados de búsqueda) hablan de PMIC en el módulo y de gestión de energía «en la placa» en DDR4. Abrir esas páginas y, si se puede, el estándar JESD79-5.",
+const ramPmicEnDdr5: Hecho = verificadoPorDueno(
+  hecho(
+    "ram-pmic-en-ddr5",
+    "En DDR5 el regulador de voltaje (PMIC) va en cada módulo; en DDR4 la regulación se hace en la placa.",
+    [
+      { titulo: "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)", editor: "JEDEC", url: "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance", consultadoEn: "2026-10-15" },
+      { titulo: "Micron DDR5: Client Module Features (documento técnico)", editor: "Micron", url: "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf", consultadoEn: "2026-10-15" },
+      { titulo: "Optimized DDR5 DIMM solutions powering leading-edge server memory modules", editor: "Samsung Semiconductor", url: "https://semiconductor.samsung.com/news-events/tech-blog/optimized-ddr5-dimm-solutions-powering-leading-edge-server-memory-modules", consultadoEn: "2026-10-15" },
+    ],
+    "Decisión de NB (2026-10-19, hoja memoria-ram): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const ramVoltajeNominal: Hecho = hecho(
-  "ram-voltaje-nominal",
-  "El voltaje nominal de los módulos es de 1,2 V en DDR4 y de 1,1 V en DDR5.",
-  [JEDEC_PRENSA_DDR5, JEDEC_DDR5, JEDEC_DDR4],
-  "RM4. El comunicado de JEDEC (abierto el 2026-10-14) confirma la baja de 1,2 V a 1,1 V. Los perfiles XMP/EXPO pueden usar voltajes mayores: el texto dice «nominal». Quitar si no aporta a la decisión.",
+const ramVoltajeNominal: Hecho = verificadoPorDueno(
+  hecho(
+    "ram-voltaje-nominal",
+    "El voltaje nominal de los módulos es de 1,2 V en DDR4 y de 1,1 V en DDR5.",
+    [
+      { titulo: "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)", editor: "JEDEC", url: "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance", consultadoEn: "2026-10-15" },
+    ],
+    "Decisión de NB (2026-10-19, hoja memoria-ram): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const ramVelocidadMts: Hecho = hecho(
-  "ram-velocidad-mt-s",
-  "La velocidad de la memoria se anuncia en MT/s (megatransferencias por segundo): DDR5-6000, por ejemplo, equivale a 6000 MT/s. No es lo mismo que los MHz del reloj.",
-  [KINGSTON_DDR4_VS_DDR5, CRUCIAL_DDR4_VS_DDR5, JEDEC_DDR5],
-  "RM5. Fuentes sin abrir. Verificar la relación entre MT/s y la frecuencia del reloj (en DDR son dos transferencias por ciclo) o dejar solo «se mide en MT/s».",
+const ramVelocidadMts: Hecho = verificadoPorDueno(
+  hecho(
+    "ram-velocidad-mt-s",
+    "La velocidad de la memoria se anuncia en MT/s (megatransferencias por segundo): DDR5-6000, por ejemplo, equivale a 6000 MT/s. No es lo mismo que los MHz del reloj.",
+    [
+      { titulo: "Micron DDR5: Client Module Features (documento técnico)", editor: "Micron", url: "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf", consultadoEn: "2026-10-15" },
+      { titulo: "MT/s vs MHz Explained", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/memory/mts-vs-mhz-explained/", consultadoEn: "2026-10-15" },
+    ],
+    "Decisión de NB (2026-10-19, hoja memoria-ram): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
 const ramVelocidadJedec: Hecho = conRevision(
-  hecho(
-    "ram-velocidad-jedec-referencia",
-    "Al publicar DDR5, JEDEC lo presentó con una velocidad inicial de 4800 MT/s, frente a 3200 MT/s al final de DDR4.",
-    [JEDEC_PRENSA_DDR5],
-    "El comunicado (abierto el 2026-10-14) dice 4,8 Gbps para el lanzamiento de DDR5 y 3,2 Gbps como velocidad de fin de vida de DDR4 (por pin; equivale a MT/s). Es un dato de la fecha del comunicado: hoy el estándar y los kits tienen velocidades mayores.",
+  verificadoPorDueno(
+    hecho(
+      "ram-velocidad-jedec-referencia",
+      "Al publicar DDR5, JEDEC lo presentó con una velocidad inicial de 4800 MT/s, frente a 3200 MT/s al final de DDR4.",
+      [
+        { titulo: "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)", editor: "JEDEC", url: "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance", consultadoEn: "2026-10-15" },
+        { titulo: "Micron DDR5: Client Module Features (documento técnico)", editor: "Micron", url: "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf", consultadoEn: "2026-10-15" },
+      ],
+      "Decisión de NB (2026-10-19, hoja memoria-ram): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+    ),
+    "2026-10-19",
+    "NB",
   ),
   6,
 );
-const ramPerfilesXmpExpo: Hecho = hecho(
-  "ram-perfiles-xmp-expo",
-  "XMP (Intel) y EXPO (AMD) son perfiles de velocidad guardados en el módulo que se activan desde la BIOS; sin activarlos, el módulo arranca con la configuración estándar de JEDEC.",
-  [INTEL_XMP, AMD_EXPO],
-  "RM6. Intel (abierto el 2026-10-14): los módulos XMP «arrancan primero con los valores JEDEC por defecto» y se habilita XMP en la BIOS; la página no da la velocidad. AMD EXPO no se pudo abrir (tiempo agotado).",
+const ramPerfilesXmpExpo: Hecho = verificadoPorDueno(
+  hecho(
+    "ram-perfiles-xmp-expo",
+    "XMP (Intel) y EXPO (AMD) son perfiles de velocidad guardados en el módulo que se activan desde la BIOS; sin activarlos, el módulo arranca con la configuración estándar de JEDEC.",
+    [
+      { titulo: "Intel Extreme Memory Profile (XMP)", editor: "Intel", url: "https://www.intel.com/content/www/us/en/gaming/extreme-memory-profile-xmp.html", consultadoEn: "2026-10-15" },
+      { titulo: "AMD EXPO Technology for AMD Ryzen Processors for Socket AM5", editor: "AMD", url: "https://www.amd.com/en/products/processors/technologies/expo.html", consultadoEn: "2026-10-15" },
+      { titulo: "How to Enable XMP/EXPO in BIOS", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/memory/how-to-enable-xmpexpo-in-bios/", consultadoEn: "2026-10-15" },
+      { titulo: "[Motherboard] How to optimize the Memory performance by setting XMP, EXPO or DOCP in BIOS?", editor: "ASUS", url: "https://www.asus.com/support/faq/1042256/", consultadoEn: "2026-10-15" },
+    ],
+    "Decisión de NB (2026-10-19, hoja memoria-ram): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const ramChipSpd: Hecho = hecho(
-  "ram-chip-spd",
-  "Cada módulo lleva un chip SPD que guarda los datos del módulo (velocidad, tiempos y perfiles) y que la placa lee al arrancar.",
-  [CRUCIAL_SPD, JEDEC_DDR5],
-  "Sin abrir (Crucial devolvió «Request Rejected» al consultarla). Contrastar con el estándar de SPD de JEDEC o con una ficha de módulo.",
+const ramChipSpd: Hecho = verificadoPorDueno(
+  hecho(
+    "ram-chip-spd",
+    "Cada módulo lleva un chip SPD que guarda los datos del módulo (velocidad, tiempos y perfiles) y que la placa lee al arrancar.",
+    [
+      { titulo: "Serial Presence Detect: DDR5 SPD Contents (JESD400-5D) y Annex L para DDR4", editor: "JEDEC", url: "https://web.archive.org/web/20260104113250/https://www.jedec.org/taxonomy/term/2390", consultadoEn: "2026-10-15" },
+      { titulo: "Micron DDR5: Client Module Features (documento técnico)", editor: "Micron", url: "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf", consultadoEn: "2026-10-15" },
+      { titulo: "[Motherboard] How to optimize the Memory performance by setting XMP, EXPO or DOCP in BIOS?", editor: "ASUS", url: "https://www.asus.com/support/faq/1042256/", consultadoEn: "2026-10-15" },
+      { titulo: "Serial presence detect", editor: "Wikipedia", url: "https://en.wikipedia.org/wiki/Serial_presence_detect", consultadoEn: "2026-10-15" },
+    ],
+    "Decisión de NB (2026-10-19, hoja memoria-ram): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const ramSoDimm: Hecho = hecho(
-  "ram-so-dimm-distinto",
-  "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos, por lo que no son intercambiables.",
-  [CRUCIAL_SODIMM, JEDEC_DDR4],
-  "RM7. Sin abrir. Verificar que son más cortos y que la cantidad de contactos es distinta (la cifra exacta no se publica).",
+const ramSoDimm: Hecho = verificadoPorDueno(
+  hecho(
+    "ram-so-dimm-distinto",
+    "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos y otra posición de la muesca, por lo que no son intercambiables entre sí. La generación (por ejemplo, DDR5) es la misma en ambos formatos: lo que cambia es el tamaño, los contactos y el zócalo.",
+    [
+      { titulo: "DRAM module reference guide (rev. M, marzo de 2026)", editor: "Micron", url: "https://www.micron.com/content/dam/micron/global/public/products/memory/dram-modules/broad-product/dram-module-reference-guide.pdf", consultadoEn: "2026-10-15" },
+      { titulo: "DIMM", editor: "Wikipedia", url: "https://en.wikipedia.org/wiki/DIMM", consultadoEn: "2026-10-15" },
+    ],
+    "Decisión de NB (2026-10-19, hoja memoria-ram): ajustar. ajustado por NB (2026-10-19): mantener la fuente y aclarar que la generación es la misma y solo cambia el formato. Aclaración de generación sin fuente propia: verificar con Micron.",
+  ),
+  "2026-10-19",
+  "NB",
 );
 
 /* ---------- Partes (en el orden de MEMORIA_RAM_PARTES) ---------- */
@@ -245,7 +249,7 @@ const ranura: ParteContenido = {
   alElegir: [
     "Elige la memoria según la placa, no al revés.",
     "Con dos módulos, instálalos en las ranuras que indica el manual para usar el doble canal.",
-    "No uses memoria de portátil (SO-DIMM) en un equipo de escritorio: es de otro tamaño.",
+    "No uses memoria de portátil (SO-DIMM) en un equipo de escritorio: aunque la generación sea la misma, cambian el tamaño, los contactos y el zócalo.",
   ],
   hechos: [ramUnaGeneracionPorPlaca, ramDobleCanal, ramSoDimm],
   opciones: opcionesPlataforma,
@@ -308,39 +312,39 @@ const casos: readonly Caso[] = [
     texto:
       "un cliente que llegó con memoria DDR5 comprada para una placa que solo admitía DDR4. La muesca está en otra posición y el módulo no asienta en la ranura, así que no había forma de usarla. Antes de comprar, mira en la ficha de la placa qué generación de memoria admite.",
     confirmadoPorDueno: true,
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "ram-a-medio-insertar",
     tipo: "puede-pasar",
     texto: "que un módulo quede a medio insertar y el equipo no dé imagen o no arranque. Debe asentar por completo, hasta que las trabas laterales cierren.",
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "memoria-sin-activar-perfil",
     tipo: "puede-pasar",
     texto: "que la memoria trabaje a una velocidad menor que la anunciada porque nadie activó el perfil XMP o EXPO en la BIOS. Se resuelve entrando a la BIOS y seleccionando el perfil del kit.",
     hechos: [ramPerfilesXmpExpo],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "ranuras-equivocadas-doble-canal",
     tipo: "puede-pasar",
     texto: "instalar dos módulos en ranuras distintas a las que indica el manual y quedarte sin el doble canal. Revisa en el manual de la placa cuáles son las ranuras recomendadas.",
     hechos: [ramDobleCanal],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "so-dimm-en-escritorio",
     tipo: "puede-pasar",
     texto: "comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Es de otro tamaño y no encaja en las ranuras DIMM.",
     hechos: [ramSoDimm],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
 ];
 
@@ -425,7 +429,7 @@ export const MEMORIA_RAM_CONTENIDO: PiezaContenido<MemoriaRamParteId, MemoriaRam
     },
     {
       q: "¿Sirve la memoria de un portátil en un PC de escritorio?",
-      a: "No. Los módulos de portátil (SO-DIMM) son de otro tamaño que los DIMM de escritorio y no encajan en la misma ranura.",
+      a: "No. Los módulos de portátil (SO-DIMM) son de otro tamaño que los DIMM de escritorio, con otros contactos y otra muesca, y no encajan en la misma ranura, aunque la generación sea la misma.",
     },
     {
       q: "¿Cuántos módulos conviene instalar?",

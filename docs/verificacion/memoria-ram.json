@@ -12,32 +12,24 @@
       ],
       "casoTipo": null,
       "textoPublicado": "La velocidad de la memoria se anuncia en MT/s (megatransferencias por segundo): DDR5-6000, por ejemplo, equivale a 6000 MT/s. No es lo mismo que los MHz del reloj.",
-      "textoRevisado": null,
+      "textoRevisado": "La velocidad de la memoria se anuncia en MT/s (megatransferencias por segundo): DDR5-6000, por ejemplo, equivale a 6000 MT/s. No es lo mismo que los MHz del reloj.",
       "usadoPor": [
         "memoria-ram"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "DDR4 vs DDR5 DRAM: diferencias de rendimiento, compatibilidad y plataformas",
-          "editor": "Kingston",
-          "url": "https://www.kingston.com/en/blog/pc-performance/ddr-memory-generation-differences",
-          "consultadoEn": null,
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Diferencia entre DDR4 y DDR5",
-          "editor": "Crucial",
-          "url": "https://www.crucial.com/articles/about-memory/difference-between-ddr4-and-ddr5",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        },
-        {
-          "titulo": "JESD79-5: DDR5 SDRAM",
-          "editor": "JEDEC",
-          "url": "https://www.jedec.org/standards-documents/docs/jesd79-5d",
-          "consultadoEn": null,
+          "titulo": "MT/s vs MHz Explained",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/memory/mts-vs-mhz-explained/",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -67,7 +59,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. Ninguna fuente dice literalmente «DDR5-6000 equivale a 6000 MT/s», pero es la convención de nombre y coincide con cómo Micron y Corsair rotulan sus kits. Para sustituir las candidatas que no abrieron: Kingston devolvió 403 y Crucial devolvió 404; usar el documento de Micron y el artículo de Corsair (sin citar su frase errónea de «un megatransferencia = un megabyte»). JESD79-5 es de pago."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
       "huerfana": false
     },
     {
@@ -80,16 +78,24 @@
       ],
       "casoTipo": null,
       "textoPublicado": "Al publicar DDR5, JEDEC lo presentó con una velocidad inicial de 4800 MT/s, frente a 3200 MT/s al final de DDR4.",
-      "textoRevisado": null,
+      "textoRevisado": "Al publicar DDR5, JEDEC lo presentó con una velocidad inicial de 4800 MT/s, frente a 3200 MT/s al final de DDR4.",
       "usadoPor": [
         "memoria-ram"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
+          "titulo": "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)",
           "editor": "JEDEC",
-          "url": "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
-          "consultadoEn": "2026-10-14",
+          "url": "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -119,7 +125,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. JEDEC escribe 4,8 y 3,2 Gbps (por pin) y «se espera lanzar»; las cifras equivalen a 4800 y 3200 MT/s, y Micron confirma los 4800 MT/s. La URL original del comunicado devolvió 403 desde esta máquina; se leyó una copia de Wayback Machine."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
       "huerfana": false
     },
     {
@@ -132,32 +144,32 @@
       ],
       "casoTipo": null,
       "textoPublicado": "En DDR5 el regulador de voltaje (PMIC) va en cada módulo; en DDR4 la regulación se hace en la placa.",
-      "textoRevisado": null,
+      "textoRevisado": "En DDR5 el regulador de voltaje (PMIC) va en cada módulo; en DDR4 la regulación se hace en la placa.",
       "usadoPor": [
         "memoria-ram"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "DDR4 vs DDR5 DRAM: diferencias de rendimiento, compatibilidad y plataformas",
-          "editor": "Kingston",
-          "url": "https://www.kingston.com/en/blog/pc-performance/ddr-memory-generation-differences",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        },
-        {
-          "titulo": "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
+          "titulo": "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)",
           "editor": "JEDEC",
-          "url": "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
-          "consultadoEn": "2026-10-14",
+          "url": "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Micron DDR5: características de los módulos para cliente (documento técnico)",
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
           "editor": "Micron",
           "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
-          "consultadoEn": null,
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Optimized DDR5 DIMM solutions powering leading-edge server memory modules",
+          "editor": "Samsung Semiconductor",
+          "url": "https://semiconductor.samsung.com/news-events/tech-blog/optimized-ddr5-dimm-solutions-powering-leading-edge-server-memory-modules",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -195,7 +207,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. Las dos fuentes de fabricante (Micron, Samsung) y el comunicado de JEDEC coinciden. Kingston devolvió 403 (no se abrió)."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
       "huerfana": false
     },
     {
@@ -208,32 +226,16 @@
       ],
       "casoTipo": null,
       "textoPublicado": "El voltaje nominal de los módulos es de 1,2 V en DDR4 y de 1,1 V en DDR5.",
-      "textoRevisado": null,
+      "textoRevisado": "El voltaje nominal de los módulos es de 1,2 V en DDR4 y de 1,1 V en DDR5.",
       "usadoPor": [
         "memoria-ram"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "JEDEC publica el estándar DDR5 SDRAM (comunicado)",
+          "titulo": "JEDEC publica el nuevo estándar DDR5 (comunicado, julio de 2020)",
           "editor": "JEDEC",
-          "url": "https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
-          "consultadoEn": "2026-10-14",
-          "tipo": "sin-clasificar",
-          "detalle": null
-        },
-        {
-          "titulo": "JESD79-5: DDR5 SDRAM",
-          "editor": "JEDEC",
-          "url": "https://www.jedec.org/standards-documents/docs/jesd79-5d",
-          "consultadoEn": null,
-          "tipo": "sin-clasificar",
-          "detalle": null
-        },
-        {
-          "titulo": "Main Memory: DDR4 y DDR5 SDRAM (JESD79-4)",
-          "editor": "JEDEC",
-          "url": "https://www.jedec.org/category/technology-focus-area/main-memory-ddr3-ddr4-sdram",
-          "consultadoEn": null,
+          "url": "https://web.archive.org/web/20250117022940/https://www.jedec.org/news/pressreleases/jedec-publishes-new-ddr5-standard-advancing-next-generation-high-performance",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -255,7 +257,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. Ojo: la tabla de Micron (guía de módulos, rev. M) lista 1,1 V también para sus módulos DDR4, contradiciendo a JEDEC; no se usó para DDR4. JESD79-5 y JESD79-4 son de pago o no abren sin registro."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
       "huerfana": false
     },
     {
@@ -266,24 +274,40 @@
       "tambienEn": [],
       "casoTipo": null,
       "textoPublicado": "Cada módulo lleva un chip SPD que guarda los datos del módulo (velocidad, tiempos y perfiles) y que la placa lee al arrancar.",
-      "textoRevisado": null,
+      "textoRevisado": "Cada módulo lleva un chip SPD que guarda los datos del módulo (velocidad, tiempos y perfiles) y que la placa lee al arrancar.",
       "usadoPor": [
         "memoria-ram"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Qué es el SPD de un módulo de memoria",
-          "editor": "Crucial",
-          "url": "https://www.crucial.com/articles/about-memory/what-is-spd",
-          "consultadoEn": null,
+          "titulo": "Serial Presence Detect: DDR5 SPD Contents (JESD400-5D) y Annex L para DDR4",
+          "editor": "JEDEC",
+          "url": "https://web.archive.org/web/20260104113250/https://www.jedec.org/taxonomy/term/2390",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "JESD79-5: DDR5 SDRAM",
-          "editor": "JEDEC",
-          "url": "https://www.jedec.org/standards-documents/docs/jesd79-5d",
-          "consultadoEn": null,
+          "titulo": "Micron DDR5: Client Module Features (documento técnico)",
+          "editor": "Micron",
+          "url": "https://assets.micron.com/adobe/assets/urn:aaid:aem:5902f17e-8bde-4246-971c-8d7f274c6b1a/renditions/original/as/ddr5-key-module-features-wp-client.pdf",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "[Motherboard] How to optimize the Memory performance by setting XMP, EXPO or DOCP in BIOS?",
+          "editor": "ASUS",
+          "url": "https://www.asus.com/support/faq/1042256/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "Serial presence detect",
+          "editor": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Serial_presence_detect",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -329,7 +353,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. La lista «velocidad, tiempos y perfiles» la respaldan ASUS y Wikipedia más que la página gratuita de JEDEC (los estándares con el detalle de bytes son de descarga con registro). En DDR5 ese chip se llama SPD hub; el texto no necesita nombrarlo. Crucial devolvió 404."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
       "huerfana": false
     },
     {
@@ -343,7 +373,7 @@
       ],
       "casoTipo": null,
       "textoPublicado": "XMP (Intel) y EXPO (AMD) son perfiles de velocidad guardados en el módulo que se activan desde la BIOS; sin activarlos, el módulo arranca con la configuración estándar de JEDEC.",
-      "textoRevisado": null,
+      "textoRevisado": "XMP (Intel) y EXPO (AMD) son perfiles de velocidad guardados en el módulo que se activan desde la BIOS; sin activarlos, el módulo arranca con la configuración estándar de JEDEC.",
       "usadoPor": [
         "memoria-ram"
       ],
@@ -352,15 +382,31 @@
           "titulo": "Intel Extreme Memory Profile (XMP)",
           "editor": "Intel",
           "url": "https://www.intel.com/content/www/us/en/gaming/extreme-memory-profile-xmp.html",
-          "consultadoEn": "2026-10-14",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "AMD EXPO: perfiles de memoria",
+          "titulo": "AMD EXPO Technology for AMD Ryzen Processors for Socket AM5",
           "editor": "AMD",
           "url": "https://www.amd.com/en/products/processors/technologies/expo.html",
-          "consultadoEn": null,
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "How to Enable XMP/EXPO in BIOS",
+          "editor": "Corsair",
+          "url": "https://www.corsair.com/us/en/explorer/diy-builder/memory/how-to-enable-xmpexpo-in-bios/",
+          "consultadoEn": "2026-10-15",
+          "tipo": "sin-clasificar",
+          "detalle": null
+        },
+        {
+          "titulo": "[Motherboard] How to optimize the Memory performance by setting XMP, EXPO or DOCP in BIOS?",
+          "editor": "ASUS",
+          "url": "https://www.asus.com/support/faq/1042256/",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -406,7 +452,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. La página de AMD no dice dónde se guardan los perfiles ni cómo se activan; eso lo cubren Intel, Corsair y ASUS. EXPO aplica solo a DDR5, mientras XMP existe para DDR4 y DDR5, dato que el texto no contradice."
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19): verificado con fuente consultada"
+      },
       "huerfana": false
     },
     {
@@ -418,25 +470,25 @@
         "memoria-ram › caso so-dimm-en-escritorio"
       ],
       "casoTipo": null,
-      "textoPublicado": "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos, por lo que no son intercambiables.",
-      "textoRevisado": null,
+      "textoPublicado": "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos y otra posición de la muesca, por lo que no son intercambiables entre sí. La generación (por ejemplo, DDR5) es la misma en ambos formatos: lo que cambia es el tamaño, los contactos y el zócalo.",
+      "textoRevisado": "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos, por lo que no son intercambiables.",
       "usadoPor": [
         "memoria-ram"
       ],
       "fuentesCandidatas": [
         {
-          "titulo": "Memoria para portátil (SO-DIMM) frente a memoria de escritorio (DIMM)",
-          "editor": "Crucial",
-          "url": "https://www.crucial.com/articles/about-memory/laptop-vs-desktop-memory",
-          "consultadoEn": null,
+          "titulo": "DRAM module reference guide (rev. M, marzo de 2026)",
+          "editor": "Micron",
+          "url": "https://www.micron.com/content/dam/micron/global/public/products/memory/dram-modules/broad-product/dram-module-reference-guide.pdf",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         },
         {
-          "titulo": "Main Memory: DDR4 y DDR5 SDRAM (JESD79-4)",
-          "editor": "JEDEC",
-          "url": "https://www.jedec.org/category/technology-focus-area/main-memory-ddr3-ddr4-sdram",
-          "consultadoEn": null,
+          "titulo": "DIMM",
+          "editor": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/DIMM",
+          "consultadoEn": "2026-10-15",
           "tipo": "sin-clasificar",
           "detalle": null
         }
@@ -466,7 +518,13 @@
         "textoPropuesto": null,
         "detalle": "mantener. Tamaño menor y distinta cantidad de contactos quedan respaldados por Micron (fuente primaria). Que «no son intercambiables» es una consecuencia de lo anterior que ninguna fuente primaria dice literal; Wikipedia (secundaria) la respalda para generaciones, no para el factor de forma. Crucial devolvió 404 y la página de JEDEC de DDR4 no se abrió."
       },
-      "decision": null,
+      "decision": {
+        "valor": "ajustar",
+        "textoFinal": "Los módulos SO-DIMM de portátil son más pequeños que los DIMM de escritorio y tienen otra cantidad de contactos y otra posición de la muesca, por lo que no son intercambiables entre sí. La generación (por ejemplo, DDR5) es la misma en ambos formatos: lo que cambia es el tamaño, los contactos y el zócalo.",
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "ajustado por NB (2026-10-19): mantener la fuente y aclarar que la generación es la misma y solo cambia el formato. Aclaración de generación sin fuente propia: verificar con Micron."
+      },
       "huerfana": false
     },
     {
@@ -477,7 +535,7 @@
       "tambienEn": [],
       "casoTipo": "vivido",
       "textoPublicado": "un cliente que llegó con memoria DDR5 comprada para una placa que solo admitía DDR4. La muesca está en otra posición y el módulo no asienta en la ranura, así que no había forma de usarla. Antes de comprar, mira en la ficha de la placa qué generación de memoria admite.",
-      "textoRevisado": null,
+      "textoRevisado": "un cliente que llegó con memoria DDR5 comprada para una placa que solo admitía DDR4. La muesca está en otra posición y el módulo no asienta en la ranura, así que no había forma de usarla. Antes de comprar, mira en la ficha de la placa qué generación de memoria admite.",
       "usadoPor": [
         "memoria-ram"
       ],
@@ -490,7 +548,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Nos ha pasado»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -501,7 +565,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "que un módulo quede a medio insertar y el equipo no dé imagen o no arranque. Debe asentar por completo, hasta que las trabas laterales cierren.",
-      "textoRevisado": null,
+      "textoRevisado": "que un módulo quede a medio insertar y el equipo no dé imagen o no arranque. Debe asentar por completo, hasta que las trabas laterales cierren.",
       "usadoPor": [
         "memoria-ram"
       ],
@@ -514,7 +578,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -525,7 +595,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "que la memoria trabaje a una velocidad menor que la anunciada porque nadie activó el perfil XMP o EXPO en la BIOS. Se resuelve entrando a la BIOS y seleccionando el perfil del kit.",
-      "textoRevisado": null,
+      "textoRevisado": "que la memoria trabaje a una velocidad menor que la anunciada porque nadie activó el perfil XMP o EXPO en la BIOS. Se resuelve entrando a la BIOS y seleccionando el perfil del kit.",
       "usadoPor": [
         "memoria-ram"
       ],
@@ -538,7 +608,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -549,7 +625,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "instalar dos módulos en ranuras distintas a las que indica el manual y quedarte sin el doble canal. Revisa en el manual de la placa cuáles son las ranuras recomendadas.",
-      "textoRevisado": null,
+      "textoRevisado": "instalar dos módulos en ranuras distintas a las que indica el manual y quedarte sin el doble canal. Revisa en el manual de la placa cuáles son las ranuras recomendadas.",
       "usadoPor": [
         "memoria-ram"
       ],
@@ -562,7 +638,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     },
     {
@@ -573,7 +655,7 @@
       "tambienEn": [],
       "casoTipo": "puede-pasar",
       "textoPublicado": "comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Es de otro tamaño y no encaja en las ranuras DIMM.",
-      "textoRevisado": null,
+      "textoRevisado": "comprar memoria de portátil (SO-DIMM) para un equipo de escritorio. Es de otro tamaño y no encaja en las ranuras DIMM.",
       "usadoPor": [
         "memoria-ram"
       ],
@@ -586,7 +668,13 @@
         "textoPropuesto": null,
         "detalle": null
       },
-      "decision": null,
+      "decision": {
+        "valor": "aprobar",
+        "textoFinal": null,
+        "por": "NB",
+        "en": "2026-10-19",
+        "nota": "aprobado en lote por NB (2026-10-19) como caso «Puede pasar»; NB lo ve como «cosas para tener en cuenta»: lo que ya nos ha pasado y lo que puede pasar al ensamblar o usar el equipo."
+      },
       "huerfana": false
     }
   ]

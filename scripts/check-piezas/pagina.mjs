@@ -132,7 +132,10 @@ for (const slug of PIEZA_SLUGS) {
   const C = clonar(TARJETA_MADRE_CONTENIDO);
   const hechos = todosLosHechos(C);
   assert.equal(hechos.length, hechosDe(C).length, "todosLosHechos recorre los mismos lugares que el chequeo");
-  assert.equal(fechaRevision(C), "2026-10-13", "la revisión más reciente de la tarjeta madre");
+  // La más reciente de sus hechos verificados: 2026-10-13 con las hojas A y B, o la de las decisiones que aplique `--aplicar` después.
+  const masReciente = hechos.map((h) => h.verificadoEn).filter((f) => f !== null).reduce((a, b) => (a > b ? a : b));
+  assert.ok(masReciente >= "2026-10-13", "la tarjeta madre trae hechos verificados desde las hojas A y B");
+  assert.equal(fechaRevision(C), masReciente, "la revisión más reciente de la tarjeta madre");
   const sinVerificar = clonar(C);
   for (const h of todosLosHechos(sinVerificar)) {
     h.verificadoEn = null;
@@ -186,6 +189,8 @@ for (const slug of PIEZA_SLUGS) {
   }
   const casos = leer("src/components/piezas/pieza-casos.tsx");
   assert.ok(casos.includes('"Nos ha pasado"') && casos.includes('"Puede pasar"'), "los rótulos de los casos los pone la interfaz");
+  assert.ok(casos.includes(">Para tener en cuenta</h3>") && !casos.includes("Casos del taller"), "el título visible de los casos es «Para tener en cuenta»");
+  assert.ok(casos.includes('id="casos"'), "el ancla #casos se conserva");
   const criterios = leer("src/components/piezas/pieza-criterios.tsx");
   assert.ok(criterios.includes("Criterio de B & W") && criterios.includes("A favor") && criterios.includes("A considerar"), "criterios: rótulo y lados");
   const comparacion = leer("src/components/piezas/pieza-comparacion.tsx");

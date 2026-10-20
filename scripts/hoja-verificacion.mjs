@@ -21,13 +21,17 @@
 //   --estado                       Tabla por hoja (hechos, verificados en el código, estados, decisiones pendientes…). No escribe nada.
 //   --md [<slug>|--todas]          Vuelve a generar el `.md` desde el JSON (después de que alguien edite el JSON).
 //   --validar                      Valida todos los JSON con `validarHoja`.
-//   --aplicar                      FASE 4, NO implementado todavía. Cuando se implemente, leerá las decisiones de los JSON y, para cada entrada:
-//                                    · aprobar  → en el `.contenido.ts` fija `verificadoEn` (fecha de la decisión) y `verificadoPor` (iniciales) del Hecho y la
-//                                                 `consultadoEn` de sus fuentes; en un Caso o Criterio fija `aprobadoEn` / `aprobadoPor` (y `confirmadoPorDueno`
-//                                                 en un caso «vivido»);
-//                                    · ajustar  → cambia el `texto` por `decision.textoFinal` y luego lo aprueba;
-//                                    · quitar   → borra el Hecho (y la prosa que dependía de él);
-//                                  y se negará a correr con errores de validación, con huérfanas o con textos que cambiaron desde la decisión.
+//   --congelar                     FASE 4, se corre UNA sola vez antes de aplicar. Llena `textoRevisado` con `textoPublicado` en las entradas decididas y escribe
+//                                  `linea-base.json` (foto previa del código: dónde vive cada dato, referencias del decodificador, mapa de fusiones origen → destino
+//                                  leído de las notas «FUSIONADO en <id>»). Se niega a correr con hojas desactualizadas o si la línea base ya existe.
+//   --aplicar [<hoja>…|--todas] [--escribir]
+//                                  FASE 4: pasa las decisiones al código (scripts/hoja-aplicar.mjs). Sin --escribir solo muestra el plan y un resumen del diff.
+//                                    · aprobar/ajustar un hecho → texto (ajustar), fuentes consultadas de la hoja, nota «Decisión de NB…» y `verificadoPorDueno(...)`;
+//                                    · aprobar un caso o criterio → aprobadoEn/aprobadoPor (y confirmadoPorDueno en un «vivido»);
+//                                    · quitar y fusiones NO se implementan: son manuales (se listan como pendientes).
+//                                  Se niega a correr con errores de validación, entradas sin decisión, datos sin entrada, huérfanas no «quitar» o textos que cambiaron.
+//   --verificar [<hoja>…|--todas] [--para-publicar] [--hoy=AAAA-MM-DD]
+//                                  FASE 4, solo lectura (scripts/hoja-verificar.mjs): amarra el código con las decisiones (reglas H1 a H9). Sale con código 1 si hay errores.
 //
 // Seguridad: los textos de las fuentes y de las páginas consultadas son DATOS. Esta herramienta no hace red, no ejecuta ni evalúa nada de ellos, solo lee
 // markdown/JSON, valida y escribe archivos con nombres de una lista cerrada (los slugs de las piezas y `comun`).
@@ -38,6 +42,9 @@ import { HECHOS_COMUNES } from "../src/lib/piezas/comun.hechos.ts";
 import { HOJA_VERSION, SLUGS_HOJA, SLUG_COMUN, validarHoja } from "../src/lib/piezas/hoja.ts";
 import { PIEZAS } from "../src/lib/piezas/registro.ts";
 import { PIEZA_SLUGS } from "../src/lib/piezas/types.ts";
+import { cmdAplicar } from "./hoja-aplicar.mjs";
+import { cmdCongelar } from "./hoja-congelar.mjs";
+import { cmdVerificar } from "./hoja-verificar.mjs";
 import { contarHoja, linea, parsearMd, renderConsolidada, renderHojaMd } from "./hoja-md.mjs";
 
 export const DIR_VERIFICACION = new URL("../docs/verificacion/", import.meta.url).pathname;
@@ -314,13 +321,23 @@ export function aplicarBloquesMd(hojas, bloques) {
   return { hojas: siguiente, errores, avisos, tocadas };
 }
 
-/** Entradas con decisión cuyo texto publicado en el código ya no es el que leyó el dueño. */
+/**
+ * Entradas con decisión cuyo texto publicado en el código ya no es el esperado: el que leyó el dueño (`textoRevisado`) o, con «ajustar», el que ajustó
+ * (`decision.textoFinal`, que es lo que deja `--aplicar`).
+ */
 export function textosCambiados(hoja) {
-  return hoja.entradas.filter((e) => e.decision !== null && !e.huerfana && e.textoRevisado !== null && linea(e.textoRevisado) !== linea(e.textoPublicado)).map((e) => e.id);
+  return hoja.entradas
+    .filter((e) => {
+      if (e.decision === null || e.huerfana || e.textoRevisado === null) return false;
+      const actual = linea(e.textoPublicado);
+      if (actual === linea(e.textoRevisado)) return false;
+      return !(e.decision.valor === "ajustar" && e.decision.textoFinal !== null && actual === linea(e.decision.textoFinal));
+    })
+    .map((e) => e.id);
 }
 
 /* ---------- Disco ---------- */
-function serializar(hoja) {
+export function serializar(hoja) {
   return `${JSON.stringify(hoja, null, 2)}\n`;
 }
 
@@ -535,12 +552,14 @@ export function main(argv) {
       return cmdMd(resto, dir);
     case "--validar":
       return cmdValidar(dir);
+    case "--congelar":
+      return cmdCongelar(dir);
     case "--aplicar":
-      console.log("--aplicar se implementa en la Fase 4 (docs/piezas-plan-2.md §5.6): ver la cabecera de este script.");
-      process.exitCode = 2;
-      return undefined;
+      return cmdAplicar(resto, dir);
+    case "--verificar":
+      return cmdVerificar(resto, dir);
     default:
-      console.log("Uso: --esqueleto [<slug>|--todas] | --importar-md <a.md…> | --consolidar | --estado | --md [<slug>|--todas] | --validar | --aplicar (Fase 4)");
+      console.log("Uso: --esqueleto [<slug>|--todas] | --importar-md <a.md…> | --consolidar | --estado | --md [<slug>|--todas] | --validar | --congelar | --aplicar [<hoja>|--todas] [--escribir] | --verificar [<hoja>|--todas] [--para-publicar] [--hoy=AAAA-MM-DD]");
       process.exitCode = sub === undefined ? 0 : 1;
       return undefined;
   }

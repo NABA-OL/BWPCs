@@ -5,7 +5,7 @@
  * Correo: nabaol.dev@gmail.com
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
-// Casos del taller de una pieza (docs/piezas-plan-2.md §2.1): «Nos ha pasado» (lo vivió el dueño) y «Puede pasar» (hipótesis razonable).
+// Casos de una pieza (docs/piezas-plan-2.md §2.1), con el título visible «Para tener en cuenta»: «Nos ha pasado» (lo vivió el dueño) y «Puede pasar» (hipótesis razonable).
 // Componente de servidor. El rótulo lo pone la interfaz; el texto del caso nunca lo repite. Solo tokens del sitio (claro y oscuro).
 import type { Caso } from "@/lib/piezas/types";
 
@@ -22,7 +22,7 @@ export function PiezaCasos({ casos }: PiezaCasosProps) {
   if (casos.length === 0) return null;
   return (
     <div id="casos" className="mt-10 max-w-prose" style={SCROLL_BAJO_ENCABEZADO}>
-      <h3 className="text-lg font-semibold text-panda">Casos del taller</h3>
+      <h3 className="text-lg font-semibold text-panda">Para tener en cuenta</h3>
       <ul className="mt-4 space-y-5">
         {casos.map((caso) => (
           <li key={caso.id} className={`border-l-2 pl-4 ${caso.tipo === "vivido" ? "border-panda" : "border-hairline"}`}>

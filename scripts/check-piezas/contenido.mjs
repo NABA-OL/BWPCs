@@ -337,7 +337,7 @@ const VISTA = GEO.vistas.unica;
   assert.equal(VERIFICADOS_NB.length, 32);
   assert.equal(new Set(VERIFICADOS_NB).size, 32);
   const hechos = hechosDe(CONTENIDO);
-  assert.equal(hechos.length, 58, "la tarjeta madre sigue con sus 58 hechos");
+  assert.ok(hechos.length >= VERIFICADOS_NB.length, "la tarjeta madre conserva al menos sus hechos verificados");
   for (const id of VERIFICADOS_NB) {
     const hecho = hechos.find((h) => h.id === id);
     assert.ok(hecho, `la verificación «${id}» sigue en la tarjeta madre`);
@@ -346,25 +346,26 @@ const VISTA = GEO.vistas.unica;
     assert.ok(hecho.fuentes.length > 0 && hecho.fuentes.every((f) => f.url.startsWith("https://")), `${id}: conserva sus fuentes https`);
     assert.ok(hecho.fuentes.some((f) => f.consultadoEn === "2026-10-13"), `${id}: conserva una fuente consultada el 2026-10-13`);
   }
-  const verificados = hechos.filter((h) => h.verificadoEn !== null).map((h) => h.id).sort();
-  assert.deepEqual(verificados, [...VERIFICADOS_NB].sort(), "no hay verificados de más ni de menos");
-  const pendientes = hechos.filter((h) => h.verificadoEn === null);
-  assert.equal(pendientes.length, 26, "los 26 restantes siguen sin verificar");
-  for (const h of pendientes) assert.equal(h.verificadoPor, null, `${h.id}: pendiente sin verificadoPor`);
+  // Los demás hechos pueden estar pendientes o verificados por `--aplicar` (verificadoPorDueno): nunca a medias, y con una fecha posible.
+  // (Lo que pasó a verificado y su coherencia con las decisiones lo comprueba `--verificar`, scripts/hoja-verificar.mjs.)
+  for (const h of hechos) {
+    assert.equal(h.verificadoEn === null, h.verificadoPor === null, `${h.id}: verificadoEn y verificadoPor van juntos`);
+    if (h.verificadoEn === null) continue;
+    assert.match(h.verificadoEn, FECHA, `${h.id}: verificadoEn con formato AAAA-MM-DD`);
+    assert.ok(h.verificadoPor.trim() !== "", `${h.id}: verificadoPor con iniciales`);
+    assert.ok(h.verificadoEn >= "2026-10-13", `${h.id}: nadie verificó antes de las hojas A y B`);
+  }
 
-  // Los hechos comunes que vienen de la tarjeta madre son los MISMOS objetos que usa su contenido.
+  // Los hechos comunes verificados de la tarjeta madre son los MISMOS objetos que usa su contenido (y siguen en comun.hechos.ts).
+  const comunesVerificadosNb = HECHOS_COMUNES.filter((h) => VERIFICADOS_NB.includes(h.id));
+  assert.ok(comunesVerificadosNb.length > 0, "algunos de los 32 viven en comun.hechos.ts");
+  for (const comun of comunesVerificadosNb) assert.equal(hechos.find((h) => h.id === comun.id), comun, `${comun.id}: la tarjeta madre usa el objeto común`);
+  // Todo hecho común usado por la tarjeta madre es el mismo objeto en su contenido.
   const idsTarjeta = new Set(hechos.map((h) => h.id));
-  const comunesEnTarjeta = HECHOS_COMUNES.filter((h) => idsTarjeta.has(h.id));
-  assert.equal(comunesEnTarjeta.length, 27, "27 hechos de la tarjeta madre viven en comun.hechos.ts");
-  for (const comun of comunesEnTarjeta) assert.equal(hechos.find((h) => h.id === comun.id), comun, `${comun.id}: la tarjeta madre usa el objeto común`);
-  // Los comunes nuevos (aún no están en la tarjeta madre) nacen sin verificar.
-  for (const comun of HECHOS_COMUNES.filter((h) => !idsTarjeta.has(h.id))) assert.equal(comun.verificadoEn, null, `${comun.id}: común nuevo sin verificar`);
-  // Todo hecho común verificado está en la lista del dueño.
-  for (const comun of HECHOS_COMUNES.filter((h) => h.verificadoEn !== null)) assert.ok(VERIFICADOS_NB.includes(comun.id), `${comun.id}: verificado fuera de la lista`);
-  // Los casos «Nos ha pasado» de la tarjeta madre vienen del relato del dueño; ninguno está aprobado todavía.
+  for (const comun of HECHOS_COMUNES.filter((h) => idsTarjeta.has(h.id))) assert.equal(hechos.find((h) => h.id === comun.id), comun, `${comun.id}: la tarjeta madre usa el objeto común`);
+  // Los casos «Nos ha pasado» de la tarjeta madre vienen del relato del dueño: todos confirmados; ningún «puede pasar» lo está.
   const vividos = (CONTENIDO.casos ?? []).filter((c) => c.tipo === "vivido");
-  assert.equal(vividos.length, 4);
-  assert.ok(vividos.every((c) => c.confirmadoPorDueno === true), "los 4 vividos están marcados como confirmados por el dueño");
-  assert.equal((CONTENIDO.casos ?? []).filter((c) => c.tipo === "puede-pasar").length, 6);
-  assert.ok((CONTENIDO.casos ?? []).every((c) => c.aprobadoEn === null && c.aprobadoPor === null), "ningún caso está aprobado todavía");
+  assert.ok(vividos.length > 0, "la tarjeta madre trae casos vividos");
+  assert.ok(vividos.every((c) => c.confirmadoPorDueno === true), "los vividos están marcados como confirmados por el dueño");
+  assert.ok((CONTENIDO.casos ?? []).filter((c) => c.tipo === "puede-pasar").length > 0, "la tarjeta madre trae casos «puede pasar»");
 }

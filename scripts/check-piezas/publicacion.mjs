@@ -20,7 +20,14 @@ import { HOY, clonar, criteriosDe, hechosDe } from "./comun.mjs";
   assert.deepEqual(problemasDePublicacion(revision, HOY, true), [], "revisión tampoco se bloquea");
 
   const publicado = () => ({ ...clonar(CONTENIDO), estado: "publicado" });
-  const sinVerificar = problemasDePublicacion(publicado(), HOY, true);
+  // Después de `--aplicar` el contenido real ya trae hechos verificados y casos aprobados: la prueba de "sin verificar" usa un clon al que se le quita todo.
+  const sinNada = (pieza) => {
+    for (const hecho of hechosDe(pieza)) Object.assign(hecho, { verificadoEn: null, verificadoPor: null });
+    for (const caso of pieza.casos ?? []) Object.assign(caso, { aprobadoEn: null, aprobadoPor: null });
+    for (const criterio of criteriosDe(pieza)) Object.assign(criterio, { aprobadoEn: null, aprobadoPor: null });
+    return pieza;
+  };
+  const sinVerificar = problemasDePublicacion(sinNada(publicado()), HOY, true);
   assert.ok(sinVerificar.length > 0, "publicado con hechos sin verificar → problemas");
   const numeroHechos = hechosDe(CONTENIDO).length;
   assert.ok(sinVerificar.length >= numeroHechos, "al menos un problema por hecho sin verificar");

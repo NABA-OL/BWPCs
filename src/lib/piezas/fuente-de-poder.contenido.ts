@@ -19,98 +19,161 @@ import {
   pcie62Graficas,
   sataDatosYEnergia,
 } from "./comun.hechos.ts";
-import { hecho } from "./constructores.ts";
-import { PCI_SIG, SATA_IO, V_ATX_22, V_CORSAIR_CABLES } from "./fuentes.ts";
-import type { Caso, FuenteParteId, FuenteVistaId, Fuente, Hecho, ParteContenido, PiezaContenido, SeccionTexto } from "./types.ts";
+import { hecho, verificadoPorDueno } from "./constructores.ts";
+import type { Caso, FuenteParteId, FuenteVistaId, Hecho, ParteContenido, PiezaContenido, SeccionTexto } from "./types.ts";
 
 const FUERA = ["por-fuera"] as const;
 const DENTRO = ["por-dentro"] as const;
 const CONECTORES = ["conectores"] as const;
 
-/* ---------- Fuentes candidatas (sin abrir) ---------- */
-const SEASONIC_SOPORTE: Fuente = { titulo: "Soporte y manuales de fuentes de poder", editor: "Seasonic", url: "https://seasonic.com/support", consultadoEn: "" };
-const CORSAIR_SOPORTE: Fuente = { titulo: "Centro de ayuda y manuales de fuentes de poder", editor: "Corsair", url: "https://help.corsair.com/hc/en-us", consultadoEn: "" };
-const EIGHTY_PLUS: Fuente = { titulo: "80 PLUS: programa de certificación de eficiencia", editor: "CLEAResult (80 PLUS)", url: "https://www.clearesult.com/80plus/", consultadoEn: "" };
-const TI_PFC: Fuente = {
-  titulo: "Corrección del factor de potencia (PFC)",
-  editor: "Texas Instruments",
-  url: "https://www.ti.com/power-management/ac-dc-power-supply/power-factor-correction-pfc/overview.html",
-  consultadoEn: "",
-};
-const NZXT_H5_FLOW: Fuente = { titulo: "NZXT H5 Flow: producto y manual", editor: "NZXT", url: "https://nzxt.com/product/h5-flow", consultadoEn: "" };
-
 /* ---------- Hechos nuevos de la pieza (todos sin verificar; prefijo «fp-») ---------- */
-const noAbrirFuente: Hecho = hecho(
-  "fp-no-abrir-fuente",
-  "No abras la fuente de poder: sus condensadores internos pueden conservar carga peligrosa aunque esté desconectada, y las reparaciones corresponden a personal calificado.",
-  [SEASONIC_SOPORTE, CORSAIR_SOPORTE],
-  "FP3. Aviso de seguridad visible en la página. Falta ubicar la advertencia textual en el manual de un modelo concreto (suele estar en la etiqueta o en las instrucciones de seguridad) y cambiar la URL por la de ese manual.",
+const noAbrirFuente: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-no-abrir-fuente",
+    "No abras la fuente de poder: sus condensadores internos pueden conservar carga peligrosa aunque esté desconectada, y las reparaciones corresponden a personal calificado.",
+    [
+      { titulo: "Power supply manual / quick start guide", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/power-supply-manual/", consultadoEn: "2026-10-14" },
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · sección 4.1 Labeling / Marking", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+      { titulo: "PC power supply repair", editor: "sbprojects.net", url: "https://www.sbprojects.net/repair/pcpsu/", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): aprobar. aprobado por NB (2026-10-19), texto sin cambios. NB explicó el riesgo (condensador principal con carga) y un procedimiento para descargarlo; ese procedimiento NO se incluye: sin fuente y es una instrucción de seguridad que no conviene publicar. El texto mantiene «no abras la fuente».",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const etapasInternas: Hecho = hecho(
-  "fp-etapas-internas",
-  "En una fuente ATX típica la corriente alterna pasa por un filtro EMI, un rectificador, un corrector de factor de potencia (PFC), condensadores primarios, un transformador de conmutación y una etapa de salida que rectifica y regula las tensiones continuas.",
-  [TI_PFC],
-  "FP7. Un solo hecho de respaldo para las seis partes internas, explicadas de forma cualitativa. Falta una nota técnica que describa la cadena completa (Infineon, Texas Instruments o un fabricante de fuentes) y confirmar el orden.",
+const etapasInternas: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-etapas-internas",
+    "En una fuente ATX típica la corriente alterna pasa por un filtro EMI, un rectificador, un corrector de factor de potencia (PFC), condensadores primarios, un transformador de conmutación y una etapa de salida que rectifica y regula las tensiones continuas. Es el esquema habitual: algunas fuentes lo resuelven de otra forma, y lo que importa es que entreguen a los componentes energía estable y dentro de las tensiones que necesitan.",
+    [
+      { titulo: "1-kW, Compact, 97.5% Efficiency, Digital PFC for AC/DC PSUs With eMeter (TIDUBK8B)", editor: "Texas Instruments", url: "https://www.ti.com/lit/pdf/tidubk8", consultadoEn: "2026-10-14" },
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · sección 3.1.2 Inrush Current Limiting", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+      { titulo: "How to Switch Mode Power Supplies Work, Block by Block", editor: "ASME", url: "https://www.asme.org/topics-resources/content/how-to-switch-mode-power-supplies-work,-block-by-block", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): ajustar. ajustado por NB (2026-10-19): aclarar que el esquema es el habitual y que algunas fuentes difieren. Sin fuente propia para esa aclaración.",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const interruptorGeneral: Hecho = hecho(
-  "fp-interruptor-general",
-  "La mayoría de las fuentes ATX traen un interruptor general en la parte trasera, junto a la entrada de corriente; con él apagado la fuente no entrega energía al equipo.",
-  [SEASONIC_SOPORTE, CORSAIR_SOPORTE],
-  "Pregunta real del taller (torre entregada con el interruptor apagado). Falta citar el manual de un modelo concreto.",
+const interruptorGeneral: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-interruptor-general",
+    "La gran mayoría de las fuentes ATX traen un interruptor general en la parte trasera, junto a la entrada de corriente, pero no es obligatorio. Con el interruptor en apagado la fuente no entrega energía al equipo; revisa que esté en la posición de encendido (marcada con «I»).",
+    [
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · secciones 3.1.2 y 4.4 (conector AC)", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+      { titulo: "Power supply manual / quick start guide", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/power-supply-manual/", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): ajustar. ajustado por NB (2026-10-19): NB propuso «el 90 % de las veces»; no se usó la cifra porque no tiene fuente. «La gran mayoría» es criterio del taller, sin fuente.",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const modularConectores: Hecho = hecho(
-  "fp-modular-conectores",
-  "En una fuente modular los cables se enchufan en un banco de conectores de la fuente, de modo que se instalan solo los necesarios.",
-  [V_CORSAIR_CABLES, SEASONIC_SOPORTE],
-  "Falta confirmar la frase en la guía de Corsair ya consultada (cables de la fuente) o en un manual de Seasonic.",
+const modularConectores: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-modular-conectores",
+    "En una fuente modular los cables se enchufan en un banco de conectores de la fuente, de modo que se instalan solo los necesarios.",
+    [
+      { titulo: "[PSU] Power supply unit modular cable connection guide", editor: "ASUS", url: "https://www.asus.com/ca-en/support/faq/1056866/", consultadoEn: "2026-10-14" },
+      { titulo: "Power supply manual / quick start guide", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/power-supply-manual/", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): aprobar. aprobado por NB (2026-10-19), texto sin cambios. Opcional pendiente: mencionar las semimodulares, que traen fijos los cables de la placa y del procesador y se conecta solo lo que se vaya a usar.",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const modularNoMezclar: Hecho = hecho(
-  "fp-modular-no-mezclar-fuentes",
-  "Los cables modulares de una fuente no deben usarse en otra, aunque el conector parezca igual, porque el orden de los pines puede cambiar.",
-  [CORSAIR_SOPORTE, SEASONIC_SOPORTE],
-  "FP5. Falta ubicar la advertencia del fabricante (Corsair o Seasonic). Si no existe una fuente primaria, pasa a criterio o se elimina.",
+const modularNoMezclar: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-modular-no-mezclar-fuentes",
+    "Los cables modulares de una fuente no deben usarse en otra, aunque el conector parezca igual, porque el orden de los pines puede cambiar.",
+    [
+      { titulo: "PSU cable compatibility", editor: "NZXT", url: "https://nzxt.com/blogs/news/psu-cable-compatibility", consultadoEn: "2026-10-14" },
+      { titulo: "[PSU] Power supply unit modular cable connection guide", editor: "ASUS", url: "https://www.asus.com/ca-en/support/faq/1056866/", consultadoEn: "2026-10-14" },
+      { titulo: "Power supply manual / quick start guide", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/power-supply-manual/", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const etiquetaDatos: Hecho = hecho(
-  "fp-etiqueta-datos",
-  "La etiqueta de la fuente indica la potencia total y la corriente máxima de cada salida (+12 V, +5 V y +3,3 V), además del rango de tensión de entrada.",
-  [SEASONIC_SOPORTE, CORSAIR_SOPORTE],
-  "Falta abrir un manual y confirmar los datos que aparecen en la etiqueta. Este dato lo lee quien arma; no se calculan vatios en esta página.",
+const etiquetaDatos: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-etiqueta-datos",
+    "La etiqueta de la fuente suele indicar el rango de tensión de entrada y, para cada salida (+12 V, +5 V y +3,3 V), la tensión y la corriente máxima.",
+    [
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · sección 4.1 Labeling / Marking", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): ajustar. aprobada la propuesta de reformular (NB, 2026-10-19)",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const ochentaPlus: Hecho = hecho(
-  "fp-80-plus-certificacion",
-  "80 PLUS es un programa de certificación de eficiencia de las fuentes; las fuentes certificadas llevan un sello con su nivel, como Bronze, Gold o Titanium.",
-  [EIGHTY_PLUS],
-  "Falta abrir la página y confirmar los nombres de los niveles. La guía de potencia y eficiencia queda en /guias.",
+const ochentaPlus: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-80-plus-certificacion",
+    "80 PLUS es un programa de certificación de eficiencia de las fuentes; las fuentes certificadas llevan un sello con su nivel, como Bronze, Gold o Titanium.",
+    [
+      { titulo: "80 PLUS: programa de certificación de eficiencia", editor: "CLEAResult (80 PLUS)", url: "https://www.clearesult.com/80plus/", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const ventiladorOrientacion: Hecho = hecho(
-  "fp-ventilador-orientacion",
-  "La orientación del ventilador de la fuente depende de su ubicación en el chasis: si va abajo con un filtro de aire, el ventilador mira hacia abajo, y si va arriba, hacia el interior del chasis.",
-  [NZXT_H5_FLOW, SEASONIC_SOPORTE],
-  "FP4. Memoria del dueño; sin fuente primaria. Falta el manual del chasis o de la fuente. Si no se encuentra, este hecho pasa a criterio de taller.",
+const ventiladorOrientacion: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-ventilador-orientacion",
+    "La orientación del ventilador de la fuente depende de dónde quede en el chasis y de por dónde pueda tomar aire fresco: con una rejilla (idealmente con filtro) en la base, el ventilador mira hacia abajo; si la base es cerrada o la fuente va arriba, mira hacia el interior del chasis, salvo que el chasis tenga una entrada de aire en ese lado, y entonces mira hacia ella. También depende del formato de la fuente: las más pequeñas, como las SFX, se montan distinto. Confirma la recomendación en el manual del chasis.",
+    [
+      { titulo: "PSU fan up or down", editor: "Huntkey", url: "https://en.huntkey.com/blog/psu-fan-up-or-down/", consultadoEn: "2026-10-14" },
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · sección 4.3 Airflow / Fan", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+      { titulo: "PSU fan up or down: orientation guide", editor: "Darkflash", url: "https://www.darkflash.com/article/psu-fan-up-or-down-orientation-guide", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): ajustar. aprobada la propuesta de reformular (NB, 2026-10-19) con los casos de NB (fuente abajo, atrás o arriba, entrada de aire arriba y formatos pequeños). Los casos de fuente arriba/atrás y el nombre del formato pequeño (SFX) son experiencia de NB, sin fuente: confirmar.",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const pcie8PinesIndependientes: Hecho = hecho(
-  "fp-pcie-un-cable-por-conector",
-  "Cuando una tarjeta gráfica tiene dos o tres conectores de ocho pines, algunos fabricantes recomiendan un cable independiente de la fuente para cada conector.",
-  [CORSAIR_SOPORTE, SEASONIC_SOPORTE],
-  "FP8. Memoria del dueño (recomendación de taller). Falta la guía del fabricante de la gráfica o de la fuente; si no se encuentra, pasa a criterio.",
+const conector12v2x6Pines: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-12v-2x6-pines",
+    "El conector 12V-2x6 tiene doce contactos de potencia y cuatro contactos de señal más pequeños, y solo se puede conectar en una posición. Los contactos de señal son más cortos en el lado de la gráfica, de modo que solo hacen contacto cuando el enchufe está bien insertado. Lo que sí cambia entre fabricantes de tarjetas es dónde queda el seguro del conector.",
+    [
+      { titulo: "Which PSU cables go where?", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/", consultadoEn: "2026-10-14" },
+      { titulo: "ATX v3.1 and PCIe CEM 5.1 are official", editor: "Hardware Busters", url: "https://hwbusters.com/psus/atx-v3-1-pcie-cem-5-1-are-official/", consultadoEn: "2026-10-14" },
+      { titulo: "ATX 3.1: der kritische 12VHPWR-Stecker wird als 12V-2x6 neu aufgelegt", editor: "ComputerBase", url: "https://www.computerbase.de/2023-07/neuer-steckertyp-der-kritische-12vhpwr-stecker-wird-als-12v-2x6-neu-aufgelegt/", consultadoEn: "2026-10-14" },
+      { titulo: "12VHPWR", editor: "Wikipedia", url: "https://en.wikipedia.org/wiki/12VHPWR", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): ajustar. ajustado por NB (2026-10-19): solo una posición y la variación del seguro según el fabricante de la tarjeta son experiencia de NB; ninguna fuente abierta confirma «su forma impide invertirlo». Confirmar antes de publicar.",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const conector12v2x6Pines: Hecho = hecho(
-  "fp-12v-2x6-pines",
-  "El conector 12V-2x6 tiene doce contactos de potencia y cuatro contactos de señal más pequeños, y su forma impide invertirlo.",
-  [PCI_SIG, CORSAIR_SOPORTE],
-  "FP2. Riesgo medio del plan: conteo de pines y traba. Falta la especificación PCIe CEM 5.1 o la guía ATX 3.1 de Intel. Redactar sin culpar a una marca.",
+const sataPoder15Pines: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-sata-poder-15-pines",
+    "El conector de energía SATA de los cables de la fuente tiene 15 pines y alimenta unidades de almacenamiento SATA; cada dispositivo usa solo los pines que necesita.",
+    [
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · sección 4.5.4 Serial ATA Power Connector", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+      { titulo: "Which PSU cables go where?", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/", consultadoEn: "2026-10-14" },
+      { titulo: "SATA power connector pinout", editor: "pinouts.ru", url: "https://pinouts.ru/Power/sata-power.shtml", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): ajustar. ajustado por NB (2026-10-19): aclarar que el conector del cable es completo y el dispositivo usa lo que necesite. La parte del dispositivo es criterio de NB, sin fuente.",
+  ),
+  "2026-10-19",
+  "NB",
 );
-const sataPoder15Pines: Hecho = hecho(
-  "fp-sata-poder-15-pines",
-  "El conector de energía SATA tiene 15 pines y alimenta unidades de almacenamiento SATA.",
-  [SATA_IO, V_CORSAIR_CABLES],
-  "FP6. Falta confirmar la cifra en la especificación de SATA-IO o en la guía de Corsair ya consultada.",
-);
-const molexCuatroPines: Hecho = hecho(
-  "fp-molex-cuatro-pines",
-  "El conector Molex tiene 4 pines; es de uso antiguo y hoy se usa sobre todo en periféricos y accesorios.",
-  [V_ATX_22, V_CORSAIR_CABLES],
-  "FP6. La especificación ATX 2.2 define el conector de periféricos de 4 pines; falta confirmar el texto «de uso antiguo» o suavizarlo.",
+const molexCuatroPines: Hecho = verificadoPorDueno(
+  hecho(
+    "fp-molex-cuatro-pines",
+    "El conector Molex tiene 4 pines; es de uso antiguo y hoy se usa sobre todo en periféricos y accesorios.",
+    [
+      { titulo: "ATX12V Power Supply Design Guide, Version 2.2 (marzo de 2005) · sección 4.5.3 Peripheral Connector(s)", editor: "Intel", url: "https://xDevs.com/doc/xDevs.com/Neutron/pdf/ATX12V_PSDG_2_2_public_br2.pdf", consultadoEn: "2026-10-14" },
+      { titulo: "Which PSU cables go where?", editor: "Corsair", url: "https://www.corsair.com/us/en/explorer/diy-builder/power-supply-units/which-psu-cables-go-where/", consultadoEn: "2026-10-14" },
+    ],
+    "Decisión de NB (2026-10-19, hoja fuente-de-poder): aprobar. aprobado en lote por NB (2026-10-19): verificado con fuente consultada",
+  ),
+  "2026-10-19",
+  "NB",
 );
 
 /* ---------- Partes (orden de FUENTE_PARTES) ---------- */
@@ -147,10 +210,10 @@ const interruptor: ParteContenido = {
   orden: 3,
   nombre: "Interruptor",
   nombreCorto: "Interruptor",
-  resumen: "El interruptor general de la fuente, casi siempre junto a la entrada de corriente. Apagado, el PC no enciende.",
+  resumen: "El interruptor general de la fuente, cuando la trae, va casi siempre junto a la entrada de corriente. Apagado, el PC no enciende.",
   queHace:
-    "Corta o permite el paso de la energía a todo el equipo. Si el PC no enciende y no se ve ninguna luz ni se mueve ningún ventilador, lo primero que se revisa es que este interruptor esté en la posición de encendido.",
-  alElegir: ["Antes de entregar o probar un equipo, comprueba que el interruptor esté encendido.", "No dependas de él para apagar el equipo: úsalo al desconectar la fuente."],
+    "En las fuentes que lo traen, corta o permite el paso de la energía a todo el equipo. Si el PC no enciende y no se ve ninguna luz ni se mueve ningún ventilador, lo primero que se revisa es que este interruptor esté en la posición de encendido.",
+  alElegir: ["Antes de entregar o probar un equipo, si la fuente trae interruptor, comprueba que esté encendido.", "No dependas de él para apagar el equipo: úsalo al desconectar la fuente."],
   hechos: [interruptorGeneral],
   relacionadas: ["entrada-ac"],
   vistas: FUERA,
@@ -308,11 +371,8 @@ const pcie62: ParteContenido = {
   resumen: "El cable de energía de la tarjeta gráfica: seis pines más dos que se acoplan. No es intercambiable con el EPS del procesador.",
   queHace:
     "Lleva energía a la tarjeta gráfica. Los dos pines extra se acoplan o se separan según lo que pida la gráfica. Algunas gráficas piden uno y otras varios conectores de este tipo.",
-  alElegir: [
-    "Revisa en la gráfica cuántos conectores pide y conecta todos.",
-    "Si la gráfica tiene varios conectores, usa un cable independiente para cada uno cuando el fabricante lo recomiende.",
-  ],
-  hechos: [pcie62Graficas, pcie8PinesIndependientes, epsVsPcieGrafica],
+  alElegir: ["Revisa en la gráfica cuántos conectores pide y conecta todos."],
+  hechos: [pcie62Graficas, epsVsPcieGrafica],
   relacionadas: ["eps-cpu", "12v-2x6"],
   vistas: CONECTORES,
 };
@@ -326,7 +386,7 @@ const doceV2x6: ParteContenido = {
   queHace:
     "Lleva toda la energía de la gráfica por un solo conector pequeño en lugar de varios de ocho pines. Reemplazó al anterior 12VHPWR. Al conectarlo, debe entrar hasta el fondo y quedar firme, sin dobleces cerca del conector.",
   alElegir: [
-    "Inserta el conector hasta el fondo y revisa que no queden contactos visibles.",
+    "Inserta el conector hasta el fondo y confirma en el manual de la gráfica o de la fuente cómo debe verse bien conectado.",
     "No dobles el cable justo al lado del conector; deja un tramo recto.",
     "Usa el cable que trae tu fuente o el de la gráfica, según indique el manual.",
   ],
@@ -399,8 +459,8 @@ const casos: readonly Caso[] = [
       "entregar una torre con el interruptor de la fuente en la posición de apagado, y que el cliente escriba diciendo que no enciende. Antes de entregar y ante cualquier consulta de este tipo, revisa que el interruptor esté encendido.",
     confirmadoPorDueno: true,
     hechos: [interruptorGeneral],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "ventilador-de-la-fuente-al-reves",
@@ -409,8 +469,8 @@ const casos: readonly Caso[] = [
       "una fuente instalada con el ventilador mirando hacia el lado equivocado, de modo que no tomaba aire y no respiraba bien. Mira dónde queda la fuente en el chasis antes de montarla.",
     confirmadoPorDueno: true,
     hechos: [ventiladorOrientacion],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "grafica-sin-cable-de-energia",
@@ -419,8 +479,8 @@ const casos: readonly Caso[] = [
       "una tarjeta gráfica puesta en la ranura de la placa pero sin el cable de energía conectado. La gráfica no da imagen o funciona mal. Conecta todos los cables de energía que pida la gráfica.",
     confirmadoPorDueno: true,
     hechos: [pcie62Graficas],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "un-cable-por-conector-de-la-grafica",
@@ -428,9 +488,8 @@ const casos: readonly Caso[] = [
     texto:
       "una gráfica con varios conectores de ocho pines alimentada con un solo cable que se ramifica. En el taller preferimos un cable independiente de la fuente para cada conector, siempre que el manual de la gráfica o de la fuente lo recomiende.",
     confirmadoPorDueno: true,
-    hechos: [pcie8PinesIndependientes],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "conector-12v-2x6-a-medias",
@@ -438,8 +497,8 @@ const casos: readonly Caso[] = [
     texto:
       "que el conector 12V-2x6 de la gráfica no quede insertado por completo. Debe entrar hasta el fondo y quedar firme, sin dobleces fuertes junto al conector.",
     hechos: [conector12v2x6, conector12v2x6Pines],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "eps-y-pcie-confundidos",
@@ -447,8 +506,8 @@ const casos: readonly Caso[] = [
     texto:
       "enchufar el cable EPS del procesador en la gráfica, o el cable PCIe de la gráfica en el conector del procesador, porque se parecen. No son intercambiables: usa el cable marcado para cada pieza.",
     hechos: [epsVsPcieGrafica],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "sata-mal-conectado",
@@ -456,8 +515,8 @@ const casos: readonly Caso[] = [
     texto:
       "conectar mal el cable de datos o el de energía SATA de una unidad: la unidad no aparece o no enciende. Cada unidad necesita los dos, y no son el mismo cable.",
     hechos: [sataDatosYEnergia],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
   {
     id: "cables-modulares-de-otra-fuente",
@@ -465,8 +524,8 @@ const casos: readonly Caso[] = [
     texto:
       "usar cables modulares de otra fuente porque el conector parece igual. El orden de los pines puede cambiar y se pueden dañar las piezas. Usa solo los cables del modelo de tu fuente.",
     hechos: [modularNoMezclar],
-    aprobadoEn: null,
-    aprobadoPor: null,
+    aprobadoEn: "2026-10-19",
+    aprobadoPor: "NB",
   },
 ];
 
@@ -510,7 +569,7 @@ export const FUENTE_DE_PODER_CONTENIDO: PiezaContenido<FuenteParteId, FuenteVist
       id: "por-dentro",
       etiqueta: "Por dentro",
       resumen:
-        "Las etapas internas de la fuente, dibujadas solo para entender cómo funciona. Importante: no abras tu fuente. Sus condensadores pueden conservar carga peligrosa aunque esté desconectada.",
+        "Las etapas internas habituales de una fuente (algunas difieren), dibujadas solo para entender cómo funciona. Importante: no abras tu fuente. Sus condensadores pueden conservar carga peligrosa aunque esté desconectada.",
       etiquetaFigura:
         "Dibujo esquemático del interior de una fuente de poder, solo para explicar. No abras tu fuente: sus condensadores pueden conservar carga peligrosa aunque esté desconectada.",
     },
@@ -546,7 +605,7 @@ export const FUENTE_DE_PODER_CONTENIDO: PiezaContenido<FuenteParteId, FuenteVist
   faq: [
     {
       q: "¿Por qué mi PC no enciende?",
-      a: "Antes de pensar en una pieza dañada, revisa tres cosas simples: que el cable de corriente esté bien conectado, que el tomacorriente tenga energía y que el interruptor de la fuente, junto a la entrada de corriente, esté en la posición de encendido. En el taller hemos recibido consultas que se resolvieron solo con ese interruptor.",
+      a: "Antes de pensar en una pieza dañada, revisa tres cosas simples: que el cable de corriente esté bien conectado, que el tomacorriente tenga energía y que el interruptor de la fuente (si la trae), junto a la entrada de corriente, esté en la posición de encendido. En el taller hemos recibido consultas que se resolvieron solo con ese interruptor.",
     },
     {
       q: "¿Puedo abrir la fuente para limpiarla o repararla?",
