@@ -7,6 +7,7 @@
  * Copyright (c) 2026 BlacKraken Solutions. Todos los derechos reservados.
  */
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PieceSvg, type ImageSet } from "@/components/component-piece";
 import { STAGE_PIECES, type PieceId, type StagePart, type StageView, type VariantId } from "@/lib/component-stage";
@@ -42,6 +43,8 @@ export interface ShowcaseItem {
   d: string;
   /** Pasos extra dentro de la pieza (mismo orden que `STAGE_PIECES[id].variants`). Sin ella, un solo tramo. */
   variants?: readonly { id: VariantId; label: string; d: string }[];
+  /** Página "a fondo" de la pieza. El escenario es aria-hidden: el enlace es solo para mouse/toque (tabIndex -1); el accesible va en flujo normal en la página. */
+  href?: string;
 }
 
 /** Cuánto avanza el flujo de aire (px de trazo por px de scroll). */
@@ -317,6 +320,13 @@ export function ComponentShowcase({ items }: { items: ShowcaseItem[] }) {
                         </span>
                       </span>
                     ))}
+                  </p>
+                )}
+                {item.href && (
+                  <p className="mt-2 font-mono text-xs">
+                    <Link href={item.href} tabIndex={-1} className="underline underline-offset-4">
+                      Ver a fondo
+                    </Link>
                   </p>
                 )}
               </div>

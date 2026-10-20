@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { SINONIMOS_SLUG } from "./src/lib/piezas/types";
 
 /**
  * Headers de seguridad aplicados a todas las respuestas.
@@ -33,6 +34,17 @@ const nextConfig: NextConfig = {
   // Fija la raíz del workspace a este proyecto (hay otro lockfile en el home).
   turbopack: {
     root: __dirname,
+  },
+  // Sinónimos de cada pieza a fondo (`/piezas/cpu` → `/piezas/procesador`): una sola URL canónica por pieza. La lista vive en
+  // `lib/piezas/types.ts` (sin imports, por eso se puede cargar aquí) y `check:logic` vigila que no choque con un slug real.
+  async redirects() {
+    return Object.entries(SINONIMOS_SLUG).flatMap(([slug, sinonimos]) =>
+      sinonimos.map((sinonimo) => ({
+        source: `/piezas/${sinonimo}`,
+        destination: `/piezas/${slug}`,
+        permanent: true,
+      })),
+    );
   },
   async headers() {
     const markdownNegotiablePaths = [

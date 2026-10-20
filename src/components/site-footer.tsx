@@ -7,12 +7,16 @@
  */
 import Image from "next/image";
 import Link from "next/link";
+import { entornoActual } from "@/lib/piezas/entorno";
+import { hayIndice } from "@/lib/piezas/registro";
 import { siteConfig, whatsappLink } from "@/lib/site-config";
 import { SecretAdminTrigger } from "@/components/secret-admin-trigger";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
+  // «Piezas» solo existe con índice /piezas (2 o más piezas visibles); sin él la lista es exactamente la de siempre.
+  const navLinks = hayIndice(entornoActual()) ? [...siteConfig.nav, { href: "/piezas", label: "Piezas" }] : siteConfig.nav;
 
   return (
     <footer className="border-t border-hairline bg-panda-static text-vanilla-static">
@@ -39,7 +43,7 @@ export function SiteFooter() {
 
         {/* Navegación */}
         <nav className="flex flex-col gap-2 text-sm">
-          {siteConfig.nav.map((l) => (
+          {navLinks.map((l) => (
             <Link
               key={l.href}
               href={l.href}

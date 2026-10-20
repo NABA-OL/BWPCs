@@ -7,6 +7,7 @@
  */
 import type { MetadataRoute } from "next";
 import { getPublishedGuides } from "@/lib/guides";
+import { rutasSitemapPiezas } from "@/lib/piezas/indice";
 import { SHOW_COMPONENTS_PAGE } from "@/lib/site-config";
 
 const BASE = "https://bw-pcs.com";
@@ -37,6 +38,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(g.actualizado),
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    })),
+    // Solo las piezas publicadas y, con 2 o más, el índice /piezas: en producción un borrador ni siquiera existe (404).
+    ...rutasSitemapPiezas().map((r) => ({
+      url: `${BASE}${r.ruta}`,
+      lastModified: new Date(r.modificada),
+      changeFrequency: "monthly" as const,
+      priority: r.ruta === "/piezas" ? 0.8 : 0.7,
     })),
     ...BUDGETS.map((slug) => ({
       url: `${BASE}/pc-gamer/${slug}`,
