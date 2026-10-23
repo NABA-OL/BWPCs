@@ -13,6 +13,7 @@ import type { ComponentItem, Graphic, Processor, Settings } from "@/lib/db/types
  *   TRM_efectivo = (trmManual ?? trmScrapeado) + trmRecargo   [solo si hay base > 0]
  *   precioCPU = baseUsd * TRM + envioCPU   (modo USD)  | precioManualCop (modo COP)
  *   precioGPU = baseUsd * TRM + envioGPU   (modo USD)  | precioManualCop (modo COP)
+ *   precioComponente = baseUsd * TRM + envioComponentes[categoria] (modo USD; 0 si la categoría no tiene envío) | precioManualCop (modo COP)
  *   ConTarjeta = Total * (1 + mediosPago.tarjeta)
  *   ConPSE     = Total * (1 + mediosPago.pse)
  */
@@ -45,15 +46,24 @@ export function graphicPrice(
   return Math.round(g.baseUsd * trm + settings.envioGPU);
 }
 
-/** Precio en COP de un componente del catálogo general, o null si falta info. */
+/** Envío (COP) configurado para una categoría del catálogo general; 0 si no hay. */
+export function componentShipping(
+  categoria: ComponentItem["categoria"],
+  settings: Pick<Settings, "envioComponentes">,
+): number {
+  const envio = settings.envioComponentes?.[categoria];
+  return typeof envio === "number" && Number.isFinite(envio) && envio > 0 ? envio : 0;
+}
+
+/** Precio en COP de un componente del catálogo general (en USD suma el envío de su categoría), o null si falta info. */
 export function componentPrice(
-  c: Pick<ComponentItem, "modoPrecio" | "baseUsd" | "precioManualCop">,
+  c: Pick<ComponentItem, "categoria" | "modoPrecio" | "baseUsd" | "precioManualCop">,
   settings: Settings,
 ): number | null {
   if (c.modoPrecio === "COP") return c.precioManualCop ?? null;
   const trm = effectiveTrm(settings);
   if (trm == null || c.baseUsd == null) return null;
-  return Math.round(c.baseUsd * trm);
+  return Math.round(c.baseUsd * trm + componentShipping(c.categoria, settings));
 }
 
 /** Totales con recargos de pago a partir de un subtotal en COP. */

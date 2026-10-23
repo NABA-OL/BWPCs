@@ -19,6 +19,7 @@ import { listQuoteRequests } from "@/lib/quote-requests";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
 import { PAYMENT_LABEL } from "@/lib/payment-methods";
+import { ARMADO_TEXTO, ARMADO_TITULO, GARANTIA_TEXTO, GARANTIA_TITULO } from "@/lib/service-promise";
 import { whatsappLink, SHOW_PSE } from "@/lib/site-config";
 import { getUserSession } from "@/lib/user-auth/session";
 
@@ -289,6 +290,15 @@ export default async function CotizacionPage({
         )}
       </section>
       )}
+
+      <div className="mt-8 border-2 border-panda p-5">
+        <h2 className="text-lg font-extrabold tracking-tight">{ARMADO_TITULO}</h2>
+        <p className="mt-1.5 text-sm">{ARMADO_TEXTO}</p>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-sm font-semibold">{GARANTIA_TITULO}</h3>
+        <p className="mt-1 text-sm text-component">{GARANTIA_TEXTO}</p>
+      </div>
 
       <p className="mt-6 text-sm text-component">
         Los precios son de referencia y pueden variar según disponibilidad.{" "}
