@@ -19,6 +19,7 @@ import { VIGENCIA_HORAS, cotizacionVigente, estaVencida, ultimoEnvioCotizacion, 
 import { INTRO_FAILSAFE_MS, INTRO_INIT_SCRIPT, INTRO_TTL_MS, easeOutExpo, lineBoost } from "../src/lib/intro.ts";
 import { ANIM_END, ANIM_START, ENTER_END, EXIT_START, HEADER_PX, SHIFT_PX, VARIANT_WEIGHT, easeOutCubic, frameAt, frameFor, scrollProgress, span, stageLayout, trackHeight } from "../src/lib/component-showcase.ts";
 import { STAGE_ORDER, STAGE_PIECES } from "../src/lib/component-stage.ts";
+import { componentPrice, componentShipping, effectiveTrm, graphicPrice, processorPrice } from "../src/lib/pricing.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 import "./check-piezas/index.mjs";
 import "./check-hoja.mjs";
@@ -379,6 +380,24 @@ assert.ok(lineBoost(0) > lineBoost(0.5), "el realce decrece durante la explosió
   }
   assert.deepEqual(STAGE_PIECES.refrigeracion.variants.map((v) => v.id), ["aire", "liquida"]);
   assert.deepEqual(STAGE_PIECES.almacenamiento.variants.map((v) => v.id), ["m2", "sata", "hdd"]);
+}
+
+// --- Precio de componentes en USD con envío por categoría ---
+{
+  const ajustes = { trmScrapeado: 4000, trmRecargo: 148, trmManual: null, envioCPU: 110000, envioGPU: 170000, envioComponentes: { Ram: 50000, Combo: 120000 } };
+  assert.equal(effectiveTrm(ajustes), 4148);
+  const usd = (categoria, baseUsd) => ({ categoria, modoPrecio: "USD", baseUsd, precioManualCop: null });
+  assert.equal(componentPrice(usd("Ram", 100), ajustes), 100 * 4148 + 50000, "RAM en USD: TRM + envío de la categoría");
+  assert.equal(componentPrice(usd("Combo", 200), ajustes), 200 * 4148 + 120000, "Combo en USD: TRM + envío de la categoría");
+  assert.equal(componentPrice(usd("Board", 100), ajustes), 100 * 4148, "categoría sin envío configurado: solo TRM (igual que antes)");
+  assert.equal(componentPrice(usd("Ram", 100), { ...ajustes, envioComponentes: undefined }), 100 * 4148, "ajustes antiguos sin envioComponentes");
+  assert.equal(componentPrice({ categoria: "Ram", modoPrecio: "COP", baseUsd: null, precioManualCop: 710000 }, ajustes), 710000, "en COP no se suma envío");
+  assert.equal(componentPrice(usd("Ram", null), ajustes), null, "sin USD no hay precio");
+  assert.equal(componentPrice(usd("Ram", 100), { ...ajustes, trmScrapeado: 0 }), null, "sin TRM no hay precio");
+  for (const raro of [-5, Number.NaN, "abc"]) assert.equal(componentShipping("Ram", { envioComponentes: { Ram: raro } }), 0, `envío inválido (${raro}) = 0`);
+  // CPU y GPU no cambian
+  assert.equal(processorPrice({ modoPrecio: "USD", baseUsd: 190, precioManualCop: null }, ajustes), 190 * 4148 + 110000);
+  assert.equal(graphicPrice({ modoPrecio: "USD", baseUsd: 300, precioManualCop: null }, ajustes), 300 * 4148 + 170000);
 }
 
 console.log("check:logic OK");

@@ -57,9 +57,12 @@ const EMPTY = {
 export function ComponentManager({
   rows,
   trmReady,
+  envios,
 }: {
   rows: ComponentRow[];
   trmReady: boolean;
+  /** Envío (COP) que se suma a los precios en USD, por categoría. */
+  envios: Partial<Record<ComponentCategory, number>>;
 }) {
   const router = useRouter();
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
@@ -254,6 +257,16 @@ export function ComponentManager({
             />
           </label>
         </div>
+
+        {form.modoPrecio === "USD" && (
+          <p className="mt-3 text-sm text-component">
+            El precio final = USD × TRM efectivo
+            {(envios[form.categoria] ?? 0) > 0
+              ? ` + ${formatCOP(envios[form.categoria] ?? 0)} de envío de ${CATEGORY_LABELS[form.categoria]}`
+              : ` (sin envío configurado para ${CATEGORY_LABELS[form.categoria]}; se define en Configuración)`}
+            .
+          </p>
+        )}
 
         {form.modoPrecio === "USD" && !trmReady && (
           <p className="mt-3 text-sm text-accent">

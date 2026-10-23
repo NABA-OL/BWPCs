@@ -13,6 +13,8 @@ import {
   type SettingsState,
 } from "@/app/admin/(panel)/configuracion/actions";
 import { Button } from "@/components/ui/button";
+import { CATALOG_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
+import type { ComponentCategory } from "@/lib/db/types";
 import { formatNumber } from "@/lib/format";
 
 interface InitialSettings {
@@ -21,6 +23,7 @@ interface InitialSettings {
   trmRecargo: number;
   envioCPU: number;
   envioGPU: number;
+  envioComponentes: Partial<Record<ComponentCategory, number>>;
   servicioBase: number;
   tarjetaPct: number; // ya en porcentaje (6)
   psePct: number; // (3)
@@ -165,6 +168,27 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
           defaultValue={initial.envioGPU}
           hint="Casillero, gráficas."
         />
+        <div className="sm:col-span-2 border-t border-hairline pt-4">
+          <p className="text-sm font-medium text-component">
+            Envío por categoría de componente (COP)
+          </p>
+          <p className="mt-1 text-sm text-component/70">
+            Se suma al precio de cada componente del catálogo guardado en USD
+            (después de convertir con el TRM). Vacío o 0 = sin envío. No aplica
+            a precios guardados en COP.
+          </p>
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            {CATALOG_CATEGORIES.map((categoria) => (
+              <Field
+                key={categoria}
+                label={`Envío ${CATEGORY_LABELS[categoria]}`}
+                name={`envio_${categoria}`}
+                defaultValue={initial.envioComponentes[categoria] ?? ""}
+                placeholder="0"
+              />
+            ))}
+          </div>
+        </div>
         <div className="sm:col-span-2 border-t border-hairline pt-4 text-sm text-component">
           TRM automático actual:{" "}
           <span className="font-mono text-panda">

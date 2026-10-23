@@ -20,6 +20,7 @@ import { ACCOUNTS_ENABLED } from "@/lib/user-auth/enabled";
 import { entornoActual } from "@/lib/piezas/entorno";
 import { enlacesInicio } from "@/lib/piezas/indice";
 import { hayIndice } from "@/lib/piezas/registro";
+import { ARMADO_CORTO, ARMADO_TITULO } from "@/lib/service-promise";
 
 export const revalidate = 3600;
 
@@ -34,8 +35,8 @@ const trust = [
     body: "Cada componente lleva la garantía de su fabricante, y el ensamblaje queda cubierto por nosotros.",
   },
   {
-    title: "Probado antes de entregar",
-    body: "Armamos, formateamos y configuramos tu equipo desde cero, y lo probamos para que llegue con todo funcionando.",
+    title: ARMADO_TITULO,
+    body: ARMADO_CORTO,
   },
   {
     title: "Pagos seguros",

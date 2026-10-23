@@ -9,7 +9,9 @@
 
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { CATALOG_CATEGORIES } from "@/lib/categories";
 import { collections } from "@/lib/db/collections";
+import type { ComponentCategory } from "@/lib/db/types";
 import { getSession } from "@/lib/auth/session";
 import { fetchTrmOficial } from "@/lib/trm";
 
@@ -84,6 +86,13 @@ export async function saveSettingsAction(
   const trmManualRaw = String(form.get("trmManual") ?? "").trim();
   const trmManual = trmManualRaw === "" ? null : num(form, "trmManual");
 
+  // Envío por categoría del catálogo (solo valores positivos; 0 o vacío = sin envío).
+  const envioComponentes: Partial<Record<ComponentCategory, number>> = {};
+  for (const categoria of CATALOG_CATEGORIES) {
+    const envio = num(form, `envio_${categoria}`);
+    if (envio > 0) envioComponentes[categoria] = Math.round(envio);
+  }
+
   const tarjetaPct = num(form, "tarjetaPct");
   const psePct = num(form, "psePct");
   const breBPct = num(form, "breBPct");
@@ -127,6 +136,7 @@ export async function saveSettingsAction(
           trmRecargo: num(form, "trmRecargo"),
           envioCPU: num(form, "envioCPU"),
           envioGPU: num(form, "envioGPU"),
+          envioComponentes,
           servicioBase: num(form, "servicioBase"),
           "mediosPago.tarjeta": tarjetaPct / 100,
           "mediosPago.pse": psePct / 100,
@@ -147,6 +157,8 @@ export async function saveSettingsAction(
 
   revalidatePath("/admin/configuracion");
   revalidatePath("/admin");
+  revalidatePath("/admin/componentes");
+  revalidatePath("/componentes");
   revalidatePath("/cotizador");
   return { ok: true };
 }
