@@ -19,6 +19,7 @@ import { entornoActual } from "@/lib/piezas/entorno";
 import { enlacesServicios } from "@/lib/piezas/indice";
 import { hayIndice } from "@/lib/piezas/registro";
 import { assemblyServiceSchema } from "@/lib/schema";
+import { ARMADO_FAQ_PREGUNTA, ARMADO_FAQ_RESPUESTA, ARMADO_PASO } from "@/lib/service-promise";
 import { PAYMENT_MEDIA_TEXT } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -91,7 +92,11 @@ const faqs = [
   },
   {
     q: "¿El equipo tiene garantía?",
-    a: "Sí. Cada componente lleva la garantía de su fabricante, y el ensamblaje en sí queda cubierto por nosotros.",
+    a: "Sí. Compramos cada componente a demanda, directamente en Estados Unidos, así que la garantía es la del fabricante y te ayudamos a gestionarla. El ensamblaje en sí queda cubierto por nosotros.",
+  },
+  {
+    q: ARMADO_FAQ_PREGUNTA,
+    a: ARMADO_FAQ_RESPUESTA,
   },
   {
     q: "¿Qué medios de pago aceptan?",
@@ -155,7 +160,7 @@ const pasos = [
   {
     n: "05",
     t: "Ensamblaje y pruebas",
-    d: "Armamos, ordenamos el cable management y probamos temperaturas y estabilidad.",
+    d: ARMADO_PASO,
     icon: "build",
   },
   {

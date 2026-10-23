@@ -101,6 +101,7 @@ export const DEFAULT_SETTINGS: Omit<Settings, "_id"> = {
   trmActualizado: null,
   envioCPU: 110000,
   envioGPU: 170000,
+  envioComponentes: {},
   servicioBase: 200000,
   mediosPago: { tarjeta: 0.06, pse: 0.03, breB: 0 },
   contacto: {

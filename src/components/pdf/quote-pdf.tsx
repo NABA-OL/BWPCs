@@ -15,6 +15,7 @@ import {
 } from "@react-pdf/renderer";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { formatCOP } from "@/lib/format";
+import { ARMADO_TEXTO, ARMADO_TITULO, GARANTIA_TEXTO, GARANTIA_TITULO } from "@/lib/service-promise";
 import type { Quote } from "@/lib/db/types";
 import { SHOW_PSE } from "@/lib/site-config";
 
@@ -129,6 +130,18 @@ const styles = StyleSheet.create({
   },
   grandTotal: { backgroundColor: "#F2EFE9" },
   note: { marginTop: 18, fontSize: 8, fontFamily: "Helvetica-Bold" },
+  highlight: {
+    marginTop: 16,
+    borderWidth: 1.5,
+    borderColor: COLORS.panda,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  highlightTitle: { fontSize: 11, fontFamily: "Helvetica-Bold", letterSpacing: 1 },
+  highlightText: { marginTop: 4, fontSize: 9, lineHeight: 1.4 },
+  warranty: { marginTop: 12 },
+  warrantyTitle: { fontSize: 8.5, fontFamily: "Helvetica-Bold" },
+  warrantyText: { marginTop: 3, fontSize: 8, lineHeight: 1.4, color: COLORS.gray },
   footer: {
     position: "absolute",
     bottom: 28,
@@ -267,6 +280,17 @@ export function QuotePDF({
         ))}
 
         <Text style={styles.note}>*Precio sujeto a cambios</Text>
+
+        <View wrap={false}>
+          <View style={styles.highlight}>
+            <Text style={styles.highlightTitle}>{ARMADO_TITULO.toUpperCase()}</Text>
+            <Text style={styles.highlightText}>{ARMADO_TEXTO}</Text>
+          </View>
+          <View style={styles.warranty}>
+            <Text style={styles.warrantyTitle}>{GARANTIA_TITULO}</Text>
+            <Text style={styles.warrantyText}>{GARANTIA_TEXTO}</Text>
+          </View>
+        </View>
 
         {/* Footer */}
         <View style={styles.footer} fixed>

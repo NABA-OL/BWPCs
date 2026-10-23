@@ -38,6 +38,8 @@ export interface Settings {
   trmActualizado: Date | null; // cuándo se trajo el TRM automático
   envioCPU: number; // envío casillero procesadores (110000)
   envioGPU: number; // envío casillero gráficas (170000)
+  /** Envío (COP) que se suma al precio en USD de un componente del catálogo, por categoría (Board, Ram, Combo…). Ausente o sin la clave = 0. */
+  envioComponentes?: Partial<Record<ComponentCategory, number>>;
   servicioBase: number; // valor base del servicio de ensamble (200000)
   mediosPago: {
     tarjeta: number; // 0.06
