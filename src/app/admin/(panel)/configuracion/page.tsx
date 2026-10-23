@@ -34,6 +34,7 @@ export default async function ConfiguracionPage() {
       trmRecargo: s.trmRecargo,
       envioCPU: s.envioCPU,
       envioGPU: s.envioGPU,
+      envioComponentes: s.envioComponentes ?? {},
       servicioBase: s.servicioBase,
       tarjetaPct: Math.round(s.mediosPago.tarjeta * 1000) / 10,
       psePct: Math.round(s.mediosPago.pse * 1000) / 10,
