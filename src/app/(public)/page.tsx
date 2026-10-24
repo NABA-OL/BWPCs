@@ -153,7 +153,7 @@ export default async function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram de B & W (@bw_mountpc)"
-                className="inline-flex items-center justify-center gap-2 rounded-[2px] bg-accent px-8 py-4 text-sm font-medium uppercase tracking-wide text-accent-ink transition-colors hover:bg-accent-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panda"
+                className="inline-flex items-center justify-center self-start rounded-[2px] bg-accent p-4 text-accent-ink transition-colors hover:bg-accent-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panda sm:self-auto"
               >
                 <svg
                   width="20"
@@ -170,7 +170,6 @@ export default async function HomePage() {
                   <circle cx="12" cy="12" r="4.2" />
                   <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none" />
                 </svg>
-                Instagram
               </a>
               <ButtonLink href="/cotizador" size="lg">
                 Cotiza tu PC
