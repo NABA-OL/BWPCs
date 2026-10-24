@@ -51,7 +51,18 @@ const pasosComponentes: ShowcaseItem[] = [
   { id: "ram", t: "Memorias RAM", d: "DDR4 y DDR5, en las frecuencias que rinden." },
   { id: "boards", t: "Boards", d: "La base correcta para tu procesador." },
   { id: "fuentes", t: "Fuentes de poder", d: "80+ certificadas, el vatiaje justo." },
-  { id: "chasis", t: "Chasis", d: "Flujo de aire y espacio para crecer." },
+  {
+    id: "chasis",
+    t: "Chasis",
+    d: "Desde compactos hasta torres con vidrio: flujo de aire y espacio para crecer.",
+    variants: [
+      { id: "unica", label: "Vidrio", d: "Torre con panel lateral de vidrio y ventiladores al frente." },
+      { id: "pecera", label: "Pecera", d: "Vidrio en el frente y en el lateral: el interior queda a la vista." },
+      { id: "cerrado", label: "Cerrado", d: "Lateral de chapa sin ventana y frente de malla por donde entra el aire." },
+      { id: "matx", label: "Micro-ATX", d: "Más baja y corta que una torre ATX, para placas Micro-ATX: un punto medio entre tamaño y espacio para crecer." },
+      { id: "itx", label: "Mini-ITX", d: "Para placas Mini-ITX: ocupa poco espacio, pero conviene revisar el largo de la gráfica y la altura del disipador." },
+    ],
+  },
   {
     id: "refrigeracion",
     t: "Refrigeración",
