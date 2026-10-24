@@ -380,12 +380,12 @@ assert.ok(lineBoost(0) > lineBoost(0.5), "el realce decrece durante la explosió
   }
   assert.deepEqual(STAGE_PIECES.refrigeracion.variants.map((v) => v.id), ["aire", "liquida"]);
   // Chasis: la torre actual (`unica`, la del hero y los reels) y tres variantes nuevas.
-  assert.deepEqual(STAGE_PIECES.chasis.variants.map((v) => v.id), ["unica", "pecera", "cerrado", "itx"]);
+  assert.deepEqual(STAGE_PIECES.chasis.variants.map((v) => v.id), ["unica", "pecera", "cerrado", "matx", "itx"]);
   {
-    const L = stageLayout([1, 1, 1, 1, 1, 4, 2, 3]);
-    assert.equal(L.units, 12.5, "con 4 variantes de chasis el recorrido suma 12,5 unidades");
-    assert.equal(L.slots.length, 14, "14 tramos");
-    assert.equal(trackHeight(L.units), "calc(1500svh + 100dvh - 4rem)");
+    const L = stageLayout([1, 1, 1, 1, 1, 5, 2, 3]);
+    assert.equal(L.units, 13.25, "con 5 variantes de chasis el recorrido suma 13,25 unidades");
+    assert.equal(L.slots.length, 15, "15 tramos");
+    assert.equal(trackHeight(L.units), "calc(1590svh + 100dvh - 4rem)");
   }
   assert.deepEqual(STAGE_PIECES.almacenamiento.variants.map((v) => v.id), ["m2", "sata", "hdd"]);
 }

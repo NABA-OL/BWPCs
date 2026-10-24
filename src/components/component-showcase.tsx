@@ -306,9 +306,9 @@ export function ComponentShowcase({ items }: { items: ShowcaseItem[] }) {
                 </p>
                 <p className="mt-2 text-xl font-semibold">{item.t}</p>
                 {item.variants && (
-                  <p className="mt-1 font-mono text-xs">
+                  <p className="mt-1 font-mono text-[11px] sm:text-xs">
                     {item.variants.map((v, k) => (
-                      <span key={v.id}>
+                      <span key={v.id} className="whitespace-nowrap">
                         {k > 0 && <span style={{ opacity: CHIP_DIM }}> · </span>}
                         <span
                           ref={(el) => {

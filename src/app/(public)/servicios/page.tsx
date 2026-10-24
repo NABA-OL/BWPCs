@@ -59,6 +59,7 @@ const pasosComponentes: ShowcaseItem[] = [
       { id: "unica", label: "Vidrio", d: "Torre con panel lateral de vidrio y ventiladores al frente." },
       { id: "pecera", label: "Pecera", d: "Vidrio en el frente y en el lateral: el interior queda a la vista." },
       { id: "cerrado", label: "Cerrado", d: "Lateral de chapa sin ventana y frente de malla por donde entra el aire." },
+      { id: "matx", label: "Micro-ATX", d: "Más baja y corta que una torre ATX, para placas Micro-ATX: un punto medio entre tamaño y espacio para crecer." },
       { id: "itx", label: "Mini-ITX", d: "Para placas Mini-ITX: ocupa poco espacio, pero conviene revisar el largo de la gráfica y la altura del disipador." },
     ],
   },
