@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   // Solo desarrollo: permite abrir el servidor de desarrollo desde otro dispositivo de la red local (p. ej. el celular
   // por http://192.168.x.x:3001) sin que Next bloquee el HMR. No afecta al despliegue en Vercel.
-  allowedDevOrigins: ["192.168.*.*"],
+  allowedDevOrigins: ["192.168.*.*", "http://localhost:3000", "nabaol-server", "localhost", 'nabaol-server'],
   // Fija la raíz del workspace a este proyecto (hay otro lockfile en el home).
   turbopack: {
     root: __dirname,
