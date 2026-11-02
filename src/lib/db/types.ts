@@ -40,6 +40,8 @@ export interface Settings {
   envioGPU: number; // envío casillero gráficas (170000)
   /** Envío (COP) que se suma al precio en USD de un componente del catálogo, por categoría (Board, Ram, Combo…). Ausente o sin la clave = 0. */
   envioComponentes?: Partial<Record<ComponentCategory, number>>;
+  /** Opciones de especificación (capacidad, potencia…) que el gestor de Componentes ofrece por categoría. Ausente = se usan las iniciales. */
+  opcionesComponentes?: Partial<Record<ComponentCategory, string[]>>;
   servicioBase: number; // valor base del servicio de ensamble (200000)
   mediosPago: {
     tarjeta: number; // 0.06

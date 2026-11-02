@@ -26,6 +26,12 @@ import { formatCOP } from "@/lib/format";
 import { Pagination, PAGE_SIZE } from "@/components/admin/pagination";
 import { CATALOG_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
 import { Select } from "@/components/admin/select";
+import {
+  detectSpec,
+  replaceSpec,
+  specLabel,
+  type SpecOptions,
+} from "@/lib/component-spec-options";
 import type { ComponentCategory, PriceMode } from "@/lib/db/types";
 import { TrashLabel } from "@/components/ui/trash-label";
 import { EditLabel, RowActions } from "@/components/admin/row-actions";
@@ -52,17 +58,22 @@ const EMPTY = {
   modoPrecio: "COP" as PriceMode,
   baseUsd: "",
   precioManualCop: "",
+  /** Especificación elegida de la lista de la categoría (ya concatenada en `descripcion`). */
+  especificacion: "",
 };
 
 export function ComponentManager({
   rows,
   trmReady,
   envios,
+  opciones,
 }: {
   rows: ComponentRow[];
   trmReady: boolean;
   /** Envío (COP) que se suma a los precios en USD, por categoría. */
   envios: Partial<Record<ComponentCategory, number>>;
+  /** Listas de especificación (capacidad, potencia…) por categoría, editables en Configuración. */
+  opciones: SpecOptions;
 }) {
   const router = useRouter();
   const [form, setForm] = useState<typeof EMPTY>(EMPTY);
@@ -91,6 +102,7 @@ export function ComponentManager({
       modoPrecio: r.modoPrecio,
       baseUsd: r.baseUsd?.toString() ?? "",
       precioManualCop: r.precioManualCop?.toString() ?? "",
+      especificacion: detectSpec(r.descripcion, opciones[r.categoria] ?? []),
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -102,8 +114,22 @@ export function ComponentManager({
       ...f,
       categoria,
       modoPrecio: categoria === "Combo" ? "USD" : f.modoPrecio,
+      // La especificación es de la categoría anterior: se quita de la descripción.
+      descripcion: replaceSpec(f.descripcion, f.especificacion, ""),
+      especificacion: "",
     }));
   }
+
+  /** Cambia la especificación elegida y la concatena (o quita) al final de la descripción. */
+  function setEspecificacion(especificacion: string) {
+    setForm((f) => ({
+      ...f,
+      especificacion,
+      descripcion: replaceSpec(f.descripcion, f.especificacion, especificacion),
+    }));
+  }
+
+  const specList = opciones[form.categoria] ?? [];
 
   const editing = form.id !== "";
 
@@ -238,6 +264,26 @@ export function ComponentManager({
                 }
                 placeholder="710000"
                 className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono outline-none focus:border-panda"
+              />
+            </label>
+          )}
+
+          {specList.length > 0 && (
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium text-component">
+                {specLabel(form.categoria)}{" "}
+                <span className="text-component/60">
+                  (se agrega al final de la descripción)
+                </span>
+              </span>
+              <Select
+                value={form.especificacion}
+                onChange={setEspecificacion}
+                options={[
+                  { value: "", label: `Sin ${specLabel(form.categoria).toLowerCase()}` },
+                  ...specList.map((o) => ({ value: o, label: o })),
+                ]}
+                className="mt-1.5"
               />
             </label>
           )}

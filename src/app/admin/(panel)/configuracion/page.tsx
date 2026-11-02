@@ -7,6 +7,7 @@
  */
 import type { Metadata } from "next";
 import { getSettings } from "@/lib/admin/settings";
+import { specOptionsFrom } from "@/lib/component-spec-options";
 import { collections } from "@/lib/db/collections";
 import { SettingsForm } from "@/components/admin/settings-form";
 import { TrmRefreshButton } from "@/components/admin/trm-refresh-button";
@@ -35,6 +36,7 @@ export default async function ConfiguracionPage() {
       envioCPU: s.envioCPU,
       envioGPU: s.envioGPU,
       envioComponentes: s.envioComponentes ?? {},
+      opcionesComponentes: specOptionsFrom(s),
       servicioBase: s.servicioBase,
       tarjetaPct: Math.round(s.mediosPago.tarjeta * 1000) / 10,
       psePct: Math.round(s.mediosPago.pse * 1000) / 10,
