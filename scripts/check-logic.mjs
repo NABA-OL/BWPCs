@@ -19,6 +19,7 @@ import { VIGENCIA_HORAS, cotizacionVigente, estaVencida, ultimoEnvioCotizacion, 
 import { INTRO_FAILSAFE_MS, INTRO_INIT_SCRIPT, INTRO_TTL_MS, easeOutExpo, lineBoost } from "../src/lib/intro.ts";
 import { ANIM_END, ANIM_START, ENTER_END, EXIT_START, HEADER_PX, SHIFT_PX, VARIANT_WEIGHT, easeOutCubic, frameAt, frameFor, scrollProgress, span, stageLayout, trackHeight } from "../src/lib/component-showcase.ts";
 import { STAGE_ORDER, STAGE_PIECES } from "../src/lib/component-stage.ts";
+import { DEFAULT_SPEC_OPTIONS, detectSpec, parseSpecOptions, replaceSpec, specOptionsFrom } from "../src/lib/component-spec-options.ts";
 import { componentPrice, componentShipping, effectiveTrm, graphicPrice, processorPrice } from "../src/lib/pricing.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
 import "./check-piezas/index.mjs";
@@ -408,4 +409,17 @@ assert.ok(lineBoost(0) > lineBoost(0.5), "el realce decrece durante la explosió
   assert.equal(graphicPrice({ modoPrecio: "USD", baseUsd: 300, precioManualCop: null }, ajustes), 300 * 4148 + 170000);
 }
 
+
+// --- Listas de especificación de Componentes (capacidad, potencia…) ---
+assert.deepEqual(parseSpecOptions(" 1 TB\n\n1 TB\r\n  2   TB "), ["1 TB", "2 TB"], "limpia espacios, vacías y repetidas");
+assert.equal(replaceSpec("DDR5 6000MHz", "", "32 GB (2 × 16 GB)"), "DDR5 6000MHz · 32 GB (2 × 16 GB)");
+assert.equal(replaceSpec("DDR5 6000MHz · 16 GB", "16 GB", "32 GB (1 × 32 GB)"), "DDR5 6000MHz · 32 GB (1 × 32 GB)", "cambiar reemplaza la anterior");
+assert.equal(replaceSpec("16 GB", "16 GB", "32 GB (1 × 32 GB)"), "32 GB (1 × 32 GB)", "descripción vacía: solo la especificación");
+assert.equal(replaceSpec("DDR5 6000MHz · 16 GB", "16 GB", ""), "DDR5 6000MHz", "quitar la especificación");
+assert.equal(replaceSpec("texto editado a mano", "16 GB", "32 GB (1 × 32 GB)"), "texto editado a mano · 32 GB (1 × 32 GB)", "si ya no termina en la anterior, no corta nada");
+assert.equal(detectSpec("DDR5 · 32 GB (2 × 16 GB)", DEFAULT_SPEC_OPTIONS.Ram ?? []), "32 GB (2 × 16 GB)");
+assert.equal(detectSpec("DDR5 · 16 GB (2 × 8 GB)", DEFAULT_SPEC_OPTIONS.Ram ?? []), "16 GB (2 × 8 GB)", "elige la opción más larga que coincide");
+assert.equal(detectSpec("sin especificación", DEFAULT_SPEC_OPTIONS.Ram ?? []), "");
+assert.deepEqual(specOptionsFrom({}), DEFAULT_SPEC_OPTIONS, "sin guardar en Configuración usa las iniciales");
+assert.deepEqual(specOptionsFrom({ opcionesComponentes: {} }), {}, "guardado vacío = sin listas");
 console.log("check:logic OK");

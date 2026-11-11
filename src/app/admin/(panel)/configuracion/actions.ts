@@ -10,6 +10,7 @@
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { CATALOG_CATEGORIES } from "@/lib/categories";
+import { parseSpecOptions } from "@/lib/component-spec-options";
 import { collections } from "@/lib/db/collections";
 import type { ComponentCategory } from "@/lib/db/types";
 import { getSession } from "@/lib/auth/session";
@@ -93,6 +94,13 @@ export async function saveSettingsAction(
     if (envio > 0) envioComponentes[categoria] = Math.round(envio);
   }
 
+  // Opciones de especificación por categoría (una por línea; vacío = la categoría no muestra lista).
+  const opcionesComponentes: Partial<Record<ComponentCategory, string[]>> = {};
+  for (const categoria of CATALOG_CATEGORIES) {
+    const opciones = parseSpecOptions(String(form.get(`opciones_${categoria}`) ?? ""));
+    if (opciones.length > 0) opcionesComponentes[categoria] = opciones;
+  }
+
   const tarjetaPct = num(form, "tarjetaPct");
   const psePct = num(form, "psePct");
   const breBPct = num(form, "breBPct");
@@ -137,6 +145,7 @@ export async function saveSettingsAction(
           envioCPU: num(form, "envioCPU"),
           envioGPU: num(form, "envioGPU"),
           envioComponentes,
+          opcionesComponentes,
           servicioBase: num(form, "servicioBase"),
           "mediosPago.tarjeta": tarjetaPct / 100,
           "mediosPago.pse": psePct / 100,
