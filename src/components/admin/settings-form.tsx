@@ -14,6 +14,7 @@ import {
 } from "@/app/admin/(panel)/configuracion/actions";
 import { Button } from "@/components/ui/button";
 import { CATALOG_CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
+import type { SpecOptions } from "@/lib/component-spec-options";
 import type { ComponentCategory } from "@/lib/db/types";
 import { formatNumber } from "@/lib/format";
 
@@ -24,6 +25,7 @@ interface InitialSettings {
   envioCPU: number;
   envioGPU: number;
   envioComponentes: Partial<Record<ComponentCategory, number>>;
+  opcionesComponentes: SpecOptions;
   servicioBase: number;
   tarjetaPct: number; // ya en porcentaje (6)
   psePct: number; // (3)
@@ -201,6 +203,27 @@ export function SettingsForm({ initial }: { initial: InitialSettings }) {
             {trmEfectivo > 0 ? formatNumber(trmEfectivo) : "—"}
           </span>
         </div>
+      </Section>
+
+      <Section title="Listas de especificación por categoría">
+        <p className="sm:col-span-2 text-sm text-component/70">
+          Al elegir una categoría en Componentes aparece una lista con estas
+          opciones (capacidad, potencia…) y la elegida se agrega al final de la
+          descripción. Una opción por línea; categoría sin líneas = sin lista.
+        </p>
+        {CATALOG_CATEGORIES.map((categoria) => (
+          <label key={categoria} className="block">
+            <span className="text-sm font-medium text-component">
+              {CATEGORY_LABELS[categoria]}
+            </span>
+            <textarea
+              name={`opciones_${categoria}`}
+              rows={5}
+              defaultValue={(initial.opcionesComponentes[categoria] ?? []).join("\n")}
+              className="mt-1.5 w-full border border-hairline bg-vanilla px-3 py-2.5 font-mono text-sm text-panda outline-none focus:border-panda"
+            />
+          </label>
+        ))}
       </Section>
 
       <Section title="Servicio y medios de pago">
