@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import { collections } from "@/lib/db/collections";
 import type { ComponentCategory } from "@/lib/db/types";
 import { getSettings } from "@/lib/admin/settings";
+import { specOptionsFrom, type SpecOptions } from "@/lib/component-spec-options";
 import { componentPrice, effectiveTrm } from "@/lib/pricing";
 import {
   ComponentManager,
@@ -24,12 +25,14 @@ export default async function ComponentesPage() {
   let rows: ComponentRow[] = [];
   let trmReady = false;
   let envios: Partial<Record<ComponentCategory, number>> = {};
+  let opciones: SpecOptions = {};
   let error: string | null = null;
 
   try {
     const settings = await getSettings();
     trmReady = effectiveTrm(settings) != null;
     envios = settings.envioComponentes ?? {};
+    opciones = specOptionsFrom(settings);
     const col = await collections.components();
     const docs = await col.find({}).sort({ categoria: 1, modelo: 1 }).toArray();
     rows = docs.map((c) => ({
@@ -62,7 +65,12 @@ export default async function ComponentesPage() {
           <p className="text-sm text-panda">{error}</p>
         </div>
       ) : (
-        <ComponentManager rows={rows} trmReady={trmReady} envios={envios} />
+        <ComponentManager
+          rows={rows}
+          trmReady={trmReady}
+          envios={envios}
+          opciones={opciones}
+        />
       )}
     </>
   );
