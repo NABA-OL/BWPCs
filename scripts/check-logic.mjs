@@ -19,6 +19,7 @@ import { VIGENCIA_HORAS, cotizacionVigente, estaVencida, ultimoEnvioCotizacion, 
 import { INTRO_FAILSAFE_MS, INTRO_INIT_SCRIPT, INTRO_TTL_MS, easeOutExpo, lineBoost } from "../src/lib/intro.ts";
 import { ANIM_END, ANIM_START, ENTER_END, EXIT_START, HEADER_PX, SHIFT_PX, VARIANT_WEIGHT, easeOutCubic, frameAt, frameFor, scrollProgress, span, stageLayout, trackHeight } from "../src/lib/component-showcase.ts";
 import { STAGE_ORDER, STAGE_PIECES } from "../src/lib/component-stage.ts";
+import { THEME_COLORS, THEME_INIT_SCRIPT } from "../src/lib/theme.ts";
 import { DEFAULT_SPEC_OPTIONS, detectSpec, parseSpecOptions, replaceSpec, specOptionsFrom } from "../src/lib/component-spec-options.ts";
 import { componentPrice, componentShipping, effectiveTrm, graphicPrice, processorPrice } from "../src/lib/pricing.ts";
 import { CARD_MAX_COP, DEFAULT_PAYMENT_METHOD, OFFERED_PAYMENT_METHODS, cardIsManual, surchargePct, totalFor } from "../src/lib/payment-methods.ts";
@@ -422,4 +423,21 @@ assert.equal(detectSpec("DDR5 · 16 GB (2 × 8 GB)", DEFAULT_SPEC_OPTIONS.Ram ??
 assert.equal(detectSpec("sin especificación", DEFAULT_SPEC_OPTIONS.Ram ?? []), "");
 assert.deepEqual(specOptionsFrom({}), DEFAULT_SPEC_OPTIONS, "sin guardar en Configuración usa las iniciales");
 assert.deepEqual(specOptionsFrom({ opcionesComponentes: {} }), {}, "guardado vacío = sin listas");
+// --- Tema: el script de arranque también pinta la barra del navegador (theme-color) ---
+function runThemeScript(pathname, stored) {
+  const attrs = {};
+  const meta = { content: THEME_COLORS.light, setAttribute(k, v) { if (k === "content") this.content = v; } };
+  vm.runInNewContext(THEME_INIT_SCRIPT, {
+    document: {
+      documentElement: { setAttribute: (k, v) => { attrs[k] = v; } },
+      querySelector: (sel) => (sel === 'meta[name="theme-color"]' ? meta : null),
+    },
+    location: { pathname },
+    localStorage: { getItem: () => stored },
+  });
+  return { attrs, color: meta.content };
+}
+assert.deepEqual(runThemeScript("/servicios", "dark"), { attrs: { "data-theme": "dark" }, color: THEME_COLORS.dark }, "oscuro guardado: atributo y barra oscuros");
+assert.deepEqual(runThemeScript("/servicios", null), { attrs: {}, color: THEME_COLORS.light }, "sin preferencia: claro");
+assert.deepEqual(runThemeScript("/admin/clientes", "dark"), { attrs: {}, color: THEME_COLORS.light }, "el admin siempre claro");
 console.log("check:logic OK");

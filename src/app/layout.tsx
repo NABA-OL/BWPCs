@@ -10,7 +10,7 @@ import { Geist, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeSync } from "@/components/theme/theme-sync";
-import { THEME_INIT_SCRIPT } from "@/lib/theme";
+import { THEME_COLORS, THEME_INIT_SCRIPT } from "@/lib/theme";
 import { INTRO_INIT_SCRIPT } from "@/lib/intro";
 import "./globals.css";
 
@@ -74,7 +74,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  // Claro por defecto; el script de tema lo cambia a oscuro si el usuario lo eligió (ver `applyTheme`).
+  themeColor: THEME_COLORS.light,
   width: "device-width",
   initialScale: 1,
 };

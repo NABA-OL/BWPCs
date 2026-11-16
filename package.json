@@ -8,6 +8,7 @@
     "build:check": "NEXT_DIST_DIR=.next-check next build; code=$?; rm -rf .next-check; exit $code",
     "start": "next start",
     "lint": "eslint",
+    "test:e2e": "playwright test",
     "seed": "node --env-file=.env.local scripts/seed.mjs",
     "check:logic": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-logic.mjs",
     "check:storage": "node --env-file=.env.local --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-storage.mjs"
@@ -36,12 +37,13 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^10.9.0",
-    "eslint-config-next": "16.3.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

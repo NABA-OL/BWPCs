@@ -166,7 +166,7 @@ export function ReviewsShowcase({ reviews }: { reviews: PublicReview[] }) {
                           srcSet={srcSet(photo)}
                           sizes="(min-width: 768px) 408px, 90vw"
                           alt={`Foto ${i + 1} de la reseña de ${review.autor.nombre}`}
-                          loading={i === 0 ? "eager" : "lazy"}
+                          loading="lazy" // la sección está más abajo del hero: no debe competir con lo de la primera pantalla
                           draggable={false}
                           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${i === photoIndex ? "opacity-100" : "opacity-0"}`}
                         />

@@ -17,6 +17,9 @@ export type ThemeName = "light" | "dark";
 export const THEME_STORAGE_KEY = "bw-theme";
 export const THEME_ATTRIBUTE = "data-theme";
 
+/** Color de la barra del navegador móvil por tema: el fondo (`--color-vanilla`) de cada uno, de `globals.css`. */
+export const THEME_COLORS: Record<ThemeName, string> = { light: "#FAF8F3", dark: "#141311" };
+
 /** Rutas que siempre se ven en claro, sin importar lo guardado. */
 export const THEME_LOCKED_PREFIXES = ["/admin", "/style-guide"];
 
@@ -33,11 +36,14 @@ export function readStoredTheme(): ThemeName {
   }
 }
 
-/** Pone o quita el atributo de tema en `<html>`. No toca `localStorage`. */
+/** Pone o quita el atributo de tema en `<html>` y ajusta el color de la barra del navegador. No toca `localStorage`. */
 export function applyTheme(theme: ThemeName): void {
   const root = document.documentElement;
   if (theme === "dark") root.setAttribute(THEME_ATTRIBUTE, "dark");
   else root.removeAttribute(THEME_ATTRIBUTE);
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", THEME_COLORS[theme]);
 }
 
 /**
@@ -50,4 +56,6 @@ export const THEME_INIT_SCRIPT = `(function(){try{var d=document.documentElement
   THEME_LOCKED_PREFIXES,
 )};for(var i=0;i<l.length;i++){if(p===l[i]||p.indexOf(l[i]+"/")===0)return;}if(localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY,
-)})==="dark")d.setAttribute(${JSON.stringify(THEME_ATTRIBUTE)},"dark");}catch(e){}})();`;
+)})==="dark"){d.setAttribute(${JSON.stringify(THEME_ATTRIBUTE)},"dark");var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",${JSON.stringify(
+  THEME_COLORS.dark,
+)});}}catch(e){}})();`;

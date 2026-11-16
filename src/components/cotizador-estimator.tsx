@@ -171,7 +171,8 @@ export function CotizadorEstimator({
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
-      {RECAPTCHA_SITE_KEY && (
+      {/* reCAPTCHA solo se carga al abrir el formulario de contacto: deja cookies de terceros y pesa en la carga inicial. */}
+      {RECAPTCHA_SITE_KEY && contactOpen && (
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
           strategy="afterInteractive"
@@ -210,6 +211,7 @@ export function CotizadorEstimator({
                 <div className="relative min-w-[200px]">
                   <select
                     value={choice[c.key]}
+                    aria-label={`Gama de ${c.label}`}
                     disabled={!on}
                     onChange={(e) =>
                       setChoice((s) => ({

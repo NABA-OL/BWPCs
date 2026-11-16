@@ -287,6 +287,8 @@ export default async function HomePage() {
                     <img
                       src={b.imagenUrl}
                       alt={b.titulo}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>

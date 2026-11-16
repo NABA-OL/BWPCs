@@ -44,6 +44,9 @@ function BuildCard({ b }: { b: Build }) {
         <img
           src={b.imagenUrl}
           alt={b.titulo}
+          // Cada ensamble se dibuja dos veces (carrusel móvil y grilla): lazy evita bajar la copia oculta.
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>

@@ -45,3 +45,7 @@ next-env.d.ts
 # fotos subidas en desarrollo sin R2 (ver lib/storage)
 /public/_dev-uploads/
 /.dev-private-uploads/
+
+# pruebas e2e (Playwright): capturas e informes locales
+/test-results/
+/playwright-report/

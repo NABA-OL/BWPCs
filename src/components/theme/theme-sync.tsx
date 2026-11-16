@@ -8,7 +8,7 @@
  */
 import { useEffect, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
-import { applyTheme, isThemeLocked, readStoredTheme, THEME_ATTRIBUTE, THEME_STORAGE_KEY } from "@/lib/theme";
+import { applyTheme, isThemeLocked, readStoredTheme, THEME_STORAGE_KEY } from "@/lib/theme";
 
 /**
  * Mantiene al día el atributo de tema en `<html>` durante la navegación (el script
@@ -21,7 +21,7 @@ export function ThemeSync() {
 
   useLayoutEffect(() => {
     if (isThemeLocked(pathname)) {
-      document.documentElement.removeAttribute(THEME_ATTRIBUTE);
+      applyTheme("light");
       return;
     }
     applyTheme(readStoredTheme());
